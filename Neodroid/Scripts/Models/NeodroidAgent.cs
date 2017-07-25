@@ -2,6 +2,7 @@
 using Neodroid.Messaging.Messages;
 using Neodroid.Models.Observers;
 using Neodroid.Utilities;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,6 +29,13 @@ namespace Neodroid.Models {
     private Reaction _lastest_reaction = null;
 
     private void Start() {
+
+      string[] arguments = Environment.GetCommandLineArgs();
+      if (arguments[1] != null && arguments[1] != "")
+        _ip_address = arguments[1];
+      if (arguments[1] != null && arguments[1] != "")
+        _port = int.Parse(arguments[2]);
+
       if (_ip_address != "" || _port != 0)
         _message_server = new MessageServer(_ip_address, _port);
       else
@@ -60,7 +68,7 @@ namespace Neodroid.Models {
         _reload_scene = false;
       }
 
-      if (_lastest_reaction != null) {
+      if (_lastest_reaction != null && (!_waiting_for_action || !_message_server._client_connected)) {
         ExecuteReaction(_lastest_reaction);
         if (!_continue_lastest_reaction_on_disconnect)
           _lastest_reaction = null;

@@ -7,6 +7,8 @@ namespace Neodroid.Models.Motors {
   public class SingleAxisMotor : Motor {
     public MotorAxis _axis_of_motion;
 
+
+
     public override void ApplyMotion(MotorMotion motion) {
       if (_debug) Debug.Log("Applying " + motion._strength.ToString() + " To " + name);
       if (!_bidirectional && motion._strength < 0) {
@@ -15,22 +17,24 @@ namespace Neodroid.Models.Motors {
       }
       switch (_axis_of_motion) {
         case MotorAxis.X:
-          transform.Translate(Vector3.left * motion._strength);
+          transform.Translate(Vector3.left * motion._strength, Space.Self);
           break;
         case MotorAxis.Y:
-          transform.Translate(Vector3.up * motion._strength);
+          transform.Translate(Vector3.up * motion._strength, Space.Self);
           break;
         case MotorAxis.Z:
-          transform.Translate(Vector3.forward * motion._strength);
+          transform.Translate(Vector3.forward * motion._strength, Space.Self);
           break;
         case MotorAxis.rot_X:
-          transform.Rotate(Vector3.left, motion._strength);
+          transform.Rotate(Vector3.left, motion._strength, Space.Self);
+          //GetComponent<Rigidbody>().AddForceAtPosition(Vector3.forward * motion._strength, transform.position);
+          //GetComponent<Rigidbody>().AddRelativeTorque(Vector3.up * motion._strength);
           break;
         case MotorAxis.rot_Y:
-          transform.Rotate(Vector3.up, motion._strength);
+          transform.Rotate(Vector3.up, motion._strength, Space.Self);
           break;
         case MotorAxis.rot_Z:
-          transform.Rotate(Vector3.forward, motion._strength);
+          transform.Rotate(Vector3.forward, motion._strength, Space.Self);
           break;
         default:
           break;
