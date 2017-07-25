@@ -40,7 +40,7 @@ namespace Neodroid.Models {
     }
 
     public void AddActor(Actor actor) {
-      if (_debug) Debug.Log("Agent" + name + " has actor " + actor.name);
+      if (_debug) Debug.Log("Agent " + name + " has actor " + actor.name);
       _actors.Add(actor.name, actor);
     }
 
@@ -94,7 +94,7 @@ namespace Neodroid.Models {
     }
 
     EnvironmentState GetCurrentState() {
-      return new EnvironmentState(5, 225, _actors, _observers, 1);
+      return new EnvironmentState(5, 225, _actors, _observers, NeodroidFunctions.Objective_Function(_actors["Car"].transform.position, Vector3.zero));
     }
 
     void PauseGame() {
@@ -111,7 +111,7 @@ namespace Neodroid.Models {
 
     void ExecuteReaction(Reaction reaction) {
       var actors = GetActors();
-      foreach (MotorMotion motion in reaction.GetMotions().Values) {
+      foreach (MotorMotion motion in reaction.GetMotions()) {
         var motion_actor_name = motion.GetActorName();
         var motion_motor_name = motion.GetMotorName();
         if (actors.ContainsKey(motion_actor_name)){
@@ -119,10 +119,10 @@ namespace Neodroid.Models {
           if (motors.ContainsKey(motion_motor_name)) {
             motors[motion_motor_name].ApplyMotion(motion);
           } else {
-            Debug.Log("Could not actor with the specified name: " + motion_motor_name);
+            Debug.Log("Could find not motor with the specified name: " + motion_motor_name);
           }
         } else {
-          Debug.Log("Could not actor with the specified name: " + motion_actor_name);
+          Debug.Log("Could find not actor with the specified name: " + motion_actor_name);
         }
       }
     }

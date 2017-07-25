@@ -16,7 +16,7 @@ namespace Neodroid.Messaging {
     NetworkStream _stream;
 
     MessagePackSerializer _environment_state_serializer = MessagePackSerializer.Get<EnvironmentState>();
-    MessagePackSerializer _agent_action_serializer = MessagePackSerializer.Get<Reaction>();
+    MessagePackSerializer _reaction_serializer = MessagePackSerializer.Get<Reaction>();
 
     int _polling_timeout = 5; //Milliseconds
 
@@ -66,7 +66,7 @@ namespace Neodroid.Messaging {
     void PollingThread(Action<Reaction> receive_callback, Action disconnect_callback, Action<String> error_callback) {
       while (_client_connected) {
         try {
-          Reaction action = (Reaction)_agent_action_serializer.Unpack(_stream);
+          Reaction action = (Reaction)_reaction_serializer.Unpack(_stream);
           receive_callback(action);
         } catch (Exception err) {
           error_callback(err.ToString());
