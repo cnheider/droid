@@ -10,12 +10,10 @@ namespace Neodroid.Models {
     public float[] _position;
     public float[] _rotation;
 
-    [MessagePackKnownCollectionItemType("SingleAxisMotor", typeof(SingleAxisMotor))]
-    private Dictionary<string, Motor> _motors = new Dictionary<string, Motor>();
-
-    [MessagePackIgnore]
-    private int motor_counter = 0;
-
+    //[MessagePackKnownCollectionItemType("SingleAxisMotor", typeof(SingleAxisMotor))]
+    //[MessagePackKnownCollectionItemType("Motor", typeof(Motor))]
+    [MessagePackRuntimeType]
+    public Dictionary<string, Motor> _motors;
 
     public Actor() { }
 
@@ -25,6 +23,8 @@ namespace Neodroid.Models {
     public bool _debug = false;
 
     private void Start() {
+      if(_motors == null)
+        _motors = new Dictionary<string, Motor>();
       NeodroidFunctions.MaybeRegisterComponent(_agent_game_object, this);
     }
 
@@ -38,6 +38,8 @@ namespace Neodroid.Models {
     }
 
     public void AddMotor(Motor motor) {
+      if (_motors == null)
+        _motors = new Dictionary<string, Motor>();
       if (_debug) Debug.Log("Actor " + name + " has motor " + motor);
       _motors.Add(motor.name + motor._motor_identifier, motor);
     }

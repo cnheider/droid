@@ -4,7 +4,7 @@ using Neodroid.Utilities;
 
 namespace Neodroid.Models.Observers {
 
-  public abstract class Observer : MonoBehaviour {
+  public class Observer : MonoBehaviour {
 
     [MessagePackIgnore]
     public NeodroidAgent _agent_game_object; //Is not send
@@ -16,10 +16,14 @@ namespace Neodroid.Models.Observers {
     }
 
 
-    public abstract byte[] GetData();
+    public virtual byte[] GetData() { return _data; }
 
-    //public string _name;
-    //public float[] _position;
-    //public float[] _rotation;
+    public float[] _position;
+    public float[] _rotation;
+
+    private void Update() {
+      _position = new float[] { transform.position.x, transform.position.y, transform.position.z };
+      _rotation = new float[] { transform.rotation.x, transform.rotation.y, transform.rotation.z, transform.rotation.w };
+    }
   }
 }

@@ -11,6 +11,7 @@ using Neodroid.Evaluation;
 
 namespace Neodroid.Models {
   public class NeodroidAgent : MonoBehaviour, HasRegister<Actor>, HasRegister<Observer> {
+
     private Dictionary<string, Actor> _actors = new Dictionary<string, Actor>();
     private Dictionary<string, Observer> _observers = new Dictionary<string, Observer>();
 

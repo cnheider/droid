@@ -7,8 +7,6 @@ namespace Neodroid.Models.Motors {
   public class SingleAxisMotor : Motor {
     public MotorAxis _axis_of_motion;
 
-
-
     public override void ApplyMotion(MotorMotion motion) {
       if (_debug) Debug.Log("Applying " + motion._strength.ToString() + " To " + name);
       if (!_bidirectional && motion._strength < 0) {

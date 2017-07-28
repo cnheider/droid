@@ -1,25 +1,31 @@
 ﻿using Neodroid.Messaging.Messages;
 using UnityEngine;
 using Neodroid.Utilities;
+using MsgPack.Serialization;
 
 namespace Neodroid.Models.Motors {
-  public abstract class Motor : MonoBehaviour {
+  public class Motor : MonoBehaviour {
+    [MessagePackIgnore]
     public bool _debug = false;
     public bool _bidirectional = true;
     public float _energy_cost = 1;
     protected float _energy_spend_since_reset = 0;
+    [MessagePackIgnore]
     public Actor _actor_game_object;
     public string _motor_identifier = "";
 
     private void Start() {
-      _motor_identifier = GetMotorIdentifier();
+      if(_motor_identifier == null || _motor_identifier == "")
+        _motor_identifier = GetMotorIdentifier();
       NeodroidFunctions.MaybeRegisterComponent(_actor_game_object, this);
     }
 
     private void Update() {
     }
 
-    public abstract string GetMotorIdentifier();
+    public Motor() { }
+
+    public virtual string GetMotorIdentifier() { return _motor_identifier;  }
 
     public virtual void ApplyMotion(MotorMotion motion) { }
 

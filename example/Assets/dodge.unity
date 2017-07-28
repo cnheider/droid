@@ -2589,7 +2589,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0be739d494e2b64ea0a02fc892b3d8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _debug: 0
+  _debug: 1
   _bidirectional: 1
   _energy_cost: 1
   _actor_game_object: {fileID: 0}
@@ -2610,7 +2610,7 @@ MonoBehaviour:
   _port: 0
   _continue_lastest_reaction_on_disconnect: 0
   _objective_function: {fileID: 561133250}
-  _debug: 0
+  _debug: 1
 --- !u!114 &1726067875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2625,7 +2625,7 @@ MonoBehaviour:
   _position: []
   _rotation: []
   _agent_game_object: {fileID: 0}
-  _debug: 0
+  _debug: 1
 --- !u!1 &1732510234
 GameObject:
   m_ObjectHideFlags: 0
