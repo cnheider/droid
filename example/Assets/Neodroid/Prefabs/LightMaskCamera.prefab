@@ -36,9 +36,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4619611245608688}
   - component: {fileID: 20025126640112062}
-  - component: {fileID: 124202570439357948}
-  - component: {fileID: 92755785916868498}
-  - component: {fileID: 81239849954367986}
   - component: {fileID: 114141927121283626}
   m_Layer: 0
   m_Name: LightMaskCamera
@@ -53,14 +50,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1617946726027958}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4622533828690778}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 35, y: 0, z: 0}
 --- !u!4 &4622533828690778
 Transform:
   m_ObjectHideFlags: 1
@@ -94,7 +91,7 @@ Camera:
   far clip plane: 10
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 3
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -110,20 +107,6 @@ Camera:
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
   m_StereoMirrorMode: 0
---- !u!81 &81239849954367986
-AudioListener:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1617946726027958}
-  m_Enabled: 0
---- !u!92 &92755785916868498
-Behaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1617946726027958}
-  m_Enabled: 1
 --- !u!108 &108102388142153500
 Light:
   m_ObjectHideFlags: 1
@@ -187,12 +170,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _agent_game_object: {fileID: 0}
   _data: 
-  _position: []
-  _rotation: []
---- !u!124 &124202570439357948
-Behaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1617946726027958}
-  m_Enabled: 1
+  _position:
+  - 0
+  - 7
+  - -5
+  _rotation:
+  - 0.30070576
+  - -0
+  - -0
+  - 0.953717

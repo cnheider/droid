@@ -102,6 +102,10 @@ namespace Neodroid.Models {
 
     }
 
+    public string GetStatus() {
+      return _message_server._client_connected.ToString();
+      }
+
     void FixedUpdate() {
       if (_message_server._client_connected) {
         PauseGame();
@@ -114,11 +118,12 @@ namespace Neodroid.Models {
       //_message_server.Destroy();
     }
 
+    float energy_spent = 0f;
+
     EnvironmentState GetCurrentState() {
-      var energy_spent = 0f;
       foreach (Actor a in _actors.Values) {
         foreach (Motor m in a.GetMotors().Values) {
-          energy_spent = m.GetEnergySpend();
+          energy_spent += m.GetEnergySpend();
         }
       }
       var reward = 0f;

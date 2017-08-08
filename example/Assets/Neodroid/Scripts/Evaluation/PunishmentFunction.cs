@@ -3,7 +3,7 @@ using System;
 using Neodroid.Evaluation;
 
 [RequireComponent(typeof(Rigidbody))]
-public class PusnishmentFunction : ObjectiveFunction {
+public class PunishmentFunction : ObjectiveFunction {
 
   public LayerMask _layer_mask;
   public GameObject _player;

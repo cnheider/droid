@@ -5,9 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/carscene.unity
     guid: f4f7e9fcb2a8dab4c9be0fe9a7034312
-  - enabled: 1
+  - enabled: 0
     path: Assets/dodge.unity
     guid: cead71cfc07e38e46ad4c96868d0b489
