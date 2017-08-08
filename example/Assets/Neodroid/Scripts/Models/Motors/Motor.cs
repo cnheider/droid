@@ -2,8 +2,10 @@
 using UnityEngine;
 using Neodroid.Utilities;
 using MsgPack.Serialization;
+using System;
 
 namespace Neodroid.Models.Motors {
+  //[Serializable]
   public class Motor : MonoBehaviour {
     [MessagePackIgnore]
     public bool _debug = false;
@@ -15,7 +17,11 @@ namespace Neodroid.Models.Motors {
     public string _motor_identifier = "";
 
     private void Start() {
-      if(_motor_identifier == null || _motor_identifier == "")
+      RegisterComponent();
+    }
+
+    public void RegisterComponent() {
+      if (_motor_identifier == null || _motor_identifier == "")
         _motor_identifier = GetMotorIdentifier();
       NeodroidFunctions.MaybeRegisterComponent(_actor_game_object, this);
     }
@@ -25,7 +31,7 @@ namespace Neodroid.Models.Motors {
 
     public Motor() { }
 
-    public virtual string GetMotorIdentifier() { return _motor_identifier;  }
+    public virtual string GetMotorIdentifier() { return _motor_identifier; }
 
     public virtual void ApplyMotion(MotorMotion motion) { }
 

@@ -23,7 +23,7 @@ namespace Neodroid.Models {
     public bool _debug = false;
 
     private void Start() {
-      if(_motors == null)
+      if (_motors == null)
         _motors = new Dictionary<string, Motor>();
       NeodroidFunctions.MaybeRegisterComponent(_agent_game_object, this);
     }

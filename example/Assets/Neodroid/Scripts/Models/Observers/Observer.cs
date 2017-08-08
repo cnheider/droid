@@ -1,9 +1,10 @@
 ﻿using MsgPack.Serialization;
 using UnityEngine;
 using Neodroid.Utilities;
+using System;
 
 namespace Neodroid.Models.Observers {
-
+  //[Serializable]
   public class Observer : MonoBehaviour {
 
     [MessagePackIgnore]

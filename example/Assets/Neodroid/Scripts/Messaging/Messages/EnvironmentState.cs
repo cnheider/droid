@@ -1,9 +1,11 @@
 ﻿using MsgPack.Serialization;
 using Neodroid.Models;
 using Neodroid.Models.Observers;
+using System;
 using System.Collections.Generic;
 
 namespace Neodroid.Messaging.Messages {
+  [Serializable]
   public class EnvironmentState {
     public float _time_since_reset;
     public float _total_energy_spent_since_reset;

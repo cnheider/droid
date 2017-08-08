@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Neodroid.Messaging.Messages {
+  [Serializable]
   public class Reaction {
     public List<MotorMotion> _actor_motor_motions;
     public bool _reset;

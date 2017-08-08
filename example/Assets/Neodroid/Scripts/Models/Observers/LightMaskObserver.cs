@@ -3,7 +3,8 @@ using Neodroid.Utilities;
 
 namespace Neodroid.Models.Observers {
 
-  //[ExecuteInEditMode]
+  [ExecuteInEditMode]
+  [RequireComponent(typeof(Camera))]
   public class LightMaskObserver : Observer {
 
     void Start() {

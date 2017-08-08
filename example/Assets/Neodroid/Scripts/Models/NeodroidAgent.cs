@@ -26,19 +26,15 @@ namespace Neodroid.Models {
     // Private
     MessageServer _message_server;
     bool _waiting_for_reaction = true;
-    bool _actor_updated = false;
-    Vector3 new_position;
-    Quaternion new_rotation;
 
     private Reaction _lastest_reaction = null;
-    private bool _header_requested=false;
+    private bool _header_requested = false;
 
     private void Start() {
 
       string[] arguments = Environment.GetCommandLineArgs();
 
       for (int i = 0; i < arguments.Length; i++) {
-        Debug.Log("Argument " + i + ": " + arguments[i]);
         if (arguments[i] == "-ip") {
           _ip_address = arguments[i + 1];
         }
@@ -97,9 +93,9 @@ namespace Neodroid.Models {
       if (_header_requested) {
         _message_server.SendEnvironmentState(GetCurrentState());
         Debug.Log("Header sent");
-        _header_requested=false;
+        _header_requested = false;
       }
-      
+
       if (!_message_server._client_connected) {
         ResumeGame();
       }
@@ -120,13 +116,13 @@ namespace Neodroid.Models {
 
     EnvironmentState GetCurrentState() {
       var energy_spent = 0f;
-      foreach(Actor a in _actors.Values) {
-        foreach(Motor m in a.GetMotors().Values) {
+      foreach (Actor a in _actors.Values) {
+        foreach (Motor m in a.GetMotors().Values) {
           energy_spent = m.GetEnergySpend();
         }
       }
       var reward = 0f;
-      if(_objective_function != null)
+      if (_objective_function != null)
         reward = _objective_function.Evaluate();
 
       return new EnvironmentState(Time.realtimeSinceStartup, energy_spent, _actors, _observers, reward);
@@ -149,7 +145,7 @@ namespace Neodroid.Models {
       foreach (MotorMotion motion in reaction.GetMotions()) {
         var motion_actor_name = motion.GetActorName();
         var motion_motor_name = motion.GetMotorName();
-        if (actors.ContainsKey(motion_actor_name)){
+        if (actors.ContainsKey(motion_actor_name)) {
           var motors = actors[motion_actor_name].GetMotors();
           if (motors.ContainsKey(motion_motor_name)) {
             motors[motion_motor_name].ApplyMotion(motion);
