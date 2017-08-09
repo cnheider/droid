@@ -318,11 +318,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17dcf52677a346a4ca675484d95ee771, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _debug: 0
   _bidirectional: 1
   _energy_cost: 1
-  _actor_game_object: {fileID: 0}
   _motor_identifier: 
+  _actor_game_object: {fileID: 0}
+  _debug: 0
 --- !u!114 &301229379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,11 +334,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3104c69ed915c34ebbd021f310ee591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _debug: 0
   _bidirectional: 1
   _energy_cost: 1
-  _actor_game_object: {fileID: 0}
   _motor_identifier: 
+  _actor_game_object: {fileID: 0}
+  _debug: 0
 --- !u!146 &301229380
 WheelCollider:
   m_ObjectHideFlags: 0
@@ -448,6 +448,11 @@ Prefab:
     - target: {fileID: 4246189372083804, guid: b6a93882d7bfa25499c223bb676e9aa9, type: 2}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114553329002463038, guid: b6a93882d7bfa25499c223bb676e9aa9,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b6a93882d7bfa25499c223bb676e9aa9, type: 2}
@@ -598,11 +603,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17dcf52677a346a4ca675484d95ee771, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _debug: 0
   _bidirectional: 1
   _energy_cost: 1
-  _actor_game_object: {fileID: 0}
   _motor_identifier: 
+  _actor_game_object: {fileID: 0}
+  _debug: 0
 --- !u!114 &732544577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -614,11 +619,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3104c69ed915c34ebbd021f310ee591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _debug: 0
   _bidirectional: 1
   _energy_cost: 1
-  _actor_game_object: {fileID: 0}
   _motor_identifier: 
+  _actor_game_object: {fileID: 0}
+  _debug: 0
 --- !u!146 &732544578
 WheelCollider:
   m_ObjectHideFlags: 0
@@ -892,11 +897,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17dcf52677a346a4ca675484d95ee771, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _debug: 0
   _bidirectional: 1
   _energy_cost: 1
-  _actor_game_object: {fileID: 0}
   _motor_identifier: 
+  _actor_game_object: {fileID: 0}
+  _debug: 0
 --- !u!114 &1093821288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -908,11 +913,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3104c69ed915c34ebbd021f310ee591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _debug: 0
   _bidirectional: 1
   _energy_cost: 1
-  _actor_game_object: {fileID: 0}
   _motor_identifier: 
+  _actor_game_object: {fileID: 0}
+  _debug: 0
 --- !u!146 &1093821289
 WheelCollider:
   m_ObjectHideFlags: 0
@@ -987,11 +992,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17dcf52677a346a4ca675484d95ee771, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _debug: 0
   _bidirectional: 1
   _energy_cost: 1
-  _actor_game_object: {fileID: 0}
   _motor_identifier: 
+  _actor_game_object: {fileID: 0}
+  _debug: 0
 --- !u!114 &1111651916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1003,11 +1008,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3104c69ed915c34ebbd021f310ee591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _debug: 0
   _bidirectional: 1
   _energy_cost: 1
-  _actor_game_object: {fileID: 0}
   _motor_identifier: 
+  _actor_game_object: {fileID: 0}
+  _debug: 0
 --- !u!146 &1111651917
 WheelCollider:
   m_ObjectHideFlags: 0
@@ -1499,7 +1504,7 @@ MonoBehaviour:
   _port: 0
   _continue_lastest_reaction_on_disconnect: 1
   _objective_function: {fileID: 732611443}
-  _debug: 0
+  _debug: 1
 --- !u!4 &1570052216
 Transform:
   m_ObjectHideFlags: 0
