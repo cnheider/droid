@@ -41,17 +41,19 @@ namespace Assets.Neodroid.Scripts.Messaging {
 
     private static Offset<FlatBufferObserver> build_observer(FlatBufferBuilder b, Observer observer) {
       var posrot = build_posrot(b, observer.transform.position, observer.transform.rotation);
+      FlatBufferObserver.CreateDataVector(b, observer.GetData());
+      var data_vector = b.EndVector();
       StringOffset n = b.CreateString(observer.name);
       FlatBufferObserver.StartFlatBufferObserver(b);
       FlatBufferObserver.AddName(b, n);
-      //FlatBufferObserver.CreateDataVector(b, observer.GetData());
+      FlatBufferObserver.AddData(b, data_vector);
       FlatBufferObserver.AddPosrot(b, posrot);
       return FlatBufferObserver.EndFlatBufferObserver(b);
     }
 
-    public static ByteBuffer build_state(EnvironmentState state) {
+    public static byte[] build_state(EnvironmentState state) {
 
-      var b = new FlatBufferBuilder(4096);
+      var b = new FlatBufferBuilder(1);
 
       var actors = new Offset<FlatBufferActor>[state._actors.Values.Count];
       int j = 0;
@@ -63,24 +65,6 @@ namespace Assets.Neodroid.Scripts.Messaging {
         }
         actors[j++] = build_actor(b, motors, actor);
       }
-
-      /*var actors = new Offset<FlatBufferActor>[state._actors.Values.Count];
-      var motors_list = new List<Offset<FlatBufferMotor>[]>();
-      int j = 0;
-      foreach (Actor actor in state._actors.Values) {
-        var motors = new Offset<FlatBufferMotor>[actor._motors.Values.Count];
-        int i = 0;
-        foreach (Motor motor in actor._motors.Values) {
-          motors[i++] = build_motor(b, motor);
-        }
-        motors_list.Add(motors);
-      }
-
-      var l = 0;
-      foreach (Actor actor in state._actors.Values) {
-        actors[l] = build_actor(b, motors_list[l], actor);
-        l++;
-      }*/
 
       var observers = new Offset<FlatBufferObserver>[state._observers.Values.Count];
       int k = 0;
@@ -103,7 +87,8 @@ namespace Assets.Neodroid.Scripts.Messaging {
 
       FlatBufferState.FinishFlatBufferStateBuffer(b, offset);
 
-      return b.DataBuffer;
+      //return b.DataBuffer;
+      return b.SizedByteArray();
     }
 
   }

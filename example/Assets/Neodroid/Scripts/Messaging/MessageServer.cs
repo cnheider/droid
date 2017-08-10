@@ -36,7 +36,7 @@ namespace Neodroid.Messaging {
       callback();
     }
 
-  public void StartReceiving(Action<Reaction> cmd_callback, Action disconnect_callback, Action<String> error_callback) {
+    public void StartReceiving(Action<Reaction> cmd_callback, Action disconnect_callback, Action<String> error_callback) {
       _polling_thread = new Thread(unused_param => PollingThread(cmd_callback, disconnect_callback, error_callback));
       _polling_thread.IsBackground = true; // Is terminated with foreground threads, when they terminate
       _polling_thread.Start();
@@ -46,15 +46,15 @@ namespace Neodroid.Messaging {
 
       var timeout = new TimeSpan(0, 0, 1); //1sec
       byte[] msg;
-      while (stop_thread_ == false ) {
+      while (stop_thread_ == false) {
         // error_callback("polling");
         try {
           //var message = _socket.TryReceiveFrameBytes(timeout, out msg);
           msg = _socket.ReceiveFrameBytes();
-          //var flat_reaction = FlatBufferReaction.GetRootAsFlatBufferReaction(new FlatBuffers.ByteBuffer(msg));
+          var flat_reaction = FlatBufferReaction.GetRootAsFlatBufferReaction(new FlatBuffers.ByteBuffer(msg));
           var reaction = new Reaction();
           //reaction._actor_motor_motions = flat_reaction.Motions(flat_reaction.MotionsLength).Value.;
-          //reaction._reset = flat_reaction.Reset;
+          reaction._reset = flat_reaction.Reset;
           receive_callback(reaction);
           // _socket.SendFrame("s");
           //var reaction = FlatBufferReaction.GetRootAsFlatBufferReaction(new FlatBuffers.ByteBuffer(msg));
@@ -63,7 +63,7 @@ namespace Neodroid.Messaging {
           error_callback(err.ToString());
         }
 
-        Thread.Sleep(10);
+        Thread.Sleep(1000);
       }
 
 
@@ -72,9 +72,11 @@ namespace Neodroid.Messaging {
       NetMQConfig.Cleanup();
     }
 
+    byte[] byte_buffer;
+
     public void SendEnvironmentState(EnvironmentState environment_state) {
-      var byte_buffer = FlatBufferUtilities.build_state(environment_state);
-      _socket.SendFrame(byte_buffer.Data);
+      byte_buffer = FlatBufferUtilities.build_state(environment_state);
+      _socket.SendFrame(byte_buffer);
     }
 
     public void Destroy() {
