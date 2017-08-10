@@ -21,36 +21,55 @@ namespace Neodroid.Messaging {
     public MessageServer(string ip_address = "127.0.0.1", int port = 5555) {
       _ip_address = ip_address;
       _port = port;
+      AsyncIO.ForceDotNet.Force();
+      _socket = new ResponseSocket();
     }
 
-    public void StartReceiving(Action<Reaction> cmd_callback, Action disconnect_callback, Action<String> error_callback) {
+    public void ListenForClientToConnect(Action callback) {
+      Thread _wait_for_client_thread = new Thread(unused_param => WaitForClientToConnect(callback));
+      _wait_for_client_thread.IsBackground = true; // Is terminated with foreground threads, when they terminate
+      _wait_for_client_thread.Start();
+    }
+
+    void WaitForClientToConnect(Action callback) {
+      _socket.Bind("tcp://" + _ip_address + ":" + _port.ToString());
+      callback();
+    }
+
+  public void StartReceiving(Action<Reaction> cmd_callback, Action disconnect_callback, Action<String> error_callback) {
       _polling_thread = new Thread(unused_param => PollingThread(cmd_callback, disconnect_callback, error_callback));
       _polling_thread.IsBackground = true; // Is terminated with foreground threads, when they terminate
       _polling_thread.Start();
     }
 
     void PollingThread(Action<Reaction> receive_callback, Action disconnect_callback, Action<String> error_callback) {
-      AsyncIO.ForceDotNet.Force();
 
       var timeout = new TimeSpan(0, 0, 1); //1sec
       byte[] msg;
-
-      _socket = new ResponseSocket("@tcp://" + _ip_address + ":" + _port.ToString());
-      while (stop_thread_ == false) {
+      while (stop_thread_ == false ) {
+        // error_callback("polling");
         try {
-          var message = _socket.TryReceiveFrameBytes(timeout, out msg);
-          var reaction = FlatBufferReaction.GetRootAsFlatBufferReaction(new FlatBuffers.ByteBuffer(msg));
-          error_callback(reaction.ToString());
-          //receive_callback(action);
+          //var message = _socket.TryReceiveFrameBytes(timeout, out msg);
+          msg = _socket.ReceiveFrameBytes();
+          //var flat_reaction = FlatBufferReaction.GetRootAsFlatBufferReaction(new FlatBuffers.ByteBuffer(msg));
+          var reaction = new Reaction();
+          //reaction._actor_motor_motions = flat_reaction.Motions(flat_reaction.MotionsLength).Value.;
+          //reaction._reset = flat_reaction.Reset;
+          receive_callback(reaction);
+          // _socket.SendFrame("s");
+          //var reaction = FlatBufferReaction.GetRootAsFlatBufferReaction(new FlatBuffers.ByteBuffer(msg));
+          //error_callback(reaction.ToString());
         } catch (Exception err) {
           error_callback(err.ToString());
         }
 
-        _socket.Close();
-        NetMQConfig.Cleanup();
-
         Thread.Sleep(10);
       }
+
+
+      //_socket.Unbind("tcp://" + _ip_address + ":" + _port.ToString());
+      _socket.Close();
+      NetMQConfig.Cleanup();
     }
 
     public void SendEnvironmentState(EnvironmentState environment_state) {

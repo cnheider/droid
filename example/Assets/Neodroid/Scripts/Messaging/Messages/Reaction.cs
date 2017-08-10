@@ -8,7 +8,7 @@ namespace Neodroid.Messaging.Messages {
     public bool _reset;
 
     public Reaction() {
-
+      _actor_motor_motions = new List<MotorMotion>();
     }
 
     public List<MotorMotion> GetMotions() {

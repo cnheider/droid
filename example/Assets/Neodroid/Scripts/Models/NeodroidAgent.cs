@@ -28,7 +28,6 @@ namespace Neodroid.Models {
     bool _waiting_for_reaction = true;
 
     private Reaction _lastest_reaction = null;
-    private bool _header_requested = false;
 
     private void Start() {
 
@@ -47,7 +46,7 @@ namespace Neodroid.Models {
         _message_server = new MessageServer(_ip_address, _port);
       else
         _message_server = new MessageServer();
-      _message_server.StartReceiving(OnReceiveCallback, OnDisconnectCallback, OnErrorCallback);
+      _message_server.ListenForClientToConnect(OnConnectCallback);
     }
 
     public string GetStatus() {
@@ -93,13 +92,6 @@ namespace Neodroid.Models {
         ResumeGame();
         _waiting_for_reaction = true;
       }
-
-      if (_header_requested) {
-        _message_server.SendEnvironmentState(GetCurrentState());
-        Debug.Log("Header sent");
-        _header_requested = false;
-      }
-
     }
 
     void FixedUpdate() {
@@ -139,6 +131,7 @@ namespace Neodroid.Models {
 
     void ExecuteReaction(Reaction reaction) {
       var actors = GetActors();
+      if(reaction != null && reaction._actor_motor_motions.Count>0)
       foreach (MotorMotion motion in reaction.GetMotions()) {
         var motion_actor_name = motion.GetActorName();
         var motion_motor_name = motion.GetMotorName();
@@ -173,6 +166,7 @@ namespace Neodroid.Models {
     void OnConnectCallback() {
       if (_debug) Debug.Log("Client connected.");
       _message_server.StartReceiving(OnReceiveCallback, OnDisconnectCallback, OnErrorCallback);
+      //_message_server.StartReceiving(OnReceiveCallback, OnDisconnectCallback, OnErrorCallback);
       //_header_requested = true;
     }
 
