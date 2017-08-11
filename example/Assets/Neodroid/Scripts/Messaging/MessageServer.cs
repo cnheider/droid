@@ -66,8 +66,6 @@ namespace Neodroid.Messaging {
         Thread.Sleep(1000);
       }
 
-
-      //_socket.Unbind("tcp://" + _ip_address + ":" + _port.ToString());
       _socket.Close();
       NetMQConfig.Cleanup();
     }
@@ -80,11 +78,16 @@ namespace Neodroid.Messaging {
     }
 
     public void Destroy() {
+      _socket.Close();
+      NetMQConfig.Cleanup();
       KillPollingThread();
     }
 
     public void KillPollingThread() {
       lock (thisLock_) stop_thread_ = true;
+      _socket.Close();
+      NetMQConfig.Cleanup();
+      KillPollingThread();
       if (_polling_thread != null) {
         _polling_thread.Abort();
         _polling_thread.Join();

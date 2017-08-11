@@ -101,7 +101,8 @@ namespace Neodroid.Models {
     }
 
     private void OnDestroy() { //Deconstructor
-      //_message_server.Destroy();
+      _message_server.KillPollingThread();
+      _message_server.Destroy();
     }
 
     float energy_spent = 0f;
