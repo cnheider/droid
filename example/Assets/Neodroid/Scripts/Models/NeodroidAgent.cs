@@ -83,7 +83,9 @@ namespace Neodroid.Models {
         if (!_continue_lastest_reaction_on_disconnect)
           _lastest_reaction = null;
       }
+    }
 
+    private void LateUpdate() {
       if (!_waiting_for_reaction) {
         foreach (Observer obs in GetObservers().Values) {
           obs.GetComponent<Observer>().GetData();
