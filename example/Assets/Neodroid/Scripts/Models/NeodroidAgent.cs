@@ -134,7 +134,7 @@ namespace Neodroid.Models {
 
     void ExecuteReaction(Reaction reaction) {
       var actors = GetActors();
-      if(reaction != null && reaction._actor_motor_motions.Count>0)
+      if(reaction != null && reaction.GetMotions().Length > 0)
       foreach (MotorMotion motion in reaction.GetMotions()) {
         var motion_actor_name = motion.GetActorName();
         var motion_motor_name = motion.GetMotorName();

@@ -43,22 +43,13 @@ namespace Neodroid.Messaging {
     }
 
     void PollingThread(Action<Reaction> receive_callback, Action disconnect_callback, Action<String> error_callback) {
-
-      var timeout = new TimeSpan(0, 0, 1); //1sec
       byte[] msg;
       while (stop_thread_ == false) {
-        // error_callback("polling");
         try {
-          //var message = _socket.TryReceiveFrameBytes(timeout, out msg);
           msg = _socket.ReceiveFrameBytes();
           var flat_reaction = FlatBufferReaction.GetRootAsFlatBufferReaction(new FlatBuffers.ByteBuffer(msg));
-          var reaction = new Reaction();
-          //reaction._actor_motor_motions = flat_reaction.Motions(flat_reaction.MotionsLength).Value.;
-          reaction._reset = flat_reaction.Reset;
+          var reaction = FlatBufferUtilities.create_reaction(flat_reaction);
           receive_callback(reaction);
-          // _socket.SendFrame("s");
-          //var reaction = FlatBufferReaction.GetRootAsFlatBufferReaction(new FlatBuffers.ByteBuffer(msg));
-          //error_callback(reaction.ToString());
         } catch (Exception err) {
           error_callback(err.ToString());
         }

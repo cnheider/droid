@@ -148,20 +148,20 @@ QualitySettings:
     excludedTargetPlatforms: []
   - serializedVersion: 2
     name: Ultra
-    pixelLightCount: 4
+    pixelLightCount: 16
     shadows: 2
-    shadowResolution: 2
-    shadowProjection: 1
+    shadowResolution: 3
+    shadowProjection: 0
     shadowCascades: 4
     shadowDistance: 150
     shadowNearPlaneOffset: 3
     shadowCascade2Split: 0.33333334
-    shadowCascade4Split: {x: 0.06666667, y: 0.2, z: 0.46666667}
+    shadowCascade4Split: {x: 0.99523807, y: 0.99621856, z: 0.9981792}
     shadowmaskMode: 1
     blendWeights: 4
     textureQuality: 0
     anisotropicTextures: 2
-    antiAliasing: 2
+    antiAliasing: 8
     softParticles: 1
     softVegetation: 1
     realtimeReflectionProbes: 1
@@ -175,19 +175,19 @@ QualitySettings:
     resolutionScalingFixedDPIFactor: 1
     excludedTargetPlatforms: []
   m_PerPlatformDefaultQuality:
-    Android: 2
+    Android: 5
     Nintendo 3DS: 5
     Nintendo Switch: 5
     PS4: 5
     PSM: 5
     PSP2: 2
-    Samsung TV: 2
+    Samsung TV: 5
     Standalone: 5
-    Tizen: 2
+    Tizen: 5
     Web: 5
-    WebGL: 3
+    WebGL: 5
     WiiU: 5
     Windows Store Apps: 5
     XboxOne: 5
-    iPhone: 2
+    iPhone: 5
     tvOS: 2

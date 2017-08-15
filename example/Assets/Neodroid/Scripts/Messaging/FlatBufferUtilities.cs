@@ -6,6 +6,7 @@ using Neodroid.Models.Motors;
 using Neodroid.Models.Observers;
 using System.Collections.Generic;
 using UnityEngine;
+using Neodroid.Messaging.Models.Reaction;
 
 namespace Assets.Neodroid.Scripts.Messaging {
   public static class FlatBufferUtilities {
@@ -91,5 +92,29 @@ namespace Assets.Neodroid.Scripts.Messaging {
       return b.SizedByteArray();
     }
 
+
+    public static Reaction create_reaction(FlatBufferReaction reaction){
+      return new Reaction(create_motions(reaction, reaction.MotionsLength), reaction.Reset);
+    }
+
+    public static MotorMotion[] create_motions(FlatBufferReaction reaction, int len){
+      MotorMotion[] m = new MotorMotion[len];
+      for(int i=0;i<len;i++){
+        m [i++] = create_motion(reaction.Motions(i));
+      }
+      return m;
+    }
+
+    public static MotorMotion create_motion(FlatBufferMotion? motion_maybe){
+      FlatBufferMotion motion;
+      try
+      {
+        motion = motion_maybe.Value;
+        return new MotorMotion (motion.ActorName, motion.MotorName, motion.Strength);
+      }
+      catch{
+        return null;
+      }
+    }
   }
 }
