@@ -1,1 +1,3 @@
-flatc -p -o python\ neodroid-models.fbs --gen-onefile
+rm python/ -r
+flatc -p -o python/ NeodroidReactionModels.fbs --gen-onefile
+flatc -p -o python/ NeodroidStateModels.fbs --gen-onefile

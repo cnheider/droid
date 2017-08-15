@@ -18,7 +18,11 @@ namespace Neodroid.Messaging.Messages {
     }
 
     public override string ToString() {
-      return "<Reaction> " + _reset + " </Reaction>";
+      string motions_str = "";
+      foreach (MotorMotion motion in GetMotions()) {
+        motions_str += motion.ToString ()+"\n";
+      }
+      return "<Reaction> " + _reset + ",\n "+ motions_str +"</Reaction>";
     }
   }
 }

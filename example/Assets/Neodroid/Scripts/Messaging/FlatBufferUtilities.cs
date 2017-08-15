@@ -100,7 +100,7 @@ namespace Assets.Neodroid.Scripts.Messaging {
     public static MotorMotion[] create_motions(FlatBufferReaction reaction, int len){
       MotorMotion[] m = new MotorMotion[len];
       for(int i=0;i<len;i++){
-        m [i++] = create_motion(reaction.Motions(i));
+        m[i] = create_motion(reaction.Motions(i));
       }
       return m;
     }
@@ -112,7 +112,7 @@ namespace Assets.Neodroid.Scripts.Messaging {
         motion = motion_maybe.Value;
         return new MotorMotion (motion.ActorName, motion.MotorName, motion.Strength);
       }
-      catch{
+      catch{ 
         return null;
       }
     }
