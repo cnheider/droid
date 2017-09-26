@@ -11,6 +11,7 @@ using Neodroid.Evaluation;
 
 namespace Neodroid.Models {
   public class NeodroidAgent : MonoBehaviour, HasRegister<Actor>, HasRegister<Observer> {
+
     private Dictionary<string, Actor> _actors = new Dictionary<string, Actor>();
     private Dictionary<string, Observer> _observers = new Dictionary<string, Observer>();
 
@@ -25,19 +26,14 @@ namespace Neodroid.Models {
     // Private
     MessageServer _message_server;
     bool _waiting_for_reaction = true;
-    bool _actor_updated = false;
-    Vector3 new_position;
-    Quaternion new_rotation;
 
     private Reaction _lastest_reaction = null;
-    private bool _header_requested=false;
 
     private void Start() {
 
       string[] arguments = Environment.GetCommandLineArgs();
 
       for (int i = 0; i < arguments.Length; i++) {
-        Debug.Log("Argument " + i + ": " + arguments[i]);
         if (arguments[i] == "-ip") {
           _ip_address = arguments[i + 1];
         }
@@ -51,6 +47,10 @@ namespace Neodroid.Models {
       else
         _message_server = new MessageServer();
       _message_server.ListenForClientToConnect(OnConnectCallback);
+    }
+
+    public string GetStatus() {
+      return true.ToString();
     }
 
     public Dictionary<string, Actor> GetActors() {
@@ -78,13 +78,15 @@ namespace Neodroid.Models {
         Start();
       }
 
-      if (_lastest_reaction != null && (!_waiting_for_reaction || !_message_server._client_connected)) {
+      if (_lastest_reaction != null && !_waiting_for_reaction ) {
         ExecuteReaction(_lastest_reaction);
         if (!_continue_lastest_reaction_on_disconnect)
           _lastest_reaction = null;
       }
+    }
 
-      if (_message_server._client_connected && !_waiting_for_reaction) {
+    private void LateUpdate() {
+      if (!_waiting_for_reaction) {
         foreach (Observer obs in GetObservers().Values) {
           obs.GetComponent<Observer>().GetData();
         }
@@ -92,40 +94,27 @@ namespace Neodroid.Models {
         ResumeGame();
         _waiting_for_reaction = true;
       }
-
-      if (_header_requested) {
-        _message_server.SendEnvironmentState(GetCurrentState());
-        Debug.Log("Header sent");
-        _header_requested=false;
-      }
-      
-      if (!_message_server._client_connected) {
-        ResumeGame();
-      }
-
     }
 
     void FixedUpdate() {
-      if (_message_server._client_connected) {
         PauseGame();
-      } else {
-        ResumeGame();
-      }
     }
 
     private void OnDestroy() { //Deconstructor
-      //_message_server.Destroy();
+      _message_server.KillPollingThread();
+      _message_server.Destroy();
     }
 
+    float energy_spent = 0f;
+
     EnvironmentState GetCurrentState() {
-      var energy_spent = 0f;
-      foreach(Actor a in _actors.Values) {
-        foreach(Motor m in a.GetMotors().Values) {
-          energy_spent = m.GetEnergySpend();
+      foreach (Actor a in _actors.Values) {
+        foreach (Motor m in a.GetMotors().Values) {
+          energy_spent += m.GetEnergySpend();
         }
       }
       var reward = 0f;
-      if(_objective_function != null)
+      if (_objective_function != null)
         reward = _objective_function.Evaluate();
 
       return new EnvironmentState(Time.realtimeSinceStartup, energy_spent, _actors, _observers, reward);
@@ -145,10 +134,11 @@ namespace Neodroid.Models {
 
     void ExecuteReaction(Reaction reaction) {
       var actors = GetActors();
+      if(reaction != null && reaction.GetMotions().Length > 0)
       foreach (MotorMotion motion in reaction.GetMotions()) {
         var motion_actor_name = motion.GetActorName();
         var motion_motor_name = motion.GetMotorName();
-        if (actors.ContainsKey(motion_actor_name)){
+        if (actors.ContainsKey(motion_actor_name)) {
           var motors = actors[motion_actor_name].GetMotors();
           if (motors.ContainsKey(motion_motor_name)) {
             motors[motion_motor_name].ApplyMotion(motion);
@@ -170,7 +160,6 @@ namespace Neodroid.Models {
 
     void OnDisconnectCallback() {
       if (_debug) Debug.Log("Client disconnected.");
-      _message_server.ListenForClientToConnect(OnConnectCallback);
     }
 
     void OnErrorCallback(string error) {
@@ -180,6 +169,7 @@ namespace Neodroid.Models {
     void OnConnectCallback() {
       if (_debug) Debug.Log("Client connected.");
       _message_server.StartReceiving(OnReceiveCallback, OnDisconnectCallback, OnErrorCallback);
+      //_message_server.StartReceiving(OnReceiveCallback, OnDisconnectCallback, OnErrorCallback);
       //_header_requested = true;
     }
 
@@ -189,6 +179,11 @@ namespace Neodroid.Models {
 
     public void Register(Observer obj) {
       AddObserver(obj);
+    }
+
+    private void OnApplicationQuit() {
+      _message_server.KillPollingThread();
+      _message_server.Destroy();
     }
   }
 }

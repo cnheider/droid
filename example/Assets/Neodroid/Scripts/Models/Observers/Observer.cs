@@ -15,8 +15,7 @@ namespace Neodroid.Models.Observers {
     protected void AddToAgent() {
       NeodroidFunctions.MaybeRegisterComponent(_agent_game_object, this);
     }
-
-
+      
     public virtual byte[] GetData() { return _data; }
 
     public float[] _position;

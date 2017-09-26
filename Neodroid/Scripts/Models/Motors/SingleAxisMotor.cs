@@ -1,13 +1,10 @@
-﻿using Neodroid.Messaging.Messages;
+﻿using Assets.Neodroid.Scripts.Models.Motors;
+using Neodroid.Messaging.Messages;
 using UnityEngine;
 
 namespace Neodroid.Models.Motors {
-  public enum MotorAxis { X, Y, Z, rot_X, rot_Y, rot_Z }
-
   public class SingleAxisMotor : Motor {
     public MotorAxis _axis_of_motion;
-
-
 
     public override void ApplyMotion(MotorMotion motion) {
       if (_debug) Debug.Log("Applying " + motion._strength.ToString() + " To " + name);
@@ -27,8 +24,6 @@ namespace Neodroid.Models.Motors {
           break;
         case MotorAxis.rot_X:
           transform.Rotate(Vector3.left, motion._strength, Space.Self);
-          //GetComponent<Rigidbody>().AddForceAtPosition(Vector3.forward * motion._strength, transform.position);
-          //GetComponent<Rigidbody>().AddRelativeTorque(Vector3.up * motion._strength);
           break;
         case MotorAxis.rot_Y:
           transform.Rotate(Vector3.up, motion._strength, Space.Self);
@@ -43,7 +38,7 @@ namespace Neodroid.Models.Motors {
     }
 
     public override string GetMotorIdentifier() {
-      return _axis_of_motion.ToString();
+      return name+"SingleAxis"+_axis_of_motion.ToString();
     }
   }
 }

@@ -1,16 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Neodroid.Models;
 using UnityEngine;
 
 namespace Neodroid.Evaluation {
   class EuclideanDistance : ObjectiveFunction {
 
-    public GameObject g1, g2;
+    public Transform g1, g2;
 
     public override float Evaluate() {
-      return Vector3.Distance(g1.transform.position, g2.transform.position);
+      return Vector3.Distance(g1.position, g2.position);
+    }
+
+    private void Start() {
+      if(g1 == null) {
+        g1 = FindObjectOfType<Actor>().transform;
+      }
+
+      if (g2 == null) {
+        g2 = this.transform;
+      }
     }
   }
 }
