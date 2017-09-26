@@ -13,6 +13,14 @@ namespace Neodroid.Utilities {
       return image;
     }
 
+    public static string ColorArrayToString(Color[] colors) {
+      string s = "";
+      foreach(Color color in colors) {
+        s += color.ToString();
+      }
+      return s;
+    }
+
     public static void MaybeRegisterComponent<Recipient, Caller>(Recipient r, Caller c) where Recipient : Object, HasRegister<Caller> where Caller : Component {
       Recipient component;
       if (r != null) {

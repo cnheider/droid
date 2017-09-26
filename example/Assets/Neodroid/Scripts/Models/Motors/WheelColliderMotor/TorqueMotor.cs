@@ -15,7 +15,7 @@ namespace Neodroid.Models.Motors {
     }
 
     public override string GetMotorIdentifier() {
-      return "Torque";
+      return name+"Torque";
     }
   }
 }

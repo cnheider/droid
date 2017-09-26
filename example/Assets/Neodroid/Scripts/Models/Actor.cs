@@ -41,7 +41,7 @@ namespace Neodroid.Models {
       if (_motors == null)
         _motors = new Dictionary<string, Motor>();
       if (_debug) Debug.Log("Actor " + name + " has motor " + motor);
-      _motors.Add(motor.name + motor._motor_identifier, motor);
+      _motors.Add(motor._motor_identifier, motor);
     }
 
     public void Register(Motor obj) {

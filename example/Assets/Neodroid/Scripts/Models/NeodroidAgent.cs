@@ -28,7 +28,6 @@ namespace Neodroid.Models {
     bool _waiting_for_reaction = true;
 
     private Reaction _lastest_reaction = null;
-    private bool _header_requested = false;
 
     private void Start() {
 
@@ -48,6 +47,10 @@ namespace Neodroid.Models {
       else
         _message_server = new MessageServer();
       _message_server.ListenForClientToConnect(OnConnectCallback);
+    }
+
+    public string GetStatus() {
+      return true.ToString();
     }
 
     public Dictionary<string, Actor> GetActors() {
@@ -75,13 +78,15 @@ namespace Neodroid.Models {
         Start();
       }
 
-      if (_lastest_reaction != null && (!_waiting_for_reaction || !_message_server._client_connected)) {
+      if (_lastest_reaction != null && !_waiting_for_reaction ) {
         ExecuteReaction(_lastest_reaction);
         if (!_continue_lastest_reaction_on_disconnect)
           _lastest_reaction = null;
       }
+    }
 
-      if (_message_server._client_connected && !_waiting_for_reaction) {
+    private void LateUpdate() {
+      if (!_waiting_for_reaction) {
         foreach (Observer obs in GetObservers().Values) {
           obs.GetComponent<Observer>().GetData();
         }
@@ -89,33 +94,15 @@ namespace Neodroid.Models {
         ResumeGame();
         _waiting_for_reaction = true;
       }
-
-      if (_header_requested) {
-        _message_server.SendEnvironmentState(GetCurrentState());
-        Debug.Log("Header sent");
-        _header_requested = false;
-      }
-
-      if (!_message_server._client_connected) {
-        ResumeGame();
-      }
-
     }
 
-    public string GetStatus() {
-      return _message_server._client_connected.ToString();
-      }
-
     void FixedUpdate() {
-      if (_message_server._client_connected) {
         PauseGame();
-      } else {
-        ResumeGame();
-      }
     }
 
     private void OnDestroy() { //Deconstructor
-      //_message_server.Destroy();
+      _message_server.KillPollingThread();
+      _message_server.Destroy();
     }
 
     float energy_spent = 0f;
@@ -147,6 +134,7 @@ namespace Neodroid.Models {
 
     void ExecuteReaction(Reaction reaction) {
       var actors = GetActors();
+      if(reaction != null && reaction.GetMotions().Length > 0)
       foreach (MotorMotion motion in reaction.GetMotions()) {
         var motion_actor_name = motion.GetActorName();
         var motion_motor_name = motion.GetMotorName();
@@ -172,7 +160,6 @@ namespace Neodroid.Models {
 
     void OnDisconnectCallback() {
       if (_debug) Debug.Log("Client disconnected.");
-      _message_server.ListenForClientToConnect(OnConnectCallback);
     }
 
     void OnErrorCallback(string error) {
@@ -182,6 +169,7 @@ namespace Neodroid.Models {
     void OnConnectCallback() {
       if (_debug) Debug.Log("Client connected.");
       _message_server.StartReceiving(OnReceiveCallback, OnDisconnectCallback, OnErrorCallback);
+      //_message_server.StartReceiving(OnReceiveCallback, OnDisconnectCallback, OnErrorCallback);
       //_header_requested = true;
     }
 
@@ -191,6 +179,11 @@ namespace Neodroid.Models {
 
     public void Register(Observer obj) {
       AddObserver(obj);
+    }
+
+    private void OnApplicationQuit() {
+      _message_server.KillPollingThread();
+      _message_server.Destroy();
     }
   }
 }

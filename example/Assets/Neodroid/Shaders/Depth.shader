@@ -1,37 +1,151 @@
-﻿Shader "Neodroid/DepthCameraShader" {
-  Properties{
-  }
-  SubShader{
-    Tags{ "RenderType" = "Opaque" }
+﻿Shader "Custom/Depth"
+{
+	Properties
+	{
+		_Color("Color", Color) = (1,1,1,1)
+	}
 
-    Pass{
-      Fog{ Mode Off }
-      CGPROGRAM
-        #pragma vertex vert
-        #pragma fragment frag
-        #include "UnityCG.cginc"
+	SubShader
+	{
+		Tags
+		{
+			"RenderType"="Opaque" // What RenderType shaders to replace there is a copy of this exact shame shader below with the "Transparent" RenderType
+		}
 
-        sampler2D _CameraDepthTexture;
+		ZWrite On
 
-        struct v2f {
-          float4 pos : SV_POSITION;
-          float4 uv: TEXCOORD1;
-        };
+		Pass
+		{
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
 
-        v2f vert(appdata_base v) {
-          v2f o;
-          o.pos = UnityObjectToClipPos(v.vertex);
-          o.uv = ComputeScreenPos(o.pos);
-          return o;
-        }
+			#include "UnityCG.cginc"
 
-        half4 frag(v2f i) : COLOR {
-          float depth = UNITY_SAMPLE_DEPTH(tex2D(_CameraDepthTexture, i.uv));
-          half4 color = half4(depth, depth, depth, 1);
-          return color;
-        }
-      ENDCG
-    }
-  }
-    FallBack "Diffuse"
+			struct appdata
+			{
+				float4 vertex : POSITION;
+			};
+
+			struct v2f
+			{
+				float4 vertex : SV_POSITION;
+				float depth : DEPTH;
+			};
+
+			v2f vert (appdata v)
+			{
+				v2f o;
+				o.vertex = UnityObjectToClipPos(v.vertex);
+				//o.depth = -mul(UNITY_MATRIX_MV, v.vertex).z *_ProjectionParams.w;
+        o.depth = -UnityObjectToViewPos(v.vertex).z *_ProjectionParams.w; //Faster according to unity
+				return o;
+			}
+			
+			half4 _Color;
+
+			fixed4 frag (v2f i) : SV_Target
+			{
+				float invert = 1 - i.depth;
+
+        //return fixed4(invert, invert, invert, 1) * _Color; // With color
+        return fixed4(invert, invert, invert, 1);
+			}
+			ENDCG
+		}
+	}
+
+//  SubShader
+//  {
+//    Tags
+//    {
+//      "RenderType"="Transparent" // Replaces shaders with "Transparent" as RenderType
+//    }
+//
+//    ZWrite On
+//
+//    Pass
+//    {
+//      CGPROGRAM
+//      #pragma vertex vert
+//      #pragma fragment frag
+//
+//      #include "UnityCG.cginc"
+//
+//      struct appdata
+//      {
+//        float4 vertex : POSITION;
+//      };
+//
+//      struct v2f
+//      {
+//        float4 vertex : SV_POSITION;
+//        float depth : DEPTH;
+//      };
+//
+//      v2f vert (appdata v)
+//      {
+//        v2f o;
+//        o.vertex = UnityObjectToClipPos(v.vertex);
+//        o.depth = -mul(UNITY_MATRIX_MV, v.vertex).z *_ProjectionParams.w;
+//        return o;
+//      }
+//      
+//      half4 _Color;
+//
+//      fixed4 frag (v2f i) : SV_Target
+//      {
+//        float invert = 1 - i.depth;
+//
+//        //return fixed4(invert, invert, invert, 1) * _Color; // With color
+//        return fixed4(invert, invert, invert, 1);
+//      }
+//      ENDCG
+//    }
+//  }
+
+	SubShader
+	{
+		Tags
+		{
+			"RenderType"="Transparent" // Replaces shaders with "Transparent" as RenderType
+		}
+
+		ZWrite Off // Dont show depth on transparent objects 
+		Blend SrcAlpha OneMinusSrcAlpha
+
+		Pass
+		{
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
+
+			#include "UnityCG.cginc"
+
+			struct appdata
+			{
+				float4 vertex : POSITION;
+			};
+
+			struct v2f
+			{
+				float4 vertex : SV_POSITION;
+			};
+
+			v2f vert (appdata v)
+			{
+				v2f o;
+				o.vertex = UnityObjectToClipPos(v.vertex);
+				return o;
+			}
+			
+			half4 _Color;
+
+			fixed4 frag (v2f i) : SV_Target
+			{
+				return _Color;
+			}
+			ENDCG
+		}
+	}
 }

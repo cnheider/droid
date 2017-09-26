@@ -2,21 +2,27 @@
 using System.Collections.Generic;
 
 namespace Neodroid.Messaging.Messages {
+  
   [Serializable]
   public class Reaction {
-    public List<MotorMotion> _actor_motor_motions;
+    public MotorMotion[]_motions;
     public bool _reset;
 
-    public Reaction() {
-
+    public Reaction(MotorMotion[] motions, bool reset) {
+      _motions = motions;
+      _reset = reset;
     }
 
-    public List<MotorMotion> GetMotions() {
-      return _actor_motor_motions;
+    public MotorMotion[] GetMotions() {
+      return _motions;
     }
 
     public override string ToString() {
-      return "<Reaction> " + _reset + " </Reaction>";
+      string motions_str = "";
+      foreach (MotorMotion motion in GetMotions()) {
+        motions_str += motion.ToString ()+"\n";
+      }
+      return "<Reaction> " + _reset + ",\n "+ motions_str +"</Reaction>";
     }
   }
 }
