@@ -38,7 +38,7 @@ namespace Neodroid.Models.Motors {
     }
 
     public override string GetMotorIdentifier() {
-      return "SingleAxis"+_axis_of_motion.ToString();
+      return name+"SingleAxis"+_axis_of_motion.ToString();
     }
   }
 }

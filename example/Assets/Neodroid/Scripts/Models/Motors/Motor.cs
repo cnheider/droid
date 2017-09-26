@@ -40,7 +40,7 @@ namespace Neodroid.Models.Motors {
     }
 
     public override string ToString() {
-      return name + _motor_identifier;
+      return GetMotorIdentifier();
     }
   }
 }

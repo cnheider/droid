@@ -27,7 +27,7 @@ namespace Neodroid.Models.Motors {
     }
 
     public override string GetMotorIdentifier() {
-      return "Steering";
+      return name+"Steering";
     }
 
     public void ApplyLocalPositionToVisuals(WheelCollider collider) {

@@ -1,4 +1,4 @@
-﻿using MsgPack.Serialization;
+﻿//using MsgPack.Serialization;
 using UnityEngine;
 using Neodroid.Utilities;
 using System;
@@ -7,7 +7,7 @@ namespace Neodroid.Models.Observers {
   //[Serializable]
   public class Observer : MonoBehaviour {
 
-    [MessagePackIgnore]
+    //[MessagePackIgnore]
     public NeodroidAgent _agent_game_object; //Is not send
 
     public byte[] _data;

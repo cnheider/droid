@@ -14,6 +14,7 @@ namespace Neodroid.Models.Observers {
     void Start() {
       AddToAgent();
       GetComponent<Camera>().depthTextureMode = DepthTextureMode.Depth;
+      //Debug.Log(NeodroidFunctions.ColorArrayToString(NeodroidFunctions.RenderTextureImage(this.GetComponent<Camera>()).GetPixels(1,1,4,4)));
     }
 
     void LateUpdate() {
