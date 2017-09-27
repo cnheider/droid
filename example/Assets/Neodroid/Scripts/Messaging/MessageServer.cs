@@ -59,7 +59,6 @@ namespace Neodroid.Messaging {
             error_callback (err.ToString ());
           }
         }
-          
       }
         
       _socket.Disconnect(("tcp://" + _ip_address + ":" + _port.ToString ()));

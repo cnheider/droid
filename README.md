@@ -1,3 +1,5 @@
 # droid
 
-![droid](https://github.com/sintefneodroid/droid/blob/master/neodroid.jpg)
+![droid](images/neodroid.png)
+![windows](images/windows.png)
+![droid](images/package.png)

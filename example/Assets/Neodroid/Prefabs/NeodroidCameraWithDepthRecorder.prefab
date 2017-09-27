@@ -938,7 +938,7 @@ MonoBehaviour:
   - tag: Obstruction
     color: {r: 1, g: 0.35483873, b: 0.35483873, a: 1}
   - tag: Gripper
-    color: {r: 0.34071878, g: 0.2870019, b: 0.8088235, a: 1}
+    color: {r: 0.38358077, g: 0.85294116, b: 0.30265656, a: 1}
 --- !u!114 &114856775870740094
 MonoBehaviour:
   m_ObjectHideFlags: 1

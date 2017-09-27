@@ -640,7 +640,7 @@ MonoBehaviour:
   _port: 0
   _continue_lastest_reaction_on_disconnect: 0
   _objective_function: {fileID: 0}
-  _debug: 1
+  _debug: 0
 --- !u!114 &114486923131810870
 MonoBehaviour:
   m_ObjectHideFlags: 1

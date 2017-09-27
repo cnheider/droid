@@ -26,8 +26,10 @@ namespace Neodroid.Models {
     // Private
     MessageServer _message_server;
     bool _waiting_for_reaction = true;
+    bool _client_connected = false;
 
     private Reaction _lastest_reaction = null;
+    float energy_spent = 0f;
 
     private void Start() {
 
@@ -46,11 +48,15 @@ namespace Neodroid.Models {
         _message_server = new MessageServer(_ip_address, _port);
       else
         _message_server = new MessageServer();
+      
       _message_server.ListenForClientToConnect(OnConnectCallback);
     }
 
     public string GetStatus() {
-      return true.ToString();
+      if (_client_connected)
+        return "Connected";
+      else
+        return "Not Connected";
     }
 
     public Dictionary<string, Actor> GetActors() {
@@ -104,13 +110,6 @@ namespace Neodroid.Models {
         PauseGame();
     }
 
-    private void OnDestroy() { //Deconstructor
-      //_message_server.KillPollingAndListenerThread();
-      _message_server.Destroy();
-    }
-
-    float energy_spent = 0f;
-
     EnvironmentState GetCurrentState() {
       foreach (Actor a in _actors.Values) {
         foreach (Motor m in a.GetMotors().Values) {
@@ -157,12 +156,14 @@ namespace Neodroid.Models {
 
     //Callbacks
     void OnReceiveCallback(Reaction reaction) {
+      _client_connected = true;
       if (_debug) Debug.Log("Received: " + reaction.ToString());
       _lastest_reaction = reaction;
       _waiting_for_reaction = false;
     }
 
     void OnDisconnectCallback() {
+      _client_connected = false;
       if (_debug) Debug.Log("Client disconnected.");
     }
 
@@ -173,8 +174,6 @@ namespace Neodroid.Models {
     void OnConnectCallback() {
       if (_debug) Debug.Log("Client connected.");
       _message_server.StartReceiving(OnReceiveCallback, OnDisconnectCallback, OnErrorCallback);
-      //_message_server.StartReceiving(OnReceiveCallback, OnDisconnectCallback, OnErrorCallback);
-      //_header_requested = true;
     }
 
     public void Register(Actor obj) {
@@ -186,12 +185,13 @@ namespace Neodroid.Models {
     }
 
     private void OnApplicationQuit() {
-      try{
       _message_server.KillPollingAndListenerThread();
-      //_message_server.Destroy();
-      }      catch{
-        System.Console.WriteLine ("Meh1");
-      }
     }
+
+
+    private void OnDestroy() { //Deconstructor
+      _message_server.Destroy();
+    }
+
   }
 }
