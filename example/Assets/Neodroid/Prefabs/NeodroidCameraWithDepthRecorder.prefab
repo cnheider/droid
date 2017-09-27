@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 20844981984807956}
   - component: {fileID: 114443708306847094}
   - component: {fileID: 114700807833468176}
+  - component: {fileID: 114722231822098306}
   m_Layer: 0
   m_Name: RGBCamera
   m_TagString: Untagged
@@ -56,6 +57,7 @@ GameObject:
   - component: {fileID: 20495345772018724}
   - component: {fileID: 114040556332385592}
   - component: {fileID: 114559157595683568}
+  - component: {fileID: 114274260537545652}
   m_Layer: 0
   m_Name: InfraredShadowCamera
   m_TagString: Untagged
@@ -76,6 +78,7 @@ GameObject:
   - component: {fileID: 124564710968608940}
   - component: {fileID: 114257797223561110}
   - component: {fileID: 81160879537304354}
+  - component: {fileID: 114795819917243522}
   m_Layer: 0
   m_Name: NeodroidCameraWithDepthRecorder
   m_TagString: Untagged
@@ -128,6 +131,7 @@ GameObject:
   - component: {fileID: 114306513689685590}
   - component: {fileID: 114848110323859250}
   - component: {fileID: 114282358926895622}
+  - component: {fileID: 114033780507368762}
   m_Layer: 0
   m_Name: SegmentationCamera
   m_TagString: Untagged
@@ -146,6 +150,7 @@ GameObject:
   - component: {fileID: 20294574356447650}
   - component: {fileID: 114295651411325096}
   - component: {fileID: 114313069818171724}
+  - component: {fileID: 114856775870740094}
   m_Layer: 0
   m_Name: DepthCamera
   m_TagString: Untagged
@@ -254,7 +259,7 @@ Transform:
   - {fileID: 4663313206545382}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4188051971926122
 Transform:
   m_ObjectHideFlags: 1
@@ -383,7 +388,7 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
-  m_AllowMSAA: 1
+  m_AllowMSAA: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -704,6 +709,20 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &114033780507368762
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1414017768631198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33dd720eb089547dabb1538899cef5d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _orthographic_size: 1
+  _near_clip_plane: 1
+  _far_clip_plane: 1
 --- !u!114 &114040556332385592
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -730,6 +749,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lights_to_ignore:
   - {fileID: 108484706134688396}
+--- !u!114 &114274260537545652
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1222284825586676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33dd720eb089547dabb1538899cef5d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _orthographic_size: 1
+  _near_clip_plane: 1
+  _far_clip_plane: 1
 --- !u!114 &114282358926895622
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -859,6 +892,34 @@ MonoBehaviour:
   - -0
   - -0
   - 0.92387956
+--- !u!114 &114722231822098306
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1035063887647770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33dd720eb089547dabb1538899cef5d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _orthographic_size: 1
+  _near_clip_plane: 1
+  _far_clip_plane: 1
+--- !u!114 &114795819917243522
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1229309920468564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33dd720eb089547dabb1538899cef5d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _orthographic_size: 1
+  _near_clip_plane: 1
+  _far_clip_plane: 1
 --- !u!114 &114848110323859250
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -878,6 +939,20 @@ MonoBehaviour:
     color: {r: 1, g: 0.35483873, b: 0.35483873, a: 1}
   - tag: Gripper
     color: {r: 0.34071878, g: 0.2870019, b: 0.8088235, a: 1}
+--- !u!114 &114856775870740094
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1572195827616912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33dd720eb089547dabb1538899cef5d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _orthographic_size: 1
+  _near_clip_plane: 1
+  _far_clip_plane: 1
 --- !u!124 &124564710968608940
 Behaviour:
   m_ObjectHideFlags: 1
