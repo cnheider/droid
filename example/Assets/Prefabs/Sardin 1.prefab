@@ -23,6 +23,9 @@ GameObject:
   - component: {fileID: 136111754878811242}
   - component: {fileID: 137961618611676872}
   - component: {fileID: 33024244381076670}
+  - component: {fileID: 65468050700699380}
+  - component: {fileID: 114206477617735076}
+  - component: {fileID: 114766204017299896}
   m_Layer: 8
   m_Name: Sardin 1
   m_TagString: Target
@@ -36,8 +39,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1365923595873588}
-  m_LocalRotation: {x: 0.51827997, y: -0.25415313, z: 0.48102587, w: 0.65985316}
-  m_LocalPosition: {x: 0.03, y: 0.88, z: 0.05}
+  m_LocalRotation: {x: -0.309587, y: 0.5574736, z: 0.6357326, w: 0.43499795}
+  m_LocalPosition: {x: -0.023, y: 0.363, z: -0.059}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -65,6 +68,64 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &65468050700699380
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1365923595873588}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 5, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114206477617735076
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1365923595873588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee7abbac048f81d44bafe6a4fb1135b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliderBased: 1
+  permanent: 0
+  lineColor: {r: 0, g: 1, b: 0.4, a: 0.74}
+  colliderBound:
+    m_Center: {x: -0.023000002, y: 0.36300004, z: -0.059}
+    m_Extent: {x: 0.050000012, y: 0.25, z: 0.049999997}
+  colliderBoundOffset: {x: -0.0000000018626451, y: 0.000000029802322, z: 0}
+  meshBound:
+    m_Center: {x: -0.023000002, y: 0.36640996, z: -0.057715055}
+    m_Extent: {x: 0.0043169744, y: 0.027151167, z: 0.0070361905}
+  meshBoundOffset: {x: -0.0000000018626451, y: 0.003409952, z: 0.0012849458}
+  setupOnAwake: 1
+  startingScale: {x: 0.1, y: 0.1, z: 0.1}
+--- !u!114 &114766204017299896
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1365923595873588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b2da28e286a044c8ac6c4c7902465ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _agent_game_object: {fileID: 0}
+  _data: 
+  _position:
+  - -0.023
+  - 0.363
+  - -0.059
+  _rotation:
+  - -0.309587
+  - 0.5574736
+  - 0.6357326
+  - 0.43499795
 --- !u!136 &136111754878811242
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -92,7 +153,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 4cf089456002947f5a69b1a5967819c1, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -103,7 +164,7 @@ SkinnedMeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchSeams: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5

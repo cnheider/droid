@@ -14,8 +14,14 @@ public class CameraSynchronisationWindow : EditorWindow {
   SynchroniseCameraProperties[] _cameras;
   bool[] _show_camera_properties;
 
+  
+
   void OnEnable()    {
     _cameras = FindObjectsOfType<SynchroniseCameraProperties> ();
+    Setup ();
+  }
+
+  void Setup(){
     _show_camera_properties = new bool[_cameras.Length];
     for(int i = 0; i < _cameras.Length; i++){
       _show_camera_properties[i] = false;
@@ -23,6 +29,7 @@ public class CameraSynchronisationWindow : EditorWindow {
   }
 
   void OnGUI () {
+    _cameras = FindObjectsOfType<SynchroniseCameraProperties> ();
     SerializedObject serialised_object = new SerializedObject(this);
     if(_show_camera_properties != null){
     for(int i = 0; i < _show_camera_properties.Length; i++){
