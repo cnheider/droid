@@ -12,8 +12,9 @@ namespace Neodroid.Messaging {
   class MessageServer {
     Thread _polling_thread;
     Thread _wait_for_client_thread;
-    private Object thisLock_ = new Object ();
-    bool stop_thread_ = false;
+    private Object _thread_lock = new Object ();
+    bool _stop_thread_ = false;
+    bool _waiting_for_main_loop_to_send =false;
 
     ResponseSocket _socket;
     string _ip_address;
@@ -33,12 +34,8 @@ namespace Neodroid.Messaging {
     }
 
     void WaitForClientToConnect (Action callback) {
-      try{
       _socket.Bind ("tcp://" + _ip_address + ":" + _port.ToString ());
       callback ();
-    } catch {
-      System.Console.WriteLine ("Meh3");
-    }
     }
 
     public void StartReceiving (Action<Reaction> cmd_callback, Action disconnect_callback, Action<String> error_callback) {
@@ -49,26 +46,25 @@ namespace Neodroid.Messaging {
 
     void PollingThread (Action<Reaction> receive_callback, Action disconnect_callback, Action<String> error_callback) {
       byte[] msg;
-      while (stop_thread_ == false) {
-        try {
-          msg = _socket.ReceiveFrameBytes ();
-          var flat_reaction = FlatBufferReaction.GetRootAsFlatBufferReaction (new FlatBuffers.ByteBuffer (msg));
-          var reaction = FlatBufferUtilities.create_reaction (flat_reaction);
-          receive_callback (reaction);
-        } catch (Exception err) {
-          error_callback (err.ToString ());
+      while (_stop_thread_ == false) {
+        if (!_waiting_for_main_loop_to_send) {
+          try {
+            //msg = _socket.TryReceiveFrameBytes ();
+            _socket.TryReceiveFrameBytes (TimeSpan.FromSeconds (2), out msg);
+            var flat_reaction = FlatBufferReaction.GetRootAsFlatBufferReaction (new FlatBuffers.ByteBuffer (msg));
+            var reaction = FlatBufferUtilities.create_reaction (flat_reaction);
+            receive_callback (reaction);
+            _waiting_for_main_loop_to_send=true;
+          } catch (Exception err) {
+            error_callback (err.ToString ());
+          }
         }
-
-        Thread.Sleep (1000);
+          
       }
-
-      /*try {
-        _socket.Disconnect(("tcp://" + _ip_address + ":" + _port.ToString ()));
-        _socket.Close ();
-        NetMQConfig.Cleanup ();
-      } catch {
-        System.Console.WriteLine ("Meh2");
-      }*/
+        
+      _socket.Disconnect(("tcp://" + _ip_address + ":" + _port.ToString ()));
+      _socket.Close ();
+      NetMQConfig.Cleanup ();
     }
 
     byte[] byte_buffer;
@@ -76,21 +72,16 @@ namespace Neodroid.Messaging {
     public void SendEnvironmentState (EnvironmentState environment_state) {
       byte_buffer = FlatBufferUtilities.build_state (environment_state);
       _socket.SendFrame (byte_buffer);
+      _waiting_for_main_loop_to_send = false;
     }
 
     public void Destroy () {
-      try {
-        //_socket.Close ();
-        //NetMQConfig.Cleanup ();
-        KillPollingThread ();
-      } catch {
-        System.Console.WriteLine ("Meh3");
-      }
+        KillPollingAndListenerThread ();
     }
 
-    public void KillPollingThread () {
+    public void KillPollingAndListenerThread () {
       try {
-        lock (thisLock_) stop_thread_ = true;
+        lock (_thread_lock) _stop_thread_ = true;
         _socket.Disconnect(("tcp://" + _ip_address + ":" + _port.ToString ()));
         _socket.Close ();
         NetMQConfig.Cleanup ();
@@ -102,7 +93,7 @@ namespace Neodroid.Messaging {
           _polling_thread.Join ();
         }
       } catch {
-        System.Console.WriteLine ("Meh4");
+        System.Console.WriteLine ("Exception thrown while killing threads");
       }
     }
   }

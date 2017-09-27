@@ -105,7 +105,7 @@ namespace Neodroid.Models {
     }
 
     private void OnDestroy() { //Deconstructor
-      _message_server.KillPollingThread();
+      //_message_server.KillPollingAndListenerThread();
       _message_server.Destroy();
     }
 
@@ -187,7 +187,7 @@ namespace Neodroid.Models {
 
     private void OnApplicationQuit() {
       try{
-      _message_server.KillPollingThread();
+      _message_server.KillPollingAndListenerThread();
       //_message_server.Destroy();
       }      catch{
         System.Console.WriteLine ("Meh1");
