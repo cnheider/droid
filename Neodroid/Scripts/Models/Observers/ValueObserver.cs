@@ -8,7 +8,7 @@ namespace Neodroid.Models.Observers {
 
     void Start() {
       AddToAgent();
-      _data = new byte[1]{123};
+      //_data = new byte[1]{123};
     }
       
     public override byte[] GetData() {
