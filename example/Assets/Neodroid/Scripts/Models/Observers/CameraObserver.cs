@@ -7,12 +7,15 @@ namespace Neodroid.Models.Observers {
   [RequireComponent(typeof(Camera))]
   public class CameraObserver : Observer {
 
+    Camera _camera;
+
     void Start() {
       AddToAgent();
+      _camera = this.GetComponent<Camera> ();
     }
       
     public override byte[] GetData() {
-      _data = NeodroidFunctions.RenderTextureImage(this.GetComponent<Camera>()).EncodeToPNG();
+      _data = NeodroidFunctions.RenderTextureImage(_camera).EncodeToPNG();
       return _data;
     }
   }

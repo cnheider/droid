@@ -85,11 +85,15 @@ namespace Neodroid.Models {
       }
     }
 
+    void MakeCameraRenderNewTexture(){
+      foreach (Observer obs in GetObservers().Values) {
+        obs.GetComponent<Observer>().GetData();
+      }
+    }
+
     private void LateUpdate() {
       if (!_waiting_for_reaction) {
-        foreach (Observer obs in GetObservers().Values) {
-          obs.GetComponent<Observer>().GetData();
-        }
+        MakeCameraRenderNewTexture ();
         _message_server.SendEnvironmentState(GetCurrentState());
         ResumeGame();
         _waiting_for_reaction = true;
@@ -182,8 +186,12 @@ namespace Neodroid.Models {
     }
 
     private void OnApplicationQuit() {
+      try{
       _message_server.KillPollingThread();
-      _message_server.Destroy();
+      //_message_server.Destroy();
+      }      catch{
+        System.Console.WriteLine ("Meh1");
+      }
     }
   }
 }

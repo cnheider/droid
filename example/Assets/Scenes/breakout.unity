@@ -265,8 +265,11 @@ GameObject:
   - component: {fileID: 1394587292}
   - component: {fileID: 1394587291}
   - component: {fileID: 1394587290}
+  - component: {fileID: 1394587296}
+  - component: {fileID: 1394587295}
+  - component: {fileID: 1394587294}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -338,3 +341,51 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1394587294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1394587289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0be739d494e2b64ea0a02fc892b3d8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _debug: 0
+  _bidirectional: 1
+  _energy_cost: 1
+  _actor_game_object: {fileID: 0}
+  _motor_identifier: 
+  _axis_of_motion: 0
+--- !u!114 &1394587295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1394587289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb645fe4b7346e743aa151cb7113f548, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _position: []
+  _rotation: []
+  _agent_game_object: {fileID: 0}
+  _debug: 0
+--- !u!114 &1394587296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1394587289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3bedc6027499af4a97bcc73e9d9f765, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ip_address: 
+  _port: 0
+  _continue_lastest_reaction_on_disconnect: 0
+  _objective_function: {fileID: 0}
+  _debug: 0
