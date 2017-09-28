@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 65468050700699380}
   - component: {fileID: 114206477617735076}
   - component: {fileID: 114766204017299896}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Sardin 1
   m_TagString: Target
   m_Icon: {fileID: 0}
@@ -78,8 +78,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 5, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 5.6024914, z: 1}
+  m_Center: {x: 0.000000012416896, y: 0.37844774, z: 7.508891e-11}
 --- !u!114 &114206477617735076
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -95,9 +95,9 @@ MonoBehaviour:
   permanent: 0
   lineColor: {r: 0, g: 1, b: 0.4, a: 0.74}
   colliderBound:
-    m_Center: {x: -0.023000002, y: 0.36300004, z: -0.059}
-    m_Extent: {x: 0.050000012, y: 0.25, z: 0.049999997}
-  colliderBoundOffset: {x: -0.0000000018626451, y: 0.000000029802322, z: 0}
+    m_Center: {x: -0.023000002, y: 0.40084478, z: -0.059}
+    m_Extent: {x: 0.050000012, y: 0.28012457, z: 0.049999997}
+  colliderBoundOffset: {x: -0.0000000018626451, y: 0.037844777, z: 0}
   meshBound:
     m_Center: {x: -0.023000002, y: 0.36640996, z: -0.057715055}
     m_Extent: {x: 0.0043169744, y: 0.027151167, z: 0.0070361905}
