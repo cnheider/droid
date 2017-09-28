@@ -33,6 +33,12 @@ The unity comes quite selection of scripts and tools for setting up and experime
 ### Many Custom Windows For Quick Prototyping
 ![windows](images/windows.png)
 
+
+# To Do's
+- [ ] Exponential Proximity Regularisation Penalty
+- [ ] Reset properly
+- [ ] Make an option for transforms all coordinates into camera relative
+
 # Other Components Of The Neodroid Platform
 
 - [agent](https://github.com/sintefneodroid/agent)
