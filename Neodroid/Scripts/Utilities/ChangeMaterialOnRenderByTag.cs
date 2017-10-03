@@ -47,26 +47,29 @@ public class ChangeMaterialOnRenderByTag : MonoBehaviour {
     for (int i = 0; i < _all_renders.Length; i++) {
       if(_tag_colors.ContainsKey(_all_renders[i].tag)){
         if (_use_shared_materials) {
-            foreach (var mat in _all_renders[i].sharedMaterials) {
-              _original_colors [i].AddFirst (mat.color);
-              mat.color = _tag_colors [_all_renders [i].tag];
-            }
-        
-        }else{
-          foreach (var mat in _all_renders[i].materials) {
+          foreach (var mat in _all_renders[i].sharedMaterials) {
             _original_colors [i].AddFirst (mat.color);
             mat.color = _tag_colors [_all_renders [i].tag];
           }
-        }
-        /*else if(true){
+        
+        } /*else {
           int j = 0;
           foreach (var mat in _all_renders[i].sharedMaterials) {
             _original_colors [i].AddFirst (mat.color);
             var temporary_material = new Material (mat);
             temporary_material.color = _tag_colors [_all_renders [i].tag];
-            _all_renders[i].sharedMaterials[j] = temporary_material;
+            _all_renders [i].sharedMaterials [j] = temporary_material;
             j++;
-          }*/
+          }
+        }*/
+
+        else{
+          foreach (var mat in _all_renders[i].materials) {
+            _original_colors [i].AddFirst (mat.color);
+            mat.color = _tag_colors [_all_renders [i].tag];
+          }
+        }
+
       }
     }
   }
@@ -78,7 +81,13 @@ public class ChangeMaterialOnRenderByTag : MonoBehaviour {
               mat.color = _original_colors [i].Last.Value;
               _original_colors [i].RemoveLast ();
             }
-        } else {
+        }/* else {
+          foreach (var mat in _all_renders[i].sharedMaterials) {
+            mat.color = _original_colors [i].Last.Value;
+            _original_colors [i].RemoveLast ();
+          }
+        }*/
+        else {
           foreach (var mat in _all_renders[i].materials) {
             mat.color = _original_colors [i].Last.Value;
             _original_colors [i].RemoveLast ();

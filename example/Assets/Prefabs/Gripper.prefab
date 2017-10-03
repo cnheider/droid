@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 114047137971768666}
   m_Layer: 0
   m_Name: SliderMotor
-  m_TagString: ignored_by_sub_collider_fish
+  m_TagString: Gripper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 65076433725961616}
   m_Layer: 0
   m_Name: GrabRegion
-  m_TagString: ignored_by_sub_collider_fish
+  m_TagString: Gripper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 23393454201074908}
   m_Layer: 0
   m_Name: House
-  m_TagString: ignored_by_sub_collider_fish
+  m_TagString: Gripper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 65165959765414572}
   m_Layer: 0
   m_Name: BeginGrab
-  m_TagString: ignored_by_sub_collider_fish
+  m_TagString: Gripper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 54854293887807104}
   m_Layer: 0
   m_Name: Claw1
-  m_TagString: ignored_by_sub_collider_fish
+  m_TagString: Gripper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 4183804641178892}
   m_Layer: 0
   m_Name: ClosedPosition
-  m_TagString: ignored_by_sub_collider_fish
+  m_TagString: Gripper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -128,7 +128,7 @@ GameObject:
   - component: {fileID: 54152112489252774}
   m_Layer: 0
   m_Name: Claw2
-  m_TagString: ignored_by_sub_collider_fish
+  m_TagString: Gripper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -152,7 +152,7 @@ GameObject:
   - component: {fileID: 114117860755349358}
   m_Layer: 0
   m_Name: Gripper
-  m_TagString: ignored_by_sub_collider_fish
+  m_TagString: Gripper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

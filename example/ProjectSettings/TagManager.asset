@@ -5,6 +5,13 @@ TagManager:
   serializedVersion: 2
   tags:
   - balls
+  - FishPart
+  - Bone
+  - ignored_by_sub_collider_fish
+  - CameraBody
+  - Target
+  - Obstruction
+  - Gripper
   layers:
   - Default
   - TransparentFX

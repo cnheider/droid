@@ -34,7 +34,7 @@ public class BoundingBox : MonoBehaviour {
 
   private Quaternion quat;
 
-  private Camera mcamera;
+  //private Camera mcamera;
 
   private DrawBoundingBoxOnCamera cameralines;
 
@@ -71,8 +71,8 @@ public class BoundingBox : MonoBehaviour {
   [HideInInspector]
   public Vector3 startingScale;
   private Vector3 previousScale;
-  private Vector3 startingBoundSize;
-  private Vector3 startingBoundCenterLocal;
+  //private Vector3 startingBoundSize;
+  //private Vector3 startingBoundCenterLocal;
   private Vector3 previousPosition;
   private Quaternion previousRotation;
 
@@ -98,13 +98,13 @@ public class BoundingBox : MonoBehaviour {
       return;
     }
 
-    mcamera = cameralines.GetComponent<Camera> ();
+    //mcamera = cameralines.GetComponent<Camera> ();
     previousPosition = transform.position;
     previousRotation = transform.rotation;
-    startingBoundSize = bound.size;
+    //startingBoundSize = bound.size;
     startingScale = transform.localScale;
     previousScale = startingScale;
-    startingBoundCenterLocal = transform.InverseTransformPoint (bound.center);
+    //startingBoundCenterLocal = transform.InverseTransformPoint (bound.center);
     init ();
   }
 
@@ -185,11 +185,11 @@ public class BoundingBox : MonoBehaviour {
   void setPoints () {
 
     if (colliderBased) {
-      if (colliderBound == null) {
+      /*if (colliderBound == null) {
         Debug.LogError ("no collider - add collider to " + gameObject.name + " gameObject");
         return;
 
-      }
+      }*/
       bound = colliderBound;
       boundOffset = colliderBoundOffset;
     } else {
