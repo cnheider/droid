@@ -12,8 +12,32 @@ public class ChangeMaterialOnRenderByInstance : MonoBehaviour {
   LinkedList<Color>[] _original_colors;
   Renderer[] _all_renders;
 
-  public Dictionary<GameObject, Color> InstanceColors {
+  public Dictionary<GameObject, Color> InstanceColorsDict {
     get{ return _instance_colors; }
+  }
+
+  public SegmentationColorByInstance[] InstanceColors{
+    get{
+      if (_instance_colors != null) {
+        var instance_color_array = new SegmentationColorByInstance[_instance_colors.Keys.Count];
+        int i = 0;
+        foreach (var key in _instance_colors.Keys) {
+          var seg = new SegmentationColorByInstance ();
+          seg.game_object = key;
+          seg.color = _instance_colors [key];
+          instance_color_array [i] = seg;
+          i++;
+        }
+        return instance_color_array;
+      }
+      return null;
+    }
+
+    set{
+      foreach (SegmentationColorByInstance seg in value) {
+        _instance_colors[seg.game_object] = seg.color;
+      }
+    }
   }
 
   // Use this for initialization

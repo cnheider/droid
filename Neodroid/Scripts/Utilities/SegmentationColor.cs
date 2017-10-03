@@ -8,7 +8,7 @@ public struct SegmentationColorByTag{
 }
 
 [Serializable]
-public struct SegmentationColorByGameObject{
+public struct SegmentationColorByInstance{
   public GameObject game_object;
   public Color color;
 }
