@@ -9,36 +9,36 @@ using UnityEditor;
 [ExecuteInEditMode]
 public class BoundingBox : MonoBehaviour {
 
-  public bool colliderBased = false;
-  public bool permanent = false;
-  //permanent//onMouseDown
+  public bool _collider_based = false;
+  //public bool _permanent = false;
+  //_permanent//onMouseDown
 
-  public Color lineColor = new Color (0f, 1f, 0.4f, 0.74f);
+  public Color _line_color = new Color (0f, 1f, 0.4f, 0.74f);
 
-  private Bounds bound;
-  private Vector3 boundOffset;
+  private Bounds _bounds;
+  private Vector3 _bounds_offset;
   [HideInInspector]
-  public Bounds colliderBound;
+  public Bounds _collider_bounds;
   [HideInInspector]
-  public Vector3 colliderBoundOffset;
+  public Vector3 _collider_bounds_offset;
   [HideInInspector]
-  public Bounds meshBound;
+  public Bounds _mesh_bounds;
   [HideInInspector]
-  public Vector3 meshBoundOffset;
+  public Vector3 _mesh_bounds_offset;
 
-  public bool setupOnAwake = true;
+  public bool _setup_on_awake = true;
 
-  private Vector3[] corners;
+  private Vector3[] _corners;
 
-  private Vector3[,] lines;
+  private Vector3[,] _lines;
 
-  private Quaternion quat;
+  private Quaternion _rotation;
 
-  //private Camera mcamera;
+  //private Camera _camera;
 
-  private DrawBoundingBoxOnCamera cameralines;
+  private DrawBoundingBoxOnCamera _camera_lines;
 
-  private MeshFilter[] meshes;
+  private MeshFilter[] _children_meshes;
 
   public Vector3[] BoundingBoxCoordinates{
     get{ return new Vector3[]{ _top_front_left, _top_front_right, _top_back_left, _top_back_right, _bottom_front_left, _bottom_front_right, _bottom_back_left, _bottom_back_right };}
@@ -76,73 +76,71 @@ public class BoundingBox : MonoBehaviour {
   private Vector3 previousPosition;
   private Quaternion previousRotation;
 
-  MeshFilter[] _children_meshes;
-
 
   void Reset () {
-    meshes = GetComponentsInChildren<MeshFilter> ();
-    calculateBounds ();
+   _children_meshes = GetComponentsInChildren<MeshFilter> ();
+    CalculateBounds ();
     Start ();
   }
 
   void Awake () {
-    if (setupOnAwake) {
-      meshes = GetComponentsInChildren<MeshFilter> ();
-      calculateBounds ();
+    if (_setup_on_awake) {
+     _children_meshes = GetComponentsInChildren<MeshFilter> ();
+      CalculateBounds ();
     }
   }
 
   void Start () {
-    cameralines = FindObjectOfType (typeof(DrawBoundingBoxOnCamera)) as DrawBoundingBoxOnCamera;
+    _camera_lines = FindObjectOfType (typeof(DrawBoundingBoxOnCamera)) as DrawBoundingBoxOnCamera;
 
-    if (!cameralines) {
+    if (!_camera_lines) {
       Debug.LogError ("DimBoxes: no camera with DimBoxes.DrawLines in the scene", gameObject);
       return;
     }
 
-    //mcamera = cameralines.GetComponent<Camera> ();
+    //_camera = _camera_lines.GetComponent<Camera> ();
     previousPosition = transform.position;
     previousRotation = transform.rotation;
-    //startingBoundSize = bound.size;
+    //startingBoundSize = _bounds.size;
     startingScale = transform.localScale;
     previousScale = startingScale;
-    //startingBoundCenterLocal = transform.InverseTransformPoint (bound.center);
-    init ();
+    //startingBoundCenterLocal = transform.InverseTransformPoint (_bounds.center);
+    Initialise ();
     _children_meshes = GetComponentsInChildren<MeshFilter> ();
   }
 
-  public void init () {
-    setPoints ();
-    setLines ();
+  public void Initialise () {
+    RecalculatePoints ();
+    RecalculateLines ();
   }
 
   void LateUpdate () {
     if (_children_meshes != GetComponentsInChildren<MeshFilter> ()) {
-      meshes = GetComponentsInChildren<MeshFilter> ();
-      calculateBounds ();
+     _children_meshes = GetComponentsInChildren<MeshFilter> ();
+      CalculateBounds ();
       Start ();
     }
     if (transform.localScale != previousScale) {
-      scaleBounds ();
-      setPoints ();
+      ScaleBounds ();
+      RecalculatePoints ();
     }
     if (transform.position != previousPosition || transform.rotation != previousRotation || transform.localScale != previousScale) {
-      setLines ();
+      RecalculateLines ();
       previousRotation = transform.rotation;
       previousPosition = transform.position;
       previousScale = transform.localScale;
     }
 
-    cameralines.setOutlines (lines, lineColor, new Vector3[0, 0]);
+    _camera_lines.setOutlines (_lines, _line_color, new Vector3[0, 0]);
   }
 
-  public void scaleBounds () {
-    //bound.size = new Vector3(startingBoundSize.x * transform.localScale.x / startingScale.x, startingBoundSize.y * transform.localScale.y / startingScale.y, startingBoundSize.z * transform.localScale.z / startingScale.z);
-    //bound.center = transform.TransformPoint(startingBoundCenterLocal);
+  public void ScaleBounds () {
+    //_bounds.size = new Vector3(startingBoundSize.x * transform.localScale.x / startingScale.x, startingBoundSize.y * transform.localScale.y / startingScale.y, startingBoundSize.z * transform.localScale.z / startingScale.z);
+    //_bounds.center = transform.TransformPoint(startingBoundCenterLocal);
   }
 
-  void calculateBounds () {
-    quat = transform.rotation;//object axis AABB
+  void CalculateBounds () {
+    _rotation = transform.rotation;//object axis AABB
 
     BoxCollider coll = GetComponent<BoxCollider> ();
     if (coll) {
@@ -150,76 +148,76 @@ public class BoundingBox : MonoBehaviour {
       co.transform.position = transform.position;
       co.transform.localScale = transform.lossyScale;
       BoxCollider cobc = co.AddComponent<BoxCollider> ();
-      //quat = transform.rotation;
+      //_rotation = transform.rotation;
       cobc.center = coll.center;
       cobc.size = coll.size;
-      colliderBound = cobc.bounds;
+      _collider_bounds = cobc.bounds;
       DestroyImmediate (co);
-      colliderBoundOffset = colliderBound.center - transform.position;
+      _collider_bounds_offset = _collider_bounds.center - transform.position;
     }
     //return;
 
-    /*isStatic = meshes[0].GetComponent<Renderer>().isPartOfStaticBatch;
-            if (isStatic) quat = Quaternion.Euler(0f, 0f, 0f);//world axis
+    /*isStatic =_children_meshes[0].GetComponent<Renderer>().isPartOfStaticBatch;
+            if (isStatic) _rotation = Quaternion.Euler(0f, 0f, 0f);//world axis
             
             if (isStatic)
             {
-                meshBound = meshes[0].GetComponent<Renderer>().bounds;
-                for (int i = 1; i < meshes.Length; i++)
+                _mesh_bounds =_children_meshes[0].GetComponent<Renderer>().bounds;
+                for (int i = 1; i <_children_meshes.Length; i++)
                 {
-                    meshBound.Encapsulate(meshes[i].GetComponent<Renderer>().bounds);
+                    _mesh_bounds.Encapsulate(meshes[i].GetComponent<Renderer>().bounds);
                 }
                 return;
             }*/
 
-    //if (Vector3.Magnitude(meshBound.size)>0.01f) return; //because of lenghty calculations - don't recalculate again
-    meshBound = new Bounds ();
+    //if (Vector3.Magnitude(_mesh_bounds.size)>0.01f) return; //because of lenghty calculations - don't recalculate again
+    _mesh_bounds = new Bounds ();
 
     transform.rotation = Quaternion.Euler (0f, 0f, 0f);
-    for (int i = 0; i < meshes.Length; i++) {
-      Mesh ms = meshes [i].sharedMesh;
+    for (int i = 0; i <_children_meshes.Length; i++) {
+      Mesh ms =_children_meshes [i].sharedMesh;
       int vc = ms.vertexCount;
       for (int j = 0; j < vc; j++) {
         if (i == 0 && j == 0) {
-          meshBound = new Bounds (meshes [i].transform.TransformPoint (ms.vertices [j]), Vector3.zero);
+          _mesh_bounds = new Bounds (_children_meshes [i].transform.TransformPoint (ms.vertices [j]), Vector3.zero);
         } else {
-          meshBound.Encapsulate (meshes [i].transform.TransformPoint (ms.vertices [j]));
+          _mesh_bounds.Encapsulate (_children_meshes [i].transform.TransformPoint (ms.vertices [j]));
         }
       }
     }
-    transform.rotation = quat;
-    meshBoundOffset = meshBound.center - transform.position;
+    transform.rotation = _rotation;
+    _mesh_bounds_offset = _mesh_bounds.center - transform.position;
   }
 
-  void setPoints () {
+  void RecalculatePoints () {
 
-    if (colliderBased) {
-      /*if (colliderBound == null) {
+    if (_collider_based) {
+      /*if (_collider_bounds == null) {
         Debug.LogError ("no collider - add collider to " + gameObject.name + " gameObject");
         return;
 
       }*/
-      bound = colliderBound;
-      boundOffset = colliderBoundOffset;
+      _bounds = _collider_bounds;
+      _bounds_offset = _collider_bounds_offset;
     } else {
-      bound = meshBound;
-      boundOffset = meshBoundOffset;
+      _bounds = _mesh_bounds;
+      _bounds_offset = _mesh_bounds_offset;
     }
 
-    bound.size = new Vector3 (bound.size.x * transform.localScale.x / startingScale.x, bound.size.y * transform.localScale.y / startingScale.y, bound.size.z * transform.localScale.z / startingScale.z);
-    boundOffset = new Vector3 (boundOffset.x * transform.localScale.x / startingScale.x, boundOffset.y * transform.localScale.y / startingScale.y, boundOffset.z * transform.localScale.z / startingScale.z);
+    _bounds.size = new Vector3 (_bounds.size.x * transform.localScale.x / startingScale.x, _bounds.size.y * transform.localScale.y / startingScale.y, _bounds.size.z * transform.localScale.z / startingScale.z);
+    _bounds_offset = new Vector3 (_bounds_offset.x * transform.localScale.x / startingScale.x, _bounds_offset.y * transform.localScale.y / startingScale.y, _bounds_offset.z * transform.localScale.z / startingScale.z);
 
 
-    _top_front_right = boundOffset + Vector3.Scale (bound.extents, new Vector3 (1, 1, 1));
-    _top_front_left = boundOffset + Vector3.Scale (bound.extents, new Vector3 (-1, 1, 1));
-    _top_back_left = boundOffset + Vector3.Scale (bound.extents, new Vector3 (-1, 1, -1));
-    _top_back_right = boundOffset + Vector3.Scale (bound.extents, new Vector3 (1, 1, -1));
-    _bottom_front_right = boundOffset + Vector3.Scale (bound.extents, new Vector3 (1, -1, 1));
-    _bottom_front_left = boundOffset + Vector3.Scale (bound.extents, new Vector3 (-1, -1, 1));
-    _bottom_back_left = boundOffset + Vector3.Scale (bound.extents, new Vector3 (-1, -1, -1));
-    _bottom_back_right = boundOffset + Vector3.Scale (bound.extents, new Vector3 (1, -1, -1));
+    _top_front_right = _bounds_offset + Vector3.Scale (_bounds.extents, new Vector3 (1, 1, 1));
+    _top_front_left = _bounds_offset + Vector3.Scale (_bounds.extents, new Vector3 (-1, 1, 1));
+    _top_back_left = _bounds_offset + Vector3.Scale (_bounds.extents, new Vector3 (-1, 1, -1));
+    _top_back_right = _bounds_offset + Vector3.Scale (_bounds.extents, new Vector3 (1, 1, -1));
+    _bottom_front_right = _bounds_offset + Vector3.Scale (_bounds.extents, new Vector3 (1, -1, 1));
+    _bottom_front_left = _bounds_offset + Vector3.Scale (_bounds.extents, new Vector3 (-1, -1, 1));
+    _bottom_back_left = _bounds_offset + Vector3.Scale (_bounds.extents, new Vector3 (-1, -1, -1));
+    _bottom_back_right = _bounds_offset + Vector3.Scale (_bounds.extents, new Vector3 (1, -1, -1));
 
-    corners = new Vector3[] {
+    _corners = new Vector3[] {
       _top_front_right,
       _top_front_left,
       _top_back_left,
@@ -232,37 +230,37 @@ public class BoundingBox : MonoBehaviour {
 
   }
 
-  void setLines () {
+  void RecalculateLines () {
 
     Quaternion rot = transform.rotation;
     Vector3 pos = transform.position;
 
-    List<Vector3[]> _lines = new List<Vector3[]> ();
+    List<Vector3[]> lines = new List<Vector3[]> ();
     //int linesCount = 12;
 
-    Vector3[] _line;
+    Vector3[] line;
     for (int i = 0; i < 4; i++) {
       //width
-      _line = new Vector3[] { rot * corners [2 * i] + pos, rot * corners [2 * i + 1] + pos };
-      _lines.Add (_line);
+      line = new Vector3[] { rot * _corners [2 * i] + pos, rot * _corners [2 * i + 1] + pos };
+      lines.Add (line);
       //height
-      _line = new Vector3[] { rot * corners [i] + pos, rot * corners [i + 4] + pos };
-      _lines.Add (_line);
+      line = new Vector3[] { rot * _corners [i] + pos, rot * _corners [i + 4] + pos };
+      lines.Add (line);
       //depth
-      _line = new Vector3[] { rot * corners [2 * i] + pos, rot * corners [2 * i + 3 - 4 * (i % 2)] + pos };
-      _lines.Add (_line);
+      line = new Vector3[] { rot * _corners [2 * i] + pos, rot * _corners [2 * i + 3 - 4 * (i % 2)] + pos };
+      lines.Add (line);
 
     }
-    lines = new Vector3[_lines.Count, 2];
-    for (int j = 0; j < _lines.Count; j++) {
-      lines [j, 0] = _lines [j] [0];
-      lines [j, 1] = _lines [j] [1];
+    _lines = new Vector3[lines.Count, 2];
+    for (int j = 0; j < lines.Count; j++) {
+      _lines [j, 0] = lines [j] [0];
+      _lines [j, 1] = lines [j] [1];
     }
   }
 
   void OnMouseDown () {
-    if (permanent)
-      return;
+    //if (_permanent)
+    //  return;
     enabled = !enabled;
   }
 
@@ -270,7 +268,7 @@ public class BoundingBox : MonoBehaviour {
   void OnValidate () {
     if (EditorApplication.isPlaying)
       return;
-    init ();
+    Initialise ();
   }
 
 
@@ -278,9 +276,9 @@ public class BoundingBox : MonoBehaviour {
 
   void OnDrawGizmos () {
             
-    Gizmos.color = lineColor;
-    for (int i = 0; i < lines.GetLength (0); i++) {
-      Gizmos.DrawLine (lines [i, 0], lines [i, 1]);
+    Gizmos.color = _line_color;
+    for (int i = 0; i < _lines.GetLength (0); i++) {
+      Gizmos.DrawLine (_lines [i, 0], _lines [i, 1]);
     }
   }
 

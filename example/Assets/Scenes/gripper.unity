@@ -769,6 +769,11 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 843839332}
+    - target: {fileID: 114117860755349358, guid: a989663e6a5091b4bb3a81cb77755616,
+        type: 2}
+      propertyPath: colliderBased
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a989663e6a5091b4bb3a81cb77755616, type: 2}
   m_IsPrefabParent: 0
@@ -1258,7 +1263,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 0.35451072, b: 0.35451072, a: 1}
+    - _Color: {r: 1, g: 0.3544538, b: 0.3544538, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &394444001
 GameObject:
@@ -1630,7 +1635,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 0.35451233, b: 0.35451233, a: 1}
+    - _Color: {r: 1, g: 0.35445544, b: 0.35445544, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!21 &554208625
 Material:
@@ -3186,7 +3191,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 0.35451233, b: 0.35451233, a: 1}
+    - _Color: {r: 1, g: 0.35445544, b: 0.35445544, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &997441115
 GameObject:
@@ -3444,7 +3449,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 0.35451233, b: 0.35451233, a: 1}
+    - _Color: {r: 1, g: 0.35445544, b: 0.35445544, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!21 &1149122482
 Material:
@@ -4806,7 +4811,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 0.35451233, b: 0.35451233, a: 1}
+    - _Color: {r: 1, g: 0.35445544, b: 0.35445544, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &1597323904
 GameObject:
@@ -4940,7 +4945,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.19733718, g: 0.46937096, b: 1, a: 1}
+    - _Color: {r: 0.1973103, g: 0.46937096, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!21 &1630967288
 Material:
@@ -5533,6 +5538,151 @@ Prefab:
     - target: {fileID: 4121959607679454, guid: 1bdd1aa4e44d63a488d47610fd18fd61, type: 2}
       propertyPath: m_LocalScale.z
       value: 0.10000007
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: colliderBased
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: colliderBound.m_Center.x
+      value: -0.023000058
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: colliderBound.m_Center.y
+      value: 0.4008446
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: colliderBound.m_Center.z
+      value: -0.058999956
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: colliderBound.m_Extent.x
+      value: 0.050000083
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: colliderBound.m_Extent.y
+      value: 0.28012487
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: colliderBound.m_Extent.z
+      value: 0.05000004
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: colliderBoundOffset.x
+      value: 0.0000000037252903
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: colliderBoundOffset.y
+      value: 0.037844807
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: meshBound.m_Center.x
+      value: -0.023000062
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: meshBound.m_Center.y
+      value: 0.36640978
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: meshBound.m_Center.z
+      value: -0.057715006
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: meshBound.m_Extent.x
+      value: 0.004316982
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: meshBound.m_Extent.z
+      value: 0.007036194
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: meshBoundOffset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: meshBoundOffset.y
+      value: 0.0034099817
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: meshBoundOffset.z
+      value: 0.0012849495
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: startingScale.x
+      value: 0.10000014
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: startingScale.y
+      value: 0.1000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: startingScale.z
+      value: 0.10000007
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: _collider_based
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: _mesh_bound.m_Center.x
+      value: -0.023000062
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: _mesh_bound.m_Center.y
+      value: 0.36640978
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: _mesh_bound.m_Center.z
+      value: -0.057715006
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: _mesh_bound.m_Extent.x
+      value: 0.004316982
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: _mesh_bound.m_Extent.y
+      value: 0.027151167
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: _mesh_bound.m_Extent.z
+      value: 0.007036194
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: _mesh_bound_offset.y
+      value: 0.0034099817
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206477617735076, guid: 1bdd1aa4e44d63a488d47610fd18fd61,
+        type: 2}
+      propertyPath: _mesh_bound_offset.z
+      value: 0.0012849495
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1bdd1aa4e44d63a488d47610fd18fd61, type: 2}
