@@ -1067,7 +1067,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 095ba5a6bea9c4dd580d36ce0b4d9117, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _use_shared_materials: 0
+  _use_shared_materials: 1
   _colors_by_tag:
   - tag: Target
     color: {r: 0.37621388, g: 0.2791746, b: 0.78676474, a: 1}
@@ -1100,6 +1100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba7e59c76e86641a08f12f096f8c67a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _use_shared_materials: 1
 --- !u!124 &124564710968608940
 Behaviour:
   m_ObjectHideFlags: 1

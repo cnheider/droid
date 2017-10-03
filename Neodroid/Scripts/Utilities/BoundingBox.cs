@@ -76,6 +76,8 @@ public class BoundingBox : MonoBehaviour {
   private Vector3 previousPosition;
   private Quaternion previousRotation;
 
+  MeshFilter[] _children_meshes;
+
 
   void Reset () {
     meshes = GetComponentsInChildren<MeshFilter> ();
@@ -106,6 +108,7 @@ public class BoundingBox : MonoBehaviour {
     previousScale = startingScale;
     //startingBoundCenterLocal = transform.InverseTransformPoint (bound.center);
     init ();
+    _children_meshes = GetComponentsInChildren<MeshFilter> ();
   }
 
   public void init () {
@@ -114,6 +117,11 @@ public class BoundingBox : MonoBehaviour {
   }
 
   void LateUpdate () {
+    if (_children_meshes != GetComponentsInChildren<MeshFilter> ()) {
+      meshes = GetComponentsInChildren<MeshFilter> ();
+      calculateBounds ();
+      Start ();
+    }
     if (transform.localScale != previousScale) {
       scaleBounds ();
       setPoints ();
@@ -124,6 +132,7 @@ public class BoundingBox : MonoBehaviour {
       previousPosition = transform.position;
       previousScale = transform.localScale;
     }
+
     cameralines.setOutlines (lines, lineColor, new Vector3[0, 0]);
   }
 
