@@ -21,6 +21,7 @@ namespace Neodroid.Models {
     public bool _continue_lastest_reaction_on_disconnect = false;
 
     public ObjectiveFunction _objective_function;
+    public EnvironmentConfigurator _environment_configurator;
     public bool _debug = false;
 
     // Private
@@ -42,6 +43,13 @@ namespace Neodroid.Models {
         if (arguments[i] == "-port") {
           _port = int.Parse(arguments[i + 1]);
         }
+      }
+
+      if (!_environment_configurator) {
+        _environment_configurator = FindObjectOfType<EnvironmentConfigurator> ();
+      }
+      if (!_objective_function) {
+        _objective_function = FindObjectOfType<ObjectiveFunction> ();
       }
 
       if (_ip_address != "" || _port != 0)
@@ -80,15 +88,20 @@ namespace Neodroid.Models {
     void Update() { // Update is called once per frame, updates like actor position needs to be done on the main thread
 
       if (_lastest_reaction != null && _lastest_reaction._reset) {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        Start();
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //Start();
+        if (_environment_configurator) {
+          _environment_configurator.ResetEnvironment ();
+          _environment_configurator.Configure ("IncreaseDifficulty");
+        }
       }
 
       if (_lastest_reaction != null && !_waiting_for_reaction ) {
         ExecuteReaction(_lastest_reaction);
-        if (!_continue_lastest_reaction_on_disconnect)
-          _lastest_reaction = null;
       }
+
+      if (!_continue_lastest_reaction_on_disconnect)
+        _lastest_reaction = null;
     }
 
     void MakeCameraRenderNewTexture(){

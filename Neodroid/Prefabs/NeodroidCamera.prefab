@@ -719,7 +719,7 @@ Light:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 3
   m_Range: 10
-  m_SpotAngle: 90
+  m_SpotAngle: 60
   m_CookieSize: 0
   m_Shadows:
     m_Type: 2
@@ -884,7 +884,7 @@ MonoBehaviour:
   lColor: {r: 0, g: 1, b: 0, a: 1}
   colors:
   - {r: 0, g: 1, b: 0.4, a: 0.74}
-  - {r: 1, g: 0, b: 0, a: 0.74}
+  - {r: 0, g: 1, b: 0.4, a: 0.74}
 --- !u!114 &114295651411325096
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1067,6 +1067,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 095ba5a6bea9c4dd580d36ce0b4d9117, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _replace_untagged_color: 1
+  _untagged_color: {r: 0, g: 0, b: 0, a: 1}
   _use_shared_materials: 1
   _colors_by_tag:
   - tag: Target

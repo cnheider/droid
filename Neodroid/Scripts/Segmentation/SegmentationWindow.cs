@@ -24,6 +24,8 @@ public class SegmentationWindow : EditorWindow {
       SerializedProperty tag_colors_property = serialised_object.FindProperty ("_segmentation_colors_by_tag");
       EditorGUILayout.PropertyField(tag_colors_property, new GUIContent(material_changer_by_tag.name), true); // True means show children
       material_changer_by_tag._use_shared_materials = EditorGUILayout.Toggle ("  -  Use Shared Materials",material_changer_by_tag._use_shared_materials);
+      material_changer_by_tag._replace_untagged_color = EditorGUILayout.Toggle ("  -  Replace untagged colors",material_changer_by_tag._replace_untagged_color);
+      material_changer_by_tag._untagged_color = EditorGUILayout.ColorField ("  -  Untagged color",material_changer_by_tag._untagged_color);
     }
 
     /*var material_changer = FindObjectOfType<ChangeMaterialOnRenderByTag> ();

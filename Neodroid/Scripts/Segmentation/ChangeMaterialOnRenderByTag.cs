@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 [ExecuteInEditMode]
 public class ChangeMaterialOnRenderByTag : MonoBehaviour {
  
+  public bool _replace_untagged_color = true;
+  public Color _untagged_color = Color.black;
   public bool _use_shared_materials = false;
   public SegmentationColorByTag[] _colors_by_tag;
 
@@ -45,7 +48,7 @@ public class ChangeMaterialOnRenderByTag : MonoBehaviour {
     }
 
     for (int i = 0; i < _all_renders.Length; i++) {
-      if(_tag_colors.ContainsKey(_all_renders[i].tag)){
+      if (_tag_colors.ContainsKey (_all_renders [i].tag)) {
         if (_use_shared_materials) {
           foreach (var mat in _all_renders[i].sharedMaterials) {
             _original_colors [i].AddFirst (mat.color);
@@ -63,24 +66,36 @@ public class ChangeMaterialOnRenderByTag : MonoBehaviour {
           }
         }*/
 
-        else{
+        else {
           foreach (var mat in _all_renders[i].materials) {
             _original_colors [i].AddFirst (mat.color);
             mat.color = _tag_colors [_all_renders [i].tag];
           }
         }
 
+      } else if (_replace_untagged_color) {
+        if (_use_shared_materials) {
+          foreach (var mat in _all_renders[i].sharedMaterials) {
+            _original_colors [i].AddFirst (mat.color);
+            mat.color = _untagged_color;
+          }
+        } else {
+          foreach (var mat in _all_renders[i].materials) {
+            _original_colors [i].AddFirst (mat.color);
+            mat.color = _untagged_color;
+          }
+        }
       }
     }
   }
   void Restore(){
     for (int i = 0; i < _all_renders.Length; i++) {
-      if (_tag_colors.ContainsKey (_all_renders [i].tag)){
+      if (_tag_colors.ContainsKey (_all_renders [i].tag)) {
         if (_use_shared_materials) {
-            foreach (var mat in _all_renders[i].sharedMaterials) {
-              mat.color = _original_colors [i].Last.Value;
-              _original_colors [i].RemoveLast ();
-            }
+          foreach (var mat in _all_renders[i].sharedMaterials) {
+            mat.color = _original_colors [i].Last.Value;
+            _original_colors [i].RemoveLast ();
+          }
         }/* else {
           foreach (var mat in _all_renders[i].sharedMaterials) {
             mat.color = _original_colors [i].Last.Value;
@@ -88,6 +103,18 @@ public class ChangeMaterialOnRenderByTag : MonoBehaviour {
           }
         }*/
         else {
+          foreach (var mat in _all_renders[i].materials) {
+            mat.color = _original_colors [i].Last.Value;
+            _original_colors [i].RemoveLast ();
+          }
+        }
+      } else if (_replace_untagged_color) {
+        if (_use_shared_materials) {
+          foreach (var mat in _all_renders[i].sharedMaterials) {
+            mat.color = _original_colors [i].Last.Value;
+            _original_colors [i].RemoveLast ();
+          }
+        } else {
           foreach (var mat in _all_renders[i].materials) {
             mat.color = _original_colors [i].Last.Value;
             _original_colors [i].RemoveLast ();
