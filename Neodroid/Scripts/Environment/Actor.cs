@@ -1,6 +1,4 @@
-﻿
-using MsgPack.Serialization;
-using Neodroid.Utilities;
+﻿using Neodroid.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 using Neodroid.Models.Motors;
@@ -10,16 +8,11 @@ namespace Neodroid.Models {
     public float[] _position;
     public float[] _rotation;
 
-    //[MessagePackKnownCollectionItemType("SingleAxisMotor", typeof(SingleAxisMotor))]
-    //[MessagePackKnownCollectionItemType("Motor", typeof(Motor))]
-    [MessagePackRuntimeType]
     public Dictionary<string, Motor> _motors;
+   
 
-    public Actor() { }
-
-    [MessagePackIgnore]
     public NeodroidAgent _agent_game_object;
-    [MessagePackIgnore]
+
     public bool _debug = false;
 
     private void Start() {

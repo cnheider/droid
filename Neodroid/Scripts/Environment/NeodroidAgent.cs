@@ -16,8 +16,8 @@ namespace Neodroid.Models {
     private Dictionary<string, Observer> _observers = new Dictionary<string, Observer>();
 
     // Public unity parameters
-    public string _ip_address;
-    public int _port;
+    public string _ip_address = "127.0.0.1";
+    public int _port = 5555;
     public bool _continue_lastest_reaction_on_disconnect = false;
 
     public ObjectiveFunction _objective_function;

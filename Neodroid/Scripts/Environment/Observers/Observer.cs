@@ -1,13 +1,11 @@
-﻿//using MsgPack.Serialization;
-using UnityEngine;
+﻿using UnityEngine;
 using Neodroid.Utilities;
 using System;
 
 namespace Neodroid.Models.Observers {
-  //[Serializable]
+  [Serializable]
   public class Observer : MonoBehaviour {
 
-    //[MessagePackIgnore]
     public NeodroidAgent _agent_game_object; //Is not send
 
     public byte[] _data;
@@ -16,7 +14,12 @@ namespace Neodroid.Models.Observers {
       NeodroidFunctions.MaybeRegisterComponent(_agent_game_object, this);
     }
       
-    public virtual byte[] GetData() { return _data; }
+    public virtual byte[] GetData() { 
+      if(_data != null)
+        return _data;
+      else
+        return new byte[]{};
+    }
 
     public float[] _position;
     public float[] _rotation;

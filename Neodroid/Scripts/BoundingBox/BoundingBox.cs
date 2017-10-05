@@ -10,8 +10,6 @@ using UnityEditor;
 public class BoundingBox : MonoBehaviour {
 
   public bool _collider_based = false;
-  //public bool _permanent = false;
-  //_permanent//onMouseDown
 
   public Color _line_color = new Color (0f, 1f, 0.4f, 0.74f);
 
@@ -39,6 +37,7 @@ public class BoundingBox : MonoBehaviour {
   private DrawBoundingBoxOnCamera _camera_lines;
 
   private MeshFilter[] _children_meshes;
+  private Collider[] _children_colliders;
 
   public Vector3[] BoundingBoxCoordinates{
     get{ return new Vector3[]{ _top_front_left, _top_front_right, _top_back_left, _top_back_right, _bottom_front_left, _bottom_front_right, _bottom_back_left, _bottom_back_right };}
@@ -79,6 +78,7 @@ public class BoundingBox : MonoBehaviour {
 
   void Reset () {
    _children_meshes = GetComponentsInChildren<MeshFilter> ();
+    _children_colliders = GetComponentsInChildren<Collider> ();
     CalculateBounds ();
     Start ();
   }
@@ -86,6 +86,7 @@ public class BoundingBox : MonoBehaviour {
   void Awake () {
     if (_setup_on_awake) {
      _children_meshes = GetComponentsInChildren<MeshFilter> ();
+     _children_colliders = GetComponentsInChildren<Collider> ();
       CalculateBounds ();
     }
   }
@@ -107,6 +108,7 @@ public class BoundingBox : MonoBehaviour {
     //startingBoundCenterLocal = transform.InverseTransformPoint (_bounds.center);
     Initialise ();
     _children_meshes = GetComponentsInChildren<MeshFilter> ();
+    _children_colliders = GetComponentsInChildren<Collider> ();
   }
 
   public void Initialise () {
@@ -117,6 +119,11 @@ public class BoundingBox : MonoBehaviour {
   void LateUpdate () {
     if (_children_meshes != GetComponentsInChildren<MeshFilter> ()) {
      _children_meshes = GetComponentsInChildren<MeshFilter> ();
+      CalculateBounds ();
+      Start ();
+    }
+    if (_children_colliders != GetComponentsInChildren<Collider> ()) {
+      _children_colliders = GetComponentsInChildren<Collider>  ();
       CalculateBounds ();
       Start ();
     }
@@ -139,43 +146,25 @@ public class BoundingBox : MonoBehaviour {
     //_bounds.center = transform.TransformPoint(startingBoundCenterLocal);
   }
 
-  void CalculateBounds () {
-    _rotation = transform.rotation;//object axis AABB
+  void FitBoundingBoxToChildrenColliders() {
 
-    BoxCollider coll = GetComponent<BoxCollider> ();
-    if (coll) {
-      GameObject co = new GameObject ("dummy");
-      co.transform.position = transform.position;
-      co.transform.localScale = transform.lossyScale;
-      BoxCollider cobc = co.AddComponent<BoxCollider> ();
-      //_rotation = transform.rotation;
-      cobc.center = coll.center;
-      cobc.size = coll.size;
-      _collider_bounds = cobc.bounds;
-      DestroyImmediate (co);
-      _collider_bounds_offset = _collider_bounds.center - transform.position;
+    var collider = this.GetComponent<BoxCollider>();
+    Bounds bounds = new Bounds(this.transform.position, Vector3.zero); // position and size
+
+    foreach (var col in _children_colliders) {
+      if (col != collider) {
+        bounds.Encapsulate (col.bounds);
+      }
     }
-    //return;
+      
+    _collider_bounds = bounds;
+    _collider_bounds_offset = bounds.center - this.transform.position;
+  }
 
-    /*isStatic =_children_meshes[0].GetComponent<Renderer>().isPartOfStaticBatch;
-            if (isStatic) _rotation = Quaternion.Euler(0f, 0f, 0f);//world axis
-            
-            if (isStatic)
-            {
-                _mesh_bounds =_children_meshes[0].GetComponent<Renderer>().bounds;
-                for (int i = 1; i <_children_meshes.Length; i++)
-                {
-                    _mesh_bounds.Encapsulate(meshes[i].GetComponent<Renderer>().bounds);
-                }
-                return;
-            }*/
-
-    //if (Vector3.Magnitude(_mesh_bounds.size)>0.01f) return; //because of lenghty calculations - don't recalculate again
+  void FitBoundingBoxToChildrenRenders (){
     _mesh_bounds = new Bounds ();
-
-    transform.rotation = Quaternion.Euler (0f, 0f, 0f);
-    for (int i = 0; i <_children_meshes.Length; i++) {
-      Mesh ms =_children_meshes [i].sharedMesh;
+    for (int i = 0; i < _children_meshes.Length; i++) {
+      Mesh ms = _children_meshes [i].sharedMesh;
       int vc = ms.vertexCount;
       for (int j = 0; j < vc; j++) {
         if (i == 0 && j == 0) {
@@ -185,18 +174,24 @@ public class BoundingBox : MonoBehaviour {
         }
       }
     }
-    transform.rotation = _rotation;
     _mesh_bounds_offset = _mesh_bounds.center - transform.position;
+  }
+
+  void CalculateBounds () {
+    _rotation = transform.rotation;
+    this.transform.rotation = Quaternion.Euler(0f,0f,0f);
+
+    if (_collider_based) {
+      FitBoundingBoxToChildrenColliders ();
+    } else {
+      FitBoundingBoxToChildrenRenders ();
+    }
+    transform.rotation = _rotation;
   }
 
   void RecalculatePoints () {
 
     if (_collider_based) {
-      /*if (_collider_bounds == null) {
-        Debug.LogError ("no collider - add collider to " + gameObject.name + " gameObject");
-        return;
-
-      }*/
       _bounds = _collider_bounds;
       _bounds_offset = _collider_bounds_offset;
     } else {
@@ -240,12 +235,15 @@ public class BoundingBox : MonoBehaviour {
 
     Vector3[] line;
     for (int i = 0; i < 4; i++) {
+      
       //width
       line = new Vector3[] { rot * _corners [2 * i] + pos, rot * _corners [2 * i + 1] + pos };
       lines.Add (line);
+
       //height
       line = new Vector3[] { rot * _corners [i] + pos, rot * _corners [i + 4] + pos };
       lines.Add (line);
+
       //depth
       line = new Vector3[] { rot * _corners [2 * i] + pos, rot * _corners [2 * i + 3 - 4 * (i % 2)] + pos };
       lines.Add (line);

@@ -1,18 +1,15 @@
 ﻿using Neodroid.Messaging.Messages;
 using UnityEngine;
 using Neodroid.Utilities;
-using MsgPack.Serialization;
 using System;
 
 namespace Neodroid.Models.Motors {
-  //[Serializable]
+  [Serializable]
   public class Motor : MonoBehaviour {
-    [MessagePackIgnore]
     public bool _debug = false;
     public bool _bidirectional = true;
     public float _energy_cost = 1;
     protected float _energy_spend_since_reset = 0;
-    [MessagePackIgnore]
     public Actor _actor_game_object;
     public string _motor_identifier = "";
 
