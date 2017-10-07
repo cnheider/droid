@@ -22,13 +22,13 @@ namespace Neodroid.Models.Motors {
         case MotorAxis.Z:
           transform.Translate(Vector3.forward * motion._strength, Space.Self);
           break;
-        case MotorAxis.rot_X:
+        case MotorAxis.Rot_X:
           transform.Rotate(Vector3.left, motion._strength, Space.Self);
           break;
-        case MotorAxis.rot_Y:
+        case MotorAxis.Rot_Y:
           transform.Rotate(Vector3.up, motion._strength, Space.Self);
           break;
-        case MotorAxis.rot_Z:
+        case MotorAxis.Rot_Z:
           transform.Rotate(Vector3.forward, motion._strength, Space.Self);
           break;
         default:

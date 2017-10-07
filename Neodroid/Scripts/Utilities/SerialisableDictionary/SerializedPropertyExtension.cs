@@ -1,4 +1,7 @@
+
+#if UNITY_EDITOR
 using UnityEditor;
+
 
 public static class SerializedPropertyExtension {
 
@@ -130,3 +133,4 @@ public static class SerializedPropertyExtension {
     }
   }
 }
+#endif

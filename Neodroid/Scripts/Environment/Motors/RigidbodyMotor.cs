@@ -15,11 +15,11 @@ namespace Neodroid.Models.Motors {
     }
 
     public override void ApplyMotion(MotorMotion motion) {
-      if (_debug) Debug.Log("Applying " + motion._strength.ToString() + " To " + name);
       if (!_bidirectional && motion._strength < 0) {
         Debug.Log("Motor is not bi-directional. It does not accept negative input.");
         return; // Do nothing
       }
+      if (_debug) Debug.Log("Applying " + motion._strength.ToString() + " To " + name);
       switch (_axis_of_motion) {
         case MotorAxis.X:
           _rigidbody.AddForce(Vector3.left * motion._strength);
@@ -30,15 +30,15 @@ namespace Neodroid.Models.Motors {
         case MotorAxis.Z:
           _rigidbody.AddForce(Vector3.forward * motion._strength);
           break;
-        case MotorAxis.rot_X:
+        case MotorAxis.Rot_X:
           _rigidbody.AddTorque(Vector3.left * motion._strength);
           //GetComponent<Rigidbody>().AddForceAtPosition(Vector3.forward * motion._strength, transform.position);
           //GetComponent<Rigidbody>().AddRelativeTorque(Vector3.up * motion._strength);
           break;
-        case MotorAxis.rot_Y:
+        case MotorAxis.Rot_Y:
           _rigidbody.AddTorque(Vector3.up* motion._strength);
           break;
-        case MotorAxis.rot_Z:
+        case MotorAxis.Rot_Z:
           _rigidbody.AddTorque(Vector3.forward* motion._strength);
           break;
         default:

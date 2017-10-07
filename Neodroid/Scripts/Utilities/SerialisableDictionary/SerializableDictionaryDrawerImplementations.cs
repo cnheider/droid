@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
- 
+#if UNITY_EDITOR
 using UnityEditor;
+
  
 [UnityEditor.CustomPropertyDrawer(typeof(StringIntDictionary))]
 public class StringIntDictionaryDrawer : SerializableDictionaryDrawer<string, int> {
@@ -28,3 +29,4 @@ public class StringGameObjectDictionaryDrawer : SerializableDictionaryDrawer<str
   }
 }
 internal class SerializableStringGameObjectTemplate : SerializableKeyValueTemplate<string, GameObject> {}
+#endif

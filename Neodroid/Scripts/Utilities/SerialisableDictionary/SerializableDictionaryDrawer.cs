@@ -1,6 +1,7 @@
 using System.Collections.Generic;
  
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
  
 public abstract class SerializableKeyValueTemplate<K, V> : ScriptableObject {
@@ -178,3 +179,4 @@ public abstract class SerializableDictionaryDrawer<K, V> : PropertyDrawer {
     }
  
 }
+#endif
