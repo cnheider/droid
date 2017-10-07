@@ -3200,7 +3200,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.19661105, g: 0.46937096, b: 1, a: 1}
+    - _Color: {r: 0.19657451, g: 0.46937096, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!43 &1342957775
 Mesh:
@@ -3476,7 +3476,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.39137235, g: 0.3076166, b: 0.70823246, a: 1}
+    - _Color: {r: 0.39137235, g: 0.30752537, b: 0.70823246, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &1384747297
 GameObject:
@@ -4892,7 +4892,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.7716104, g: 0.50602424, b: 0.41660485, a: 1}
+    - _Color: {r: 0.7716104, g: 0.50602424, b: 0.41655493, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1001 &1941635717
 Prefab:

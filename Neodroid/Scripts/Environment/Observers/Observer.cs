@@ -8,6 +8,8 @@ namespace Neodroid.Models.Observers {
 
     public NeodroidAgent _agent_game_object; //Is not send
 
+    public bool _debug = false;
+
     public byte[] _data;
 
     protected void AddToAgent() {
