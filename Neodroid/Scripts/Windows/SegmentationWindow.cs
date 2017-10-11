@@ -16,7 +16,7 @@ namespace Neodroid.Windows {
     public SegmentationColorByTag[] _segmentation_colors_by_tag;
     public SegmentationColorByInstance[] _segmentation_colors_by_instance;
 
-
+  Vector2 _scroll_position;
   Texture _icon;
 
     void OnEnable () {
@@ -28,6 +28,7 @@ namespace Neodroid.Windows {
       GUILayout.Label ("Segmentation Colors", EditorStyles.boldLabel);
       SerializedObject serialised_object = new SerializedObject (this);
    
+  _scroll_position = EditorGUILayout.BeginScrollView (_scroll_position);
       EditorGUILayout.BeginVertical ("Box");
       GUILayout.Label ("By Tag");
       var material_changers_by_tag = FindObjectsOfType<ChangeMaterialOnRenderByTag> ();
@@ -57,7 +58,7 @@ namespace Neodroid.Windows {
         material_changer_by_instance._use_shared_materials = EditorGUILayout.Toggle ("  -  Use Shared Materials", material_changer_by_instance._use_shared_materials);
       }
       EditorGUILayout.EndVertical ();
-
+  EditorGUILayout.EndScrollView ();
       serialised_object.ApplyModifiedProperties (); // Remember to apply modified properties
     }
   }

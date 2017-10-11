@@ -19,6 +19,7 @@ namespace Neodroid.Windows {
     bool[] _show_camera_properties;
 
   Texture _icon;
+  Vector2 _scroll_position;
 
 
     void OnEnable () {
@@ -38,6 +39,7 @@ namespace Neodroid.Windows {
     void OnGUI () {
       _cameras = FindObjectsOfType<SynchroniseCameraProperties> ();
       SerializedObject serialised_object = new SerializedObject (this);
+  _scroll_position = EditorGUILayout.BeginScrollView (_scroll_position);
       if (_show_camera_properties != null) {
         for (int i = 0; i < _show_camera_properties.Length; i++) {
           _show_camera_properties [i] = EditorGUILayout.Foldout (_show_camera_properties [i], _cameras [i].name);
@@ -50,10 +52,9 @@ namespace Neodroid.Windows {
           }
         }
       }
-
+  EditorGUILayout.EndScrollView ();
       serialised_object.ApplyModifiedProperties (); // Remember to apply modified properties
     }
-
     public void OnInspectorUpdate () {
       this.Repaint ();
     }

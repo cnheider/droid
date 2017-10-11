@@ -31,12 +31,14 @@ The unity comes quite selection of scripts and tools for setting up and experime
 - wheel motors for vehicles
 
 ### Many Custom Windows For Quick Prototyping
-![windows](images/windows.png)
-
+![windows](images/neo_sync.png)
+![windows](images/neo_segment.png)
+![windows](images/neo_tex.png)
+![windows](images/neo_debug.png)
+![windows](images/neo_env.png)
 
 # To Do's
 - [ ] Exponential Proximity Regularisation Penalty
-- [ ] Reset properly
 - [ ] Make an option for transforms all coordinates into camera relative or other reference point
 - [ ] Be able to send a configure reset to change the environment, like frame skips/sampling rate, time scale, problem difficulty, evaluation function paramaters(term weighting)
 
