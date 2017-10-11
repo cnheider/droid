@@ -1,7 +1,7 @@
-﻿using Neodroid.Models;
-using Neodroid.Models.Observers;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Neodroid.NeodroidEnvironment;
+using Neodroid.NeodroidEnvironment.Observers;
 
 namespace Neodroid.Messaging.Messages {
   [Serializable]
@@ -15,7 +15,7 @@ namespace Neodroid.Messaging.Messages {
 
     public float _reward_for_last_step;
 
-    public EnvironmentState(float time_since_reset, float total_energy_spent_since_reset, Dictionary<string, Actor> actors, Dictionary<string, Observer> observers, float reward_for_last_step) {
+    public EnvironmentState (float time_since_reset, float total_energy_spent_since_reset, Dictionary<string, Actor> actors, Dictionary<string, Observer> observers, float reward_for_last_step) {
       _time_since_reset = time_since_reset;
       _total_energy_spent_since_reset = total_energy_spent_since_reset;
       _actors = actors;
@@ -23,7 +23,7 @@ namespace Neodroid.Messaging.Messages {
       _reward_for_last_step = reward_for_last_step;
     }
 
-    public EnvironmentState() {
+    public EnvironmentState () {
 
     }
   }

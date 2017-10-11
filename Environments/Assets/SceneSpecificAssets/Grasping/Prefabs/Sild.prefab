@@ -8,7 +8,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 406026}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: T10
   m_TagString: Bone
   m_Icon: {fileID: 0}
@@ -26,9 +26,9 @@ GameObject:
   - component: {fileID: 6442960}
   - component: {fileID: 5483224}
   - component: {fileID: 15334522}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Collider_Head
-  m_TagString: FishPart
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 493910}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: T6
   m_TagString: Bone
   m_Icon: {fileID: 0}
@@ -59,9 +59,9 @@ GameObject:
   - component: {fileID: 6430650}
   - component: {fileID: 5469112}
   - component: {fileID: 15359414}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Collider_T7
-  m_TagString: FishPart
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -77,9 +77,9 @@ GameObject:
   - component: {fileID: 6420806}
   - component: {fileID: 5436780}
   - component: {fileID: 153767507418107060}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Collider_T5
-  m_TagString: FishPart
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -92,7 +92,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 489652}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Stomach1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 485304}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: T8
   m_TagString: Bone
   m_Icon: {fileID: 0}
@@ -125,9 +125,9 @@ GameObject:
   - component: {fileID: 6433444}
   - component: {fileID: 5457010}
   - component: {fileID: 15319564}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Collider_T1
-  m_TagString: FishPart
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -143,9 +143,9 @@ GameObject:
   - component: {fileID: 6433398}
   - component: {fileID: 5419898}
   - component: {fileID: 15381860}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Collider_T6
-  m_TagString: FishPart
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -158,7 +158,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 446140}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: RightFin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -173,7 +173,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 493532}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: HeadBone
   m_TagString: Bone
   m_Icon: {fileID: 0}
@@ -188,7 +188,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 403898}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Stomach2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -203,7 +203,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 445366}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: T5
   m_TagString: Bone
   m_Icon: {fileID: 0}
@@ -218,7 +218,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 483464}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: T4
   m_TagString: Bone
   m_Icon: {fileID: 0}
@@ -233,7 +233,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 432480}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: LeftFin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,9 +251,9 @@ GameObject:
   - component: {fileID: 6493658}
   - component: {fileID: 5470392}
   - component: {fileID: 15379288}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Collider_T3
-  m_TagString: FishPart
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -266,7 +266,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 403202}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: BackFin2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -281,7 +281,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 467326}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: T2
   m_TagString: Bone
   m_Icon: {fileID: 0}
@@ -301,9 +301,9 @@ GameObject:
   - component: {fileID: 114180034424719996}
   - component: {fileID: 114640500125601550}
   - component: {fileID: 136378109029018268}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Sild
-  m_TagString: ignored_by_sub_collider_fish
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -319,9 +319,9 @@ GameObject:
   - component: {fileID: 6427278}
   - component: {fileID: 5436184}
   - component: {fileID: 15378240}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Collider_T8
-  m_TagString: FishPart
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -337,9 +337,9 @@ GameObject:
   - component: {fileID: 6463786}
   - component: {fileID: 5453924}
   - component: {fileID: 15367128}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Collider_T2
-  m_TagString: FishPart
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -352,7 +352,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 495734}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: TailBottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -367,7 +367,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 416094}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: T1
   m_TagString: Bone
   m_Icon: {fileID: 0}
@@ -382,7 +382,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 490828}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: BackFin1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -397,7 +397,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 413568}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: TailTop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -415,9 +415,9 @@ GameObject:
   - component: {fileID: 6487212}
   - component: {fileID: 5470742}
   - component: {fileID: 15320504}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Collider_T9
-  m_TagString: FishPart
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -431,9 +431,9 @@ GameObject:
   m_Component:
   - component: {fileID: 471200}
   - component: {fileID: 13718900}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Herring_Fish_pivot
-  m_TagString: Untagged
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -446,7 +446,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 409210}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: T7
   m_TagString: Bone
   m_Icon: {fileID: 0}
@@ -464,9 +464,9 @@ GameObject:
   - component: {fileID: 6433838}
   - component: {fileID: 5442964}
   - component: {fileID: 15369440}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Collider_T4
-  m_TagString: FishPart
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -479,7 +479,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 445018}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: T3
   m_TagString: Bone
   m_Icon: {fileID: 0}
@@ -494,7 +494,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 468322}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: T9
   m_TagString: Bone
   m_Icon: {fileID: 0}
@@ -512,9 +512,9 @@ GameObject:
   - component: {fileID: 6450576}
   - component: {fileID: 5478398}
   - component: {fileID: 153827782229685636}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Collider_T10
-  m_TagString: FishPart
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -733,8 +733,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 152986}
-  m_LocalRotation: {x: 0.46953535, y: -0.2928806, z: 0.16859266, w: 0.81568015}
-  m_LocalPosition: {x: 0.447, y: 1.633, z: 0.462}
+  m_LocalRotation: {x: -0.11278764, y: -0.021670742, z: -0.21322069, w: -0.97023004}
+  m_LocalPosition: {x: 0.05, y: 0.578, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 407818}
@@ -751,7 +751,7 @@ Transform:
   - {fileID: 471200}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -75.77, y: -415.84, z: -76.4}
+  m_LocalEulerAnglesHint: {x: 12.1, y: -354.71, z: 25.35}
 --- !u!4 &452622
 Transform:
   m_ObjectHideFlags: 1
@@ -1299,7 +1299,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 7fae61fa2ea421245bf136cb9f6675bf, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1360,7 +1360,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0.0136, z: -0}
   m_Axis: {x: 0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0000000055879354, y: -0.012060041, z: -0.0012500267}
+  m_ConnectedAnchor: {x: -0.0000000121071935, y: -0.012060018, z: -0.0012500621}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -1454,7 +1454,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: -0.0097, z: -0}
   m_Axis: {x: 0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0000000055879354, y: 0.008200006, z: -0.0010999506}
+  m_ConnectedAnchor: {x: 0.000000010244548, y: 0.008199998, z: -0.0010999283}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -1548,7 +1548,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0.012, z: -0}
   m_Axis: {x: 0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.000000009313226, y: -0.01784006, z: 0.00038996153}
+  m_ConnectedAnchor: {x: -0.000000009313226, y: -0.017840015, z: 0.00038996898}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -1642,7 +1642,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: -0.0112, z: -0}
   m_Axis: {x: 0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -4.656613e-10, y: 0.012800047, z: 0.00039993972}
+  m_ConnectedAnchor: {x: -0.000000007450581, y: 0.012800014, z: 0.00039992854}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -1736,7 +1736,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0.0114, z: -0}
   m_Axis: {x: 0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.0000000018626451, y: -0.01246001, z: -0.0017199386}
+  m_ConnectedAnchor: {x: 0.000000009313226, y: -0.012460003, z: -0.001719933}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -1830,7 +1830,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0.0113, z: -0}
   m_Axis: {x: 0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0000000037252903, y: -0.013800001, z: -0.0016000196}
+  m_ConnectedAnchor: {x: 0.0000000020954758, y: -0.013800023, z: -0.0016000355}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -1924,7 +1924,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: -0.009, z: -0}
   m_Axis: {x: 0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.000000004656613, y: 0.010799971, z: -0.00070001837}
+  m_ConnectedAnchor: {x: 0, y: 0.010800009, z: -0.00069999695}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -2018,7 +2018,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0.012, z: -0}
   m_Axis: {x: 0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.000000006519258, y: -0.011260026, z: -0.0020500608}
+  m_ConnectedAnchor: {x: -9.313226e-10, y: -0.011259996, z: -0.0020500403}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -2112,7 +2112,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: -0.0131, z: -0}
   m_Axis: {x: 0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.000000004307367, y: 0.014000047, z: 0.0018999614}
+  m_ConnectedAnchor: {x: 0.000000007916242, y: 0.01400003, z: 0.0018999828}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -2214,7 +2214,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 152986}
   serializedVersion: 2
-  m_Mass: 0.0000001
+  m_Mass: 0.18
   m_Drag: 1
   m_AngularDrag: 1
   m_UseGravity: 0
@@ -2236,9 +2236,9 @@ MonoBehaviour:
   _collider_based: 1
   _line_color: {r: 0.32352942, g: 1, b: 0.58012176, a: 0.74}
   _collider_bounds:
-    m_Center: {x: 0.44683748, y: 1.6312225, z: 0.483948}
-    m_Extent: {x: 0.016257524, y: 0.039096594, z: 0.13980806}
-  _collider_bounds_offset: {x: -0.00016251206, y: -0.0017775297, z: 0.02194798}
+    m_Center: {x: 0.0498375, y: 0.5762225, z: 0.021947965}
+    m_Extent: {x: 0.016257502, y: 0.039096534, z: 0.13980807}
+  _collider_bounds_offset: {x: -0.00016250089, y: -0.0017775297, z: 0.021947965}
   _mesh_bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
@@ -2257,6 +2257,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent_game_object: {fileID: 0}
+  _debug: 0
   _data: 
   _position: []
   _rotation: []
@@ -2272,16 +2273,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent_game_object: {fileID: 0}
+  _debug: 0
   _data: 
   _position:
-  - 0.447
-  - 1.633
-  - 0.462
+  - 0.05
+  - 0.578
+  - 0
   _rotation:
-  - 0.46953535
-  - -0.2928806
-  - 0.16859266
-  - 0.81568015
+  - -0.11278764
+  - -0.021670742
+  - -0.21322069
+  - -0.97023004
 --- !u!136 &136378109029018268
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -2305,7 +2307,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0000000019790605, y: 0.002000043, z: 0.004399976}
+  m_ConnectedAnchor: {x: -0.00000001132139, y: 0.0020000115, z: 0.004399961}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -2399,7 +2401,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: -0.0097, z: -0}
   m_Axis: {x: 0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0000000055879354, y: 0.009900064, z: -0.0021999767}
+  m_ConnectedAnchor: {x: -0.000000009313226, y: 0.009899997, z: -0.0022000307}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0

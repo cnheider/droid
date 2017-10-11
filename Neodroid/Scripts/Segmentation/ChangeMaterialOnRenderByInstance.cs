@@ -16,8 +16,8 @@ public class ChangeMaterialOnRenderByInstance : MonoBehaviour {
     get{ return _instance_colors; }
   }
 
-  public SegmentationColorByInstance[] InstanceColors{
-    get{
+  public SegmentationColorByInstance[] InstanceColors {
+    get {
       if (_instance_colors != null) {
         var instance_color_array = new SegmentationColorByInstance[_instance_colors.Keys.Count];
         int i = 0;
@@ -33,9 +33,9 @@ public class ChangeMaterialOnRenderByInstance : MonoBehaviour {
       return null;
     }
 
-    set{
+    set {
       foreach (SegmentationColorByInstance seg in value) {
-        _instance_colors[seg.game_object] = seg.color;
+        _instance_colors [seg.game_object] = seg.color;
       }
     }
   }
@@ -79,19 +79,23 @@ public class ChangeMaterialOnRenderByInstance : MonoBehaviour {
     for (int i = 0; i < _all_renders.Length; i++) {
       if (_use_shared_materials) {
         foreach (var mat in _all_renders[i].sharedMaterials) {
-          _original_colors [i].AddFirst (mat.color);
-          mat.color = _instance_colors [_all_renders [i].gameObject];
+          if (mat != null) {
+            _original_colors [i].AddFirst (mat.color);
+            mat.color = _instance_colors [_all_renders [i].gameObject];
+          }
         }
       } else {
         foreach (var mat in _all_renders[i].materials) {
-          _original_colors [i].AddFirst (mat.color);
-          //var temporary_material = new Material (mat);
-          //temporary_material.hideFlags = HideFlags.DontSave;
-          //temporary_material.name = "_TemporaryMaterial" + GetInstanceID ();
-          //temporary_material.color = _instance_colors [_all_renders [i].gameObject];
-          //_instance_materials [i].AddFirst (temporary_material);
-          //_all_renders [i].materials [j] = temporary_material;
-          mat.color = _instance_colors [_all_renders [i].gameObject];
+          if (mat != null) {
+            _original_colors [i].AddFirst (mat.color);
+            //var temporary_material = new Material (mat);
+            //temporary_material.hideFlags = HideFlags.DontSave;
+            //temporary_material.name = "_TemporaryMaterial" + GetInstanceID ();
+            //temporary_material.color = _instance_colors [_all_renders [i].gameObject];
+            //_instance_materials [i].AddFirst (temporary_material);
+            //_all_renders [i].materials [j] = temporary_material;
+            mat.color = _instance_colors [_all_renders [i].gameObject];
+          }
         }
       }
     }
@@ -101,14 +105,18 @@ public class ChangeMaterialOnRenderByInstance : MonoBehaviour {
     for (int i = 0; i < _all_renders.Length; i++) {
       if (_use_shared_materials) {
         foreach (var mat in _all_renders[i].sharedMaterials) {
-          mat.color = _original_colors [i].Last.Value;
-          _original_colors [i].RemoveLast ();
+          if (mat != null) {
+            mat.color = _original_colors [i].Last.Value;
+            _original_colors [i].RemoveLast ();
+          }
         }
       } else {
         foreach (var mat in _all_renders[i].materials) {
-          mat.color = _original_colors [i].Last.Value;
-          _original_colors [i].RemoveLast ();
-          //_instance_materials [i].RemoveLast ();
+          if (mat != null) {
+            mat.color = _original_colors [i].Last.Value;
+            _original_colors [i].RemoveLast ();
+            //_instance_materials [i].RemoveLast ();
+          }
         }
       }
     }

@@ -3,36 +3,36 @@
 namespace Neodroid.Utilities {
   public static class NeodroidFunctions {
     
-    public static Texture2D RenderTextureImage(Camera camera) { // From unity documentation, https://docs.unity3d.com/ScriptReference/Camera.Render.html
+    public static Texture2D RenderTextureImage (Camera camera) { // From unity documentation, https://docs.unity3d.com/ScriptReference/Camera.Render.html
       RenderTexture current_render_texture = RenderTexture.active;
       RenderTexture.active = camera.targetTexture;
-      camera.Render();
-      Texture2D texture = new Texture2D(camera.targetTexture.width, camera.targetTexture.height);
-      texture.ReadPixels(new Rect(0, 0, camera.targetTexture.width, camera.targetTexture.height), 0, 0);
-      texture.Apply();
+      camera.Render ();
+      Texture2D texture = new Texture2D (camera.targetTexture.width, camera.targetTexture.height);
+      texture.ReadPixels (new Rect (0, 0, camera.targetTexture.width, camera.targetTexture.height), 0, 0);
+      texture.Apply ();
       RenderTexture.active = current_render_texture;
       return texture;
     }
 
-    public static string ColorArrayToString(Color[] colors) {
+    public static string ColorArrayToString (Color[] colors) {
       string s = "";
-      foreach(Color color in colors) {
-        s += color.ToString();
+      foreach (Color color in colors) {
+        s += color.ToString ();
       }
       return s;
     }
 
-    public static void MaybeRegisterComponent<Recipient, Caller>(Recipient r, Caller c) where Recipient : Object, HasRegister<Caller> where Caller : Component {
+    public static void MaybeRegisterComponent<Recipient, Caller> (Recipient r, Caller c) where Recipient : Object, HasRegister<Caller> where Caller : Component {
       Recipient component;
       if (r != null) {
         component = r;  //.GetComponent<Recipient>();
-      } else if (c.GetComponentInParent<Recipient>() != null) {
-        component = c.GetComponentInParent<Recipient>();
+      } else if (c.GetComponentInParent<Recipient> () != null) {
+        component = c.GetComponentInParent<Recipient> ();
       } else {
-        component = Object.FindObjectOfType<Recipient>();
+        component = Object.FindObjectOfType<Recipient> ();
       }
       if (component != null)
-        component.Register(c);
+        component.Register (c);
     }
 
 

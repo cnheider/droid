@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 54070493165127892}
   m_Layer: 0
   m_Name: SliderMotor
-  m_TagString: ignored_by_sub_collider_fish
+  m_TagString: Gripper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 65076433725961616}
   m_Layer: 0
   m_Name: GrabRegion
-  m_TagString: ignored_by_sub_collider_fish
+  m_TagString: Gripper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 23393454201074908}
   m_Layer: 0
   m_Name: House
-  m_TagString: ignored_by_sub_collider_fish
+  m_TagString: Gripper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 65165959765414572}
   m_Layer: 0
   m_Name: BeginGrab
-  m_TagString: ignored_by_sub_collider_fish
+  m_TagString: Gripper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 54854293887807104}
   m_Layer: 0
   m_Name: Claw1
-  m_TagString: ignored_by_sub_collider_fish
+  m_TagString: Gripper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 4183804641178892}
   m_Layer: 0
   m_Name: ClosedPosition
-  m_TagString: ignored_by_sub_collider_fish
+  m_TagString: Gripper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 54152112489252774}
   m_Layer: 0
   m_Name: Claw2
-  m_TagString: ignored_by_sub_collider_fish
+  m_TagString: Gripper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -140,10 +140,10 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4800563932091128}
-  - component: {fileID: 114169842571318398}
+  - component: {fileID: 114182778633683764}
   m_Layer: 0
   m_Name: ScriptedGripper
-  m_TagString: ignored_by_sub_collider_fish
+  m_TagString: Gripper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -247,7 +247,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1860348953583632}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 1}
+  m_LocalPosition: {x: 0, y: 5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4008384475306948}
@@ -273,7 +273,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 280f8dc3d1d430d40a018522d7324821, type: 2}
+  - {fileID: 2100000, guid: 554afee2009d74546854c10f28a98e69, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -307,7 +307,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: ef0d4d9672784254cbc6041a63568efb, type: 2}
+  - {fileID: 2100000, guid: a7df0797d7ac7744dbf90dd6a0c65d1e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -341,7 +341,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 280f8dc3d1d430d40a018522d7324821, type: 2}
+  - {fileID: 2100000, guid: 554afee2009d74546854c10f28a98e69, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -375,7 +375,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 280f8dc3d1d430d40a018522d7324821, type: 2}
+  - {fileID: 2100000, guid: 554afee2009d74546854c10f28a98e69, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -534,15 +534,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 0.6}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114169842571318398
+--- !u!114 &114182778633683764
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1860348953583632}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d66e4cc28e3e12648bec661c6b801b7e, type: 3}
+  m_Script: {fileID: 11500000, guid: 7723aab3d989b479397a1242ef087ed2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _motor: {fileID: 1053867456440224}
@@ -552,12 +552,14 @@ MonoBehaviour:
   _claw_2: {fileID: 1536128654312304}
   _closed_motor_transform: {fileID: 4183804641178892}
   _obstacle_spawner: {fileID: 0}
+  _bezier_curve_prefab: {fileID: 114827585107109630, guid: 4d46ef7bd5fdf44b5aa23a01e439185a,
+    type: 2}
   _search_boundary: 10
-  _agent_size: 0.5
+  _agent_size: 0.2
   _grid_granularity: 0.3
-  _speed: 1
+  _speed: 0.5
   _precision: 0.01
-  _approach_distance: 0.1
-  _wait_for_resting_environment: 1
-  _debug: 1
+  _approach_distance: 0.5
+  _wait_for_resting_environment: 0
+  _debug: 0
   _draw_search_boundary: 1

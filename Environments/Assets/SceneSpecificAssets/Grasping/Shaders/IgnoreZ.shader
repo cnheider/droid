@@ -1,6 +1,6 @@
 ﻿Shader "Custom/IgnoreZ"{ //Draws objects with shader on top always
   Properties{
-    _Color1("color1", Color) = (1,1,1,1)
+    _Color("Color", Color) = (1,1,1,1)
     _Color2("Color2", Color) = (1,1,1,1)
   }
     SubShader{
@@ -9,7 +9,7 @@
       }
       Pass{
         ZTest Greater
-        Color[_Color1]
+        Color[_Color]
       }
       Pass{
         ZTest Less

@@ -1,4 +1,4 @@
-﻿using Neodroid.Models;
+﻿using Neodroid.NeodroidEnvironment;
 using UnityEngine;
 
 namespace Neodroid.Evaluation {
@@ -6,13 +6,13 @@ namespace Neodroid.Evaluation {
 
     public Transform g1, g2;
 
-    public override float Evaluate() {
-      return Vector3.Distance(g1.position, g2.position);
+    public override float Evaluate () {
+      return Vector3.Distance (g1.position, g2.position);
     }
 
-    private void Start() {
-      if(g1 == null) {
-        g1 = FindObjectOfType<Actor>().transform;
+    private void Start () {
+      if (g1 == null) {
+        g1 = FindObjectOfType<Actor> ().transform;
       }
 
       if (g2 == null) {

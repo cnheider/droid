@@ -1,4 +1,7 @@
-﻿public interface Term {
-  string name();
-  float evaluate();
+﻿namespace Neodroid.Evaluation {
+  public interface Term {
+    string name ();
+
+    float evaluate ();
+  }
 }

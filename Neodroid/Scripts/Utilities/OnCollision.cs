@@ -1,16 +1,19 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
-public class OnChildCollision : MonoBehaviour {
+namespace Neodroid.Utilities {
+  [RequireComponent (typeof(Collider))]
+  public class ChildCollisionPublisher : MonoBehaviour {
 
-  public delegate void OnCollisionDelegate(Collision collision);
+    public delegate void OnCollisionDelegate (Collision collision);
 
-  OnCollisionDelegate _collision_delegate;
-  public OnCollisionDelegate CollisionDelegate {
-    set { _collision_delegate = value; }
-  }
+    OnCollisionDelegate _collision_delegate;
 
-  private void OnCollisionEnter(Collision collision) {
-    _collision_delegate(collision);
+    public OnCollisionDelegate CollisionDelegate {
+      set { _collision_delegate = value; }
+    }
+
+    private void OnCollisionEnter (Collision collision) {
+      _collision_delegate (collision);
+    }
   }
 }

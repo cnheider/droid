@@ -380,9 +380,9 @@ GameObject:
   - component: {fileID: 136315483943487014}
   - component: {fileID: 23743567595143598}
   - component: {fileID: 54838223005454054}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Capsule
-  m_TagString: Untagged
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -736,7 +736,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4258788425092716}
   - component: {fileID: 114186645161548912}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Sardin
   m_TagString: Target
   m_Icon: {fileID: 0}
@@ -2731,7 +2731,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 0d24eac071b243c41bb45eac3cf6e381, type: 2}
+  - {fileID: 2100000, guid: 7fae61fa2ea421245bf136cb9f6675bf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

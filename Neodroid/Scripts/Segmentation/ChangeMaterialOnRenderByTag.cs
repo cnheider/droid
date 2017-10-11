@@ -15,21 +15,21 @@ public class ChangeMaterialOnRenderByTag : MonoBehaviour {
   LinkedList<Color>[] _original_colors;
   Renderer[] _all_renders;
 
-  public SegmentationColorByTag[] SegmentationColorsByTag{
+  public SegmentationColorByTag[] SegmentationColorsByTag {
     get{ return _colors_by_tag; }
   }
 
-	// Use this for initialization
-	void Start () {
-	}
+  // Use this for initialization
+  void Start () {
+  }
 	
-	// Update is called once per frame
-	void Update () {
+  // Update is called once per frame
+  void Update () {
     Setup ();
-	}
+  }
 
-  void Setup(){
-    _all_renders = FindObjectsOfType<Renderer>();
+  void Setup () {
+    _all_renders = FindObjectsOfType<Renderer> ();
 
     _tag_colors = new Dictionary<string, Color> ();
     if (_colors_by_tag.Length > 0) {
@@ -41,18 +41,20 @@ public class ChangeMaterialOnRenderByTag : MonoBehaviour {
     }
   }
 
-  void Change(){
+  void Change () {
     _original_colors = new LinkedList<Color>[_all_renders.Length];
-    for( int i = 0; i < _original_colors.Length; i++ ) {
-      _original_colors[i] = new LinkedList<Color>();
+    for (int i = 0; i < _original_colors.Length; i++) {
+      _original_colors [i] = new LinkedList<Color> ();
     }
 
     for (int i = 0; i < _all_renders.Length; i++) {
       if (_tag_colors.ContainsKey (_all_renders [i].tag)) {
         if (_use_shared_materials) {
           foreach (var mat in _all_renders[i].sharedMaterials) {
-            _original_colors [i].AddFirst (mat.color);
-            mat.color = _tag_colors [_all_renders [i].tag];
+            if (mat != null) {
+              _original_colors [i].AddFirst (mat.color);
+              mat.color = _tag_colors [_all_renders [i].tag];
+            }
           }
         
         } /*else {
@@ -68,33 +70,42 @@ public class ChangeMaterialOnRenderByTag : MonoBehaviour {
 
         else {
           foreach (var mat in _all_renders[i].materials) {
-            _original_colors [i].AddFirst (mat.color);
-            mat.color = _tag_colors [_all_renders [i].tag];
+            if (mat != null) {
+              _original_colors [i].AddFirst (mat.color);
+              mat.color = _tag_colors [_all_renders [i].tag];
+            }
           }
         }
 
       } else if (_replace_untagged_color) {
         if (_use_shared_materials) {
           foreach (var mat in _all_renders[i].sharedMaterials) {
-            _original_colors [i].AddFirst (mat.color);
-            mat.color = _untagged_color;
+            if (mat != null) {
+              _original_colors [i].AddFirst (mat.color);
+              mat.color = _untagged_color;
+            }
           }
         } else {
           foreach (var mat in _all_renders[i].materials) {
-            _original_colors [i].AddFirst (mat.color);
-            mat.color = _untagged_color;
+            if (mat != null) {
+              _original_colors [i].AddFirst (mat.color);
+              mat.color = _untagged_color;
+            }
           }
         }
       }
     }
   }
-  void Restore(){
+
+  void Restore () {
     for (int i = 0; i < _all_renders.Length; i++) {
       if (_tag_colors.ContainsKey (_all_renders [i].tag)) {
         if (_use_shared_materials) {
           foreach (var mat in _all_renders[i].sharedMaterials) {
-            mat.color = _original_colors [i].Last.Value;
-            _original_colors [i].RemoveLast ();
+            if (mat != null) {
+              mat.color = _original_colors [i].Last.Value;
+              _original_colors [i].RemoveLast ();
+            }
           }
         }/* else {
           foreach (var mat in _all_renders[i].sharedMaterials) {
@@ -104,20 +115,26 @@ public class ChangeMaterialOnRenderByTag : MonoBehaviour {
         }*/
         else {
           foreach (var mat in _all_renders[i].materials) {
-            mat.color = _original_colors [i].Last.Value;
-            _original_colors [i].RemoveLast ();
+            if (mat != null) {
+              mat.color = _original_colors [i].Last.Value;
+              _original_colors [i].RemoveLast ();
+            }
           }
         }
       } else if (_replace_untagged_color) {
         if (_use_shared_materials) {
           foreach (var mat in _all_renders[i].sharedMaterials) {
-            mat.color = _original_colors [i].Last.Value;
-            _original_colors [i].RemoveLast ();
+            if (mat != null) {
+              mat.color = _original_colors [i].Last.Value;
+              _original_colors [i].RemoveLast ();
+            }
           }
         } else {
           foreach (var mat in _all_renders[i].materials) {
-            mat.color = _original_colors [i].Last.Value;
-            _original_colors [i].RemoveLast ();
+            if (mat != null) {
+              mat.color = _original_colors [i].Last.Value;
+              _original_colors [i].RemoveLast ();
+            }
           }
         }
       }
@@ -127,12 +144,12 @@ public class ChangeMaterialOnRenderByTag : MonoBehaviour {
   void OnPreCull () { // change
   }
 
-  void OnPreRender() { // change
-    Change();
+  void OnPreRender () { // change
+    Change ();
   }
 
-  void OnPostRender() { // change back
-    Restore();
+  void OnPostRender () { // change back
+    Restore ();
   }
 
 }
