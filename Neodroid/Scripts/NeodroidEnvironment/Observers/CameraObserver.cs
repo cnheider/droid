@@ -9,7 +9,8 @@ namespace Neodroid.NeodroidEnvironment.Observers {
 
     Camera _camera;
 
-    void Start () {
+    protected override void Start () {
+      Setup ();
       AddToAgent ();
       _camera = this.GetComponent<Camera> ();
     }

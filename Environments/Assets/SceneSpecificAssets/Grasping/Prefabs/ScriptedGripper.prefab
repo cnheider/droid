@@ -559,7 +559,7 @@ MonoBehaviour:
   _grid_granularity: 0.5
   _speed: 0.5
   _precision: 0.02
-  _sensitivity: 0.2
+  _sensitivity: 0.3
   _approach_distance: 0.7
   _wait_for_resting_environment: 1
   _debug: 1

@@ -10,7 +10,8 @@ namespace Neodroid.NeodroidEnvironment.Observers {
 
     Rigidbody _rigidbody;
 
-    void Start () {
+    protected override void Start () {
+      Setup ();
       AddToAgent ();
       _rigidbody = this.GetComponent<Rigidbody> ();
     }

@@ -13,7 +13,8 @@ namespace Neodroid.NeodroidEnvironment.Observers {
 
     BoundingBox _bounding_box;
 
-    void Start () {
+    protected override void Start () {
+      Setup ();
       AddToAgent ();
       _bounding_box = this.GetComponent<BoundingBox> ();
     }

@@ -1306,10 +1306,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent_game_object: {fileID: 0}
+  _environment_manager: {fileID: 0}
   _debug: 0
   _data: 
   _position: []
   _rotation: []
+  _direction: []
 --- !u!43 &726192274
 Mesh:
   m_ObjectHideFlags: 0

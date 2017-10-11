@@ -2,6 +2,7 @@ namespace Neodroid.Messaging.Models.Reaction;
 
 table FlatBufferReaction {
   motions:[FlatBufferMotion];
+  configurations:[FlatBufferConfiguration];
   reset:bool;
 }
 
@@ -9,6 +10,11 @@ table FlatBufferMotion {
   actor_name:string;
   motor_name:string;
   strength:float;
+}
+
+table FlatBufferConfiguration {
+  key:string;
+  value:string;
 }
 
 root_type FlatBufferReaction;

@@ -15,7 +15,7 @@ struct FlatBufferQuat {
 
 table FlatBufferActor {
   name:string;
-  posrot:FlatBufferPosRot;
+  posrotdir:FlatBufferPosRotDir;
   motors:[FlatBufferMotor];
 }
 
@@ -25,17 +25,19 @@ table FlatBufferState {
   actors:[FlatBufferActor];
   observers:[FlatBufferObserver];
   reward_for_last_step:float;
+  interupted:bool;
 }
 
-table FlatBufferPosRot {
+table FlatBufferPosRotDir {
   position:FlatBufferVec3;
+  direction:FlatBufferVec3;
   rotation:FlatBufferQuat;
 }
 
 table FlatBufferObserver {
   name:string;
   data:[ubyte];
-  posrot:FlatBufferPosRot;
+  posrotdir:FlatBufferPosRotDir;
 }
 
 table FlatBufferMotor{

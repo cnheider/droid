@@ -10,6 +10,8 @@ namespace Neodroid.NeodroidEnvironment.Managers {
 
     public int _frames_spent_resetting = 10;
     public bool _wait_for_reaction_every_frame = false;
+    public CoordinateSystem _coordinate_system = CoordinateSystem.GlobalCoordinates;
+    public Transform _coordinate_reference_point;
 
     #endregion
 
@@ -44,6 +46,22 @@ namespace Neodroid.NeodroidEnvironment.Managers {
     #endregion
 
     #region PublicMethods
+
+    public Vector3 TransformPosition (Vector3 position) {
+      if (_coordinate_system == CoordinateSystem.RelativeToReferencePoint) {
+        return _coordinate_reference_point.transform.InverseTransformPoint (position);
+      } else {
+        return position;
+      }
+    }
+
+    public Vector3 TransformDirection (Vector3 direction) {
+      if (_coordinate_system == CoordinateSystem.RelativeToReferencePoint) {
+        return _coordinate_reference_point.transform.InverseTransformDirection (direction);
+      } else {
+        return direction;
+      }
+    }
 
     public void Step () {
       ResumeEnvironment ();

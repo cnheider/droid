@@ -26,12 +26,12 @@ class FlatBufferActor(object):
         return ""
 
     # FlatBufferActor
-    def Posrot(self):
+    def Posrotdir(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             x = self._tab.Indirect(o + self._tab.Pos)
-            from .FlatBufferPosRot import FlatBufferPosRot
-            obj = FlatBufferPosRot()
+            from .FlatBufferPosRotDir import FlatBufferPosRotDir
+            obj = FlatBufferPosRotDir()
             obj.Init(self._tab.Bytes, x)
             return obj
         return None
@@ -58,7 +58,7 @@ class FlatBufferActor(object):
 
 def FlatBufferActorStart(builder): builder.StartObject(3)
 def FlatBufferActorAddName(builder, name): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(name), 0)
-def FlatBufferActorAddPosrot(builder, posrot): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(posrot), 0)
+def FlatBufferActorAddPosrotdir(builder, posrotdir): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(posrotdir), 0)
 def FlatBufferActorAddMotors(builder, motors): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(motors), 0)
 def FlatBufferActorStartMotorsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def FlatBufferActorEnd(builder): return builder.EndObject()

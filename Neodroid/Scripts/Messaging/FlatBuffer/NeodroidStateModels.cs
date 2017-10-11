@@ -3,7 +3,7 @@
 // </auto-generated>
 using System.Xml.Schema;
 
-namespace Neodroid.Messaging {
+namespace Neodroid.Messaging.FlatBuffer {
 
   using global::System;
   using global::FlatBuffers;
@@ -125,9 +125,9 @@ namespace Neodroid.Messaging {
     }
 
     public static Offset<FlatBufferActor> CreateFlatBufferActor (FlatBufferBuilder builder,
-                                                              StringOffset nameOffset = default(StringOffset),
-                                                              Offset<FlatBufferPosRot> posrotOffset = default(Offset<FlatBufferPosRot>),
-                                                              VectorOffset motorsOffset = default(VectorOffset)) {
+                                                                 StringOffset nameOffset = default(StringOffset),
+                                                                 Offset<FlatBufferPosRot> posrotOffset = default(Offset<FlatBufferPosRot>),
+                                                                 VectorOffset motorsOffset = default(VectorOffset)) {
       builder.StartObject (3);
       FlatBufferActor.AddMotors (builder, motorsOffset);
       FlatBufferActor.AddPosrot (builder, posrotOffset);
@@ -241,11 +241,11 @@ namespace Neodroid.Messaging {
     }
 
     public static Offset<FlatBufferState> CreateFlatBufferState (FlatBufferBuilder builder,
-                                                              float time_since_rest = 0.0f,
-                                                              float total_energy_spent_since_reset = 0.0f,
-                                                              VectorOffset actorsOffset = default(VectorOffset),
-                                                              VectorOffset observersOffset = default(VectorOffset),
-                                                              float reward_for_last_step = 0.0f) {
+                                                                 float time_since_rest = 0.0f,
+                                                                 float total_energy_spent_since_reset = 0.0f,
+                                                                 VectorOffset actorsOffset = default(VectorOffset),
+                                                                 VectorOffset observersOffset = default(VectorOffset),
+                                                                 float reward_for_last_step = 0.0f) {
       builder.StartObject (5);
       FlatBufferState.AddRewardForLastStep (builder, reward_for_last_step);
       FlatBufferState.AddObservers (builder, observersOffset);
@@ -424,9 +424,9 @@ namespace Neodroid.Messaging {
     }
 
     public static Offset<FlatBufferObserver> CreateFlatBufferObserver (FlatBufferBuilder builder,
-                                                                    StringOffset nameOffset = default(StringOffset),
-                                                                    VectorOffset dataOffset = default(VectorOffset),
-                                                                    Offset<FlatBufferPosRot> posrotOffset = default(Offset<FlatBufferPosRot>)) {
+                                                                       StringOffset nameOffset = default(StringOffset),
+                                                                       VectorOffset dataOffset = default(VectorOffset),
+                                                                       Offset<FlatBufferPosRot> posrotOffset = default(Offset<FlatBufferPosRot>)) {
       builder.StartObject (3);
       FlatBufferObserver.AddPosrot (builder, posrotOffset);
       FlatBufferObserver.AddData (builder, dataOffset);
@@ -444,17 +444,6 @@ namespace Neodroid.Messaging {
 
     public static void AddData (FlatBufferBuilder builder, VectorOffset dataOffset) {
       builder.AddOffset (1, dataOffset.Value, 0);
-    }
-
-    //Custom implementation of copying bytearray
-    public static VectorOffset CreateDataVectorAndAddAllDataAtOnce (FlatBufferBuilder builder, byte[] data) {
-      builder.StartVector (1, data.Length, 1); 
-      var additional_bytes = data.Length - 2;
-      builder.Prep (sizeof(byte), additional_bytes * sizeof(byte));
-      //Buffer.BlockCopy (data, 0, builder.DataBuffer.Data, builder.Offset, data.Length); // Would be even better
-      for (int i = data.Length - 1; i >= 0; i--)
-        builder.PutByte (data [i]); 
-      return builder.EndVector (); 
     }
 
 
@@ -535,10 +524,10 @@ namespace Neodroid.Messaging {
     }
 
     public static Offset<FlatBufferMotor> CreateFlatBufferMotor (FlatBufferBuilder builder,
-                                                              StringOffset nameOffset = default(StringOffset),
-                                                              bool binary = false,
-                                                              float energy_cost = 0.0f,
-                                                              float energy_spent_since_reset = 0.0f) {
+                                                                 StringOffset nameOffset = default(StringOffset),
+                                                                 bool binary = false,
+                                                                 float energy_cost = 0.0f,
+                                                                 float energy_spent_since_reset = 0.0f) {
       builder.StartObject (4);
       FlatBufferMotor.AddEnergySpentSinceReset (builder, energy_spent_since_reset);
       FlatBufferMotor.AddEnergyCost (builder, energy_cost);

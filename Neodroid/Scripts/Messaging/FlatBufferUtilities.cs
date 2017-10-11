@@ -6,6 +6,7 @@ using Neodroid.Messaging.Messages;
 using Neodroid.NeodroidEnvironment.Actors;
 using Neodroid.NeodroidEnvironment.Observers;
 using Neodroid.NeodroidEnvironment.Motors;
+using Neodroid.Messaging.FlatBuffer;
 
 namespace Neodroid.Messaging {
   public static class FlatBufferUtilities {
@@ -42,7 +43,7 @@ namespace Neodroid.Messaging {
     private static Offset<FlatBufferObserver> build_observer (FlatBufferBuilder b, Observer observer) {
       var posrot = build_posrot (b, observer.transform.position, observer.transform.rotation);
       //FlatBufferObserver.CreateDataVector(b, observer.GetData());
-      FlatBufferObserver.CreateDataVectorAndAddAllDataAtOnce (b, observer.GetData ());
+      CustomFlatBufferImplementation.CreateDataVectorAndAddAllDataAtOnce (b, observer.GetData ());
       var data_vector = b.EndVector ();
       StringOffset n = b.CreateString (observer.name);
       FlatBufferObserver.StartFlatBufferObserver (b);

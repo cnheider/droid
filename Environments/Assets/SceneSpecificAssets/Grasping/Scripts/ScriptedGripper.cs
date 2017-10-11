@@ -43,13 +43,13 @@ namespace SceneSpecificAssets.Grasping {
 
     [Space (1)]
     [Header ("Path Finding Parameters")]
-    public float _search_boundary = 10f;
-    public float _agent_size = 0.2f;
-    public float _grid_granularity = 0.3f;
+    public float _search_boundary = 6f;
+    public float _agent_size = 0.3f;
+    public float _grid_granularity = 0.4f;
     public float _speed = 0.5f;
-    public float _precision = 0.01f;
+    public float _precision = 0.02f;
     public float _sensitivity = 0.2f;
-    public float _approach_distance = 0.5f;
+    public float _approach_distance = 0.6f;
     public bool _wait_for_resting_environment = false;
 
     [Space (1)]

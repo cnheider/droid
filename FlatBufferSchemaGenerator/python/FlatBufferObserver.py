@@ -41,12 +41,12 @@ class FlatBufferObserver(object):
         return 0
 
     # FlatBufferObserver
-    def Posrot(self):
+    def Posrotdir(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             x = self._tab.Indirect(o + self._tab.Pos)
-            from .FlatBufferPosRot import FlatBufferPosRot
-            obj = FlatBufferPosRot()
+            from .FlatBufferPosRotDir import FlatBufferPosRotDir
+            obj = FlatBufferPosRotDir()
             obj.Init(self._tab.Bytes, x)
             return obj
         return None
@@ -55,5 +55,5 @@ def FlatBufferObserverStart(builder): builder.StartObject(3)
 def FlatBufferObserverAddName(builder, name): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(name), 0)
 def FlatBufferObserverAddData(builder, data): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(data), 0)
 def FlatBufferObserverStartDataVector(builder, numElems): return builder.StartVector(1, numElems, 1)
-def FlatBufferObserverAddPosrot(builder, posrot): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(posrot), 0)
+def FlatBufferObserverAddPosrotdir(builder, posrotdir): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(posrotdir), 0)
 def FlatBufferObserverEnd(builder): return builder.EndObject()

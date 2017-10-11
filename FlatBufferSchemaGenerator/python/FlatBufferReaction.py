@@ -39,14 +39,36 @@ class FlatBufferReaction(object):
         return 0
 
     # FlatBufferReaction
-    def Reset(self):
+    def Configurations(self, j):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            x = self._tab.Vector(o)
+            x += flatbuffers.number_types.UOffsetTFlags.py_type(j) * 4
+            x = self._tab.Indirect(x)
+            from .FlatBufferConfiguration import FlatBufferConfiguration
+            obj = FlatBufferConfiguration()
+            obj.Init(self._tab.Bytes, x)
+            return obj
+        return None
+
+    # FlatBufferReaction
+    def ConfigurationsLength(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+    # FlatBufferReaction
+    def Reset(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos)
         return 0
 
-def FlatBufferReactionStart(builder): builder.StartObject(2)
+def FlatBufferReactionStart(builder): builder.StartObject(3)
 def FlatBufferReactionAddMotions(builder, motions): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(motions), 0)
 def FlatBufferReactionStartMotionsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def FlatBufferReactionAddReset(builder, reset): builder.PrependBoolSlot(1, reset, 0)
+def FlatBufferReactionAddConfigurations(builder, configurations): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(configurations), 0)
+def FlatBufferReactionStartConfigurationsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def FlatBufferReactionAddReset(builder, reset): builder.PrependBoolSlot(2, reset, 0)
 def FlatBufferReactionEnd(builder): return builder.EndObject()

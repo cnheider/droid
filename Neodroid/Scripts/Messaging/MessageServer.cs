@@ -6,6 +6,7 @@ using NetMQ;
 using NetMQ.Sockets;
 
 using Neodroid.Messaging;
+using Neodroid.Messaging.FlatBuffer;
 
 namespace Neodroid.Messaging {
   class MessageServer {
