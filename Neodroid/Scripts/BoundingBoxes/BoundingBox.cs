@@ -15,8 +15,8 @@ namespace Neodroid.BoundingBoxes {
 
     public Color _line_color = new Color (0f, 1f, 0.4f, 0.74f);
 
-    private Bounds _bounds;
-    private Vector3 _bounds_offset;
+    Bounds _bounds;
+    Vector3 _bounds_offset;
     [HideInInspector]
     public Bounds _collider_bounds;
     [HideInInspector]
@@ -28,21 +28,20 @@ namespace Neodroid.BoundingBoxes {
 
     public bool _setup_on_awake = true;
 
-    private Vector3[] _corners;
+    Vector3[] _corners;
 
-    private Vector3[,] _lines;
+    Vector3[,] _lines;
 
-    private Quaternion _rotation;
+    Quaternion _rotation;
 
-    //private Camera _camera;
+    DrawBoundingBoxOnCamera _camera_lines;
 
-    private DrawBoundingBoxOnCamera _camera_lines;
-
-    private MeshFilter[] _children_meshes;
-    private Collider[] _children_colliders;
+    MeshFilter[] _children_meshes;
+    Collider[] _children_colliders;
 
     public Vector3[] BoundingBoxCoordinates {
-      get{ return new Vector3[] {
+      get {
+        return new Vector3[] {
           _top_front_left,
           _top_front_right,
           _top_back_left,
@@ -51,7 +50,8 @@ namespace Neodroid.BoundingBoxes {
           _bottom_front_right,
           _bottom_back_left,
           _bottom_back_right
-        }; }
+        };
+      }
     }
 
     public string BoundingBoxCoordinatesAsString {
@@ -69,54 +69,47 @@ namespace Neodroid.BoundingBoxes {
       }
     }
 
-    private Vector3 _top_front_left;
-    private Vector3 _top_front_right;
-    private Vector3 _top_back_left;
-    private Vector3 _top_back_right;
-    private Vector3 _bottom_front_left;
-    private Vector3 _bottom_front_right;
-    private Vector3 _bottom_back_left;
-    private Vector3 _bottom_back_right;
+    Vector3 _top_front_left;
+    Vector3 _top_front_right;
+    Vector3 _top_back_left;
+    Vector3 _top_back_right;
+    Vector3 _bottom_front_left;
+    Vector3 _bottom_front_right;
+    Vector3 _bottom_back_left;
+    Vector3 _bottom_back_right;
 
     [HideInInspector]
-    public Vector3 startingScale;
-    private Vector3 previousScale;
-    //private Vector3 startingBoundSize;
-    //private Vector3 startingBoundCenterLocal;
-    private Vector3 previousPosition;
-    private Quaternion previousRotation;
+    //public Vector3 startingScale;
+    Vector3 _last_scale;
+    // Vector3 startingBoundSize;
+    // Vector3 startingBoundCenterLocal;
+    Vector3 _last_position;
+    Quaternion _last_rotation;
 
 
     void Reset () {
-      _children_meshes = GetComponentsInChildren<MeshFilter> ();
-      _children_colliders = GetComponentsInChildren<Collider> ();
+      Setup ();
       CalculateBounds ();
       Start ();
     }
 
     void Awake () {
       if (_setup_on_awake) {
-        _children_meshes = GetComponentsInChildren<MeshFilter> ();
-        _children_colliders = GetComponentsInChildren<Collider> ();
+        Setup ();
         CalculateBounds ();
       }
     }
 
+    void Setup () {
+      _camera_lines = FindObjectOfType<DrawBoundingBoxOnCamera> ();
+      _children_meshes = GetComponentsInChildren<MeshFilter> ();
+      _children_colliders = GetComponentsInChildren<Collider> ();
+    }
+
     void Start () {
-      _camera_lines = FindObjectOfType (typeof(DrawBoundingBoxOnCamera)) as DrawBoundingBoxOnCamera;
-
-      if (!_camera_lines) {
-        Debug.LogError ("DimBoxes: no camera with DimBoxes.DrawLines in the scene", gameObject);
-        return;
-      }
-
-      //_camera = _camera_lines.GetComponent<Camera> ();
-      previousPosition = transform.position;
-      previousRotation = transform.rotation;
-      //startingBoundSize = _bounds.size;
-      startingScale = transform.localScale;
-      previousScale = startingScale;
-      //startingBoundCenterLocal = transform.InverseTransformPoint (_bounds.center);
+      _last_position = transform.position;
+      _last_rotation = transform.rotation;
+      _last_scale = transform.localScale;
       Initialise ();
       _children_meshes = GetComponentsInChildren<MeshFilter> ();
       _children_colliders = GetComponentsInChildren<Collider> ();
@@ -129,27 +122,28 @@ namespace Neodroid.BoundingBoxes {
 
     void LateUpdate () {
       if (_children_meshes != GetComponentsInChildren<MeshFilter> ()) {
-        _children_meshes = GetComponentsInChildren<MeshFilter> ();
+        Setup ();
         CalculateBounds ();
         Start ();
       }
       if (_children_colliders != GetComponentsInChildren<Collider> ()) {
-        _children_colliders = GetComponentsInChildren<Collider> ();
+        Setup ();
         CalculateBounds ();
         Start ();
       }
-      if (transform.localScale != previousScale) {
+      if (transform.localScale != _last_scale) {
         ScaleBounds ();
         RecalculatePoints ();
       }
-      if (transform.position != previousPosition || transform.rotation != previousRotation || transform.localScale != previousScale) {
+      if (transform.position != _last_position || transform.rotation != _last_rotation || transform.localScale != _last_scale) {
         RecalculateLines ();
-        previousRotation = transform.rotation;
-        previousPosition = transform.position;
-        previousScale = transform.localScale;
+        _last_rotation = transform.rotation;
+        _last_position = transform.position;
+        _last_scale = transform.localScale;
       }
-
-      _camera_lines.setOutlines (_lines, _line_color, new Vector3[0, 0]);
+      if (_camera_lines) {
+        _camera_lines.setOutlines (_lines, _line_color, new Vector3[0, 0]);
+      }
     }
 
     public void ScaleBounds () {
@@ -197,6 +191,7 @@ namespace Neodroid.BoundingBoxes {
       } else {
         FitBoundingBoxToChildrenRenders ();
       }
+        
       transform.rotation = _rotation;
     }
 
@@ -210,8 +205,8 @@ namespace Neodroid.BoundingBoxes {
         _bounds_offset = _mesh_bounds_offset;
       }
 
-      _bounds.size = new Vector3 (_bounds.size.x * transform.localScale.x / startingScale.x, _bounds.size.y * transform.localScale.y / startingScale.y, _bounds.size.z * transform.localScale.z / startingScale.z);
-      _bounds_offset = new Vector3 (_bounds_offset.x * transform.localScale.x / startingScale.x, _bounds_offset.y * transform.localScale.y / startingScale.y, _bounds_offset.z * transform.localScale.z / startingScale.z);
+      _bounds.size = new Vector3 (_bounds.size.x * transform.localScale.x / _last_scale.x, _bounds.size.y * transform.localScale.y / _last_scale.y, _bounds.size.z * transform.localScale.z / _last_scale.z);
+      _bounds_offset = new Vector3 (_bounds_offset.x * transform.localScale.x / _last_scale.x, _bounds_offset.y * transform.localScale.y / _last_scale.y, _bounds_offset.z * transform.localScale.z / _last_scale.z);
 
 
       _top_front_right = _bounds_offset + Vector3.Scale (_bounds.extents, new Vector3 (1, 1, 1));

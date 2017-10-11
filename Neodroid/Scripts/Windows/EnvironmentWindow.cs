@@ -32,7 +32,9 @@ namespace Neodroid.Windows {
 
     void OnGUI () {
   _environment_manager = FindObjectOfType<EnvironmentManager>();
+  if(_environment_manager){
   _environment_manager._frames_spent_resetting = EditorGUILayout.IntField("Frames Spent Resetting", _environment_manager._frames_spent_resetting);
+  _environment_manager._wait_for_reaction_every_frame = EditorGUILayout.Toggle("Wait For Reaction Every Frame", _environment_manager._wait_for_reaction_every_frame);
   _agents = FindObjectsOfType<NeodroidAgent> ();
 
   _scroll_position = EditorGUILayout.BeginScrollView (_scroll_position);
@@ -48,15 +50,19 @@ namespace Neodroid.Windows {
 
   EditorGUILayout.EndScrollView ();
 
+  EditorGUI.BeginDisabledGroup (!Application.isPlaying);
+
   if (GUILayout.Button ("Step")) {
   _environment_manager.Step();
   }
 
-      if (GUILayout.Button ("Reset")) {
-  _environment_manager.ResetEnvironment();
-      }
-
+    if (GUILayout.Button ("Reset")) {
+_environment_manager.ResetEnvironment();
     }
+
+  EditorGUI.EndDisabledGroup ();
+    }
+  }
 
     public void OnInspectorUpdate () {
       this.Repaint ();

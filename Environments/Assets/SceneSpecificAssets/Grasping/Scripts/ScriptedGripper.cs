@@ -3,6 +3,7 @@ using System.Collections;
 using SceneSpecificAssets.Grasping.Navigation;
 using SceneSpecificAssets.Grasping.Utilities;
 using SceneSpecificAssets.Grasping.Grasps;
+using System.Collections.Generic;
 
 namespace SceneSpecificAssets.Grasping {
   public class ScriptedGripper : MonoBehaviour {
@@ -47,7 +48,7 @@ namespace SceneSpecificAssets.Grasping {
     public float _grid_granularity = 0.3f;
     public float _speed = 0.5f;
     public float _precision = 0.01f;
-
+    public float _sensitivity = 0.2f;
     public float _approach_distance = 0.5f;
     public bool _wait_for_resting_environment = false;
 
@@ -100,8 +101,8 @@ namespace SceneSpecificAssets.Grasping {
       _step_size = _speed * Time.deltaTime;
       if (_draw_search_boundary)
         NeodroidUtilities.DrawBoxFromCenter (this.transform.position, _search_boundary, Color.magenta);
-      _state.ObstructionMotionState = _state.GetMotionState (FindObjectsOfType<Obstruction> (), _state.ObstructionMotionState);
-      _state.TargetMotionState = _state.GetMotionState (FindObjectsOfType<GraspableObject> (), _state.TargetMotionState);
+      _state.ObstructionMotionState = _state.GetMotionState (FindObjectsOfType<Obstruction> (), _state.ObstructionMotionState, _sensitivity);
+      _state.TargetMotionState = _state.GetMotionState (FindObjectsOfType<GraspableObject> (), _state.TargetMotionState, _sensitivity);
 
       PerformReactionToCurrentState (_state);
     }
@@ -411,9 +412,12 @@ namespace SceneSpecificAssets.Grasping {
     BezierCurvePath FindPath (Vector3 start_position, Vector3 target_position) {
       UpdateMeshFilterBounds ();
       var _path_list = PathFinding.FindPathAstar (start_position, target_position, _search_boundary, _grid_granularity, _agent_size, _approach_distance);
-
-      _path_list = PathFinding.SimplifyPath (_path_list);
-      _path_list.Add (target_position);
+      if (_path_list != null && _path_list.Count > 0) {
+        _path_list = PathFinding.SimplifyPath (_path_list, _agent_size);
+        _path_list.Add (target_position);
+      } else {
+        _path_list = new List<Vector3>{ start_position, target_position };
+      }
       var path = new BezierCurvePath (start_position, target_position, _bezier_curve, _path_list);
       return path;
     }

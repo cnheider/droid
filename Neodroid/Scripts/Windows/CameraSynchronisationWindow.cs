@@ -38,6 +38,7 @@ namespace Neodroid.Windows {
 
     void OnGUI () {
       _cameras = FindObjectsOfType<SynchroniseCameraProperties> ();
+  if(_cameras.Length > 0){
       SerializedObject serialised_object = new SerializedObject (this);
   _scroll_position = EditorGUILayout.BeginScrollView (_scroll_position);
       if (_show_camera_properties != null) {
@@ -55,6 +56,7 @@ namespace Neodroid.Windows {
   EditorGUILayout.EndScrollView ();
       serialised_object.ApplyModifiedProperties (); // Remember to apply modified properties
     }
+  }
     public void OnInspectorUpdate () {
       this.Repaint ();
     }

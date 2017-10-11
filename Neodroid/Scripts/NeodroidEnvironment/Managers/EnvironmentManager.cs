@@ -9,6 +9,7 @@ namespace Neodroid.NeodroidEnvironment.Managers {
     #region PublicMembers
 
     public int _frames_spent_resetting = 10;
+    public bool _wait_for_reaction_every_frame = false;
 
     #endregion
 
@@ -35,7 +36,9 @@ namespace Neodroid.NeodroidEnvironment.Managers {
     }
 
     void FixedUpdate () {
-      PauseEnviroment ();
+      if (_wait_for_reaction_every_frame) {
+        PauseEnviroment ();
+      }
     }
 
     #endregion

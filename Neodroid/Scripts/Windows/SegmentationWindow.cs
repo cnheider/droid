@@ -21,7 +21,7 @@ namespace Neodroid.Windows {
 
     void OnEnable () {
   _icon =  (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/Neodroid/Scripts/Windows/Icons/color_wheel.png", typeof(Texture2D));
-  this.titleContent = new GUIContent("Neo:Segment",_icon,"Window for segmentation");
+  this.titleContent = new GUIContent("Neo:Seg",_icon,"Window for segmentation");
     }
 
     void OnGUI () {

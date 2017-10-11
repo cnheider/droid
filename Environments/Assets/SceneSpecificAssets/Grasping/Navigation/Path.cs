@@ -19,7 +19,6 @@ namespace SceneSpecificAssets.Grasping.Navigation {
       _target_position = target_position;
       _path_list = path_list;
       _bezier_curve = game_object;
-      //CurvifyPath(_path_list[_path_list.Count - 1]);
       CurvifyPath ();
     }
 
@@ -31,7 +30,6 @@ namespace SceneSpecificAssets.Grasping.Navigation {
       for (int i = 0; i < _path_list.Count; i++) {
         _bezier_curve.AddPointAt (_path_list [i]);
       }
-      //_bezier_curve.AddPointAt(target_point);
       SetHandlePosition (_bezier_curve);
     }
 
