@@ -1,15 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Neodroid.NeodroidEnvironment;
+using Neodroid.NeodroidEnvironment.Agents;
+using Neodroid.NeodroidEnvironment.Actors;
 using Neodroid.NeodroidEnvironment.Motors;
 using Neodroid.NeodroidEnvironment.Observers;
 
-#if UNITY_EDITOR
-using UnityEditor.AnimatedValues;
-using UnityEditor;
+namespace Neodroid.Windows {
+  #if UNITY_EDITOR
+  using UnityEditor.AnimatedValues;
+  using UnityEditor;
 
-namespace Neodroid.Utilities {
   public class DebugWindow : EditorWindow {
 
     [MenuItem ("Neodroid/DebugWindow")]
@@ -29,13 +30,15 @@ namespace Neodroid.Utilities {
     Observer[] _observers;
     bool _show_observers_debug = false;
 
-
+    Texture _icon;
 
     void OnEnable () {
       _agents = FindObjectsOfType<NeodroidAgent> ();
       _actors = FindObjectsOfType<Actor> ();
       _motors = FindObjectsOfType<Motor> ();
       _observers = FindObjectsOfType<Observer> ();
+  _icon =  (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/Neodroid/Scripts/Windows/Icons/information.png", typeof(Texture2D));
+  this.titleContent = new GUIContent("Neo:Debug", _icon,"Window for controlling debug messages");
     }
 
     void OnGUI () {
@@ -44,10 +47,10 @@ namespace Neodroid.Utilities {
       _motors = FindObjectsOfType<Motor> ();
       _observers = FindObjectsOfType<Observer> ();
 
-      _show_agents_debug = EditorGUILayout.Toggle ("Show agents debug messages", _show_agents_debug);
-      _show_actors_debug = EditorGUILayout.Toggle ("Show actors debug messages", _show_actors_debug);
-      _show_motors_debug = EditorGUILayout.Toggle ("Show motors debug messages", _show_motors_debug);
-      _show_observers_debug = EditorGUILayout.Toggle ("Show observers debug messages", _show_observers_debug);
+      _show_agents_debug = EditorGUILayout.Toggle ("Debug agents", _show_agents_debug);
+      _show_actors_debug = EditorGUILayout.Toggle ("Debug actors", _show_actors_debug);
+      _show_motors_debug = EditorGUILayout.Toggle ("Debug motors", _show_motors_debug);
+      _show_observers_debug = EditorGUILayout.Toggle ("Debug observers", _show_observers_debug);
 
       if (GUILayout.Button ("Apply")) {
         foreach (var agent in _agents) {

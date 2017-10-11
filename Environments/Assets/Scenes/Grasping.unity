@@ -4136,16 +4136,16 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 23682834360200422, guid: a08be3bccb33b41b782fb36ed6e73d8d,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 1325157280}
     - target: {fileID: 33663384924230680, guid: a08be3bccb33b41b782fb36ed6e73d8d,
         type: 2}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 853558753}
+    - target: {fileID: 23682834360200422, guid: a08be3bccb33b41b782fb36ed6e73d8d,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 1325157280}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a08be3bccb33b41b782fb36ed6e73d8d, type: 2}
   m_IsPrefabParent: 0

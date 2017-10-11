@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Neodroid.NeodroidEnvironment.Configuration;
 
-namespace Neodroid.NeodroidEnvironment {
+namespace Neodroid.NeodroidEnvironment.Managers {
   public class EnvironmentManager : MonoBehaviour {
 
     #region PublicMembers
@@ -34,9 +34,17 @@ namespace Neodroid.NeodroidEnvironment {
       }
     }
 
+    void FixedUpdate () {
+      PauseEnviroment ();
+    }
+
     #endregion
 
     #region PublicMethods
+
+    public void Step () {
+      ResumeEnvironment ();
+    }
 
     public void ResetEnvironment () {
       for (int resets = 0; resets < _frames_spent_resetting; resets++) { 
@@ -62,11 +70,11 @@ namespace Neodroid.NeodroidEnvironment {
       return Time.timeScale == 0;
     }
 
-    public void PauseEnviroment () {
+    void PauseEnviroment () {
       Time.timeScale = 0;
     }
 
-    public void ResumeEnvironment () {
+    void ResumeEnvironment () {
       Time.timeScale = 1;
     }
 

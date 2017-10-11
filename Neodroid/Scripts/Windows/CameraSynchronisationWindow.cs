@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Neodroid.Utilities.NeodroidCamera;
 
-#if UNITY_EDITOR
-using UnityEditor.AnimatedValues;
-using UnityEditor;
-
-namespace Neodroid.Utilities.NeodroidCamera {
+namespace Neodroid.Windows {
+  #if UNITY_EDITOR
+  using UnityEditor.AnimatedValues;
+  using UnityEditor;
 
   public class CameraSynchronisationWindow : EditorWindow {
 
@@ -18,11 +18,14 @@ namespace Neodroid.Utilities.NeodroidCamera {
     SynchroniseCameraProperties[] _cameras;
     bool[] _show_camera_properties;
 
-  
+  Texture _icon;
+
 
     void OnEnable () {
       _cameras = FindObjectsOfType<SynchroniseCameraProperties> ();
       Setup ();
+  _icon =  (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/Neodroid/Scripts/Windows/Icons/arrow_refresh.png", typeof(Texture2D));
+  this.titleContent = new GUIContent("Neo:Sync",_icon,"Window for controlling syncronisation of cameras");
     }
 
     void Setup () {

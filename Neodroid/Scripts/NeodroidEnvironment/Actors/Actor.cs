@@ -1,9 +1,10 @@
 ﻿using Neodroid.Utilities;
+using Neodroid.NeodroidEnvironment.Agents;
 using Neodroid.NeodroidEnvironment.Motors;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Neodroid.NeodroidEnvironment {
+namespace Neodroid.NeodroidEnvironment.Actors {
   public class Actor : MonoBehaviour, HasRegister<Motor> {
     public float[] _position;
     public float[] _rotation;

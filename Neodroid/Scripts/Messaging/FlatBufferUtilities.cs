@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Neodroid.Messaging;
 using Neodroid.Messaging.Messages;
-using Neodroid.NeodroidEnvironment;
+using Neodroid.NeodroidEnvironment.Actors;
 using Neodroid.NeodroidEnvironment.Observers;
 using Neodroid.NeodroidEnvironment.Motors;
 

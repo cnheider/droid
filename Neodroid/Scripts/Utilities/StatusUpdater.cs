@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Neodroid.NeodroidEnvironment.Observers;
-using Neodroid.NeodroidEnvironment;
+using Neodroid.NeodroidEnvironment.Agents;
 
 namespace Neodroid.Utilities {
   public class StatusUpdater : MonoBehaviour {

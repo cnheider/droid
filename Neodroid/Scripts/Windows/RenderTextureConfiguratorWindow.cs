@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-#if UNITY_EDITOR
-using UnityEditor;
+namespace Neodroid.Windows {
+  #if UNITY_EDITOR
+  using UnityEditor;
 
-namespace Neodroid.Utilities.NeodroidCamera {
   public class RenderTextureConfiguratorWindow : EditorWindow {
 
     [MenuItem ("Neodroid/RenderTextureConfiguratorWindow")]
@@ -21,6 +21,15 @@ namespace Neodroid.Utilities.NeodroidCamera {
     int _preview_image_size = 100;
     Vector2 _texture_size;
 
+
+  Texture _icon;
+
+
+  void OnEnable () {
+  _icon =  (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/Neodroid/Scripts/Windows/Icons/images.png", typeof(Texture2D)); 
+  this.titleContent = new GUIContent("Neo:Tex",_icon,"Window for RenderTexture configuration");
+  }
+
     void OnGUI () {
       _render_textures = new List<RenderTexture> ();    
       var cameras = FindObjectsOfType<Camera> ();
@@ -31,6 +40,7 @@ namespace Neodroid.Utilities.NeodroidCamera {
 
       _scroll_position = EditorGUILayout.BeginScrollView (_scroll_position);
       foreach (var render_texture in _render_textures) {
+        EditorGUILayout.BeginVertical ("Box");
         EditorGUILayout.BeginHorizontal ();
         GUILayout.FlexibleSpace ();
         GUILayout.Label (render_texture.name);
@@ -43,6 +53,7 @@ namespace Neodroid.Utilities.NeodroidCamera {
         _texture_size = new Vector2 (render_texture.width, render_texture.height);
         GUILayout.FlexibleSpace ();
         EditorGUILayout.EndHorizontal ();
+        EditorGUILayout.EndVertical ();
       }
       EditorGUILayout.EndScrollView ();
       _texture_size = EditorGUILayout.Vector2Field ("Set All Render Texture Sizes:", _texture_size);

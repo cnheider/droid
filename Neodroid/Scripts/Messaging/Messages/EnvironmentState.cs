@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Neodroid.NeodroidEnvironment;
+using Neodroid.NeodroidEnvironment.Actors;
 using Neodroid.NeodroidEnvironment.Observers;
 
 namespace Neodroid.Messaging.Messages {

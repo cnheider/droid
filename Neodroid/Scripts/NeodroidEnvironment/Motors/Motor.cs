@@ -1,6 +1,7 @@
 ﻿using Neodroid.Messaging.Messages;
 using UnityEngine;
 using Neodroid.Utilities;
+using Neodroid.NeodroidEnvironment.Actors;
 using System;
 
 namespace Neodroid.NeodroidEnvironment.Motors {

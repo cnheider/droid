@@ -6,10 +6,12 @@ using Neodroid.Evaluation;
 using Neodroid.Utilities;
 using Neodroid.NeodroidEnvironment.Observers;
 using Neodroid.NeodroidEnvironment.Motors;
+using Neodroid.NeodroidEnvironment.Actors;
+using Neodroid.NeodroidEnvironment.Managers;
 using Neodroid.Messaging;
 using Neodroid.Messaging.Messages;
 
-namespace Neodroid.NeodroidEnvironment {
+namespace Neodroid.NeodroidEnvironment.Agents {
   public class NeodroidAgent : MonoBehaviour, HasRegister<Actor>, HasRegister<Observer> {
 
     #region PublicMembers
@@ -81,13 +83,9 @@ namespace Neodroid.NeodroidEnvironment {
       if (!_waiting_for_reaction) {
         UpdateObserversData ();
         _message_server.SendEnvironmentState (GetCurrentState ());
-        _environment_manager.ResumeEnvironment ();
+        _environment_manager.Step ();
         _waiting_for_reaction = true;
       }
-    }
-
-    void FixedUpdate () {
-      _environment_manager.PauseEnviroment ();
     }
 
     #endregion

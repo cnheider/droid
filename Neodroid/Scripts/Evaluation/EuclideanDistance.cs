@@ -1,4 +1,4 @@
-﻿using Neodroid.NeodroidEnvironment;
+﻿using Neodroid.NeodroidEnvironment.Actors;
 using UnityEngine;
 
 namespace Neodroid.Evaluation {

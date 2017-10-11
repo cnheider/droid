@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Neodroid.Utilities;
+using Neodroid.NeodroidEnvironment.Agents;
 using System;
 
 namespace Neodroid.NeodroidEnvironment.Observers {
