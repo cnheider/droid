@@ -6,6 +6,7 @@ using Neodroid.NeodroidEnvironment.Actors;
 using Neodroid.NeodroidEnvironment.Motors;
 using Neodroid.NeodroidEnvironment.Observers;
 using Neodroid.NeodroidEnvironment.Managers;
+using Neodroid.Utilities;
 
 namespace Neodroid.Windows {
   #if UNITY_EDITOR
@@ -22,6 +23,9 @@ namespace Neodroid.Windows {
 
     EnvironmentManager _environment_manager;
     NeodroidAgent[] _agents;
+    Actor[] _actors;
+    Motor[] _motors;
+    Observer[] _observers;
     Vector2 _scroll_position;
     Texture _icon;
 
@@ -33,20 +37,66 @@ namespace Neodroid.Windows {
     void OnGUI () {
       _environment_manager = FindObjectOfType<EnvironmentManager> ();
       if (_environment_manager) {
+        _environment_manager._episode_length = EditorGUILayout.IntField ("Episode Length", _environment_manager._episode_length);
         _environment_manager._frames_spent_resetting = EditorGUILayout.IntField ("Frames Spent Resetting", _environment_manager._frames_spent_resetting);
         _environment_manager._wait_for_reaction_every_frame = EditorGUILayout.Toggle ("Wait For Reaction Every Frame", _environment_manager._wait_for_reaction_every_frame);
         _environment_manager._coordinate_system = (CoordinateSystem)EditorGUILayout.EnumPopup ("Coordinate System:", _environment_manager._coordinate_system);
+
+        EditorGUI.BeginDisabledGroup (_environment_manager._coordinate_system != CoordinateSystem.RelativeToReferencePoint);
         _environment_manager._coordinate_reference_point = (Transform)EditorGUILayout.ObjectField ("Coordinate Reference Point:", _environment_manager._coordinate_reference_point, typeof(Transform), true);
-        _agents = FindObjectsOfType<NeodroidAgent> ();
+        EditorGUI.EndDisabledGroup ();
+
+        _agents = NeodroidFunctions.FindAllObjectsOfTypeInScene<NeodroidAgent> ();
+        _actors = NeodroidFunctions.FindAllObjectsOfTypeInScene<Actor> ();
+        _motors = NeodroidFunctions.FindAllObjectsOfTypeInScene<Motor> ();
+        _observers = NeodroidFunctions.FindAllObjectsOfTypeInScene<Observer> ();
+
 
         _scroll_position = EditorGUILayout.BeginScrollView (_scroll_position);
 
         EditorGUILayout.BeginVertical ("Box");
         GUILayout.Label ("Agents");
         foreach (var agent in _agents) {
-          EditorGUILayout.BeginVertical ("Box");
-          agent.enabled = EditorGUILayout.Toggle (agent.name + "Agent", agent.enabled);
-          EditorGUILayout.EndVertical ();
+          EditorGUILayout.BeginHorizontal ("Box");
+          GUILayout.Label (agent.name);
+          agent.enabled = EditorGUILayout.ToggleLeft ("Enabled", agent.enabled, GUILayout.Width (60));
+          EditorGUILayout.ObjectField (agent, typeof(NeodroidAgent), true, GUILayout.Width (60));
+          EditorGUILayout.EndHorizontal ();
+        }
+        EditorGUILayout.EndVertical ();
+
+
+        EditorGUILayout.BeginVertical ("Box");
+        GUILayout.Label ("Actors");
+        foreach (var actor in _actors) {
+          EditorGUILayout.BeginHorizontal ("Box");
+          GUILayout.Label (actor.name);
+          actor.enabled = EditorGUILayout.ToggleLeft ("Enabled", actor.enabled, GUILayout.Width (60));
+          EditorGUILayout.ObjectField (actor, typeof(Actor), true, GUILayout.Width (60));
+          EditorGUILayout.EndHorizontal ();
+        }
+        EditorGUILayout.EndVertical ();
+
+
+        EditorGUILayout.BeginVertical ("Box");
+        GUILayout.Label ("Motors");
+        foreach (var motor in _motors) {
+          EditorGUILayout.BeginHorizontal ("Box");
+          GUILayout.Label (motor.GetMotorIdentifier ());
+          motor.enabled = EditorGUILayout.ToggleLeft ("Enabled", motor.enabled, GUILayout.Width (60));
+          EditorGUILayout.ObjectField (motor, typeof(Motor), true, GUILayout.Width (60));
+          EditorGUILayout.EndHorizontal ();
+        }
+        EditorGUILayout.EndVertical ();
+
+        EditorGUILayout.BeginVertical ("Box");
+        GUILayout.Label ("Observers");
+        foreach (var observer in _observers) {
+          EditorGUILayout.BeginHorizontal ("Box");
+          GUILayout.Label (observer.GetObserverIdentifier ());
+          observer.enabled = EditorGUILayout.ToggleLeft ("Enabled", observer.enabled, GUILayout.Width (60));
+          EditorGUILayout.ObjectField (observer, typeof(Observer), true, GUILayout.Width (60));
+          EditorGUILayout.EndHorizontal ();
         }
         EditorGUILayout.EndVertical ();
 

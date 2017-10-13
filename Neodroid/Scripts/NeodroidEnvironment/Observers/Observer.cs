@@ -12,7 +12,7 @@ namespace Neodroid.NeodroidEnvironment.Observers {
     public EnvironmentManager _environment_manager;
 
     public bool _debug = false;
-
+    public string _observer_identifier = "";
     public byte[] _data;
 
     protected virtual void Start () {
@@ -40,6 +40,10 @@ namespace Neodroid.NeodroidEnvironment.Observers {
     public float[] _rotation;
     public float[] _direction;
 
+
+    public virtual string GetObserverIdentifier () {
+      return name + "BaseObserver";
+    }
 
     private void Update () {
       if (_environment_manager) {

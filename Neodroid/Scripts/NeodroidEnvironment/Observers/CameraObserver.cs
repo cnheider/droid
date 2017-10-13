@@ -19,5 +19,9 @@ namespace Neodroid.NeodroidEnvironment.Observers {
       _data = NeodroidFunctions.RenderTextureImage (_camera).EncodeToPNG ();
       return _data;
     }
+
+    public override string GetObserverIdentifier () {
+      return name + "Camera";
+    }
   }
 }

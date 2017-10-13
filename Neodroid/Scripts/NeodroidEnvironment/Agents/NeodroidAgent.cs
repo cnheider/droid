@@ -20,7 +20,6 @@ namespace Neodroid.NeodroidEnvironment.Agents {
     public int _port = 5555;
     public bool _continue_lastest_reaction_on_disconnect = false;
 
-    public int _episode_length = 0;
     //infinite
     public ObjectiveFunction _objective_function;
     public EnvironmentManager _environment_manager;
@@ -36,7 +35,6 @@ namespace Neodroid.NeodroidEnvironment.Agents {
     bool _waiting_for_reaction = true;
     bool _client_connected = false;
 
-    int _current_episode_frame = 0;
     Reaction _lastest_reaction = null;
     float energy_spent = 0f;
 
@@ -52,13 +50,13 @@ namespace Neodroid.NeodroidEnvironment.Agents {
 
     void Update () { // Update is called once per frame, updates like actor position needs to be done on the main thread
 
-      if (_episode_length > 0 && _current_episode_frame > _episode_length) {
+      /*if (_episode_length > 0 && _current_episode_frame > _episode_length) {
         Debug.Log ("Maximum episode length reached, resetting");
         ResetRegisteredObjects ();
         _environment_manager.ResetEnvironment ();
         _current_episode_frame = 0;
         return;
-      }
+      }*/
 
       if (_lastest_reaction != null && _lastest_reaction._reset) {
         if (_environment_manager) {
@@ -70,7 +68,6 @@ namespace Neodroid.NeodroidEnvironment.Agents {
       }
 
       if (_lastest_reaction != null && !_waiting_for_reaction) {
-        _current_episode_frame++;
         ExecuteReaction (_lastest_reaction);
       }
 

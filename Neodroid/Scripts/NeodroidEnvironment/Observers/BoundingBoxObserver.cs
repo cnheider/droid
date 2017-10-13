@@ -23,6 +23,10 @@ namespace Neodroid.NeodroidEnvironment.Observers {
       _data = Encoding.ASCII.GetBytes (_bounding_box.BoundingBoxCoordinatesAsString);
       return _data;
     }
+
+    public override string GetObserverIdentifier () {
+      return name + "BoundingBox";
+    }
   }
 }
 

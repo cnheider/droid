@@ -8,6 +8,7 @@ namespace Neodroid.NeodroidEnvironment.Managers {
 
     #region PublicMembers
 
+    public int _episode_length = 0;
     public int _frames_spent_resetting = 10;
     public bool _wait_for_reaction_every_frame = false;
     public CoordinateSystem _coordinate_system = CoordinateSystem.GlobalCoordinates;
@@ -21,6 +22,7 @@ namespace Neodroid.NeodroidEnvironment.Managers {
     Quaternion[] _reset_rotations;
     GameObject[] _game_objects;
     Configurable[] _configurables;
+    int _current_episode_frame = 0;
 
     #endregion
 
@@ -43,13 +45,27 @@ namespace Neodroid.NeodroidEnvironment.Managers {
       }
     }
 
+    void Update () {
+      if (_episode_length > 0 && _current_episode_frame > _episode_length) {
+        Debug.Log ("Maximum episode length reached, resetting");
+        //agent.ResetRegisteredObjects ();
+        ResetEnvironment ();
+        _current_episode_frame = 0;
+        return;
+      }
+    }
+
     #endregion
 
     #region PublicMethods
 
     public Vector3 TransformPosition (Vector3 position) {
       if (_coordinate_system == CoordinateSystem.RelativeToReferencePoint) {
-        return _coordinate_reference_point.transform.InverseTransformPoint (position);
+        if (_coordinate_reference_point) {
+          return _coordinate_reference_point.transform.InverseTransformPoint (position);
+        } else {
+          return position;
+        }
       } else {
         return position;
       }
@@ -57,7 +73,11 @@ namespace Neodroid.NeodroidEnvironment.Managers {
 
     public Vector3 TransformDirection (Vector3 direction) {
       if (_coordinate_system == CoordinateSystem.RelativeToReferencePoint) {
-        return _coordinate_reference_point.transform.InverseTransformDirection (direction);
+        if (_coordinate_reference_point) {
+          return _coordinate_reference_point.transform.InverseTransformDirection (direction);
+        } else {
+          return direction;
+        }
       } else {
         return direction;
       }
@@ -65,6 +85,7 @@ namespace Neodroid.NeodroidEnvironment.Managers {
 
     public void Step () {
       ResumeEnvironment ();
+      _current_episode_frame++;
     }
 
     public void ResetEnvironment () {
