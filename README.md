@@ -39,7 +39,6 @@ The unity comes quite selection of scripts and tools for setting up and experime
 
 # To Do's
 - [ ] Exponential Proximity Regularisation Penalty
-- [ ] Make an option for transforms all coordinates into camera relative or other reference point
 - [ ] Be able to send a configure reset to change the environment, like frame skips/sampling rate, time scale, problem difficulty, evaluation function paramaters(term weighting)
 
 # Other Components Of The Neodroid Platform
