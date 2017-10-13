@@ -59,7 +59,7 @@ namespace Neodroid.Windows {
         foreach (var agent in _agents) {
           EditorGUILayout.BeginHorizontal ("Box");
           GUILayout.Label (agent.name);
-          agent.enabled = EditorGUILayout.ToggleLeft ("Enabled", agent.enabled, GUILayout.Width (60));
+          agent.enabled = EditorGUILayout.ToggleLeft ("Enabled", agent.enabled && agent.gameObject.activeSelf, GUILayout.Width (60));
           EditorGUILayout.ObjectField (agent, typeof(NeodroidAgent), true, GUILayout.Width (60));
           EditorGUILayout.EndHorizontal ();
         }
@@ -71,7 +71,7 @@ namespace Neodroid.Windows {
         foreach (var actor in _actors) {
           EditorGUILayout.BeginHorizontal ("Box");
           GUILayout.Label (actor.name);
-          actor.enabled = EditorGUILayout.ToggleLeft ("Enabled", actor.enabled, GUILayout.Width (60));
+          actor.enabled = EditorGUILayout.ToggleLeft ("Enabled", actor.enabled && actor.gameObject.activeSelf, GUILayout.Width (60));
           EditorGUILayout.ObjectField (actor, typeof(Actor), true, GUILayout.Width (60));
           EditorGUILayout.EndHorizontal ();
         }
@@ -83,7 +83,7 @@ namespace Neodroid.Windows {
         foreach (var motor in _motors) {
           EditorGUILayout.BeginHorizontal ("Box");
           GUILayout.Label (motor.GetMotorIdentifier ());
-          motor.enabled = EditorGUILayout.ToggleLeft ("Enabled", motor.enabled, GUILayout.Width (60));
+          motor.enabled = EditorGUILayout.ToggleLeft ("Enabled", motor.enabled && motor.gameObject.activeSelf, GUILayout.Width (60));
           EditorGUILayout.ObjectField (motor, typeof(Motor), true, GUILayout.Width (60));
           EditorGUILayout.EndHorizontal ();
         }
@@ -94,7 +94,7 @@ namespace Neodroid.Windows {
         foreach (var observer in _observers) {
           EditorGUILayout.BeginHorizontal ("Box");
           GUILayout.Label (observer.GetObserverIdentifier ());
-          observer.enabled = EditorGUILayout.ToggleLeft ("Enabled", observer.enabled, GUILayout.Width (60));
+          observer.enabled = EditorGUILayout.ToggleLeft ("Enabled", observer.enabled && observer.gameObject.activeSelf, GUILayout.Width (60));
           EditorGUILayout.ObjectField (observer, typeof(Observer), true, GUILayout.Width (60));
           EditorGUILayout.EndHorizontal ();
         }

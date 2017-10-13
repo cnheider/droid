@@ -19,7 +19,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4619375975687272}
-  - component: {fileID: 114178691953476708}
   - component: {fileID: 114006414701904728}
   - component: {fileID: 114723573921721854}
   - component: {fileID: 114108470344820590}
@@ -58,7 +57,6 @@ MonoBehaviour:
   _ip_address: 127.0.0.1
   _port: 5555
   _continue_lastest_reaction_on_disconnect: 0
-  _episode_length: 50
   _objective_function: {fileID: 0}
   _environment_manager: {fileID: 0}
   _debug: 0
@@ -73,18 +71,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d94b89acce8345d3b17c5b781e7bbac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114178691953476708
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1826705437776508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69d4aec53cbca432a875535c0531b1df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _frames_spent_resetting: 10
 --- !u!114 &114723573921721854
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -109,4 +95,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69d4aec53cbca432a875535c0531b1df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _episode_length: 0
   _frames_spent_resetting: 10
+  _wait_for_reaction_every_frame: 0
+  _coordinate_system: 0
+  _coordinate_reference_point: {fileID: 0}
