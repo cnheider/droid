@@ -11,12 +11,21 @@ namespace Neodroid.NeodroidEnvironment.Observers {
     public NeodroidAgent _agent_game_object;
     public EnvironmentManager _environment_manager;
 
+    public Vector3 _position;
+    public Vector3 _rotation;
+    public Vector3 _direction;
+
+    //public Quaternion _rotation;
+    //public Quaternion _direction;
+
     public bool _debug = false;
     public string _observer_identifier = "";
     public byte[] _data;
 
     protected virtual void Start () {
       Setup ();
+      AddToAgent ();
+      UpdatePosRotDir ();
     }
 
     protected virtual void Setup () {
@@ -36,41 +45,27 @@ namespace Neodroid.NeodroidEnvironment.Observers {
         return new byte[]{ };
     }
 
-    public float[] _position;
-    public float[] _rotation;
-    public float[] _direction;
 
 
     public virtual string GetObserverIdentifier () {
       return name + "BaseObserver";
     }
 
-    private void Update () {
+
+    void UpdatePosRotDir () {
       if (_environment_manager) {
-        var position = _environment_manager.TransformPosition (this.transform.position);
-        var direction = _environment_manager.TransformDirection (this.transform.rotation.eulerAngles);
-        _position = new float[] { position.x, position.y, position.z };
-        _direction = new float[] { direction.x, direction.y, direction.z };
-        _rotation = new float[] {
-          transform.rotation.x,
-          transform.rotation.y,
-          transform.rotation.z,
-          transform.rotation.w
-        };
+        _position = _environment_manager.TransformPosition (this.transform.position);
+        _direction = _environment_manager.TransformDirection (this.transform.forward);
+        _rotation = _environment_manager.TransformDirection (this.transform.up);
       } else {
-        _position = new float[] { this.transform.position.x, this.transform.position.y, this.transform.position.z };
-        _direction = new float[] {
-          this.transform.rotation.eulerAngles.x,
-          this.transform.rotation.eulerAngles.y,
-          this.transform.rotation.eulerAngles.z
-        };
-        _rotation = new float[] {
-          transform.rotation.x,
-          transform.rotation.y,
-          transform.rotation.z,
-          transform.rotation.w
-        };
+        _position = this.transform.position;
+        _direction = this.transform.forward;
+        _rotation = this.transform.up;
       }
+    }
+
+    private void Update () {
+      UpdatePosRotDir ();
     }
 
     public virtual void Reset () {

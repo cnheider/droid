@@ -40,6 +40,8 @@ namespace Neodroid.Utilities {
       }
       if (component != null)
         component.Register (c);
+      else
+        Debug.Log ("Could not find recipient during registeration");
     }
 
 

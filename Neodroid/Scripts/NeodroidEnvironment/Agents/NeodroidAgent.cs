@@ -37,6 +37,7 @@ namespace Neodroid.NeodroidEnvironment.Agents {
 
     Reaction _lastest_reaction = null;
     float energy_spent = 0f;
+    private bool _was_interrupted = false;
 
     #endregion
 
@@ -46,6 +47,7 @@ namespace Neodroid.NeodroidEnvironment.Agents {
       FetchCommmandLineArguments ();
       FindMissingMembers ();
       StartMessagingServer ();
+      AddToEnvironment ();
     }
 
     void Update () { // Update is called once per frame, updates like actor position needs to be done on the main thread
@@ -63,6 +65,7 @@ namespace Neodroid.NeodroidEnvironment.Agents {
           ResetRegisteredObjects ();
           _environment_manager.ResetEnvironment ();
           _environment_manager.Configure ("IncreaseDifficulty");
+          Interrupt ();
           return;
         }
       }
@@ -136,7 +139,13 @@ namespace Neodroid.NeodroidEnvironment.Agents {
       if (_objective_function != null)
         reward = _objective_function.Evaluate ();
 
-      return new EnvironmentState (Time.realtimeSinceStartup, energy_spent, _actors, _observers, reward);
+      var interrupted_this_step = false;
+      if (_was_interrupted) {
+        interrupted_this_step = true;
+        _was_interrupted = false;
+      }
+
+      return new EnvironmentState (_environment_manager.GetTimeSinceReset (), energy_spent, _actors, _observers, _environment_manager.GetCurrentFrameNumber (), reward, interrupted_this_step);
     }
 
     void ExecuteReaction (Reaction reaction) {
@@ -150,10 +159,12 @@ namespace Neodroid.NeodroidEnvironment.Agents {
             if (motors.ContainsKey (motion_motor_name)) {
               motors [motion_motor_name].ApplyMotion (motion);
             } else {
-              Debug.Log ("Could find not motor with the specified name: " + motion_motor_name);
+              if (_debug)
+                Debug.Log ("Could find not motor with the specified name: " + motion_motor_name);
             }
           } else {
-            Debug.Log ("Could find not actor with the specified name: " + motion_actor_name);
+            if (_debug)
+              Debug.Log ("Could find not actor with the specified name: " + motion_actor_name);
           }
         }
     }
@@ -170,14 +181,10 @@ namespace Neodroid.NeodroidEnvironment.Agents {
       _observers.Add (observer.name, observer);
     }
 
-    void ResetRegisteredObjects () {
-      foreach (var actor in _actors.Values) {
-        actor.Reset ();
-      }
-      foreach (var observer in _observers.Values) {
-        observer.Reset ();
-      }
+    void AddToEnvironment () {
+      NeodroidFunctions.MaybeRegisterComponent (_environment_manager, this);
     }
+
 
     #endregion
 
@@ -197,6 +204,35 @@ namespace Neodroid.NeodroidEnvironment.Agents {
       else
         return "Not Connected";
     }
+
+    public void Interrupt () {
+      _was_interrupted = true;
+      if (_debug)
+        Debug.Log ("Was interrupted");
+    }
+
+    public void ResetRegisteredObjects () {
+      if (_debug)
+        Debug.Log ("Resetting registed objects");
+      foreach (var actor in _actors.Values) {
+        actor.Reset ();
+      }
+      foreach (var observer in _observers.Values) {
+        observer.Reset ();
+      }
+    }
+
+    #region Registration
+
+    public void Register (Actor obj) {
+      AddActor (obj);
+    }
+
+    public void Register (Observer obj) {
+      AddObserver (obj);
+    }
+
+    #endregion
 
     #endregion
 
@@ -229,18 +265,6 @@ namespace Neodroid.NeodroidEnvironment.Agents {
 
     void OnInterruptCallback () {
 
-    }
-
-    #endregion
-
-    #region Registration
-
-    public void Register (Actor obj) {
-      AddActor (obj);
-    }
-
-    public void Register (Observer obj) {
-      AddObserver (obj);
     }
 
     #endregion
