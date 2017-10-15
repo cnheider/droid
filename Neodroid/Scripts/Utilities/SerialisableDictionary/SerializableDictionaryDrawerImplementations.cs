@@ -39,5 +39,5 @@ namespace Neodroid.Utilities.SerialisableDictionary {
   internal class SerializableStringGameObjectTemplate : SerializableKeyValueTemplate<string, GameObject> {
 
   }
-  #endif
 }
+#endif

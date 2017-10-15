@@ -133,5 +133,5 @@ namespace Neodroid.Utilities.SerialisableDictionary {
       }
     }
   }
-  #endif
 }
+#endif

@@ -18,15 +18,15 @@ namespace Neodroid.Windows {
     SynchroniseCameraProperties[] _cameras;
     bool[] _show_camera_properties;
 
-  Texture _icon;
-  Vector2 _scroll_position;
+    Texture _icon;
+    Vector2 _scroll_position;
 
 
     void OnEnable () {
       _cameras = FindObjectsOfType<SynchroniseCameraProperties> ();
       Setup ();
-  _icon =  (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/Neodroid/Scripts/Windows/Icons/arrow_refresh.png", typeof(Texture2D));
-  this.titleContent = new GUIContent("Neo:Sync",_icon,"Window for controlling syncronisation of cameras");
+      _icon = (Texture2D)AssetDatabase.LoadAssetAtPath ("Assets/Neodroid/Scripts/Windows/Icons/arrow_refresh.png", typeof(Texture2D));
+      this.titleContent = new GUIContent ("Neo:Sync", _icon, "Window for controlling syncronisation of cameras");
     }
 
     void Setup () {
@@ -38,25 +38,26 @@ namespace Neodroid.Windows {
 
     void OnGUI () {
       _cameras = FindObjectsOfType<SynchroniseCameraProperties> ();
-  if(_cameras.Length > 0){
-      SerializedObject serialised_object = new SerializedObject (this);
-  _scroll_position = EditorGUILayout.BeginScrollView (_scroll_position);
-      if (_show_camera_properties != null) {
-        for (int i = 0; i < _show_camera_properties.Length; i++) {
-          _show_camera_properties [i] = EditorGUILayout.Foldout (_show_camera_properties [i], _cameras [i].name);
-          if (_show_camera_properties [i]) {
-            EditorGUILayout.BeginVertical ("Box");
-            _cameras [i]._orthographic_size = EditorGUILayout.Toggle ("Synchronise Orthographic Size", _cameras [i]._orthographic_size);
-            _cameras [i]._near_clip_plane = EditorGUILayout.Toggle ("Synchronise Near Clip Plane", _cameras [i]._near_clip_plane);
-            _cameras [i]._far_clip_plane = EditorGUILayout.Toggle ("Synchronise Far Clip Plane", _cameras [i]._far_clip_plane);
-            EditorGUILayout.EndVertical ();
+      if (_cameras.Length > 0) {
+        SerializedObject serialised_object = new SerializedObject (this);
+        _scroll_position = EditorGUILayout.BeginScrollView (_scroll_position);
+        if (_show_camera_properties != null) {
+          for (int i = 0; i < _show_camera_properties.Length; i++) {
+            _show_camera_properties [i] = EditorGUILayout.Foldout (_show_camera_properties [i], _cameras [i].name);
+            if (_show_camera_properties [i]) {
+              EditorGUILayout.BeginVertical ("Box");
+              _cameras [i]._orthographic_size = EditorGUILayout.Toggle ("Synchronise Orthographic Size", _cameras [i]._orthographic_size);
+              _cameras [i]._near_clip_plane = EditorGUILayout.Toggle ("Synchronise Near Clip Plane", _cameras [i]._near_clip_plane);
+              _cameras [i]._far_clip_plane = EditorGUILayout.Toggle ("Synchronise Far Clip Plane", _cameras [i]._far_clip_plane);
+              EditorGUILayout.EndVertical ();
+            }
           }
         }
+        EditorGUILayout.EndScrollView ();
+        serialised_object.ApplyModifiedProperties (); // Remember to apply modified properties
       }
-  EditorGUILayout.EndScrollView ();
-      serialised_object.ApplyModifiedProperties (); // Remember to apply modified properties
     }
-  }
+
     public void OnInspectorUpdate () {
       this.Repaint ();
     }
