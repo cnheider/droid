@@ -7,9 +7,12 @@ using Neodroid.NeodroidEnvironment.Managers;
 
 namespace Neodroid.NeodroidEnvironment.Actors {
   public class Actor : MonoBehaviour, HasRegister<Motor> {
-    public float[] _position;
-    public float[] _rotation;
-    public float[] _direction;
+    public Vector3 _position;
+    public Vector3 _rotation;
+    public Vector3 _direction;
+
+    //public Quaternion _rotation;
+    //public Quaternion _direction;
 
     public Dictionary<string, Motor> _motors;
   
@@ -23,6 +26,7 @@ namespace Neodroid.NeodroidEnvironment.Actors {
         _motors = new Dictionary<string, Motor> ();
       NeodroidFunctions.MaybeRegisterComponent (_agent_game_object, this);
       Setup ();
+      UpdatePosRotDir ();
     }
 
     protected virtual void Setup () {
@@ -31,32 +35,20 @@ namespace Neodroid.NeodroidEnvironment.Actors {
       }
     }
 
-    private void Update () {
+    void UpdatePosRotDir () {
       if (_environment_manager) {
-        var position = _environment_manager.TransformPosition (this.transform.position);
-        var direction = _environment_manager.TransformDirection (this.transform.rotation.eulerAngles);
-        _position = new float[] { position.x, position.y, position.z };
-        _direction = new float[] { direction.x, direction.y, direction.z };
-        _rotation = new float[] {
-          transform.rotation.x,
-          transform.rotation.y,
-          transform.rotation.z,
-          transform.rotation.w
-        };
+        _position = _environment_manager.TransformPosition (this.transform.position);
+        _direction = _environment_manager.TransformDirection (this.transform.forward);
+        _rotation = _environment_manager.TransformDirection (this.transform.up);
       } else {
-        _position = new float[] { this.transform.position.x, this.transform.position.y, this.transform.position.z };
-        _direction = new float[] {
-          this.transform.rotation.eulerAngles.x,
-          this.transform.rotation.eulerAngles.y,
-          this.transform.rotation.eulerAngles.z
-        };
-        _rotation = new float[] {
-          transform.rotation.x,
-          transform.rotation.y,
-          transform.rotation.z,
-          transform.rotation.w
-        };
+        _position = this.transform.position;
+        _direction = this.transform.forward;
+        _rotation = this.transform.up;
       }
+    }
+
+    private void Update () {
+      UpdatePosRotDir ();
     }
 
     public Dictionary<string, Motor> GetMotors () {

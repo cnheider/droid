@@ -473,7 +473,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -576,11 +576,10 @@ MonoBehaviour:
     m_Extent: {x: 0.100000024, y: 0.13001463, z: 0.10630481}
   _collider_bounds_offset: {x: 0, y: 0.0020143986, z: -0.019819811}
   _mesh_bounds:
-    m_Center: {x: 0, y: 1.6382294, z: -0.025244951}
+    m_Center: {x: 3.3239303, y: 3.858748, z: -3.0054362}
     m_Extent: {x: 0.07402849, y: 0.13022947, z: 0.11172986}
-  _mesh_bounds_offset: {x: 0, y: 0.002229333, z: -0.025244951}
+  _mesh_bounds_offset: {x: -0.00000023841858, y: 0.0022292137, z: -0.025244951}
   _setup_on_awake: 1
-  startingScale: {x: 1, y: 1, z: 1}
 --- !u!114 &114252174217518058
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -609,9 +608,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb645fe4b7346e743aa151cb7113f548, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _position: []
-  _rotation: []
+  _position: {x: 0, y: 0, z: 0}
+  _rotation: {x: 0, y: 0, z: 0}
+  _direction: {x: 0, y: 0, z: 0}
   _agent_game_object: {fileID: 0}
+  _environment_manager: {fileID: 0}
   _debug: 0
 --- !u!114 &114500253240674478
 MonoBehaviour:

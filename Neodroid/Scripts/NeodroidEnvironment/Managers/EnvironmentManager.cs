@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Neodroid.NeodroidEnvironment.Configuration;
+using Neodroid.Utilities;
+using Neodroid.NeodroidEnvironment.Agents;
 
 namespace Neodroid.NeodroidEnvironment.Managers {
-  public class EnvironmentManager : MonoBehaviour {
+  public class EnvironmentManager : MonoBehaviour, HasRegister<NeodroidAgent> {
 
     #region PublicMembers
 
@@ -13,6 +15,7 @@ namespace Neodroid.NeodroidEnvironment.Managers {
     public bool _wait_for_reaction_every_frame = false;
     public CoordinateSystem _coordinate_system = CoordinateSystem.GlobalCoordinates;
     public Transform _coordinate_reference_point;
+    public bool _debug = false;
 
     #endregion
 
@@ -23,6 +26,8 @@ namespace Neodroid.NeodroidEnvironment.Managers {
     GameObject[] _game_objects;
     Configurable[] _configurables;
     int _current_episode_frame = 0;
+    Dictionary<string, NeodroidAgent> _agents = new Dictionary<string, NeodroidAgent> ();
+    float _last_reset_time = 0;
 
     #endregion
 
@@ -47,8 +52,14 @@ namespace Neodroid.NeodroidEnvironment.Managers {
 
     void Update () {
       if (_episode_length > 0 && _current_episode_frame > _episode_length) {
-        Debug.Log ("Maximum episode length reached, resetting");
-        //agent.ResetRegisteredObjects ();
+        if (_debug)
+          Debug.Log ("Maximum episode length reached, resetting");
+        foreach (var agent in _agents.Values) {
+          if (_debug)
+            Debug.Log ("Interrupting agent");
+          //agent.ResetRegisteredObjects ();
+          agent.Interrupt ();
+        }
         ResetEnvironment ();
         _current_episode_frame = 0;
         return;
@@ -88,6 +99,14 @@ namespace Neodroid.NeodroidEnvironment.Managers {
       _current_episode_frame++;
     }
 
+    public int GetCurrentFrameNumber () {
+      return _current_episode_frame;
+    }
+
+    public float GetTimeSinceReset () {
+      return Time.time - _last_reset_time;//Time.realtimeSinceStartup;
+    }
+
     public void ResetEnvironment () {
       for (int resets = 0; resets < _frames_spent_resetting; resets++) { 
         for (int i = 0; i < _game_objects.Length; i++) {
@@ -100,6 +119,7 @@ namespace Neodroid.NeodroidEnvironment.Managers {
             rigid_body.WakeUp ();
         }
       }
+      _last_reset_time = Time.time;
     }
 
     public void Configure (string configuration) {
@@ -118,6 +138,24 @@ namespace Neodroid.NeodroidEnvironment.Managers {
 
     void ResumeEnvironment () {
       Time.timeScale = 1;
+    }
+
+    #region Registration
+
+    public void Register (NeodroidAgent obj) {
+      AddAgent (obj);
+    }
+
+    #endregion
+
+    #endregion
+
+    #region Helpers
+
+    void AddAgent (NeodroidAgent agent) {
+      if (_debug)
+        Debug.Log ("Enviroment " + name + " has agent " + agent.name);
+      _agents.Add (agent.name, agent);
     }
 
     #endregion

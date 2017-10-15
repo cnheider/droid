@@ -7,6 +7,8 @@ using Neodroid.NeodroidEnvironment.Actors;
 using Neodroid.NeodroidEnvironment.Observers;
 using Neodroid.NeodroidEnvironment.Motors;
 using Neodroid.Messaging.FlatBuffer;
+using Neodroid.Messaging.Models.State;
+using Neodroid.Messaging.Models.Reaction;
 
 namespace Neodroid.Messaging {
   public static class FlatBufferUtilities {
@@ -21,27 +23,36 @@ namespace Neodroid.Messaging {
       return FlatBufferMotor.EndFlatBufferMotor (b);
     }
 
-    private static Offset<FlatBufferPosRot> build_posrot (FlatBufferBuilder b, Vector3 vec3, Quaternion quat) {
-      FlatBufferPosRot.StartFlatBufferPosRot (b);
-      FlatBufferPosRot.AddPosition (b, FlatBufferVec3.CreateFlatBufferVec3 (b, vec3.x, vec3.y, vec3.z));
-      FlatBufferPosRot.AddRotation (b, FlatBufferQuat.CreateFlatBufferQuat (b, quat.x, quat.y, quat.z, quat.w));
-      return FlatBufferPosRot.EndFlatBufferPosRot (b);
+    /*private static Offset<FlatBufferPosRotDir> build_posrotdir (FlatBufferBuilder b, Vector3 vec3_pos, Quaternion quat_rot, Quaternion quat_dir) {
+      FlatBufferPosRotDir.StartFlatBufferPosRotDir (b);
+      FlatBufferPosRotDir.AddPosition (b, FlatBufferVec3.CreateFlatBufferVec3 (b, vec3_pos.x, vec3_pos.y, vec3_pos.z));
+      FlatBufferPosRotDir.AddDirection (b, FlatBufferQuat.CreateFlatBufferQuat (b, quat_dir.x, quat_dir.y, quat_dir.z, quat_dir.w));
+      FlatBufferPosRotDir.AddRotation (b, FlatBufferQuat.CreateFlatBufferQuat (b, quat_rot.x, quat_rot.y, quat_rot.z, quat_rot.w));
+      return FlatBufferPosRotDir.EndFlatBufferPosRotDir (b);
+    }*/
+
+    private static Offset<FlatBufferPosRotDir> build_posrotdir (FlatBufferBuilder b, Vector3 vec3_pos, Vector3 vec3_rot, Vector3 vec3_dir) {
+      FlatBufferPosRotDir.StartFlatBufferPosRotDir (b);
+      FlatBufferPosRotDir.AddPosition (b, FlatBufferVec3.CreateFlatBufferVec3 (b, vec3_pos.x, vec3_pos.y, vec3_pos.z));
+      FlatBufferPosRotDir.AddDirection (b, FlatBufferVec3.CreateFlatBufferVec3 (b, vec3_dir.x, vec3_dir.y, vec3_dir.z));
+      FlatBufferPosRotDir.AddRotation (b, FlatBufferVec3.CreateFlatBufferVec3 (b, vec3_rot.x, vec3_rot.y, vec3_rot.z));
+      return FlatBufferPosRotDir.EndFlatBufferPosRotDir (b);
     }
 
     private static Offset<FlatBufferActor> build_actor (FlatBufferBuilder b, Offset<FlatBufferMotor>[] motors, Actor actor) {
-      var posrot = build_posrot (b, actor.transform.position, actor.transform.rotation);
+      var posrotdir = build_posrotdir (b, actor._position, actor._rotation, actor._direction);
       StringOffset n = b.CreateString (actor.name);
       FlatBufferActor.CreateMotorsVector (b, motors);
       var motor_vector = b.EndVector ();
       FlatBufferActor.StartFlatBufferActor (b);
       FlatBufferActor.AddName (b, n);
       FlatBufferActor.AddMotors (b, motor_vector);
-      FlatBufferActor.AddPosrot (b, posrot);
+      FlatBufferActor.AddPosrotdir (b, posrotdir);
       return FlatBufferActor.EndFlatBufferActor (b);
     }
 
     private static Offset<FlatBufferObserver> build_observer (FlatBufferBuilder b, Observer observer) {
-      var posrot = build_posrot (b, observer.transform.position, observer.transform.rotation);
+      var posrotdir = build_posrotdir (b, observer._position, observer._rotation, observer._direction);
       //FlatBufferObserver.CreateDataVector(b, observer.GetData());
       CustomFlatBufferImplementation.CreateDataVectorAndAddAllDataAtOnce (b, observer.GetData ());
       var data_vector = b.EndVector ();
@@ -49,7 +60,7 @@ namespace Neodroid.Messaging {
       FlatBufferObserver.StartFlatBufferObserver (b);
       FlatBufferObserver.AddName (b, n);
       FlatBufferObserver.AddData (b, data_vector);
-      FlatBufferObserver.AddPosrot (b, posrot);
+      FlatBufferObserver.AddPosrotdir (b, posrotdir);
       return FlatBufferObserver.EndFlatBufferObserver (b);
     }
 
@@ -85,6 +96,8 @@ namespace Neodroid.Messaging {
       FlatBufferState.AddRewardForLastStep (b, state._reward_for_last_step);
       FlatBufferState.AddActors (b, actors_vector);
       FlatBufferState.AddObservers (b, observers_vector);
+      FlatBufferState.AddLastStepsFrameNumber (b, state._last_steps_frame_number);
+      FlatBufferState.AddInterrupted (b, state._interrupted);
       var offset = FlatBufferState.EndFlatBufferState (b);
 
       FlatBufferState.FinishFlatBufferStateBuffer (b, offset);

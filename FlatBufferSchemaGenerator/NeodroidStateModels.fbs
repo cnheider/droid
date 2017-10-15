@@ -24,14 +24,15 @@ table FlatBufferState {
   total_energy_spent_since_reset:float;
   actors:[FlatBufferActor];
   observers:[FlatBufferObserver];
+  last_steps_frame_number:int;
   reward_for_last_step:float;
-  interupted:bool;
+  interrupted:bool;
 }
 
 table FlatBufferPosRotDir {
   position:FlatBufferVec3;
+  rotation:FlatBufferVec3;
   direction:FlatBufferVec3;
-  rotation:FlatBufferQuat;
 }
 
 table FlatBufferObserver {

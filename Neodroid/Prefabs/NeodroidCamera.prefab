@@ -455,7 +455,7 @@ Camera:
     m_Bits: 4294967039
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 0eb6035a7a0f81b478123a6943624132, type: 2}
-  m_TargetDisplay: 0
+  m_TargetDisplay: 1
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 0
@@ -490,7 +490,7 @@ Camera:
     m_Bits: 4294967039
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 397526a456d4446bfb3742cfaf86a5e5, type: 2}
-  m_TargetDisplay: 0
+  m_TargetDisplay: 1
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 0
@@ -525,7 +525,7 @@ Camera:
     m_Bits: 4294967039
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: c93a79a2dfff541188033bfb222b7902, type: 2}
-  m_TargetDisplay: 0
+  m_TargetDisplay: 1
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 0
@@ -560,7 +560,7 @@ Camera:
     m_Bits: 4294967039
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: a7a3b448089be482b90ce5b9751d83ff, type: 2}
-  m_TargetDisplay: 0
+  m_TargetDisplay: 1
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 0
@@ -595,7 +595,7 @@ Camera:
     m_Bits: 4294967039
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: fa884919f4af94b439a0e37e3bfc80fb, type: 2}
-  m_TargetDisplay: 0
+  m_TargetDisplay: 1
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 0
@@ -853,29 +853,19 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1414017768631198}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 171828f705f73414fb42bd11259fceea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _agent_game_object: {fileID: 0}
   _environment_manager: {fileID: 0}
+  _position: {x: 0, y: 2, z: -2}
+  _rotation: {x: 0, y: 0.7071068, z: 0.70710677}
+  _direction: {x: 0, y: -0.70710677, z: 0.7071068}
   _debug: 0
   _observer_identifier: 
   _data: 
-  _position:
-  - 0
-  - 2
-  - -2
-  _rotation:
-  - 0.38268343
-  - -0
-  - -0
-  - 0.92387956
-  _direction:
-  - 45
-  - -0
-  - -0
 --- !u!114 &114286976079729522
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -926,29 +916,19 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1572195827616912}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 171828f705f73414fb42bd11259fceea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _agent_game_object: {fileID: 0}
   _environment_manager: {fileID: 0}
+  _position: {x: 0, y: 2, z: -2}
+  _rotation: {x: 0, y: 0.7071068, z: 0.70710677}
+  _direction: {x: 0, y: -0.70710677, z: 0.7071068}
   _debug: 0
   _observer_identifier: 
   _data: 
-  _position:
-  - 0
-  - 2
-  - -2
-  _rotation:
-  - 0.38268343
-  - -0
-  - -0
-  - 0.92387956
-  _direction:
-  - 45
-  - -0
-  - -0
 --- !u!114 &114360574657811330
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -982,87 +962,57 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1222284825586676}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 171828f705f73414fb42bd11259fceea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _agent_game_object: {fileID: 0}
   _environment_manager: {fileID: 0}
+  _position: {x: 0, y: 2, z: -2}
+  _rotation: {x: 0, y: 0.7071068, z: 0.70710677}
+  _direction: {x: 0, y: -0.70710677, z: 0.7071068}
   _debug: 0
   _observer_identifier: 
   _data: 
-  _position:
-  - 0
-  - 2
-  - -2
-  _rotation:
-  - 0.38268343
-  - -0
-  - -0
-  - 0.92387956
-  _direction:
-  - 45
-  - -0
-  - -0
 --- !u!114 &114666899097183002
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1728262864285934}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 171828f705f73414fb42bd11259fceea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _agent_game_object: {fileID: 0}
   _environment_manager: {fileID: 0}
+  _position: {x: 0, y: 2, z: -2}
+  _rotation: {x: 0, y: 0.7071068, z: 0.70710677}
+  _direction: {x: 0, y: -0.70710677, z: 0.7071068}
   _debug: 0
   _observer_identifier: 
   _data: 
-  _position:
-  - 0
-  - 2
-  - -2
-  _rotation:
-  - 0.38268343
-  - -0
-  - -0
-  - 0.92387956
-  _direction:
-  - 45
-  - -0
-  - -0
 --- !u!114 &114700807833468176
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1035063887647770}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 171828f705f73414fb42bd11259fceea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _agent_game_object: {fileID: 0}
   _environment_manager: {fileID: 0}
+  _position: {x: 0, y: 2, z: -2}
+  _rotation: {x: 0, y: 0.7071068, z: 0.70710677}
+  _direction: {x: 0, y: -0.70710677, z: 0.7071068}
   _debug: 0
   _observer_identifier: 
   _data: 
-  _position:
-  - 0
-  - 2
-  - -2
-  _rotation:
-  - 0.38268343
-  - -0
-  - -0
-  - 0.92387956
-  _direction:
-  - 45
-  - -0
-  - -0
 --- !u!114 &114722231822098306
 MonoBehaviour:
   m_ObjectHideFlags: 1

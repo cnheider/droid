@@ -59,7 +59,7 @@ MonoBehaviour:
   _continue_lastest_reaction_on_disconnect: 0
   _objective_function: {fileID: 0}
   _environment_manager: {fileID: 0}
-  _debug: 0
+  _debug: 1
 --- !u!114 &114108470344820590
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -95,8 +95,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69d4aec53cbca432a875535c0531b1df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _episode_length: 0
+  _episode_length: 5
   _frames_spent_resetting: 10
-  _wait_for_reaction_every_frame: 0
+  _wait_for_reaction_every_frame: 1
   _coordinate_system: 0
   _coordinate_reference_point: {fileID: 0}
+  _debug: 1
