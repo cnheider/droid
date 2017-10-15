@@ -53,8 +53,8 @@ namespace Neodroid.Messaging {
 
     private static Offset<FlatBufferObserver> build_observer (FlatBufferBuilder b, Observer observer) {
       var posrotdir = build_posrotdir (b, observer._position, observer._rotation, observer._direction);
-      //FlatBufferObserver.CreateDataVector(b, observer.GetData());
-      CustomFlatBufferImplementation.CreateDataVectorAndAddAllDataAtOnce (b, observer.GetData ());
+      FlatBufferObserver.CreateDataVector (b, observer.GetData ());
+      //CustomFlatBufferImplementation.CreateDataVectorAndAddAllDataAtOnce (b, observer.GetData ());
       var data_vector = b.EndVector ();
       StringOffset n = b.CreateString (observer.name);
       FlatBufferObserver.StartFlatBufferObserver (b);

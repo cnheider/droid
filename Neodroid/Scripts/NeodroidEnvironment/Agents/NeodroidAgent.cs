@@ -145,7 +145,13 @@ namespace Neodroid.NeodroidEnvironment.Agents {
         _was_interrupted = false;
       }
 
-      return new EnvironmentState (_environment_manager.GetTimeSinceReset (), energy_spent, _actors, _observers, _environment_manager.GetCurrentFrameNumber (), reward, interrupted_this_step);
+      return new EnvironmentState (
+        _environment_manager.GetTimeSinceReset (),
+        energy_spent,
+        _actors, _observers,
+        _environment_manager.GetCurrentFrameNumber (),
+        reward,
+        interrupted_this_step);
     }
 
     void ExecuteReaction (Reaction reaction) {
