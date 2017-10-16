@@ -4,6 +4,7 @@ using UnityEngine;
 namespace Neodroid.NeodroidEnvironment.Motors {
   public class SingleAxisMotor : Motor {
     public MotorAxis _axis_of_motion;
+    public Space _space = Space.Self;
 
     public override void ApplyMotion (MotorMotion motion) {
       if (_debug)
@@ -14,22 +15,22 @@ namespace Neodroid.NeodroidEnvironment.Motors {
       }
       switch (_axis_of_motion) {
       case MotorAxis.X:
-        transform.Translate (Vector3.left * motion._strength, Space.Self);
+        transform.Translate (Vector3.left * motion._strength, _space);
         break;
       case MotorAxis.Y:
-        transform.Translate (Vector3.up * motion._strength, Space.Self);
+        transform.Translate (-Vector3.up * motion._strength, _space);
         break;
       case MotorAxis.Z:
-        transform.Translate (Vector3.forward * motion._strength, Space.Self);
+        transform.Translate (-Vector3.forward * motion._strength, _space);
         break;
       case MotorAxis.Rot_X:
-        transform.Rotate (Vector3.left, motion._strength, Space.Self);
+        transform.Rotate (Vector3.left, motion._strength, _space);
         break;
       case MotorAxis.Rot_Y:
-        transform.Rotate (Vector3.up, motion._strength, Space.Self);
+        transform.Rotate (Vector3.up, motion._strength, _space);
         break;
       case MotorAxis.Rot_Z:
-        transform.Rotate (Vector3.forward, motion._strength, Space.Self);
+        transform.Rotate (Vector3.forward, motion._strength, _space);
         break;
       default:
         break;
