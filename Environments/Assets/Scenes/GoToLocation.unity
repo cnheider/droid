@@ -3476,6 +3476,30 @@ Material:
     - _Color1: {r: 0.23518598, g: 0.23518598, b: 0.6397059, a: 1}
     - _Color2: {r: 0.7058823, g: 0.3217993, b: 0.39331818, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+--- !u!1 &506735757 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1860348953583632, guid: a051af9c4a70d49cfbc1d4e1f0636d00,
+    type: 2}
+  m_PrefabInternal: {fileID: 1803486972}
+--- !u!114 &506735766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 506735757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 278496fbfbc005044baa4fade0d803a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _agent_game_object: {fileID: 0}
+  _environment_manager: {fileID: 0}
+  _position: {x: 0, y: 0, z: 0}
+  _rotation: {x: 0, y: 0, z: 0}
+  _direction: {x: 0, y: 0, z: 0}
+  _debug: 0
+  _observer_identifier: 
+  _data: 
 --- !u!21 &521502042
 Material:
   serializedVersion: 6
