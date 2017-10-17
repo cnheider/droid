@@ -58,7 +58,7 @@ namespace Neodroid.Messaging {
     void WaitForClientToConnect (Action callback) {
       if (_use_inter_process_communication) {
         //_socket.Bind ("inproc://neodroid");
-        _socket.Bind ("ipc:///tmp/neodroid/0");
+        _socket.Bind ("ipc:///tmp/neodroid/messages0");
         //_socket.Bind ("epgm://" + _ip_address + ":" + _port.ToString ()); // for pub/sub sockets
       } else {
         _socket.Bind ("tcp://" + _ip_address + ":" + _port.ToString ());
@@ -73,10 +73,12 @@ namespace Neodroid.Messaging {
           try {
             //msg = _socket.TryReceiveFrameBytes ();
             _socket.TryReceiveFrameBytes (TimeSpan.FromSeconds (2), out msg);
-            var flat_reaction = FlatBufferReaction.GetRootAsFlatBufferReaction (new FlatBuffers.ByteBuffer (msg));
-            var reaction = FlatBufferUtilities.create_reaction (flat_reaction);
-            receive_callback (reaction);
-            _waiting_for_main_loop_to_send = true;
+            if (msg != null && msg.Length > 0) {
+              var flat_reaction = FlatBufferReaction.GetRootAsFlatBufferReaction (new FlatBuffers.ByteBuffer (msg));
+              var reaction = FlatBufferUtilities.create_reaction (flat_reaction);
+              receive_callback (reaction);
+              _waiting_for_main_loop_to_send = true;
+            }
           } catch (Exception err) {
             error_callback (err.ToString ());
           }
@@ -119,7 +121,7 @@ namespace Neodroid.Messaging {
         lock (_thread_lock)
           _stop_thread_ = true;
         if (_use_inter_process_communication) {
-          _socket.Disconnect (("inproc://neodroid"));
+          _socket.Disconnect (("ipc:///tmp/neodroid/messages0"));
         } else {
           _socket.Disconnect (("tcp://" + _ip_address + ":" + _port.ToString ()));
         }
