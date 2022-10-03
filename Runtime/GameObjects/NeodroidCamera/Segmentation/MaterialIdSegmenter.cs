@@ -1,34 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using droid.Runtime.GameObjects.NeodroidCamera.Synthesis;
-using UnityEngine;
-
-namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation {
+﻿namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [ExecuteInEditMode]
+  [UnityEngine.ExecuteInEditMode]
   public class MaterialIdSegmenter : Segmenter {
-    /// <summary>
-    /// </summary>
-    Renderer[] _all_renders = null;
+    [UnityEngine.SerializeField] UnityEngine.Shader segmentation_shader = null;
+    [UnityEngine.SerializeField] UnityEngine.Camera _camera = null;
 
     /// <summary>
     /// </summary>
-    MaterialPropertyBlock _block = null;
-
-    [SerializeField] Shader segmentation_shader = null;
-    [SerializeField] Camera _camera = null;
+    UnityEngine.Renderer[] _all_renders = null;
 
     /// <summary>
     /// </summary>
-    public Dictionary<Material, Color> ColorsDictGameObject { get; set; } = new Dictionary<Material, Color>();
+    UnityEngine.MaterialPropertyBlock _block = null;
+
+    droid.Runtime.GameObjects.NeodroidCamera.Synthesis.SynthesisUtilities.CapturePass[] _capture_passes = {
+        new droid.Runtime.GameObjects.NeodroidCamera.Synthesis.SynthesisUtilities.CapturePass {
+            _Name = "_material_id",
+            _ReplacementMode =
+                droid.Runtime.GameObjects.NeodroidCamera.Synthesis.SynthesisUtilities.ReplacementModes
+                     .Material_id_,
+            _SupportsAntialiasing = false
+        }
+    };
 
     /// <summary>
     /// </summary>
-    public override Dictionary<string, Color> ColorsDict {
+    public System.Collections.Generic.Dictionary<UnityEngine.Material, UnityEngine.Color>
+        ColorsDictGameObject { get; set; } =
+      new System.Collections.Generic.Dictionary<UnityEngine.Material, UnityEngine.Color>();
+
+    /// <summary>
+    /// </summary>
+    public override System.Collections.Generic.Dictionary<string, UnityEngine.Color> ColorsDict {
       get {
-        var colors = new Dictionary<string, Color>();
+        var colors = new System.Collections.Generic.Dictionary<string, UnityEngine.Color>();
         foreach (var key_val in this.ColorsDictGameObject) {
           if (!colors.ContainsKey(key : key_val.Key.name)) {
             colors.Add(key : key_val.Key.name, value : key_val.Value);
@@ -46,34 +53,23 @@ namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation {
 
     void CheckBlock() {
       if (this._block == null) {
-        this._block = new MaterialPropertyBlock();
+        this._block = new UnityEngine.MaterialPropertyBlock();
       }
     }
-
-    SynthesisUtilities.CapturePass[] _capture_passes = {
-                                                           new SynthesisUtilities.CapturePass {
-                                                                                                  _Name =
-                                                                                                      "_material_id",
-                                                                                                  _ReplacementMode
-                                                                                                      = SynthesisUtilities
-                                                                                                        .ReplacementModes
-                                                                                                        .Material_id_,
-                                                                                                  _SupportsAntialiasing
-                                                                                                      = false
-                                                                                              }
-                                                       };
 
     /// <summary>
     /// </summary>
     void Setup() {
-      this._all_renders = FindObjectsOfType<Renderer>();
+      this._all_renders = FindObjectsOfType<UnityEngine.Renderer>();
 
-      this._camera = this.GetComponent<Camera>();
-      SynthesisUtilities.SetupCapturePassesReplacementShader(camera : this._camera,
-                                                             replacement_shader : this.segmentation_shader,
-                                                             capture_passes : ref this._capture_passes);
+      this._camera = this.GetComponent<UnityEngine.Camera>();
+      droid.Runtime.GameObjects.NeodroidCamera.Synthesis.SynthesisUtilities
+           .SetupCapturePassesReplacementShader(camera : this._camera,
+                                                replacement_shader : this.segmentation_shader,
+                                                capture_passes : ref this._capture_passes);
 
-      this.ColorsDictGameObject = new Dictionary<Material, Color>();
+      this.ColorsDictGameObject =
+          new System.Collections.Generic.Dictionary<UnityEngine.Material, UnityEngine.Color>();
       this.CheckBlock();
       for (var index = 0; index < this._all_renders.Length; index++) {
         var r = this._all_renders[index];
@@ -81,12 +77,16 @@ namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation {
         var sm = r.sharedMaterial;
         if (sm) {
           var id = sm.GetInstanceID();
-          var color = ColorEncoding.EncodeIdAsColor(instance_id : id);
+          var color =
+              droid.Runtime.GameObjects.NeodroidCamera.Synthesis.ColorEncoding
+                   .EncodeIdAsColor(instance_id : id);
           if (!this.ColorsDictGameObject.ContainsKey(key : sm)) {
             this.ColorsDictGameObject.Add(key : sm, value : color);
           }
 
-          this._block.SetColor(name : SynthesisUtilities._Shader_MaterialId_Color_Name, value : color);
+          this._block.SetColor(name : droid.Runtime.GameObjects.NeodroidCamera.Synthesis.SynthesisUtilities
+                                           ._Shader_MaterialId_Color_Name,
+                               value : color);
           r.SetPropertyBlock(properties : this._block);
         }
       }

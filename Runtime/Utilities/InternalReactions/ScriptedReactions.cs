@@ -1,26 +1,22 @@
-﻿using droid.Runtime.Managers;
-using UnityEditor;
-using UnityEngine;
-
-namespace droid.Runtime.Utilities.InternalReactions {
+﻿namespace droid.Runtime.Utilities.InternalReactions {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [ExecuteInEditMode]
-  public abstract class ScriptedReactions : MonoBehaviour {
+  [UnityEngine.ExecuteInEditMode]
+  public abstract class ScriptedReactions : UnityEngine.MonoBehaviour {
     #if UNITY_EDITOR
     const int _script_execution_order = -10000;
     #endif
 
     /// <summary>
     /// </summary>
-    [SerializeField]
+    [UnityEngine.SerializeField]
     bool _debugging;
 
     /// <summary>
     /// </summary>
-    [SerializeField]
-    protected AbstractNeodroidManager _Manager;
+    [UnityEngine.SerializeField]
+    protected droid.Runtime.Managers.AbstractNeodroidManager _Manager;
 
     /// <summary>
     /// </summary>
@@ -38,18 +34,20 @@ namespace droid.Runtime.Utilities.InternalReactions {
       if (Instance == null) {
         Instance = this;
       } else {
-        Debug.LogWarning(message : "WARNING! Multiple PlayerReactions in the scene! Only using " + Instance);
+        UnityEngine.Debug.LogWarning(message : "WARNING! Multiple PlayerReactions in the scene! Only using "
+                                               + Instance);
       }
 
       #if UNITY_EDITOR
-      if (!Application.isPlaying) {
-        var manager_script = MonoScript.FromMonoBehaviour(behaviour : this);
-        if (MonoImporter.GetExecutionOrder(script : manager_script) != _script_execution_order) {
-          MonoImporter.SetExecutionOrder(script : manager_script,
-                                         order :
-                                         _script_execution_order); // Ensures that PreStep is called first, before all other scripts.
-          Debug.LogWarning("Execution Order changed, you will need to press play again to make everything function correctly!");
-          EditorApplication.isPlaying = false;
+      if (!UnityEngine.Application.isPlaying) {
+        var manager_script = UnityEditor.MonoScript.FromMonoBehaviour(behaviour : this);
+        if (UnityEditor.MonoImporter.GetExecutionOrder(script : manager_script) != _script_execution_order) {
+          UnityEditor.MonoImporter.SetExecutionOrder(script : manager_script,
+                                                     order :
+                                                     _script_execution_order); // Ensures that PreStep is called first, before all other scripts.
+          UnityEngine.Debug
+                     .LogWarning("Execution Order changed, you will need to press play again to make everything function correctly!");
+          UnityEditor.EditorApplication.isPlaying = false;
           //TODO: UnityEngine.Experimental.LowLevel.PlayerLoop.SetPlayerLoop(new UnityEngine.Experimental.LowLevel.PlayerLoopSystem());
         }
       }

@@ -1,46 +1,41 @@
-﻿using droid.Runtime.Interfaces;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Actors {
+﻿namespace droid.Runtime.Prototyping.Actors {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : ActorComponentMenuPath._ComponentMenuPath
-                               + "Killable"
-                               + ActorComponentMenuPath._Postfix)]
+  [UnityEngine.AddComponentMenu(menuName : ActorComponentMenuPath._ComponentMenuPath
+                                           + "Killable"
+                                           + ActorComponentMenuPath._Postfix)]
   public class KillableActor : Actor {
-    [SerializeField] bool _is_alive = true;
+    [UnityEngine.SerializeField] bool _is_alive = true;
 
     /// <summary>
-    ///
     /// </summary>
     public bool IsAlive { get { return this._is_alive; } }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
     public override string PrototypingTypeName { get { return "KillableActor"; } }
 
     /// <summary>
-    ///
     /// </summary>
     public void Kill() { this._is_alive = false; }
 
-    public override void ApplyMotion(IMotion motion) {
+    public override void ApplyMotion(droid.Runtime.Interfaces.IMotion motion) {
       if (this._is_alive) {
         base.ApplyMotion(motion : motion);
       } else {
         #if NEODROID_DEBUG
         if (this.Debugging) {
-          Debug.Log("Actor is dead, cannot apply motion");
+          UnityEngine.Debug.Log("Actor is dead, cannot apply motion");
         }
         #endif
       }
     }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
     public override void PrototypingReset() {
       base.PrototypingReset();
 

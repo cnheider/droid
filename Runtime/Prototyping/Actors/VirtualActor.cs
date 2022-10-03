@@ -1,75 +1,88 @@
-using System;
-using System.Collections.Generic;
-using droid.Runtime.Interfaces;
-using UnityEngine;
-
 namespace droid.Runtime.Prototyping.Actors {
-  public class VirtualActor : IActor {
-    public VirtualActor(SortedDictionary<string, IActuator> actuators) { this.Actuators = actuators; }
+  public class VirtualActor : droid.Runtime.Interfaces.IActor {
+    public VirtualActor(
+        System.Collections.Generic.SortedDictionary<string, droid.Runtime.Interfaces.IActuator> actuators) {
+      this.Actuators = actuators;
+    }
+
+    #region IActor Members
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
     public string Identifier { get; }
 
     /// <summary>
-    ///
     /// </summary>
-    public SortedDictionary<string, IActuator> Actuators { get; }
+    public System.Collections.Generic.SortedDictionary<string, droid.Runtime.Interfaces.IActuator> Actuators {
+      get;
+    }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    public Transform CachedTransform { get; }
+    /// <summary>
+    /// </summary>
+    public UnityEngine.Transform CachedTransform { get; }
 
-    public void Tick() { throw new NotImplementedException(); }
-
-    /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    ///  <param name="obj"></param>
-    ///  <exception cref="T:System.NotImplementedException"></exception>
-    public void Register(IActuator obj) { throw new NotImplementedException(); }
+    public void Tick() { throw new System.NotImplementedException(); }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    ///  <param name="obj"></param>
-    ///  <param name="identifier"></param>
-    ///  <exception cref="T:System.NotImplementedException"></exception>
-    public void Register(IActuator obj, string identifier) { throw new NotImplementedException(); }
+    /// <summary>
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <exception cref="T:System.NotImplementedException"></exception>
+    public void Register(droid.Runtime.Interfaces.IActuator obj) {
+      throw new System.NotImplementedException();
+    }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    ///  <param name="obj"></param>
-    ///  <exception cref="T:System.NotImplementedException"></exception>
-    public void UnRegister(IActuator obj) { throw new NotImplementedException(); }
+    /// <summary>
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="identifier"></param>
+    /// <exception cref="T:System.NotImplementedException"></exception>
+    public void Register(droid.Runtime.Interfaces.IActuator obj, string identifier) {
+      throw new System.NotImplementedException();
+    }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    ///  <param name="t"></param>
-    ///  <param name="obj"></param>
-    ///  <exception cref="T:System.NotImplementedException"></exception>
-    public void UnRegister(IActuator t, string obj) { throw new NotImplementedException(); }
+    /// <summary>
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <exception cref="T:System.NotImplementedException"></exception>
+    public void UnRegister(droid.Runtime.Interfaces.IActuator obj) {
+      throw new System.NotImplementedException();
+    }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    ///  <param name="motion"></param>
-    ///  <exception cref="T:System.NotImplementedException"></exception>
-    public void ApplyMotion(IMotion motion) { throw new NotImplementedException(); }
+    /// <summary>
+    /// </summary>
+    /// <param name="t"></param>
+    /// <param name="obj"></param>
+    /// <exception cref="T:System.NotImplementedException"></exception>
+    public void UnRegister(droid.Runtime.Interfaces.IActuator t, string obj) {
+      throw new System.NotImplementedException();
+    }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    ///  <exception cref="T:System.NotImplementedException"></exception>
-    public void PrototypingReset() { throw new NotImplementedException(); }
+    /// <summary>
+    /// </summary>
+    /// <param name="motion"></param>
+    /// <exception cref="T:System.NotImplementedException"></exception>
+    public void ApplyMotion(droid.Runtime.Interfaces.IMotion motion) {
+      throw new System.NotImplementedException();
+    }
 
-    public void PreSetup() { throw new NotImplementedException(); }
-    public void Setup() { throw new NotImplementedException(); }
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
+    /// <exception cref="T:System.NotImplementedException"></exception>
+    public void PrototypingReset() { throw new System.NotImplementedException(); }
 
-    public void RemotePostSetup() { throw new NotImplementedException(); }
+    public void PreSetup() { throw new System.NotImplementedException(); }
+    public void Setup() { throw new System.NotImplementedException(); }
+
+    public void RemotePostSetup() { throw new System.NotImplementedException(); }
+
+    #endregion
   }
 }

@@ -1,32 +1,29 @@
-using droid.Runtime.Structs.Space;
-using UnityEngine;
-
 namespace droid.Runtime.Interfaces {
   /// <summary>
   /// </summary>
   public interface IHasEulerTransform {
     /// <summary>
     /// </summary>
-    Vector3 Position { get; }
+    UnityEngine.Vector3 Position { get; }
 
     /// <summary>
     /// </summary>
-    Vector3 Direction { get; }
+    UnityEngine.Vector3 Direction { get; }
 
     /// <summary>
     /// </summary>
-    Vector3 Rotation { get; }
+    UnityEngine.Vector3 Rotation { get; }
 
     /// <summary>
     /// </summary>
-    Space3 PositionSpace { get; }
+    droid.Runtime.Structs.Space.Space3 PositionSpace { get; }
 
     /// <summary>
     /// </summary>
-    Space3 DirectionSpace { get; }
+    droid.Runtime.Structs.Space.Space3 DirectionSpace { get; }
 
     /// <summary>
     /// </summary>
-    Space3 RotationSpace { get; }
+    droid.Runtime.Structs.Space.Space3 RotationSpace { get; }
   }
 }

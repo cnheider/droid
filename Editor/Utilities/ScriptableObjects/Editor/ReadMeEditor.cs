@@ -1,14 +1,9 @@
-﻿using System.IO;
-using System.Reflection;
-using UnityEditor;
-using UnityEngine;
-
-namespace droid.Editor.Utilities.ScriptableObjects.Editor {
+﻿namespace droid.Editor.Utilities.ScriptableObjects.Editor {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [CustomEditor(inspectedType : typeof(ReadMe))]
-  [InitializeOnLoad]
+  [UnityEditor.CustomEditor(inspectedType : typeof(ReadMe))]
+  [UnityEditor.InitializeOnLoadAttribute]
   public class ReadMeEditor : UnityEditor.Editor {
     const string _showed_readme_session_state_name = "ReadMeEditor.showedReadMe";
 
@@ -17,27 +12,28 @@ namespace droid.Editor.Utilities.ScriptableObjects.Editor {
 
     const string _scriptable_object_menu_path = "Tools/ReadMe/";
 
-    [SerializeField]
-    GUIStyle bodyStyle = new GUIStyle(other : EditorStyles.label) {wordWrap = true, fontSize = 14};
+    [UnityEngine.SerializeField]
+    UnityEngine.GUIStyle bodyStyle =
+        new UnityEngine.GUIStyle(other : UnityEditor.EditorStyles.label) {wordWrap = true, fontSize = 14};
 
-    [SerializeField] GUIStyle headingStyle;
-    [SerializeField] GUIStyle linkStyle;
+    [UnityEngine.SerializeField] UnityEngine.GUIStyle headingStyle;
+    [UnityEngine.SerializeField] UnityEngine.GUIStyle linkStyle;
+    [UnityEngine.SerializeField] UnityEngine.GUIStyle titleStyle;
 
     bool _m_initialized;
-    [SerializeField] GUIStyle titleStyle;
 
-    GUIStyle LinkStyle { get { return this.linkStyle; } }
+    UnityEngine.GUIStyle LinkStyle { get { return this.linkStyle; } }
 
-    GUIStyle TitleStyle { get { return this.titleStyle; } }
+    UnityEngine.GUIStyle TitleStyle { get { return this.titleStyle; } }
 
-    GUIStyle HeadingStyle { get { return this.headingStyle; } }
+    UnityEngine.GUIStyle HeadingStyle { get { return this.headingStyle; } }
 
-    GUIStyle BodyStyle { get { return this.bodyStyle; } }
+    UnityEngine.GUIStyle BodyStyle { get { return this.bodyStyle; } }
 
     static void SelectReadmeAutomatically() {
-      if (!SessionState.GetBool(key : _showed_readme_session_state_name, false)) {
+      if (!UnityEditor.SessionState.GetBool(key : _showed_readme_session_state_name, false)) {
         var readme = SelectReadme();
-        SessionState.SetBool(key : _showed_readme_session_state_name, true);
+        UnityEditor.SessionState.SetBool(key : _showed_readme_session_state_name, true);
 
         if (readme && !readme.loadedLayout) {
           LoadLayout();
@@ -47,46 +43,49 @@ namespace droid.Editor.Utilities.ScriptableObjects.Editor {
     }
 
     static void LoadLayout() {
-      var assembly = typeof(EditorApplication).Assembly;
+      var assembly = typeof(UnityEditor.EditorApplication).Assembly;
       var window_layout_type = assembly.GetType("UnityEditor.WindowLayout", true);
       var method = window_layout_type.GetMethod("LoadWindowLayout",
-                                                bindingAttr : BindingFlags.Public | BindingFlags.Static);
+                                                bindingAttr : System.Reflection.BindingFlags.Public
+                                                              | System.Reflection.BindingFlags.Static);
       method?.Invoke(null,
                      parameters : new object[] {
-                                                   Path.Combine(path1 : Application.dataPath,
-                                                                "Excluded/Common/ReadMe/Layout.wlt"),
+                                                   System.IO.Path.Combine(path1 : UnityEngine.Application
+                                                         .dataPath,
+                                                     "Excluded/Common/ReadMe/Layout.wlt"),
                                                    false
                                                });
     }
 
-    [MenuItem(itemName : _scriptable_object_menu_path + "Show ReadMe")]
+    [UnityEditor.MenuItem(itemName : _scriptable_object_menu_path + "Show ReadMe")]
     static ReadMe SelectReadme() {
-      var ids = AssetDatabase.FindAssets("ReadMe t:ReadMe");
+      var ids = UnityEditor.AssetDatabase.FindAssets("ReadMe t:ReadMe");
       if (ids.Length == 1) {
         var readme_object =
-            AssetDatabase.LoadMainAssetAtPath(assetPath : AssetDatabase.GUIDToAssetPath(guid : ids[0]));
+            UnityEditor.AssetDatabase.LoadMainAssetAtPath(assetPath : UnityEditor.AssetDatabase
+                                                              .GUIDToAssetPath(guid : ids[0]));
 
-        Selection.objects = new[] {readme_object};
+        UnityEditor.Selection.objects = new[] {readme_object};
 
         return (ReadMe)readme_object;
       }
 
-      Debug.Log("Couldn't find a readme");
+      UnityEngine.Debug.Log("Couldn't find a readme");
       return null;
     }
 
     /// <summary>
     /// </summary>
-    [MenuItem(itemName : _scriptable_object_menu_path + "Create new ReadMe")]
+    [UnityEditor.MenuItem(itemName : _scriptable_object_menu_path + "Create new ReadMe")]
     public static void CreateReadMeAsset() {
       var asset = CreateInstance<ReadMe>();
 
-      AssetDatabase.CreateAsset(asset : asset, path : _NewAssetPath + "NewReadMe.asset");
-      AssetDatabase.SaveAssets();
+      UnityEditor.AssetDatabase.CreateAsset(asset : asset, path : $"{_NewAssetPath}NewReadMe.asset");
+      UnityEditor.AssetDatabase.SaveAssets();
 
-      EditorUtility.FocusProjectWindow();
+      UnityEditor.EditorUtility.FocusProjectWindow();
 
-      Selection.activeObject = asset;
+      UnityEditor.Selection.activeObject = asset;
     }
 
     /// <summary>
@@ -95,16 +94,17 @@ namespace droid.Editor.Utilities.ScriptableObjects.Editor {
       var readme = (ReadMe)this.target;
       this.Init();
 
-      var icon_width = Mathf.Min(a : EditorGUIUtility.currentViewWidth / 3f - 20f, 128f);
+      var icon_width =
+          UnityEngine.Mathf.Min(a : UnityEditor.EditorGUIUtility.currentViewWidth / 3f - 20f, 128f);
 
-      GUILayout.BeginHorizontal("In BigTitle");
+      UnityEngine.GUILayout.BeginHorizontal("In BigTitle");
       {
-        GUILayout.Label(image : readme.icon,
-                        GUILayout.Width(width : icon_width),
-                        GUILayout.Height(height : icon_width));
-        GUILayout.Label(text : readme.title, style : this.TitleStyle);
+        UnityEngine.GUILayout.Label(image : readme.icon,
+                                    UnityEngine.GUILayout.Width(width : icon_width),
+                                    UnityEngine.GUILayout.Height(height : icon_width));
+        UnityEngine.GUILayout.Label(text : readme.title, style : this.TitleStyle);
       }
-      GUILayout.EndHorizontal();
+      UnityEngine.GUILayout.EndHorizontal();
     }
 
     /// <inheritdoc />
@@ -117,21 +117,21 @@ namespace droid.Editor.Utilities.ScriptableObjects.Editor {
       if (readme.sections != null) {
         foreach (var section in readme.sections) {
           if (!string.IsNullOrEmpty(value : section.heading)) {
-            GUILayout.Label(text : section.heading, style : this.HeadingStyle);
+            UnityEngine.GUILayout.Label(text : section.heading, style : this.HeadingStyle);
           }
 
           if (!string.IsNullOrEmpty(value : section.text)) {
-            GUILayout.Label(text : section.text, style : this.BodyStyle);
+            UnityEngine.GUILayout.Label(text : section.text, style : this.BodyStyle);
           }
 
           if (!string.IsNullOrEmpty(value : section.linkText)) {
-            if (NeodroidEditorUtilities.LinkLabel(label : new GUIContent(text : section.linkText),
+            if (NeodroidEditorUtilities.LinkLabel(label : new UnityEngine.GUIContent(text : section.linkText),
                                                   link_style : this.LinkStyle)) {
-              Application.OpenURL(url : section.url);
+              UnityEngine.Application.OpenURL(url : section.url);
             }
           }
 
-          GUILayout.Space(pixels : _space);
+          UnityEngine.GUILayout.Space(pixels : _space);
         }
       }
     }
@@ -141,21 +141,25 @@ namespace droid.Editor.Utilities.ScriptableObjects.Editor {
         return;
       }
 
-      this.titleStyle = new GUIStyle(other : this.bodyStyle) {fontSize = 26};
+      this.titleStyle = new UnityEngine.GUIStyle(other : this.bodyStyle) {fontSize = 26};
 
-      this.headingStyle = new GUIStyle(other : this.bodyStyle) {fontSize = 18};
+      this.headingStyle = new UnityEngine.GUIStyle(other : this.bodyStyle) {fontSize = 18};
 
-      this.linkStyle = new GUIStyle(other : this.bodyStyle) {
-                                                                wordWrap = false,
-                                                                normal = {
-                                                                             textColor =
-                                                                                 new Color(r : 0x00 / 255f,
-                                                                                           g : 0x78 / 255f,
-                                                                                           b : 0xDA / 255f,
-                                                                                           1f)
-                                                                         },
-                                                                stretchWidth = false
-                                                            };
+      this.linkStyle = new UnityEngine.GUIStyle(other : this.bodyStyle) {
+                                                                            wordWrap = false,
+                                                                            normal = {
+                                                                                textColor =
+                                                                                    new UnityEngine.
+                                                                                        Color(r : 0x00
+                                                                                            / 255f,
+                                                                                          g : 0x78
+                                                                                            / 255f,
+                                                                                          b : 0xDA
+                                                                                            / 255f,
+                                                                                          1f)
+                                                                            },
+                                                                            stretchWidth = false
+                                                                        };
       // Match selection color which works nicely for both light and dark skins
 
       this._m_initialized = true;

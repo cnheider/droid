@@ -1,24 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using droid.Runtime.Interfaces;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Sensors.Strings {
+﻿namespace droid.Runtime.Prototyping.Sensors.Strings {
   /// <summary>
-  ///
   /// </summary>
-  [AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
-                               + "String"
-                               + SensorComponentMenuPath._Postfix)]
-  [ExecuteInEditMode]
+  [UnityEngine.AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
+                                           + "String"
+                                           + SensorComponentMenuPath._Postfix)]
+  [UnityEngine.ExecuteInEditMode]
   public class StringSensor : Sensor,
-                              IHasString {
-    [Header("Observation", order = 103)]
-    [SerializeField]
+                              droid.Runtime.Interfaces.IHasString {
+    [UnityEngine.HeaderAttribute("Observation", order = 103)]
+    [UnityEngine.SerializeField]
     string _observation_value;
 
+    /// <inheritdoc />
     /// <summary>
-    ///
+    /// </summary>
+    public override System.Collections.Generic.IEnumerable<float> FloatEnumerable { get { return null; } }
+
+    /// <summary>
     /// </summary>
     public string ObservationValue {
       get { return this._observation_value; }
@@ -26,13 +24,8 @@ namespace droid.Runtime.Prototyping.Sensors.Strings {
     }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    public override IEnumerable<float> FloatEnumerable { get { return null; } }
-
-    /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
     public override void UpdateObservation() {
       this._observation_value = this.ParentEnvironment.StepI.ToString();
     }

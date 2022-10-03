@@ -1,10 +1,7 @@
-using UnityEditor;
-using UnityEngine;
-
 #if UNITY_EDITOR
 
 namespace droid.Runtime.ScriptableObjects.SerialisableDictionary {
-  [CustomPropertyDrawer(type : typeof(StringIntDictionary))]
+  [UnityEditor.CustomPropertyDrawer(type : typeof(StringIntDictionary))]
   public class StringIntDictionaryDrawer : SerializableDictionaryDrawer<string, int> {
     protected override SerializableKeyValueTemplate<string, int> GetTemplate() {
       return this.GetGenericTemplate<SerializableStringIntTemplate>();
@@ -13,22 +10,24 @@ namespace droid.Runtime.ScriptableObjects.SerialisableDictionary {
 
   class SerializableStringIntTemplate : SerializableKeyValueTemplate<string, int> { }
 
-  [CustomPropertyDrawer(type : typeof(GameObjectFloatDictionary))]
-  public class GameObjectFloatDictionaryDrawer : SerializableDictionaryDrawer<GameObject, float> {
-    protected override SerializableKeyValueTemplate<GameObject, float> GetTemplate() {
+  [UnityEditor.CustomPropertyDrawer(type : typeof(GameObjectFloatDictionary))]
+  public class GameObjectFloatDictionaryDrawer : SerializableDictionaryDrawer<UnityEngine.GameObject, float> {
+    protected override SerializableKeyValueTemplate<UnityEngine.GameObject, float> GetTemplate() {
       return this.GetGenericTemplate<SerializableGameObjectFloatTemplate>();
     }
   }
 
-  class SerializableGameObjectFloatTemplate : SerializableKeyValueTemplate<GameObject, float> { }
+  class SerializableGameObjectFloatTemplate : SerializableKeyValueTemplate<UnityEngine.GameObject, float> { }
 
-  [CustomPropertyDrawer(type : typeof(StringGameObjectDictionary))]
-  public class StringGameObjectDictionaryDrawer : SerializableDictionaryDrawer<string, GameObject> {
-    protected override SerializableKeyValueTemplate<string, GameObject> GetTemplate() {
+  [UnityEditor.CustomPropertyDrawer(type : typeof(StringGameObjectDictionary))]
+  public class StringGameObjectDictionaryDrawer :
+      SerializableDictionaryDrawer<string, UnityEngine.GameObject> {
+    protected override SerializableKeyValueTemplate<string, UnityEngine.GameObject> GetTemplate() {
       return this.GetGenericTemplate<SerializableStringGameObjectTemplate>();
     }
   }
 
-  class SerializableStringGameObjectTemplate : SerializableKeyValueTemplate<string, GameObject> { }
+  class SerializableStringGameObjectTemplate :
+      SerializableKeyValueTemplate<string, UnityEngine.GameObject> { }
 }
 #endif

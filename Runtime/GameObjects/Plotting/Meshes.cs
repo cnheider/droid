@@ -1,9 +1,7 @@
-﻿using UnityEngine;
-
-namespace droid.Runtime.GameObjects.Plotting {
+﻿namespace droid.Runtime.GameObjects.Plotting {
   public class Meshes {
-    public static Mesh ConeMesh() {
-      var mesh = new Mesh();
+    public static UnityEngine.Mesh ConeMesh() {
+      var mesh = new UnityEngine.Mesh();
       mesh.Clear();
 
       const float height = 1f;
@@ -17,27 +15,28 @@ namespace droid.Runtime.GameObjects.Plotting {
       #region Vertices
 
 // bottom + top + sides
-      var vertices = new Vector3[nb_vertices_cap + nb_vertices_cap + nb_sides * nb_height_seg * 2 + 2];
+      var vertices =
+          new UnityEngine.Vector3[nb_vertices_cap + nb_vertices_cap + nb_sides * nb_height_seg * 2 + 2];
       var vert = 0;
-      const float _2_pi = Mathf.PI * 2f;
+      const float _2_pi = UnityEngine.Mathf.PI * 2f;
 
 // Bottom cap
-      vertices[vert++] = new Vector3(0f, 0f, 0f);
+      vertices[vert++] = new UnityEngine.Vector3(0f, 0f, 0f);
       while (vert <= nb_sides) {
         var rad = (float)vert / nb_sides * _2_pi;
-        vertices[vert] = new Vector3(x : Mathf.Cos(f : rad) * bottom_radius,
-                                     y : 0f,
-                                     z : Mathf.Sin(f : rad) * bottom_radius);
+        vertices[vert] = new UnityEngine.Vector3(x : UnityEngine.Mathf.Cos(f : rad) * bottom_radius,
+                                                 0f,
+                                                 z : UnityEngine.Mathf.Sin(f : rad) * bottom_radius);
         vert++;
       }
 
 // Top cap
-      vertices[vert++] = new Vector3(0f, y : height, 0f);
+      vertices[vert++] = new UnityEngine.Vector3(0f, y : height, 0f);
       while (vert <= nb_sides * 2 + 1) {
         var rad = (float)(vert - nb_sides - 1) / nb_sides * _2_pi;
-        vertices[vert] = new Vector3(x : Mathf.Cos(f : rad) * top_radius,
-                                     y : height,
-                                     z : Mathf.Sin(f : rad) * top_radius);
+        vertices[vert] = new UnityEngine.Vector3(x : UnityEngine.Mathf.Cos(f : rad) * top_radius,
+                                                 y : height,
+                                                 z : UnityEngine.Mathf.Sin(f : rad) * top_radius);
         vert++;
       }
 
@@ -45,12 +44,12 @@ namespace droid.Runtime.GameObjects.Plotting {
       var v = 0;
       while (vert <= vertices.Length - 4) {
         var rad = (float)v / nb_sides * _2_pi;
-        vertices[vert] = new Vector3(x : Mathf.Cos(f : rad) * top_radius,
-                                     y : height,
-                                     z : Mathf.Sin(f : rad) * top_radius);
-        vertices[vert + 1] = new Vector3(x : Mathf.Cos(f : rad) * bottom_radius,
-                                         y : 0,
-                                         z : Mathf.Sin(f : rad) * bottom_radius);
+        vertices[vert] = new UnityEngine.Vector3(x : UnityEngine.Mathf.Cos(f : rad) * top_radius,
+                                                 y : height,
+                                                 z : UnityEngine.Mathf.Sin(f : rad) * top_radius);
+        vertices[vert + 1] = new UnityEngine.Vector3(x : UnityEngine.Mathf.Cos(f : rad) * bottom_radius,
+                                                     0,
+                                                     z : UnityEngine.Mathf.Sin(f : rad) * bottom_radius);
         vert += 2;
         v++;
       }
@@ -63,27 +62,27 @@ namespace droid.Runtime.GameObjects.Plotting {
       #region Normales
 
 // bottom + top + sides
-      var normales = new Vector3[vertices.Length];
+      var normales = new UnityEngine.Vector3[vertices.Length];
       vert = 0;
 
 // Bottom cap
       while (vert <= nb_sides) {
-        normales[vert++] = Vector3.down;
+        normales[vert++] = UnityEngine.Vector3.down;
       }
 
 // Top cap
       while (vert <= nb_sides * 2 + 1) {
-        normales[vert++] = Vector3.up;
+        normales[vert++] = UnityEngine.Vector3.up;
       }
 
 // Sides
       v = 0;
       while (vert <= vertices.Length - 4) {
         var rad = (float)v / nb_sides * _2_pi;
-        var cos = Mathf.Cos(f : rad);
-        var sin = Mathf.Sin(f : rad);
+        var cos = UnityEngine.Mathf.Cos(f : rad);
+        var sin = UnityEngine.Mathf.Sin(f : rad);
 
-        normales[vert] = new Vector3(x : cos, 0f, z : sin);
+        normales[vert] = new UnityEngine.Vector3(x : cos, 0f, z : sin);
         normales[vert + 1] = normales[vert];
 
         vert += 2;
@@ -97,22 +96,24 @@ namespace droid.Runtime.GameObjects.Plotting {
 
       #region UVs
 
-      var uvs = new Vector2[vertices.Length];
+      var uvs = new UnityEngine.Vector2[vertices.Length];
 
 // Bottom cap
       var u = 0;
-      uvs[u++] = new Vector2(0.5f, 0.5f);
+      uvs[u++] = new UnityEngine.Vector2(0.5f, 0.5f);
       while (u <= nb_sides) {
         var rad = (float)u / nb_sides * _2_pi;
-        uvs[u] = new Vector2(x : Mathf.Cos(f : rad) * .5f + .5f, y : Mathf.Sin(f : rad) * .5f + .5f);
+        uvs[u] = new UnityEngine.Vector2(x : UnityEngine.Mathf.Cos(f : rad) * .5f + .5f,
+                                         y : UnityEngine.Mathf.Sin(f : rad) * .5f + .5f);
         u++;
       }
 
 // Top cap
-      uvs[u++] = new Vector2(0.5f, 0.5f);
+      uvs[u++] = new UnityEngine.Vector2(0.5f, 0.5f);
       while (u <= nb_sides * 2 + 1) {
         var rad = (float)u / nb_sides * _2_pi;
-        uvs[u] = new Vector2(x : Mathf.Cos(f : rad) * .5f + .5f, y : Mathf.Sin(f : rad) * .5f + .5f);
+        uvs[u] = new UnityEngine.Vector2(x : UnityEngine.Mathf.Cos(f : rad) * .5f + .5f,
+                                         y : UnityEngine.Mathf.Sin(f : rad) * .5f + .5f);
         u++;
       }
 
@@ -120,14 +121,14 @@ namespace droid.Runtime.GameObjects.Plotting {
       var u_sides = 0;
       while (u <= uvs.Length - 4) {
         var t = (float)u_sides / nb_sides;
-        uvs[u] = new Vector3(x : t, 1f);
-        uvs[u + 1] = new Vector3(x : t, 0f);
+        uvs[u] = new UnityEngine.Vector3(x : t, 1f);
+        uvs[u + 1] = new UnityEngine.Vector3(x : t, 0f);
         u += 2;
         u_sides++;
       }
 
-      uvs[u] = new Vector2(1f, 1f);
-      uvs[u + 1] = new Vector2(1f, 0f);
+      uvs[u] = new UnityEngine.Vector2(1f, 1f);
+      uvs[u + 1] = new UnityEngine.Vector2(1f, 0f);
 
       #endregion
 
@@ -198,8 +199,8 @@ namespace droid.Runtime.GameObjects.Plotting {
       return mesh;
     }
 
-    public static Mesh SphereMesh() {
-      var mesh = new Mesh();
+    public static UnityEngine.Mesh SphereMesh() {
+      var mesh = new UnityEngine.Mesh();
       mesh.Clear();
 
       var radius = 1f;
@@ -210,33 +211,33 @@ namespace droid.Runtime.GameObjects.Plotting {
 
       #region Vertices
 
-      var vertices = new Vector3[(nb_long + 1) * nb_lat + 2];
-      const float pi = Mathf.PI;
+      var vertices = new UnityEngine.Vector3[(nb_long + 1) * nb_lat + 2];
+      const float pi = UnityEngine.Mathf.PI;
       const float _2_pi = pi * 2f;
 
-      vertices[0] = Vector3.up * radius;
+      vertices[0] = UnityEngine.Vector3.up * radius;
       for (var lat = 0; lat < nb_lat; lat++) {
         var a1 = pi * (lat + 1) / (nb_lat + 1);
-        var sin1 = Mathf.Sin(f : a1);
-        var cos1 = Mathf.Cos(f : a1);
+        var sin1 = UnityEngine.Mathf.Sin(f : a1);
+        var cos1 = UnityEngine.Mathf.Cos(f : a1);
 
         for (var lon = 0; lon <= nb_long; lon++) {
           var a2 = _2_pi * (lon == nb_long ? 0 : lon) / nb_long;
-          var sin2 = Mathf.Sin(f : a2);
-          var cos2 = Mathf.Cos(f : a2);
+          var sin2 = UnityEngine.Mathf.Sin(f : a2);
+          var cos2 = UnityEngine.Mathf.Cos(f : a2);
 
           vertices[lon + lat * (nb_long + 1) + 1] =
-              new Vector3(x : sin1 * cos2, y : cos1, z : sin1 * sin2) * radius;
+              new UnityEngine.Vector3(x : sin1 * cos2, y : cos1, z : sin1 * sin2) * radius;
         }
       }
 
-      vertices[vertices.Length - 1] = Vector3.up * -radius;
+      vertices[vertices.Length - 1] = UnityEngine.Vector3.up * -radius;
 
       #endregion
 
       #region Normales
 
-      var normales = new Vector3[vertices.Length];
+      var normales = new UnityEngine.Vector3[vertices.Length];
       for (var n = 0; n < vertices.Length; n++) {
         normales[n] = vertices[n].normalized;
       }
@@ -245,13 +246,13 @@ namespace droid.Runtime.GameObjects.Plotting {
 
       #region UVs
 
-      var uvs = new Vector2[vertices.Length];
-      uvs[0] = Vector2.up;
-      uvs[uvs.Length - 1] = Vector2.zero;
+      var uvs = new UnityEngine.Vector2[vertices.Length];
+      uvs[0] = UnityEngine.Vector2.up;
+      uvs[uvs.Length - 1] = UnityEngine.Vector2.zero;
       for (var lat = 0; lat < nb_lat; lat++) {
         for (var lon = 0; lon <= nb_long; lon++) {
           uvs[lon + lat * (nb_long + 1) + 1] =
-              new Vector2(x : (float)lon / nb_long, y : 1f - (float)(lat + 1) / (nb_lat + 1));
+              new UnityEngine.Vector2(x : (float)lon / nb_long, y : 1f - (float)(lat + 1) / (nb_lat + 1));
         }
       }
 

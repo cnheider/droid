@@ -1,11 +1,11 @@
 #if UNITY_POST_PROCESSING_STACK_V2
-using droid.Runtime.Utilities.PostProcessesEffects;
-using UnityEditor.Rendering.PostProcessing;
-
 namespace droid.Editor.Utilities.PostProcessing {
-  [PostProcessEditor(settingsType : typeof(Grayscale))]
-  public sealed class GrayscaleEditor : PostProcessEffectEditor<Grayscale> {
-    SerializedParameterOverride _m_blend;
+  [UnityEditor.Rendering.PostProcessing.PostProcessEditorAttribute(settingsType :
+                                                                    typeof(droid.Runtime.Utilities.
+                                                                        PostProcessesEffects.Grayscale))]
+  public sealed class GrayscaleEditor : UnityEditor.Rendering.PostProcessing.PostProcessEffectEditor<
+      droid.Runtime.Utilities.PostProcessesEffects.Grayscale> {
+    UnityEditor.Rendering.PostProcessing.SerializedParameterOverride _m_blend;
 
     public override void OnEnable() { this._m_blend = this.FindParameterOverride(x => x.blend); }
 

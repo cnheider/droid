@@ -1,6 +1,4 @@
-﻿using FlatBuffers;
-
-namespace droid.Runtime.Messaging.FBS.Deprecated {
+﻿namespace droid.Runtime.Messaging.FBS.Deprecated {
   /// <summary>
   /// </summary>
   public static class CustomFlatBufferImplementation {
@@ -10,7 +8,8 @@ namespace droid.Runtime.Messaging.FBS.Deprecated {
     /// <param name="builder"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static VectorOffset CreateByteVector(FlatBufferBuilder builder, byte[] data) {
+    public static FlatBuffers.VectorOffset CreateByteVector(FlatBuffers.FlatBufferBuilder builder,
+                                                            byte[] data) {
       //builder.StartVector(1, data.Length, 1);
       //var additional_bytes = data.Length - 2;
       //builder.Prep(sizeof(byte), additional_bytes * sizeof(byte));
@@ -21,7 +20,7 @@ namespace droid.Runtime.Messaging.FBS.Deprecated {
 
       //TODO: return builder.CreateByteVector(data);
 
-      return new VectorOffset();
+      return new FlatBuffers.VectorOffset();
     }
 
     /// <summary>
@@ -29,7 +28,8 @@ namespace droid.Runtime.Messaging.FBS.Deprecated {
     /// <param name="builder"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static VectorOffset CreateFloatVector(FlatBufferBuilder builder, float[] data) {
+    public static FlatBuffers.VectorOffset CreateFloatVector(FlatBuffers.FlatBufferBuilder builder,
+                                                             float[] data) {
 /*
        builder.StartVector(4, data.Length, 4);
       for (var i = data.Length - 1; i >= 0; i--)
@@ -41,7 +41,7 @@ namespace droid.Runtime.Messaging.FBS.Deprecated {
 */
 
       //TODO: return builder.CreateFloatVector(data); //TODO: Calculate proper lenght of vector! lenght*4
-      return new VectorOffset();
+      return new FlatBuffers.VectorOffset();
     }
   }
 }

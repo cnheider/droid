@@ -1,10 +1,8 @@
-using System;
-
 namespace droid.Editor.Utilities {
   /// <summary>
   /// </summary>
-  [AttributeUsage(validOn : AttributeTargets.Class)]
-  public class ScriptExecutionOrderAttribute : Attribute {
+  [System.AttributeUsageAttribute(validOn : System.AttributeTargets.Class)]
+  public class ScriptExecutionOrderAttribute : System.Attribute {
     int _order;
 
     public ScriptExecutionOrderAttribute(int order) { this._order = order; }

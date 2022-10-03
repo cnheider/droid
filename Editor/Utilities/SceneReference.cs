@@ -1,8 +1,4 @@
-﻿using System;
-using UnityEngine.SceneManagement;
-#if UNITY_EDITOR
-using UnityEditor;
-using UnityEngine;
+﻿#if UNITY_EDITOR
 
 namespace droid.Editor.Utilities {
   /// <summary>
@@ -11,21 +7,21 @@ namespace droid.Editor.Utilities {
   ///   referenced. This caches the scene name based on the SceneAsset to use
   ///   at runtime to load.
   /// </summary>
-  [Serializable]
-  public class SceneReference : ISerializationCallbackReceiver {
+  [System.SerializableAttribute]
+  public class SceneReference : UnityEngine.ISerializationCallbackReceiver {
     #if UNITY_EDITOR
     /// <summary>
     /// </summary>
-    public SceneAsset scene;
+    public UnityEditor.SceneAsset scene;
     #endif
 
-    [SerializeField] bool sceneEnabled;
+    [UnityEngine.SerializeField] bool sceneEnabled;
 
-    [SerializeField] int sceneIndex = -1;
+    [UnityEngine.SerializeField] int sceneIndex = -1;
 
     /// <summary>
     /// </summary>
-    [Tooltip("The name of the referenced scene. This may be used at runtime to load the scene.")]
+    [UnityEngine.TooltipAttribute("The name of the referenced scene. This may be used at runtime to load the scene.")]
     public string sceneName;
 
     /// <inheritdoc />
@@ -34,10 +30,10 @@ namespace droid.Editor.Utilities {
     public void OnBeforeSerialize() {
       #if UNITY_EDITOR
       if (this.scene != null) {
-        var scene_asset_path = AssetDatabase.GetAssetPath(assetObject : this.scene);
-        var scene_asset_guid = AssetDatabase.AssetPathToGUID(path : scene_asset_path);
+        var scene_asset_path = UnityEditor.AssetDatabase.GetAssetPath(assetObject : this.scene);
+        var scene_asset_guid = UnityEditor.AssetDatabase.AssetPathToGUID(path : scene_asset_path);
 
-        var scenes = EditorBuildSettings.scenes;
+        var scenes = UnityEditor.EditorBuildSettings.scenes;
 
         this.sceneIndex = -1;
         for (var i = 0; i < scenes.Length; i++) {
@@ -68,29 +64,28 @@ namespace droid.Editor.Utilities {
       }
 
       if (this.sceneIndex < 0) {
-        throw new SceneLoadException(message : "Scene " + this.sceneName + " is not in the build settings");
+        throw new SceneLoadException(message : $"Scene {this.sceneName} is not in the build settings");
       }
 
       if (!this.sceneEnabled) {
-        throw new SceneLoadException(message : "Scene "
-                                               + this.sceneName
-                                               + " is not enabled in the build settings");
+        throw new SceneLoadException(message : $"Scene {this.sceneName} is not enabled in the build settings");
       }
     }
 
     /// <summary>
     /// </summary>
     /// <param name="mode"></param>
-    public void LoadScene(LoadSceneMode mode = LoadSceneMode.Single) {
+    public void LoadScene(UnityEngine.SceneManagement.LoadSceneMode mode =
+                              UnityEngine.SceneManagement.LoadSceneMode.Single) {
       this.ValidateScene();
-      SceneManager.LoadScene(sceneName : this.sceneName, mode : mode);
+      UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName : this.sceneName, mode : mode);
     }
 
     /// <summary>
     ///   Exception that is raised when there is an issue resolving and
     ///   loading a scene reference.
     /// </summary>
-    public class SceneLoadException : Exception {
+    public class SceneLoadException : System.Exception {
       public SceneLoadException(string message) : base(message : message) { }
     }
   }

@@ -1,29 +1,30 @@
-﻿using System;
-using System.Linq;
-using droid.Runtime.Prototyping.ObjectiveFunctions;
-using droid.Samples.MultiArmedBandit.Actuators;
-using droid.Samples.MultiArmedBandit.Displayers;
-using UnityEngine;
+﻿namespace droid.Samples.MultiArmedBandit.Evaluation {
+  using Enumerable = System.Linq.Enumerable;
 
-namespace droid.Samples.MultiArmedBandit.Evaluation {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : EvaluationComponentMenuPath._ComponentMenuPath
-                               + "MultiArmedBandit"
-                               + EvaluationComponentMenuPath._Postfix)]
-  public class MultiArmedBanditObjective : EpisodicObjective {
-    [SerializeField] MultiArmedBanditActuator _arms;
-    [SerializeField] float[] _normalised_values;
+  [UnityEngine.AddComponentMenu(menuName :
+                                 droid.Runtime.Prototyping.ObjectiveFunctions.EvaluationComponentMenuPath
+                                      ._ComponentMenuPath
+                                 + "MultiArmedBandit"
+                                 + droid.Runtime.Prototyping.ObjectiveFunctions.EvaluationComponentMenuPath
+                                        ._Postfix)]
+  public class MultiArmedBanditObjective : droid.Runtime.Prototyping.ObjectiveFunctions.EpisodicObjective {
+    [UnityEngine.SerializeField] droid.Samples.MultiArmedBandit.Actuators.MultiArmedBanditActuator _arms;
+    [UnityEngine.SerializeField] float[] _normalised_values;
 
-    [SerializeField] TextBarPlotDisplayer _text_bar_plot_displayer = null;
+    [UnityEngine.SerializeField]
+    droid.Samples.MultiArmedBandit.Displayers.TextBarPlotDisplayer _text_bar_plot_displayer = null;
+
+    void Update() { this.ComputeNormalisedValues(); }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     public override void RemotePostSetup() {
       if (this._arms == null) {
-        this._arms = FindObjectOfType<MultiArmedBanditActuator>();
+        this._arms = FindObjectOfType<droid.Samples.MultiArmedBandit.Actuators.MultiArmedBanditActuator>();
       }
 
       this.ComputeNormalisedValues();
@@ -36,10 +37,10 @@ for (var i = 0; i < this._arms.WinAmounts.Length; i++) {
   this._normalised_values[i] = this._arms.WinAmounts[i] / sum;
 }*/
 
-      var values = this._arms.WinAmounts
-                       .Zip(second : this._arms.WinLikelihoods, resultSelector : (f, f1) => f * f1)
-                       .ToArray();
-      var values_sum = values.Sum();
+      var values = Enumerable.ToArray(Enumerable.Zip(this._arms.WinAmounts,
+                                                     second : this._arms.WinLikelihoods,
+                                                     resultSelector : (f, f1) => f * f1));
+      var values_sum = Enumerable.Sum(values);
 
       this._normalised_values = new float[values.Length];
       for (var i = 0; i < values.Length; i++) {
@@ -53,8 +54,6 @@ for (var i = 0; i < this._arms.WinAmounts.Length; i++) {
     /// <summary>
     /// </summary>
     public override void InternalReset() { this.ComputeNormalisedValues(); }
-
-    void Update() { this.ComputeNormalisedValues(); }
 
     /// <inheritdoc />
     /// <summary>

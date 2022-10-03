@@ -1,16 +1,14 @@
-﻿using UnityEngine;
+﻿namespace droid.Runtime.Sampling {
+  public class UniformnessTest : UnityEngine.MonoBehaviour {
 
-namespace droid.Runtime.Sampling {
-  public class UniformnessTest : MonoBehaviour {
-    // Start is called before the first frame update
+    const int _max_cnt = 100000;
     void Start() {
-      const int MAX_CNT = 100000;
       var total = 0f;
       var a = 0;
       var b = 0;
       var c = 0;
-      for (var i = 0; i < MAX_CNT; i++) {
-        var v = Random.Range(min : (float)0, max : (float)3);
+      for (var i = 0; i < _max_cnt; i++) {
+        var v = UnityEngine.Random.Range(0, maxInclusive : (float)3);
         total += v;
         switch ((int)v) {
           case 0:
@@ -25,10 +23,10 @@ namespace droid.Runtime.Sampling {
         }
       }
 
-      Debug.Log(message : total / MAX_CNT);
-      Debug.Log(message : a);
-      Debug.Log(message : b);
-      Debug.Log(message : c);
+      UnityEngine.Debug.Log(message : total / _max_cnt);
+      UnityEngine.Debug.Log(message : a);
+      UnityEngine.Debug.Log(message : b);
+      UnityEngine.Debug.Log(message : c);
     }
   }
 }

@@ -1,15 +1,8 @@
-﻿using droid.Runtime.Environments.Prototyping;
-using droid.Runtime.GameObjects.ChildSensors;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Prototyping.Actors;
-using UnityEngine;
-
-namespace droid.Runtime.Utilities {
+﻿namespace droid.Runtime.Utilities {
   /// <summary>
   /// </summary>
-  public static partial class NeodroidRegistrationUtilities {
+  public static class NeodroidRegistrationUtilities {
     /// <summary>
-    ///
     /// </summary>
     /// <param name="caller"></param>
     /// <param name="parent"></param>
@@ -25,22 +18,24 @@ namespace droid.Runtime.Utilities {
     /// <typeparam name="TCollision"></typeparam>
     public static void
         RegisterCollisionTriggerCallbacksOnChildren<TChildColliderSensor, TCollider, TCollision>(
-            Component caller,
-            Transform parent,
-            ChildColliderSensor<TCollider, TCollision>.OnChildCollisionEnterDelegate on_collision_enter_child
-                = null,
-            ChildColliderSensor<TCollider, TCollision>.OnChildTriggerEnterDelegate on_trigger_enter_child =
-                null,
-            ChildColliderSensor<TCollider, TCollision>.OnChildCollisionExitDelegate on_collision_exit_child =
-                null,
-            ChildColliderSensor<TCollider, TCollision>.OnChildTriggerExitDelegate on_trigger_exit_child =
-                null,
-            ChildColliderSensor<TCollider, TCollision>.OnChildCollisionStayDelegate on_collision_stay_child =
-                null,
-            ChildColliderSensor<TCollider, TCollision>.OnChildTriggerStayDelegate on_trigger_stay_child =
-                null,
+            UnityEngine.Component caller,
+            UnityEngine.Transform parent,
+            droid.Runtime.GameObjects.ChildSensors.ChildColliderSensor<TCollider, TCollision>.
+                OnChildCollisionEnterDelegate on_collision_enter_child = null,
+            droid.Runtime.GameObjects.ChildSensors.ChildColliderSensor<TCollider, TCollision>.
+                OnChildTriggerEnterDelegate on_trigger_enter_child = null,
+            droid.Runtime.GameObjects.ChildSensors.ChildColliderSensor<TCollider, TCollision>.
+                OnChildCollisionExitDelegate on_collision_exit_child = null,
+            droid.Runtime.GameObjects.ChildSensors.ChildColliderSensor<TCollider, TCollision>.
+                OnChildTriggerExitDelegate on_trigger_exit_child = null,
+            droid.Runtime.GameObjects.ChildSensors.ChildColliderSensor<TCollider, TCollision>.
+                OnChildCollisionStayDelegate on_collision_stay_child = null,
+            droid.Runtime.GameObjects.ChildSensors.ChildColliderSensor<TCollider, TCollision>.
+                OnChildTriggerStayDelegate on_trigger_stay_child = null,
             bool debug = false)
-        where TChildColliderSensor : ChildColliderSensor<TCollider, TCollision> where TCollider : Component {
+        where TChildColliderSensor :
+        droid.Runtime.GameObjects.ChildSensors.ChildColliderSensor<TCollider, TCollision>
+        where TCollider : UnityEngine.Component {
       var children_with_colliders = parent.GetComponentsInChildren<TCollider>();
 
       //TODO add check and warning for not all callbacks = null
@@ -48,7 +43,8 @@ namespace droid.Runtime.Utilities {
       for (var index = 0; index < children_with_colliders.Length; index++) {
         var child = children_with_colliders[index];
         var child_sensors = child.GetComponents<TChildColliderSensor>();
-        ChildColliderSensor<TCollider, TCollision> collider_sensor = null;
+        droid.Runtime.GameObjects.ChildSensors.ChildColliderSensor<TCollider, TCollision> collider_sensor =
+            null;
         for (var i = 0; i < child_sensors.Length; i++) {
           var child_sensor = child_sensors[i];
           if (child_sensor.Caller != null && child_sensor.Caller == caller) {
@@ -94,15 +90,14 @@ namespace droid.Runtime.Utilities {
 
         #if NEODROID_DEBUG
         if (debug) {
-          Debug.Log(message :
-                    $"{caller.name} has created {collider_sensor.name} on {child.name} under parent {parent.name}");
+          UnityEngine.Debug.Log(message :
+                                $"{caller.name} has created {collider_sensor.name} on {child.name} under parent {parent.name}");
         }
         #endif
       }
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="r"></param>
     /// <param name="c"></param>
@@ -110,36 +105,40 @@ namespace droid.Runtime.Utilities {
     /// <param name="debug"></param>
     /// <typeparam name="TCaller"></typeparam>
     /// <returns></returns>
-    public static IHasRegister<IActuator> RegisterComponent<TCaller>(
-        IHasRegister<IActuator> r,
-        TCaller c,
-        bool only_parents = false,
-        bool debug = false) where TCaller : Component, IRegisterable {
-      IHasRegister<IActuator> component = null;
+    public static droid.Runtime.Interfaces.IHasRegister<droid.Runtime.Interfaces.IActuator>
+        RegisterComponent<TCaller>(
+            droid.Runtime.Interfaces.IHasRegister<droid.Runtime.Interfaces.IActuator> r,
+            TCaller c,
+            bool only_parents = false,
+            bool debug = false)
+        where TCaller : UnityEngine.Component, droid.Runtime.Interfaces.IRegisterable {
+      droid.Runtime.Interfaces.IHasRegister<droid.Runtime.Interfaces.IActuator> component = null;
       if (r != null) {
         component = r; //.GetComponent<Recipient>();
       } else {
-        if (c.GetComponentInParent<Actor>() != null) {
-          component = c.GetComponentInParent<Actor>();
+        if (c.GetComponentInParent<droid.Runtime.Prototyping.Actors.Actor>() != null) {
+          component = c.GetComponentInParent<droid.Runtime.Prototyping.Actors.Actor>();
         } else if (!only_parents) {
-          component = Object.FindObjectOfType<Actor>();
+          component = UnityEngine.Object.FindObjectOfType<droid.Runtime.Prototyping.Actors.Actor>();
         }
       }
 
       if (component == null) {
-        if (c.GetComponentInParent<PrototypingEnvironment>() != null) {
-          component = c.GetComponentInParent<PrototypingEnvironment>();
+        if (c.GetComponentInParent<droid.Runtime.Environments.Prototyping.PrototypingEnvironment>() != null) {
+          component = c.GetComponentInParent<droid.Runtime.Environments.Prototyping.PrototypingEnvironment>();
         } else if (!only_parents) {
-          component = Object.FindObjectOfType<PrototypingEnvironment>();
+          component = UnityEngine.Object
+                                 .FindObjectOfType<
+                                     droid.Runtime.Environments.Prototyping.PrototypingEnvironment>();
         }
       }
 
       if (component != null) {
-        component.Register(obj : (IActuator)c);
+        component.Register(obj : (droid.Runtime.Interfaces.IActuator)c);
       } else {
         #if NEODROID_DEBUG
         if (debug) {
-          Debug.Log(message : $"Could not find a IHasRegister<IActuator> recipient during registration");
+          UnityEngine.Debug.Log("Could not find a IHasRegister<IActuator> recipient during registration");
         }
         #endif
       }
@@ -157,37 +156,41 @@ namespace droid.Runtime.Utilities {
     /// <typeparam name="TRecipient"></typeparam>
     /// <typeparam name="TCaller"></typeparam>
     /// <returns></returns>
-    public static IHasRegister<IActuator> RegisterComponent<TCaller>(
-        IHasRegister<IActuator> r,
-        TCaller c,
-        string identifier,
-        bool only_parents = false,
-        bool debug = false) where TCaller : Component, IRegisterable {
-      IHasRegister<IActuator> component = null;
+    public static droid.Runtime.Interfaces.IHasRegister<droid.Runtime.Interfaces.IActuator>
+        RegisterComponent<TCaller>(
+            droid.Runtime.Interfaces.IHasRegister<droid.Runtime.Interfaces.IActuator> r,
+            TCaller c,
+            string identifier,
+            bool only_parents = false,
+            bool debug = false)
+        where TCaller : UnityEngine.Component, droid.Runtime.Interfaces.IRegisterable {
+      droid.Runtime.Interfaces.IHasRegister<droid.Runtime.Interfaces.IActuator> component = null;
       if (r != null) {
         component = r; //.GetComponent<Recipient>();
       } else {
-        if (c.GetComponentInParent<Actor>() != null) {
-          component = c.GetComponentInParent<Actor>();
+        if (c.GetComponentInParent<droid.Runtime.Prototyping.Actors.Actor>() != null) {
+          component = c.GetComponentInParent<droid.Runtime.Prototyping.Actors.Actor>();
         } else if (!only_parents) {
-          component = Object.FindObjectOfType<Actor>();
+          component = UnityEngine.Object.FindObjectOfType<droid.Runtime.Prototyping.Actors.Actor>();
         }
       }
 
       if (component == null) {
-        if (c.GetComponentInParent<PrototypingEnvironment>() != null) {
-          component = c.GetComponentInParent<PrototypingEnvironment>();
+        if (c.GetComponentInParent<droid.Runtime.Environments.Prototyping.PrototypingEnvironment>() != null) {
+          component = c.GetComponentInParent<droid.Runtime.Environments.Prototyping.PrototypingEnvironment>();
         } else if (!only_parents) {
-          component = Object.FindObjectOfType<PrototypingEnvironment>();
+          component = UnityEngine.Object
+                                 .FindObjectOfType<
+                                     droid.Runtime.Environments.Prototyping.PrototypingEnvironment>();
         }
       }
 
       if (component != null) {
-        component.Register(obj : (IActuator)c, identifier : identifier);
+        component.Register(obj : (droid.Runtime.Interfaces.IActuator)c, identifier : identifier);
       } else {
         #if NEODROID_DEBUG
         if (debug) {
-          Debug.Log(message : $"Could not find a IHasRegister<IActuator> recipient during registration");
+          UnityEngine.Debug.Log("Could not find a IHasRegister<IActuator> recipient during registration");
         }
         #endif
       }
@@ -209,14 +212,15 @@ namespace droid.Runtime.Utilities {
         TCaller c,
         bool only_parents = false,
         bool debug = false)
-        where TRecipient : Object, IHasRegister<TCaller> where TCaller : Component, IRegisterable {
+        where TRecipient : UnityEngine.Object, droid.Runtime.Interfaces.IHasRegister<TCaller>
+        where TCaller : UnityEngine.Component, droid.Runtime.Interfaces.IRegisterable {
       TRecipient component = null;
       if (r != null) {
         component = r; //.GetComponent<Recipient>();
       } else if (c.GetComponentInParent<TRecipient>() != null) {
         component = c.GetComponentInParent<TRecipient>();
       } else if (!only_parents) {
-        component = Object.FindObjectOfType<TRecipient>();
+        component = UnityEngine.Object.FindObjectOfType<TRecipient>();
       }
 
       if (component != null) {
@@ -224,7 +228,8 @@ namespace droid.Runtime.Utilities {
       } else {
         #if NEODROID_DEBUG
         if (debug) {
-          Debug.Log(message : $"Could not find a {typeof(TRecipient)} recipient during registration");
+          UnityEngine.Debug.Log(message :
+                                $"Could not find a {typeof(TRecipient)} recipient during registration");
         }
         #endif
       }
@@ -248,14 +253,15 @@ namespace droid.Runtime.Utilities {
         string identifier,
         bool only_parents = false,
         bool debug = false)
-        where TRecipient : Object, IHasRegister<TCaller> where TCaller : Component, IRegisterable {
+        where TRecipient : UnityEngine.Object, droid.Runtime.Interfaces.IHasRegister<TCaller>
+        where TCaller : UnityEngine.Component, droid.Runtime.Interfaces.IRegisterable {
       TRecipient component = null;
       if (r != null) {
         component = r;
       } else if (c.GetComponentInParent<TRecipient>() != null) {
         component = c.GetComponentInParent<TRecipient>();
       } else if (!only_parents) {
-        component = Object.FindObjectOfType<TRecipient>();
+        component = UnityEngine.Object.FindObjectOfType<TRecipient>();
       }
 
       if (component != null) {
@@ -263,7 +269,8 @@ namespace droid.Runtime.Utilities {
       } else {
         #if NEODROID_DEBUG
         if (debug) {
-          Debug.Log(message : $"Could not find a {typeof(TRecipient)} recipient during registration");
+          UnityEngine.Debug.Log(message :
+                                $"Could not find a {typeof(TRecipient)} recipient during registration");
         }
 
         #endif

@@ -1,15 +1,11 @@
-﻿using NUnit.Framework;
-
-namespace droid.Tests.Runtime {
+﻿namespace droid.Tests.Runtime {
   /// <summary>
-  ///
   /// </summary>
-  [TestFixture]
+  [NUnit.Framework.TestFixtureAttribute]
   public class SanityTests {
     /// <summary>
-    /// 
     /// </summary>
-    [Test]
-    public void Sanity() { Assert.That(true, expression : Is.True); }
+    [NUnit.Framework.TestAttribute]
+    public void Sanity() { NUnit.Framework.Assert.That(true, expression : NUnit.Framework.Is.True); }
   }
 }

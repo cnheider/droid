@@ -1,49 +1,32 @@
-﻿using System;
-using droid.Runtime.Enums;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Sampling;
-using UnityEngine;
-
-namespace droid.Runtime.Structs.Space.Sample {
+﻿namespace droid.Runtime.Structs.Space.Sample {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [Serializable]
-  public struct SampleSpace4 : ISamplable {
-    #region Fields
-
-    [Header("Sampling", order = 103)]
-    [SerializeField]
-    internal Space4 _space;
-
-    [SerializeField] internal DistributionSampler _distribution_sampler;
-
-    #endregion
+  [System.SerializableAttribute]
+  public struct SampleSpace4 : droid.Runtime.Interfaces.ISamplable {
+    public SampleSpace4(string unused = null) {
+      this._space = Space4.ZeroOne;
+      this._distribution_sampler = new droid.Runtime.Sampling.DistributionSampler();
+    }
 
     /// <summary>
-    ///
     /// </summary>
-    public DistributionSampler DistributionSampler {
+    public droid.Runtime.Sampling.DistributionSampler DistributionSampler {
       get { return this._distribution_sampler; }
       set { this._distribution_sampler = value; }
     }
 
-    public SampleSpace4(string unused = null) {
-      this._space = Space4.ZeroOne;
-      this._distribution_sampler = new DistributionSampler();
-    }
-
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    ///  <returns></returns>
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
     public dynamic Sample() {
       float x;
       float y;
       float z;
       float w;
       switch (this._space.Normalised) {
-        case ProjectionEnum.None_:
+        case droid.Runtime.Enums.ProjectionEnum.None_:
           x = this._space.Round(this.DistributionSampler.Range(min : this._space.Min.x,
                                                                max : this._space.Max.x,
                                                                granularity : this._space.DecimalGranularity));
@@ -57,27 +40,40 @@ namespace droid.Runtime.Structs.Space.Sample {
                                                                max : this._space.Max.w,
                                                                granularity : this._space.DecimalGranularity));
           break;
-        case ProjectionEnum.Zero_one_:
+        case droid.Runtime.Enums.ProjectionEnum.Zero_one_:
           x = this.DistributionSampler.Range(0, 1);
           y = this.DistributionSampler.Range(0, 1);
           z = this.DistributionSampler.Range(0, 1);
           w = this.DistributionSampler.Range(0, 1);
           break;
-        case ProjectionEnum.Minus_one_one_:
+        case droid.Runtime.Enums.ProjectionEnum.Minus_one_one_:
           x = this.DistributionSampler.Range(-1, 1);
           y = this.DistributionSampler.Range(-1, 1);
           z = this.DistributionSampler.Range(-1, 1);
           w = this.DistributionSampler.Range(-1, 1);
           break;
-        default: throw new ArgumentOutOfRangeException();
+        default: throw new System.ArgumentOutOfRangeException();
       }
 
-      return new Vector4(x : x,
-                         y : y,
-                         z : z,
-                         w : w);
+      return new UnityEngine.Vector4(x : x,
+                                     y : y,
+                                     z : z,
+                                     w : w);
     }
 
-    public ISpace Space { get { return this._space; } set { this._space = (Space4)value; } }
+    public droid.Runtime.Interfaces.ISpace Space {
+      get { return this._space; }
+      set { this._space = (Space4)value; }
+    }
+
+    #region Fields
+
+    [UnityEngine.HeaderAttribute("Sampling", order = 103)]
+    [UnityEngine.SerializeField]
+    internal Space4 _space;
+
+    [UnityEngine.SerializeField] internal droid.Runtime.Sampling.DistributionSampler _distribution_sampler;
+
+    #endregion
   }
 }

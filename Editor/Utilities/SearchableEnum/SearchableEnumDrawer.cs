@@ -1,8 +1,4 @@
-﻿using System;
-using droid.Runtime.Utilities;
-#if UNITY_EDITOR
-using UnityEditor;
-using UnityEngine;
+﻿#if UNITY_EDITOR
 
 namespace droid.Editor.Utilities.SearchableEnum {
   /// <inheritdoc />
@@ -10,8 +6,8 @@ namespace droid.Editor.Utilities.SearchableEnum {
   ///   Draws the custom enum selector popup for enum fileds using the
   ///   SearchableEnumAttribute.
   /// </summary>
-  [CustomPropertyDrawer(type : typeof(SearchableEnumAttribute))]
-  public class SearchableEnumDrawer : PropertyDrawer {
+  [UnityEditor.CustomPropertyDrawer(type : typeof(droid.Runtime.Utilities.SearchableEnumAttribute))]
+  public class SearchableEnumDrawer : UnityEditor.PropertyDrawer {
     const string _type_error = "SearchableEnum can only be used on enum fields.";
 
     /// <summary>
@@ -25,14 +21,16 @@ namespace droid.Editor.Utilities.SearchableEnum {
     /// <param name="position"></param>
     /// <param name="property"></param>
     /// <param name="label"></param>
-    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
+    public override void OnGUI(UnityEngine.Rect position,
+                               UnityEditor.SerializedProperty property,
+                               UnityEngine.GUIContent label) {
       // If this is not used on an enum, show an error
       if (property.type != "Enum") {
-        GUIStyle error_style = "CN EntryErrorIconSmall";
-        var r = new Rect(source : position) {width = error_style.fixedWidth};
+        UnityEngine.GUIStyle error_style = "CN EntryErrorIconSmall";
+        var r = new UnityEngine.Rect(source : position) {width = error_style.fixedWidth};
         position.xMin = r.xMax;
-        GUI.Label(position : r, "", style : error_style);
-        GUI.Label(position : position, text : _type_error);
+        UnityEngine.GUI.Label(position : r, "", style : error_style);
+        UnityEngine.GUI.Label(position : position, text : _type_error);
         return;
       }
 
@@ -43,12 +41,16 @@ namespace droid.Editor.Utilities.SearchableEnum {
         this._id_hash = "SearchableEnumDrawer".GetHashCode();
       }
 
-      var id = GUIUtility.GetControlID(hint : this._id_hash, focusType : FocusType.Keyboard, rect : position);
+      var id = UnityEngine.GUIUtility.GetControlID(hint : this._id_hash,
+                                                   focusType : UnityEngine.FocusType.Keyboard,
+                                                   rect : position);
 
-      label = EditorGUI.BeginProperty(totalPosition : position, label : label, property : property);
-      position = EditorGUI.PrefixLabel(totalPosition : position, id : id, label : label);
+      label = UnityEditor.EditorGUI.BeginProperty(totalPosition : position,
+                                                  label : label,
+                                                  property : property);
+      position = UnityEditor.EditorGUI.PrefixLabel(totalPosition : position, id : id, label : label);
 
-      var button_text = new GUIContent(text : property.enumDisplayNames[property.enumValueIndex]);
+      var button_text = new UnityEngine.GUIContent(text : property.enumDisplayNames[property.enumValueIndex]);
       if (DropdownButton(id : id, position : position, content : button_text)) {
         void OnSelect(int i) {
           property.enumValueIndex = i;
@@ -61,7 +63,7 @@ namespace droid.Editor.Utilities.SearchableEnum {
                              on_selection_made : OnSelect);
       }
 
-      EditorGUI.EndProperty();
+      UnityEditor.EditorGUI.EndProperty();
     }
 
     /// <summary>
@@ -69,28 +71,28 @@ namespace droid.Editor.Utilities.SearchableEnum {
     ///   sync the button ID and the label ID to allow for keyboard
     ///   navigation like the built-in enum drawers.
     /// </summary>
-    static bool DropdownButton(int id, Rect position, GUIContent content) {
-      var current = Event.current;
+    static bool DropdownButton(int id, UnityEngine.Rect position, UnityEngine.GUIContent content) {
+      var current = UnityEngine.Event.current;
       switch (current.type) {
-        case EventType.MouseDown:
+        case UnityEngine.EventType.MouseDown:
           if (position.Contains(point : current.mousePosition) && current.button == 0) {
-            Event.current.Use();
+            UnityEngine.Event.current.Use();
             return true;
           }
 
           break;
-        case EventType.KeyDown:
-          if (GUIUtility.keyboardControl == id && current.character == '\n') {
-            Event.current.Use();
+        case UnityEngine.EventType.KeyDown:
+          if (UnityEngine.GUIUtility.keyboardControl == id && current.character == '\n') {
+            UnityEngine.Event.current.Use();
             return true;
           }
 
           break;
-        case EventType.Repaint:
-          EditorStyles.popup.Draw(position : position,
-                                  content : content,
-                                  controlID : id,
-                                  false);
+        case UnityEngine.EventType.Repaint:
+          UnityEditor.EditorStyles.popup.Draw(position : position,
+                                              content : content,
+                                              controlID : id,
+                                              false);
           break;
       }
 

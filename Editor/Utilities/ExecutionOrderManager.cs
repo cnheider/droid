@@ -1,14 +1,12 @@
 #if UNITY_EDITOR
-using UnityEditor;
-
 namespace droid.Editor.Utilities {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [InitializeOnLoad]
+  [UnityEditor.InitializeOnLoadAttribute]
   public class ExecutionOrderManager : UnityEditor.Editor {
     static ExecutionOrderManager() {
-      foreach (var mono_script in MonoImporter.GetAllRuntimeMonoScripts()) {
+      foreach (var mono_script in UnityEditor.MonoImporter.GetAllRuntimeMonoScripts()) {
         var type = mono_script.GetClass();
         if (type == null) {
           continue;
@@ -22,8 +20,8 @@ namespace droid.Editor.Utilities {
         }
 
         var attribute = (ScriptExecutionOrderAttribute)attributes[0];
-        if (MonoImporter.GetExecutionOrder(script : mono_script) != attribute.GetOrder()) {
-          MonoImporter.SetExecutionOrder(script : mono_script, order : attribute.GetOrder());
+        if (UnityEditor.MonoImporter.GetExecutionOrder(script : mono_script) != attribute.GetOrder()) {
+          UnityEditor.MonoImporter.SetExecutionOrder(script : mono_script, order : attribute.GetOrder());
         }
       }
     }

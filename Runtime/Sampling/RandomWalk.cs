@@ -1,28 +1,36 @@
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace droid.Runtime.Sampling {
+  /// <inheritdoc />
   /// <summary>
-  ///
   /// </summary>
-  public class RandomWalk : MonoBehaviour //Self-Avoiding Random Walk algorithm
+  public class RandomWalk : UnityEngine.MonoBehaviour //Self-Avoiding Random Walk algorithm
   {
     //How many steps do we want to take before we stop?
     public int stepsToTake;
 
-    //Final random walk positions
-    List<Vector3> _random_walk_positions;
+    const float _eps = 0.001f;
 
     //The walk directions we can take
-    List<Vector3> _all_possible_directions = new List<Vector3> {
-                                                                   new Vector3(0f, 0f, 1f),
-                                                                   new Vector3(0f, 0f, -1f),
-                                                                   new Vector3(-1f, 0f, 0f),
-                                                                   new Vector3(1f, 0f, 0f)
-                                                               };
+    System.Collections.Generic.List<UnityEngine.Vector3> _all_possible_directions =
+        new System.Collections.Generic.List<UnityEngine.Vector3> {
+                                                                     new UnityEngine.Vector3(x : 0f,
+                                                                       y : 0f,
+                                                                       z : 1f),
+                                                                     new UnityEngine.Vector3(x : 0f,
+                                                                       y : 0f,
+                                                                       z : -1f),
+                                                                     new UnityEngine.Vector3(x : -1f,
+                                                                       y : 0f,
+                                                                       z : 0f),
+                                                                     new UnityEngine.Vector3(x : 1f,
+                                                                       y : 0f,
+                                                                       z : 0f)
+                                                                 };
+
+    //Final random walk positions
+    System.Collections.Generic.List<UnityEngine.Vector3> _random_walk_positions;
 
     void Update() {
-      if (Input.GetKeyDown(key : KeyCode.Return)) {
+      if (UnityEngine.Input.GetKeyDown(key : UnityEngine.KeyCode.Return)) {
         this._random_walk_positions = this.GenerateSelfAvoidingRandomWalk();
 
         //Debug.Log(randomWalkPositions.Count);
@@ -31,30 +39,30 @@ namespace droid.Runtime.Sampling {
       //Display the path with lines
       if (this._random_walk_positions != null && this._random_walk_positions.Count > 1) {
         for (var i = 1; i < this._random_walk_positions.Count; i++) {
-          Debug.DrawLine(start : this._random_walk_positions[index : i - 1],
-                         end : this._random_walk_positions[index : i]);
+          UnityEngine.Debug.DrawLine(start : this._random_walk_positions[index : i - 1],
+                                     end : this._random_walk_positions[index : i]);
         }
       }
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
-    public List<Vector3> GenerateSelfAvoidingRandomWalk() {
+    public System.Collections.Generic.List<UnityEngine.Vector3> GenerateSelfAvoidingRandomWalk() {
       //Create the node we are starting from
-      var start_pos = Vector3.zero;
+      var start_pos = UnityEngine.Vector3.zero;
 
       var current_node = new WalkNode(pos : start_pos,
-                                      null,
-                                      possible_directions : new List<Vector3>(collection : this
-                                                                                  ._all_possible_directions));
+                                      previous_node : null,
+                                      possible_directions :
+                                      new System.Collections.Generic.List<UnityEngine.Vector3>(collection :
+                                        this._all_possible_directions));
 
       //How many steps have we taken, so we know when to stop the algorithm
       var steps_so_far = 0;
 
-      //So we dont visit the same node more than once
-      var visited_nodes = new List<Vector3> {start_pos};
+      //So we do not visit the same node more than once
+      var visited_nodes = new System.Collections.Generic.List<UnityEngine.Vector3> {start_pos};
 
       while (true) {
         //Check if we have walked enough steps
@@ -68,14 +76,15 @@ namespace droid.Runtime.Sampling {
         while (current_node._PossibleDirections.Count == 0) {
           current_node = current_node._PreviousNode;
 
-          //Dont need to remove nodes thats not a part of the final path from the list of visited nodes
+          //Do not need to remove nodes that is not a part of the final path from the list of visited nodes
           //because there's no point in visiting them again because we know we cant find a path from those nodes
 
           steps_so_far -= 1;
         }
 
         //Walk in a random direction from this node
-        var random_dir_pos = Random.Range(0, max : current_node._PossibleDirections.Count);
+        var random_dir_pos =
+            UnityEngine.Random.Range(minInclusive : 0, maxExclusive : current_node._PossibleDirections.Count);
 
         var random_dir = current_node._PossibleDirections[index : random_dir_pos];
 
@@ -90,8 +99,9 @@ namespace droid.Runtime.Sampling {
           //Walk to this node
           current_node = new WalkNode(pos : next_node_pos,
                                       previous_node : current_node,
-                                      possible_directions : new List<Vector3>(collection : this
-                                                                                  ._all_possible_directions));
+                                      possible_directions :
+                                      new System.Collections.Generic.List<UnityEngine.Vector3>(collection :
+                                        this._all_possible_directions));
 
           visited_nodes.Add(item : next_node_pos);
 
@@ -100,7 +110,7 @@ namespace droid.Runtime.Sampling {
       }
 
       //Generate the final path
-      var random_walk_positions = new List<Vector3>();
+      var random_walk_positions = new System.Collections.Generic.List<UnityEngine.Vector3>();
 
       while (current_node._PreviousNode != null) {
         random_walk_positions.Add(item : current_node._Pos);
@@ -117,14 +127,14 @@ namespace droid.Runtime.Sampling {
     }
 
     //Checks if a position is in a list of positions
-    static bool HasVisitedNode(Vector3 pos, List<Vector3> list_pos) {
+    static bool HasVisitedNode(UnityEngine.Vector3 pos,
+                               System.Collections.Generic.List<UnityEngine.Vector3> list_pos) {
       var has_visited = false;
 
       foreach (var t in list_pos) {
-        var dist_sqr = Vector3.SqrMagnitude(vector : pos - t);
+        var dist_sqr = UnityEngine.Vector3.SqrMagnitude(vector : pos - t);
 
-        //Cant compare exactly because of floating point precisions
-        if (dist_sqr < 0.001f) {
+        if (dist_sqr < _eps) { //Cannot compare exactly because of floating point precisions
           has_visited = true;
 
           break;
@@ -134,20 +144,20 @@ namespace droid.Runtime.Sampling {
       return has_visited;
     }
 
-    //Help class to keep track of the steps
     /// <summary>
-    ///
+    ///  Help class to keep track of the steps
     /// </summary>
     class WalkNode {
-      //The position of this node in the world
-      public Vector3 _Pos;
+      public UnityEngine.Vector3 _Pos; //The position of this node in the world
+
+      public System.Collections.Generic.List<UnityEngine.Vector3>
+          _PossibleDirections; //Which steps can we take from this node?
 
       public WalkNode _PreviousNode;
 
-      //Which steps can we take from this node?
-      public List<Vector3> _PossibleDirections;
-
-      public WalkNode(Vector3 pos, WalkNode previous_node, List<Vector3> possible_directions) {
+      public WalkNode(UnityEngine.Vector3 pos,
+                      WalkNode previous_node,
+                      System.Collections.Generic.List<UnityEngine.Vector3> possible_directions) {
         this._Pos = pos;
 
         this._PreviousNode = previous_node;

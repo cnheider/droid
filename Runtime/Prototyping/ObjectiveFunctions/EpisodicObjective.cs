@@ -1,16 +1,30 @@
-﻿using System;
-using System.Globalization;
-using droid.Runtime.GameObjects.StatusDisplayer.EventRecipients;
-using droid.Runtime.Interfaces;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.ObjectiveFunctions {
+﻿namespace droid.Runtime.Prototyping.ObjectiveFunctions {
   /// <inheritdoc cref="ObjectiveFunction" />
   /// <summary>
   /// </summary>
-  [Serializable]
+  [System.SerializableAttribute]
   public abstract class EpisodicObjective : ObjectiveFunction,
-                                            IEpisodicObjectiveFunction {
+                                            droid.Runtime.Interfaces.IEpisodicObjectiveFunction {
+    /// <summary>
+    /// </summary>
+    [field : UnityEngine.SerializeField]
+    public float EpisodeReturn { get; protected set; } = 0;
+
+    /// <summary>
+    /// </summary>
+    [field : UnityEngine.SerializeField]
+    protected float SolvedSignal { get; set; } = 1.0f;
+
+    /// <summary>
+    /// </summary>
+    [field : UnityEngine.SerializeField]
+    protected float FailedSignal { get; set; } = -1.0f;
+
+    /// <summary>
+    /// </summary>
+    [field : UnityEngine.SerializeField]
+    protected float DefaultSignal { get; set; } = -0.001f;
+
     /// <inheritdoc />
     /// <summary>
     /// </summary>
@@ -24,7 +38,8 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions {
           && !this.ParentEnvironment.Terminated) {
         #if NEODROID_DEBUG
         if (this.Debugging) {
-          Debug.Log(message : $"Maximum episode length reached, Length {this.ParentEnvironment.StepI}");
+          UnityEngine.Debug.Log(message :
+                                $"Maximum episode length reached, Length {this.ParentEnvironment.StepI}");
         }
         #endif
 
@@ -35,7 +50,7 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions {
 
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        Debug.Log(message : $"Signal for this step: {signal}");
+        UnityEngine.Debug.Log(message : $"Signal for this step: {signal}");
       }
       #endif
 
@@ -55,45 +70,28 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions {
       this.InternalReset();
     }
 
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
-    public new void SignalString(DataPoller recipient) {
-      recipient.PollData(data :
-                         $"{this.LastSignal.ToString(provider : CultureInfo.InvariantCulture)}, {this.EpisodeReturn}");
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
-    public new void EpisodeLengthString(DataPoller recipient) {
-      recipient.PollData(data : $"{this.EpisodeLength.ToString(provider : CultureInfo.InvariantCulture)}");
-    }
-
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    [field : SerializeField]
+    [field : UnityEngine.SerializeField]
     public int EpisodeLength { get; set; } = 1000;
 
     /// <summary>
     /// </summary>
-    [field : SerializeField]
-    public float EpisodeReturn { get; protected set; } = 0;
+    /// <returns></returns>
+    public new void
+        SignalString(droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.DataPoller recipient) {
+      recipient.PollData(data :
+                         $"{this.LastSignal.ToString(provider : System.Globalization.CultureInfo.InvariantCulture)}, {this.EpisodeReturn}");
+    }
 
     /// <summary>
     /// </summary>
-    [field : SerializeField]
-    protected float SolvedSignal { get; set; } = 1.0f;
-
-    /// <summary>
-    /// </summary>
-    [field : SerializeField]
-    protected float FailedSignal { get; set; } = -1.0f;
-
-    /// <summary>
-    /// </summary>
-    [field : SerializeField]
-    protected float DefaultSignal { get; set; } = -0.001f;
+    /// <returns></returns>
+    public new void
+        EpisodeLengthString(droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.DataPoller recipient) {
+      recipient.PollData(data :
+                         $"{this.EpisodeLength.ToString(provider : System.Globalization.CultureInfo.InvariantCulture)}");
+    }
   }
 }

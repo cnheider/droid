@@ -1,10 +1,7 @@
-﻿using System;
-using UnityEngine;
-
-namespace droid.Runtime.Structs {
+﻿namespace droid.Runtime.Structs {
   /// <summary>
   /// </summary>
-  [Serializable]
+  [System.SerializableAttribute]
   public struct ColorByCategory {
     /// <summary>
     /// </summary>
@@ -12,19 +9,19 @@ namespace droid.Runtime.Structs {
 
     /// <summary>
     /// </summary>
-    public Color _Color;
+    public UnityEngine.Color _Color;
   }
 
   /// <summary>
   /// </summary>
-  [Serializable]
+  [System.SerializableAttribute]
   public struct ColorByInstance {
     /// <summary>
     /// </summary>
-    public GameObject _Game_Object;
+    public UnityEngine.GameObject _Game_Object;
 
     /// <summary>
     /// </summary>
-    public Color _Color;
+    public UnityEngine.Color _Color;
   }
 }

@@ -1,57 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using droid.Runtime.Structs;
-using UnityEngine;
-
-namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation.Obsolete {
-  /// <inheritdoc cref="MonoBehaviour" />
+﻿namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation.Obsolete {
+  /// <inheritdoc cref="UnityEngine.MonoBehaviour" />
   /// <summary>
   /// </summary>
-  [ExecuteInEditMode]
+  [UnityEngine.ExecuteInEditMode]
   public class ChangeMaterialOnRenderByTag : ObsoleteSegmenter {
     /// <summary>
     /// </summary>
-    Renderer[] _all_renders;
-
-    /// <summary>
-    /// </summary>
-    MaterialPropertyBlock _block;
-
-    /// <summary>
-    /// </summary>
-    [SerializeField]
-    protected ColorByCategory[] _colors_by_category;
-
-    /// <summary>
-    /// </summary>
-    LinkedList<Color>[] _original_colors;
+    [UnityEngine.SerializeField]
+    protected droid.Runtime.Structs.ColorByCategory[] _colors_by_category;
 
     /// <summary>
     /// </summary>
     public bool _Replace_Untagged_Color = true;
 
-    [SerializeField] ScriptableObjects.Segmentation _segmentation = null;
+    [UnityEngine.SerializeField] droid.Runtime.ScriptableObjects.Segmentation _segmentation = null;
 
     /// <summary>
     /// </summary>
-    Dictionary<string, Color> _tag_colors_dict = new Dictionary<string, Color>();
+    public UnityEngine.Color _Untagged_Color = UnityEngine.Color.black;
 
     /// <summary>
     /// </summary>
-    public Color _Untagged_Color = Color.black;
+    UnityEngine.Renderer[] _all_renders;
 
     /// <summary>
     /// </summary>
-    public ColorByCategory[] ColorsByCategory { get { return this._colors_by_category; } }
+    UnityEngine.MaterialPropertyBlock _block;
 
     /// <summary>
     /// </summary>
-    public override Dictionary<string, Color> ColorsDict { get { return this._tag_colors_dict; } }
+    System.Collections.Generic.LinkedList<UnityEngine.Color>[] _original_colors;
+
+    /// <summary>
+    /// </summary>
+    System.Collections.Generic.Dictionary<string, UnityEngine.Color> _tag_colors_dict =
+        new System.Collections.Generic.Dictionary<string, UnityEngine.Color>();
+
+    /// <summary>
+    /// </summary>
+    public droid.Runtime.Structs.ColorByCategory[] ColorsByCategory {
+      get { return this._colors_by_category; }
+    }
+
+    /// <summary>
+    /// </summary>
+    public override System.Collections.Generic.Dictionary<string, UnityEngine.Color> ColorsDict {
+      get { return this._tag_colors_dict; }
+    }
 
     /// <summary>
     /// </summary>
     void Awake() {
-      this._block = new MaterialPropertyBlock();
+      this._block = new UnityEngine.MaterialPropertyBlock();
       this._tag_colors_dict.Clear();
       var colors_by_tag = this._colors_by_category;
       if (colors_by_tag != null && colors_by_tag.Length > 0) {
@@ -89,15 +89,16 @@ namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation.Obsolete {
     void Setup() {
       this.CheckBlock();
 
-      this._all_renders = FindObjectsOfType<Renderer>();
+      this._all_renders = FindObjectsOfType<UnityEngine.Renderer>();
     }
 
     /// <summary>
     /// </summary>
     protected override void Change() {
-      this._original_colors = new LinkedList<Color>[this._all_renders.Length];
+      this._original_colors =
+          new System.Collections.Generic.LinkedList<UnityEngine.Color>[this._all_renders.Length];
       for (var i = 0; i < this._original_colors.Length; i++) {
-        this._original_colors[i] = new LinkedList<Color>();
+        this._original_colors[i] = new System.Collections.Generic.LinkedList<UnityEngine.Color>();
       }
 
       this.CheckBlock();
@@ -142,7 +143,7 @@ namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation.Obsolete {
 
     void CheckBlock() {
       if (this._block == null) {
-        this._block = new MaterialPropertyBlock();
+        this._block = new UnityEngine.MaterialPropertyBlock();
       }
     }
 

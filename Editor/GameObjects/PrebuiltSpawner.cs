@@ -1,51 +1,44 @@
-﻿using droid.Runtime.Environments.Prototyping;
-using droid.Runtime.GameObjects.BoundingBoxes;
-using droid.Runtime.Managers;
-using droid.Runtime.Prototyping.Actors;
-using droid.Runtime.Prototyping.Actuators;
-using droid.Runtime.Prototyping.Configurables.Transforms;
-using droid.Runtime.Prototyping.Sensors.Spatial.Transform;
-#if UNITY_EDITOR
-using UnityEditor;
-using UnityEngine;
+﻿#if UNITY_EDITOR
 
 namespace droid.Editor.GameObjects {
-  public class PrebuiltSpawner : MonoBehaviour {
+  public class PrebuiltSpawner : UnityEngine.MonoBehaviour {
     /// <summary>
     /// </summary>
     /// <param name="menu_command"></param>
-    [MenuItem(itemName : EditorGameObjectMenuPath._GameObjectMenuPath + "Prebuilt/SimpleEnvironment",
-              false,
-              10)]
-    static void CreateSingleEnvironmentGameObject(MenuCommand menu_command) {
-      var go = new GameObject("SimpleEnvironment");
-      go.AddComponent<NeodroidManager>();
-      var env = go.AddComponent<PrototypingEnvironment>();
-      go.AddComponent<BoxCollider>();
-      var bounding_box = go.AddComponent<NeodroidBoundingBox>();
+    [UnityEditor.MenuItem(itemName : EditorGameObjectMenuPath._GameObjectMenuPath
+                                     + "Prebuilt/SimpleEnvironment",
+                          false,
+                          10)]
+    static void CreateSingleEnvironmentGameObject(UnityEditor.MenuCommand menu_command) {
+      var go = new UnityEngine.GameObject("SimpleEnvironment");
+      go.AddComponent<droid.Runtime.Managers.NeodroidManager>();
+      var env = go.AddComponent<droid.Runtime.Environments.Prototyping.PrototypingEnvironment>();
+      go.AddComponent<UnityEngine.BoxCollider>();
+      var bounding_box = go.AddComponent<droid.Runtime.GameObjects.BoundingBoxes.NeodroidBoundingBox>();
       env.PlayableArea = bounding_box;
 
-      var plane = GameObject.CreatePrimitive(type : PrimitiveType.Plane);
+      var plane = UnityEngine.GameObject.CreatePrimitive(type : UnityEngine.PrimitiveType.Plane);
       plane.transform.parent = go.transform;
 
-      var actor = new GameObject("Actor");
-      actor.AddComponent<Actor>();
-      actor.AddComponent<EulerTransform3DofActuator>();
-      actor.AddComponent<EulerTransformSensor>();
-      actor.AddComponent<PositionConfigurable>();
+      var actor = new UnityEngine.GameObject("Actor");
+      actor.AddComponent<droid.Runtime.Prototyping.Actors.Actor>();
+      actor.AddComponent<droid.Runtime.Prototyping.Actuators.EulerTransform3DofActuator>();
+      actor.AddComponent<droid.Runtime.Prototyping.Sensors.Spatial.Transform.EulerTransformSensor>();
+      actor.AddComponent<droid.Runtime.Prototyping.Configurables.Transforms.PositionConfigurable>();
       actor.transform.parent = go.transform;
 
-      var capsule = GameObject.CreatePrimitive(type : PrimitiveType.Capsule);
+      var capsule = UnityEngine.GameObject.CreatePrimitive(type : UnityEngine.PrimitiveType.Capsule);
       capsule.transform.parent = actor.transform;
-      capsule.transform.localPosition = Vector3.up;
+      capsule.transform.localPosition = UnityEngine.Vector3.up;
 
-      GameObjectUtility.SetParentAndAlign(child : go,
-                                          parent : menu_command
-                                                           .context as
-                                                       GameObject); // Ensure it gets reparented if this was a context click (otherwise does nothing)
-      Undo.RegisterCreatedObjectUndo(objectToUndo : go,
-                                     name : "Create " + go.name); // Register the creation in the undo system
-      Selection.activeObject = go;
+      UnityEditor.GameObjectUtility.SetParentAndAlign(child : go,
+                                                      parent : menu_command
+                                                                       .context as
+                                                                   UnityEngine.
+                                                                   GameObject); // Ensure it gets reparented if this was a context click (otherwise does nothing)
+      UnityEditor.Undo.RegisterCreatedObjectUndo(objectToUndo : go,
+                                                 name : $"Create {go.name}"); // Register the creation in the undo system
+      UnityEditor.Selection.activeObject = go;
     }
   }
 }

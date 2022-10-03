@@ -171,4 +171,3 @@ namespace droid.Editor.Windows {
 #endif
 */
 
-

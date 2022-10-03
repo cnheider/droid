@@ -1,5 +1,3 @@
-using droid.Runtime.Structs.Space;
-
 namespace droid.Runtime.Interfaces {
   /// <summary>
   /// </summary>
@@ -8,6 +6,6 @@ namespace droid.Runtime.Interfaces {
     /// </summary>
     int CurrentCategoryValue { get; }
 
-    Space1 Space1 { get; }
+    droid.Runtime.Structs.Space.Space1 Space1 { get; }
   }
 }

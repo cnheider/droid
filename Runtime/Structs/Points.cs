@@ -1,30 +1,24 @@
-﻿using UnityEngine;
-
-namespace droid.Runtime.Structs {
+﻿namespace droid.Runtime.Structs {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  public class Points : MonoBehaviour {
+  public class Points : UnityEngine.MonoBehaviour {
     /// <summary>
-    ///
     /// </summary>
     public struct StringPoint {
       /// <summary>
-      ///
       /// </summary>
-      public Vector3 _Pos;
+      public UnityEngine.Vector3 _Pos;
 
       /// <summary>
-      ///
       /// </summary>
       public float _Size;
 
       /// <summary>
-      ///
       /// </summary>
       public string _Val;
 
-      public StringPoint(Vector3 pos, string val, float size) {
+      public StringPoint(UnityEngine.Vector3 pos, string val, float size) {
         this._Pos = pos;
         this._Val = val;
         this._Size = size;
@@ -32,25 +26,21 @@ namespace droid.Runtime.Structs {
     }
 
     /// <summary>
-    ///
     /// </summary>
     public struct ValuePoint {
       /// <summary>
-      ///
       /// </summary>
-      public Vector3 _Pos;
+      public UnityEngine.Vector3 _Pos;
 
       /// <summary>
-      ///
       /// </summary>
       public float _Size;
 
       /// <summary>
-      ///
       /// </summary>
       public float _Val;
 
-      public ValuePoint(Vector3 pos, float val, float size) {
+      public ValuePoint(UnityEngine.Vector3 pos, float val, float size) {
         this._Pos = pos;
         this._Val = val;
         this._Size = size;

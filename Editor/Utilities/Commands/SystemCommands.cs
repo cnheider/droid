@@ -1,19 +1,15 @@
-using System;
-using System.Diagnostics;
-using System.Threading;
-
 namespace droid.Editor.Utilities.Commands {
   public static partial class Commands {
     public static void AsyncSystemCommand(string str_command,
                                           string arguments,
                                           bool create_window = true,
                                           bool use_shell = false) {
-      var thread = new Thread(delegate() {
-                                SystemCommand(input : str_command,
-                                              arguments : arguments,
-                                              create_window : create_window,
-                                              use_shell : use_shell);
-                              });
+      var thread = new System.Threading.Thread(delegate() {
+                                                 SystemCommand(input : str_command,
+                                                               arguments : arguments,
+                                                               create_window : create_window,
+                                                               use_shell : use_shell);
+                                               });
       thread.Start();
     }
 
@@ -28,20 +24,15 @@ namespace droid.Editor.Utilities.Commands {
        * When UseShellExecute is false, the WorkingDirectory property is not used to find the executable. Instead, its value applies to the process that is started and only has meaning within the context of the new process.
        */
 
-      var process_info = new ProcessStartInfo(fileName : input, arguments : arguments) {
-                                                                                           CreateNoWindow =
-                                                                                               !create_window,
-                                                                                           RedirectStandardOutput
-                                                                                               = !use_shell,
-                                                                                           RedirectStandardError
-                                                                                               = !use_shell,
-                                                                                           UseShellExecute =
-                                                                                               use_shell,
-                                                                                           WorkingDirectory =
-                                                                                               working_directory
-                                                                                       };
+      var process_info = new System.Diagnostics.ProcessStartInfo(fileName : input, arguments : arguments) {
+                             CreateNoWindow = !create_window,
+                             RedirectStandardOutput = !use_shell,
+                             RedirectStandardError = !use_shell,
+                             UseShellExecute = use_shell,
+                             WorkingDirectory = working_directory
+                         };
 
-      var process = new Process {StartInfo = process_info};
+      var process = new System.Diagnostics.Process {StartInfo = process_info};
       //var process = Process.Start(startInfo : process_info);
 
       var out_str = string.Empty;
@@ -59,7 +50,7 @@ namespace droid.Editor.Utilities.Commands {
           var std_str = process.StandardOutput.ReadToEnd();
           var error_str = process.StandardError.ReadToEnd();
 
-          out_str = std_str + '\n' + error_str;
+          out_str = $"{std_str}{'\n'}{error_str}";
 
           #if UNITY_EDITOR
           UnityEngine.Debug.Log(message : std_str);
@@ -79,7 +70,7 @@ namespace droid.Editor.Utilities.Commands {
 
         process.WaitForExit();
         process.Close();
-      } catch (Exception e) {
+      } catch (System.Exception e) {
         #if UNITY_EDITOR
         UnityEngine.Debug.LogError(message : e.Message);
         #else

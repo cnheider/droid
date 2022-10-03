@@ -1,35 +1,31 @@
-﻿using System;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Messaging.Messages;
-using droid.Runtime.Structs.Space.Sample;
-using droid.Runtime.Utilities;
-using UnityEngine;
-using Random = UnityEngine.Random;
-
-namespace droid.Runtime.Prototyping.Configurables.Experimental {
+﻿namespace droid.Runtime.Prototyping.Configurables.Experimental {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
-                               + "NormalMap"
-                               + ConfigurableComponentMenuPath._Postfix)]
-  [RequireComponent(requiredComponent : typeof(Renderer))]
+  [UnityEngine.AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
+                                           + "NormalMap"
+                                           + ConfigurableComponentMenuPath._Postfix)]
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.Renderer))]
   public class NormalMapConfigurable : Configurable {
-    [SerializeField] Texture[] _textures = null;
-    [SerializeField] bool load_from_resources_if_empty = true;
-    [SerializeField] Texture _texture = null;
-    [SerializeField] Renderer _renderer = null;
-    [SerializeField] bool use_shared = false;
-    [SerializeField] Material _mat;
-    [SerializeField] int _last_sample;
-    static readonly int _main_tex = Shader.PropertyToID("_BumpMap");
+    static readonly int _main_tex = UnityEngine.Shader.PropertyToID("_BumpMap");
+    [UnityEngine.SerializeField] UnityEngine.Texture[] _textures = null;
+    [UnityEngine.SerializeField] bool load_from_resources_if_empty = true;
+    [UnityEngine.SerializeField] UnityEngine.Texture _texture = null;
+    [UnityEngine.SerializeField] UnityEngine.Renderer _renderer = null;
+    [UnityEngine.SerializeField] bool use_shared = false;
+    [UnityEngine.SerializeField] UnityEngine.Material _mat;
+    [UnityEngine.SerializeField] int _last_sample;
+
+    public droid.Runtime.Interfaces.ISamplable ConfigurableValueSpace {
+      get { return new droid.Runtime.Structs.Space.Sample.SampleSpace1(); }
+    }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     public override void PreSetup() {
-      this._renderer = this.GetComponent<Renderer>();
-      if (Application.isPlaying) {
+      this._renderer = this.GetComponent<UnityEngine.Renderer>();
+      if (UnityEngine.Application.isPlaying) {
         if (this.use_shared) {
           this._mat = this._renderer?.sharedMaterial;
         } else {
@@ -39,12 +35,10 @@ namespace droid.Runtime.Prototyping.Configurables.Experimental {
 
       if (this.load_from_resources_if_empty) {
         if (this._textures == null || this._textures.Length == 0) {
-          this._textures = Resources.LoadAll<Texture>("Textures");
+          this._textures = UnityEngine.Resources.LoadAll<UnityEngine.Texture>("Textures");
         }
       }
     }
-
-    public ISamplable ConfigurableValueSpace { get { return new SampleSpace1(); } }
 
     /// <inheritdoc />
     /// <summary>
@@ -55,12 +49,13 @@ namespace droid.Runtime.Prototyping.Configurables.Experimental {
     /// <summary>
     /// </summary>
     /// <param name="configuration"></param>
-    public override void ApplyConfiguration(IConfigurableConfiguration configuration) {
+    public override void
+        ApplyConfiguration(droid.Runtime.Interfaces.IConfigurableConfiguration configuration) {
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        DebugPrinting.ApplyPrint(debugging : this.Debugging,
-                                 configuration : configuration,
-                                 identifier : this.Identifier);
+        droid.Runtime.Utilities.DebugPrinting.ApplyPrint(debugging : this.Debugging,
+                                                         configuration : configuration,
+                                                         identifier : this.Identifier);
       }
       #endif
 
@@ -73,12 +68,12 @@ namespace droid.Runtime.Prototyping.Configurables.Experimental {
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public override Configuration[] SampleConfigurations() {
-      this._last_sample = int.Parse(s : Random.Range(0, max : this._textures.Length).ToString());
+    public override droid.Runtime.Messaging.Messages.Configuration[] SampleConfigurations() {
+      this._last_sample = int.Parse(s : UnityEngine.Random.Range(0, maxExclusive : this._textures.Length).ToString());
 
       return new[] {
-                       new Configuration(configurable_name : this.Identifier,
-                                         configurable_value : this._last_sample)
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this.Identifier,
+                         configurable_value : this._last_sample)
                    };
     }
   }

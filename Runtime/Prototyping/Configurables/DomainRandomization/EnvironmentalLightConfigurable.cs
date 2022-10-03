@@ -1,48 +1,48 @@
-﻿using droid.Runtime.Interfaces;
-using droid.Runtime.Messaging.Messages;
-using droid.Runtime.Sampling;
-using droid.Runtime.Structs.Space;
-using droid.Runtime.Structs.Space.Sample;
-using droid.Runtime.Utilities;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Configurables.DomainRandomization {
+﻿namespace droid.Runtime.Prototyping.Configurables.DomainRandomization {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
-                               + "EnvironmentalLight"
-                               + ConfigurableComponentMenuPath._Postfix)]
-  [DisallowMultipleComponent]
+  [UnityEngine.AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
+                                           + "EnvironmentalLight"
+                                           + ConfigurableComponentMenuPath._Postfix)]
+  [UnityEngine.DisallowMultipleComponent]
   public class EnvironmentalLightConfigurable : Configurable {
-    string _color_r;
-    string _color_g;
     string _color_b;
+    string _color_g;
+    string _color_r;
+
+    [UnityEngine.SerializeField]
+    droid.Runtime.Interfaces.ISamplable _color_space = new droid.Runtime.Structs.Space.Sample.SampleSpace3 {
+                                                           _space = new droid.Runtime.Structs.Space.Space3 {
+                                                                        Min = UnityEngine.Vector3.one
+                                                                          * 0.6f,
+                                                                        Max = UnityEngine.Vector3.one * 1f
+                                                                    }
+                                                       };
+
     string _intensity;
+
+    [UnityEngine.SerializeField]
+    droid.Runtime.Interfaces.ISamplable _intensity_space =
+        new droid.Runtime.Structs.Space.Sample.SampleSpace2 {
+                                                                Space =
+                                                                    new droid.Runtime.Structs.Space.Space2 {
+                                                                        Min =
+                                                                            UnityEngine.Vector3.one * 0.0f,
+                                                                        Max = UnityEngine.Vector3.one * 1f
+                                                                    },
+                                                                _distribution_sampler =
+                                                                    new droid.Runtime.Sampling.
+                                                                    DistributionSampler(distribution_enum :
+                                                                      droid.Runtime.Sampling
+                                                                          .DistributionEnum.Linear_) {
+                                                                        DistributionParameter = -1
+                                                                    }
+                                                            };
+
     string _reflection_intensity;
 
-    [SerializeField]
-    ISamplable _intensity_space = new SampleSpace2 {
-                                                       Space =
-                                                           new Space2 {
-                                                                          Min = Vector3.one * 0.0f,
-                                                                          Max = Vector3.one * 1f
-                                                                      },
-                                                       _distribution_sampler =
-                                                           new DistributionSampler(distribution_enum :
-                                                                                   DistributionEnum.Linear_) {
-                                                                                                                 DistributionParameter
-                                                                                                                     = -1
-                                                                                                             }
-                                                   };
-
-    [SerializeField]
-    ISamplable _color_space = new SampleSpace3 {
-                                                   _space = new Space3 {
-                                                                           Min = Vector3.one * 0.6f,
-                                                                           Max = Vector3.one * 1f
-                                                                       }
-                                               };
+    public droid.Runtime.Interfaces.ISamplable ConfigurableValueSpace { get; }
 
     /// <inheritdoc />
     /// <summary>
@@ -60,25 +60,25 @@ namespace droid.Runtime.Prototyping.Configurables.DomainRandomization {
     /// </summary>
     protected override void RegisterComponent() {
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._color_r);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._color_r);
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._color_b);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._color_b);
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._color_g);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._color_g);
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._intensity);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._intensity);
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._reflection_intensity);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._reflection_intensity);
     }
 
     /// <inheritdoc />
@@ -96,22 +96,21 @@ namespace droid.Runtime.Prototyping.Configurables.DomainRandomization {
       this.ParentEnvironment.UnRegister(t : this, identifier : this._reflection_intensity);
     }
 
-    public ISamplable ConfigurableValueSpace { get; }
-
     public override void UpdateCurrentConfiguration() { }
 
     /// <summary>
     /// </summary>
     /// <param name="configuration"></param>
-    public override void ApplyConfiguration(IConfigurableConfiguration configuration) {
+    public override void
+        ApplyConfiguration(droid.Runtime.Interfaces.IConfigurableConfiguration configuration) {
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        DebugPrinting.ApplyPrint(debugging : this.Debugging,
-                                 configuration : configuration,
-                                 identifier : this.Identifier);
+        droid.Runtime.Utilities.DebugPrinting.ApplyPrint(debugging : this.Debugging,
+                                                         configuration : configuration,
+                                                         identifier : this.Identifier);
       }
       #endif
-      var c = RenderSettings.ambientLight;
+      var c = UnityEngine.RenderSettings.ambientLight;
       if (configuration.ConfigurableName == this._color_r) {
         c.r = configuration.ConfigurableValue;
       } else if (configuration.ConfigurableName == this._color_g) {
@@ -120,8 +119,9 @@ namespace droid.Runtime.Prototyping.Configurables.DomainRandomization {
         c.b = configuration.ConfigurableValue;
       } else if (configuration.ConfigurableName == this._intensity) {
         //c.a = configuration.ConfigurableValue;
-        RenderSettings.ambientIntensity = configuration.ConfigurableValue;
-        RenderSettings.reflectionIntensity = Mathf.Clamp01(value : configuration.ConfigurableValue);
+        UnityEngine.RenderSettings.ambientIntensity = configuration.ConfigurableValue;
+        UnityEngine.RenderSettings.reflectionIntensity =
+            UnityEngine.Mathf.Clamp01(value : configuration.ConfigurableValue);
         //RenderSettings.skybox.SetFloat("_Exposure", configuration.ConfigurableValue);
       } else if (configuration.ConfigurableName == this._reflection_intensity) {
         //c.a = configuration.ConfigurableValue;
@@ -129,25 +129,30 @@ namespace droid.Runtime.Prototyping.Configurables.DomainRandomization {
         //RenderSettings.skybox.SetFloat("_Exposure", configuration.ConfigurableValue);
       }
 
-      RenderSettings.ambientLight = c;
-      DynamicGI.UpdateEnvironment();
+      UnityEngine.RenderSettings.ambientLight = c;
+      UnityEngine.DynamicGI.UpdateEnvironment();
     }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public override Configuration[] SampleConfigurations() {
+    public override droid.Runtime.Messaging.Messages.Configuration[] SampleConfigurations() {
       var o = this._intensity_space.Sample();
       var v = this._color_space.Sample();
 
       return new[] {
-                       new Configuration(configurable_name : this._color_r, configurable_value : v.x),
-                       new Configuration(configurable_name : this._color_g, configurable_value : v.y),
-                       new Configuration(configurable_name : this._color_b, configurable_value : v.z),
-                       new Configuration(configurable_name : this._intensity, configurable_value : o.x),
-                       new Configuration(configurable_name : this._reflection_intensity,
-                                         configurable_value : o.y)
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._color_r,
+                         configurable_value : v.x),
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._color_g,
+                         configurable_value : v.y),
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._color_b,
+                         configurable_value : v.z),
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._intensity,
+                         configurable_value : o.x),
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name :
+                         this._reflection_intensity,
+                         configurable_value : o.y)
                    };
     }
   }

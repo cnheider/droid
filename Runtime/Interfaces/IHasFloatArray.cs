@@ -1,6 +1,4 @@
-﻿using droid.Runtime.Structs.Space;
-
-namespace droid.Runtime.Interfaces {
+﻿namespace droid.Runtime.Interfaces {
   /// <summary>
   /// </summary>
   public interface IHasFloatArray {
@@ -9,8 +7,7 @@ namespace droid.Runtime.Interfaces {
     float[] ObservationArray { get; }
 
     /// <summary>
-    ///
     /// </summary>
-    Space1[] ObservationSpace { get; }
+    droid.Runtime.Structs.Space.Space1[] ObservationSpace { get; }
   }
 }

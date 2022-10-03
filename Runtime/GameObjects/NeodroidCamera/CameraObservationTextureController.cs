@@ -1,30 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using droid.Runtime.Utilities;
-using UnityEngine;
-
-namespace droid.Runtime.GameObjects.NeodroidCamera {
+﻿namespace droid.Runtime.GameObjects.NeodroidCamera {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [ExecuteInEditMode]
-  [Serializable]
-  public class CameraObservationTextureController : MonoBehaviour {
-    [SerializeField] Camera[] _cameras = null;
-    [SerializeField] FilterMode _filter_mode = FilterMode.Bilinear;
+  [UnityEngine.ExecuteInEditMode]
+  [System.SerializableAttribute]
+  public class CameraObservationTextureController : UnityEngine.MonoBehaviour {
+    [UnityEngine.SerializeField] UnityEngine.Camera[] _cameras = null;
 
-    [SerializeField]
-    Vector2Int _size = new Vector2Int(x : NeodroidConstants._Default_Observation_Texture_Xy_Size,
-                                      y : NeodroidConstants._Default_Observation_Texture_Xy_Size);
+    [UnityEngine.SerializeField] UnityEngine.FilterMode _filter_mode = UnityEngine.FilterMode.Bilinear;
     //[SerializeField] GraphicsFormat _texture_format = GraphicsFormat.R8G8B8A8_UNorm;
 
-    [SerializeField] Texture[] _textures = null;
-    [SerializeField] TextureWrapMode _wrap_mode = TextureWrapMode.Clamp;
+    [UnityEngine.SerializeField] UnityEngine.Texture[] _textures = null;
+    [UnityEngine.SerializeField] UnityEngine.TextureWrapMode _wrap_mode = UnityEngine.TextureWrapMode.Clamp;
+
+    [UnityEngine.SerializeField]
+    UnityEngine.Vector2Int _size =
+        new UnityEngine.Vector2Int(x : droid.Runtime.Utilities.NeodroidConstants
+                                            ._Default_Observation_Texture_Xy_Size,
+                                   y : droid.Runtime.Utilities.NeodroidConstants
+                                            ._Default_Observation_Texture_Xy_Size);
 
     void Awake() {
-      this._cameras = FindObjectsOfType<Camera>();
+      this._cameras = FindObjectsOfType<UnityEngine.Camera>();
 
-      var textures = new List<Texture>();
+      var textures = new System.Collections.Generic.List<UnityEngine.Texture>();
 
       for (var index = 0; index < this._cameras.Length; index++) {
         var a_camera = this._cameras[index];

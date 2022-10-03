@@ -1,83 +1,79 @@
-﻿using System;
-using droid.Runtime.Utilities;
-using UnityEngine;
-
-namespace droid.Runtime.GameObjects.NeodroidCamera {
+﻿namespace droid.Runtime.GameObjects.NeodroidCamera {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [RequireComponent(requiredComponent : typeof(Camera))]
-  [ExecuteInEditMode]
-  [Serializable]
-  public class SynchroniseCameraProperties : MonoBehaviour {
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.Camera))]
+  [UnityEngine.ExecuteInEditMode]
+  [System.SerializableAttribute]
+  public class SynchroniseCameraProperties : UnityEngine.MonoBehaviour {
     /// <summary>
     /// </summary>
-    [SerializeField]
+    [UnityEngine.SerializeField]
     SynchroniseCameraProperties[] _cameras = null;
 
     /// <summary>
     /// </summary>
-    [SerializeField]
+    [UnityEngine.SerializeField]
     bool _run_only_in_edit_mode = true;
 
     /// <summary>
     /// </summary>
-    [SerializeField]
+    [UnityEngine.SerializeField]
     bool _only_run_on_awake = false;
 
     /// <summary>
     /// </summary>
-    [SerializeField]
+    [UnityEngine.SerializeField]
     bool _sync_culling_mask = true;
 
     /// <summary>
     /// </summary>
-    [SerializeField]
+    [UnityEngine.SerializeField]
     bool _sync_far_clip_plane = true;
 
     /// <summary>
     /// </summary>
-    [SerializeField]
+    [UnityEngine.SerializeField]
     bool _sync_fov = true;
 
     /// <summary>
     /// </summary>
-    [SerializeField]
+    [UnityEngine.SerializeField]
     bool _sync_near_clip_plane = true;
 
     /// <summary>
     /// </summary>
-    [SerializeField]
+    [UnityEngine.SerializeField]
     bool _sync_orthographic_projection = true;
 
     /// <summary>
     /// </summary>
-    [SerializeField]
+    [UnityEngine.SerializeField]
     bool _sync_orthographic_size = true;
 
     /// <summary>
     /// </summary>
-    [SerializeField]
+    [UnityEngine.SerializeField]
     bool _sync_physicality = true;
 
     /// <summary>
     /// </summary>
-    [SerializeField]
+    [UnityEngine.SerializeField]
     bool _sync_sensor_size = true;
 
     /// <summary>
     /// </summary>
-    [SerializeField]
+    [UnityEngine.SerializeField]
     bool _sync_lens_shift = true;
 
     /// <summary>
     /// </summary>
-    [SerializeField]
+    [UnityEngine.SerializeField]
     bool _sync_gate_fit = true;
 
     /// <summary>
     /// </summary>
-    [SerializeField]
+    [UnityEngine.SerializeField]
     bool _sync_focal_length = true;
 
 /*
@@ -91,32 +87,9 @@ namespace droid.Runtime.GameObjects.NeodroidCamera {
     [SerializeField]
     bool _sync_fov_axis = true;
 */
-    [SerializeField] Camera _camera;
-
-    #region old
-
-    int _old_culling_mask = 0;
-
-    float _old_far_clip_plane = 0;
-
-    float _old_fov = 0;
-
-    float _old_near_clip_plane = 0;
-
-    bool _old_orthographic_projection = false;
-
-    float _old_orthographic_size = 0;
-
-    float _old_foc;
-    bool _old_physicality = false;
-    Camera.GateFitMode _old_gate_fit = Camera.GateFitMode.Fill;
-    Vector2 _old_sensor_size = Vector2.one;
-    Vector2 _old_lens_shift = Vector2.zero;
-
-    #endregion
+    [UnityEngine.SerializeField] UnityEngine.Camera _camera;
 
     /// <summary>
-    ///
     /// </summary>
     public float Foc {
       get { return this._camera.focalLength; }
@@ -129,7 +102,6 @@ namespace droid.Runtime.GameObjects.NeodroidCamera {
     }
 
     /// <summary>
-    ///
     /// </summary>
     public float OrtSize {
       get { return this._camera.orthographicSize; }
@@ -142,7 +114,6 @@ namespace droid.Runtime.GameObjects.NeodroidCamera {
     }
 
     /// <summary>
-    ///
     /// </summary>
     public float Near {
       get { return this._camera.nearClipPlane; }
@@ -204,7 +175,7 @@ namespace droid.Runtime.GameObjects.NeodroidCamera {
       }
     }
 
-    public Camera.GateFitMode Gate {
+    public UnityEngine.Camera.GateFitMode Gate {
       get { return this._camera.gateFit; }
       set {
         if (this._sync_gate_fit) {
@@ -214,7 +185,7 @@ namespace droid.Runtime.GameObjects.NeodroidCamera {
       }
     }
 
-    public Vector2 SensSize {
+    public UnityEngine.Vector2 SensSize {
       get { return this._camera.sensorSize; }
       set {
         if (this._sync_sensor_size) {
@@ -224,7 +195,7 @@ namespace droid.Runtime.GameObjects.NeodroidCamera {
       }
     }
 
-    public Vector2 Shift {
+    public UnityEngine.Vector2 Shift {
       get { return this._camera.lensShift; }
       set {
         if (this._sync_lens_shift) {
@@ -237,7 +208,7 @@ namespace droid.Runtime.GameObjects.NeodroidCamera {
     /// <summary>
     /// </summary>
     public void Awake() {
-      this._camera = this.GetComponent<Camera>();
+      this._camera = this.GetComponent<UnityEngine.Camera>();
       if (this._camera) {
         this.OrtSize = this._camera.orthographicSize;
         this.Near = this._camera.nearClipPlane;
@@ -253,10 +224,26 @@ namespace droid.Runtime.GameObjects.NeodroidCamera {
 
         this._cameras = FindObjectsOfType<SynchroniseCameraProperties>();
       } else {
-        Debug.Log("No camera component found on GameObject");
+        UnityEngine.Debug.Log("No camera component found on GameObject");
       }
 
       this.Sync_Cameras();
+    }
+
+    /// <summary>
+    /// </summary>
+    public void Update() {
+      if (!this._only_run_on_awake) {
+        if (this._run_only_in_edit_mode) {
+          #if UNITY_EDITOR
+          if (!UnityEngine.Application.isPlaying) {
+            this.Sync_Cameras();
+          }
+          #endif
+        } else {
+          this.Sync_Cameras();
+        }
+      }
     }
 
     public void Sync_Cameras() {
@@ -264,8 +251,8 @@ namespace droid.Runtime.GameObjects.NeodroidCamera {
         if (this._camera) {
           if (this._sync_orthographic_size) {
             var orthographic_size = this.OrtSize;
-            if (Math.Abs(value : this._old_orthographic_size - orthographic_size)
-                > NeodroidConstants._Double_Tolerance) {
+            if (System.Math.Abs(value : this._old_orthographic_size - orthographic_size)
+                > droid.Runtime.Utilities.NeodroidConstants._Double_Tolerance) {
               this.OrtSize = orthographic_size;
               for (var index = 0; index < this._cameras.Length; index++) {
                 var cam = this._cameras[index];
@@ -278,8 +265,8 @@ namespace droid.Runtime.GameObjects.NeodroidCamera {
 
           if (this._sync_near_clip_plane) {
             var near_clip_plane = this._camera.nearClipPlane;
-            if (Math.Abs(value : this._old_near_clip_plane - near_clip_plane)
-                > NeodroidConstants._Double_Tolerance) {
+            if (System.Math.Abs(value : this._old_near_clip_plane - near_clip_plane)
+                > droid.Runtime.Utilities.NeodroidConstants._Double_Tolerance) {
               this._old_near_clip_plane = near_clip_plane;
               for (var index = 0; index < this._cameras.Length; index++) {
                 var cam = this._cameras[index];
@@ -292,8 +279,8 @@ namespace droid.Runtime.GameObjects.NeodroidCamera {
 
           if (this._sync_far_clip_plane) {
             var far_clip_plane = this._camera.farClipPlane;
-            if (Math.Abs(value : this._old_far_clip_plane - far_clip_plane)
-                > NeodroidConstants._Double_Tolerance) {
+            if (System.Math.Abs(value : this._old_far_clip_plane - far_clip_plane)
+                > droid.Runtime.Utilities.NeodroidConstants._Double_Tolerance) {
               this._old_far_clip_plane = far_clip_plane;
               for (var index = 0; index < this._cameras.Length; index++) {
                 var cam = this._cameras[index];
@@ -332,7 +319,8 @@ namespace droid.Runtime.GameObjects.NeodroidCamera {
 
           if (this._sync_fov) {
             var fov = this._camera.fieldOfView;
-            if (Math.Abs(value : this._old_fov - fov) > NeodroidConstants._Double_Tolerance) {
+            if (System.Math.Abs(value : this._old_fov - fov)
+                > droid.Runtime.Utilities.NeodroidConstants._Double_Tolerance) {
               this._old_fov = fov;
               for (var index = 0; index < this._cameras.Length; index++) {
                 var cam = this._cameras[index];
@@ -345,7 +333,8 @@ namespace droid.Runtime.GameObjects.NeodroidCamera {
 
           if (this._sync_focal_length) {
             var foc = this._camera.focalLength;
-            if (Math.Abs(value : this._old_foc - foc) > NeodroidConstants._Double_Tolerance) {
+            if (System.Math.Abs(value : this._old_foc - foc)
+                > droid.Runtime.Utilities.NeodroidConstants._Double_Tolerance) {
               this._old_foc = foc;
               for (var index = 0; index < this._cameras.Length; index++) {
                 var cam = this._cameras[index];
@@ -409,7 +398,7 @@ namespace droid.Runtime.GameObjects.NeodroidCamera {
           }
         } else {
           #if NEODROID_DEBUG
-          Debug.Log(message : $"No Camera component found on {this.name} GameObject");
+          UnityEngine.Debug.Log(message : $"No Camera component found on {this.name} GameObject");
           #endif
         }
       } else {
@@ -420,20 +409,26 @@ namespace droid.Runtime.GameObjects.NeodroidCamera {
       }
     }
 
-    /// <summary>
-    /// </summary>
-    public void Update() {
-      if (!this._only_run_on_awake) {
-        if (this._run_only_in_edit_mode) {
-          #if UNITY_EDITOR
-          if (!Application.isPlaying) {
-            this.Sync_Cameras();
-          }
-          #endif
-        } else {
-          this.Sync_Cameras();
-        }
-      }
-    }
+    #region old
+
+    int _old_culling_mask = 0;
+
+    float _old_far_clip_plane = 0;
+
+    float _old_fov = 0;
+
+    float _old_near_clip_plane = 0;
+
+    bool _old_orthographic_projection = false;
+
+    float _old_orthographic_size = 0;
+
+    float _old_foc;
+    bool _old_physicality = false;
+    UnityEngine.Camera.GateFitMode _old_gate_fit = UnityEngine.Camera.GateFitMode.Fill;
+    UnityEngine.Vector2 _old_sensor_size = UnityEngine.Vector2.one;
+    UnityEngine.Vector2 _old_lens_shift = UnityEngine.Vector2.zero;
+
+    #endregion
   }
 }

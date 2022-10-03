@@ -1,37 +1,38 @@
-using System.Collections;
-using UnityEngine;
-using UnityEngine.UI;
-
 namespace droid.Runtime.GameObjects.StatusDisplayer {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  public class RenderTextureList : MonoBehaviour {
+  public class RenderTextureList : UnityEngine.MonoBehaviour {
     /// <summary>
-    ///
     /// </summary>
-    public Sprite[] AnimalImages;
+    public UnityEngine.Sprite[] AnimalImages;
 
     /// <summary>
-    ///
     /// </summary>
-    public GameObject ContentPanel;
+    public UnityEngine.GameObject ContentPanel;
 
     /// <summary>
-    ///
     /// </summary>
-    public GameObject ListItemPrefab;
+    public UnityEngine.GameObject ListItemPrefab;
 
-    ArrayList _camera_observations;
+    System.Collections.ArrayList _camera_observations;
 
     void Start() {
       // 1. Get the data to be displayed
-      this._camera_observations = new ArrayList {
-                                                    new CameraObservation(icon : this.AnimalImages[0], "A"),
-                                                    new CameraObservation(icon : this.AnimalImages[1], "B"),
-                                                    new CameraObservation(icon : this.AnimalImages[2], "C"),
-                                                    new CameraObservation(icon : this.AnimalImages[3], "D")
-                                                };
+      this._camera_observations = new System.Collections.ArrayList {
+                                                                       new CameraObservation(icon : this
+                                                                             .AnimalImages[0],
+                                                                         "A"),
+                                                                       new CameraObservation(icon : this
+                                                                             .AnimalImages[1],
+                                                                         "B"),
+                                                                       new CameraObservation(icon : this
+                                                                             .AnimalImages[2],
+                                                                         "C"),
+                                                                       new CameraObservation(icon : this
+                                                                             .AnimalImages[3],
+                                                                         "D")
+                                                                   };
 
       if (this.ListItemPrefab) {
         for (var index = 0; index < this._camera_observations.Count; index++) {
@@ -40,7 +41,7 @@ namespace droid.Runtime.GameObjects.StatusDisplayer {
           var controller = r.GetComponent<RenderTextureListItem>();
           controller.Icon.sprite = animal._Icon;
           controller.Name.text = animal._Name;
-          r.transform.localScale = Vector3.one;
+          r.transform.localScale = UnityEngine.Vector3.one;
         }
       }
     }
@@ -49,26 +50,23 @@ namespace droid.Runtime.GameObjects.StatusDisplayer {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  public class RenderTextureListItem : MonoBehaviour {
+  public class RenderTextureListItem : UnityEngine.MonoBehaviour {
     /// <summary>
-    ///
     /// </summary>
-    public Image Icon;
+    public UnityEngine.UI.Image Icon;
 
     /// <summary>
-    ///
     /// </summary>
-    public Text Name;
+    public UnityEngine.UI.Text Name;
   }
 
   /// <summary>
-  ///
   /// </summary>
   public class CameraObservation {
-    public Sprite _Icon;
+    public UnityEngine.Sprite _Icon;
     public string _Name;
 
-    public CameraObservation(Sprite icon, string name) {
+    public CameraObservation(UnityEngine.Sprite icon, string name) {
       this._Icon = icon;
       this._Name = name;
     }

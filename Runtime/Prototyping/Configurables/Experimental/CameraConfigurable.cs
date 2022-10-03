@@ -1,26 +1,64 @@
-﻿using System;
-using droid.Runtime.GameObjects.NeodroidCamera;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Messaging.Messages;
-using droid.Runtime.Structs.Space;
-using droid.Runtime.Structs.Space.Sample;
-using droid.Runtime.Utilities;
-using UnityEngine;
-using Random = UnityEngine.Random;
-
-namespace droid.Runtime.Prototyping.Configurables.Experimental {
+﻿namespace droid.Runtime.Prototyping.Configurables.Experimental {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
-                               + "Camera"
-                               + ConfigurableComponentMenuPath._Postfix)]
-  [RequireComponent(requiredComponent : typeof(Camera))]
+  [UnityEngine.AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
+                                           + "Camera"
+                                           + ConfigurableComponentMenuPath._Postfix)]
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.Camera))]
   public class CameraConfigurable : Configurable {
-    /// <summary>
-    ///   Red
-    /// </summary>
-    string _fov_str;
+    [UnityEngine.SerializeField] UnityEngine.Camera _camera;
+    [UnityEngine.SerializeField] droid.Runtime.GameObjects.NeodroidCamera.SynchroniseCameraProperties _syncer;
+
+    [UnityEngine.SerializeField]
+    droid.Runtime.Structs.Space.Sample.SampleSpace1 _fov_space =
+        new droid.Runtime.Structs.Space.Sample.SampleSpace1 {
+                                                                _space =
+                                                                    new droid.Runtime.Structs.Space.Space1 {
+                                                                        Min = 60f, Max = 90f
+                                                                    }
+                                                            };
+
+    [UnityEngine.SerializeField]
+    droid.Runtime.Structs.Space.Sample.SampleSpace1 _focal_space =
+        new droid.Runtime.Structs.Space.Sample.SampleSpace1 {
+                                                                _space =
+                                                                    new droid.Runtime.Structs.Space.Space1 {
+                                                                        Min = 2f, Max = 3f
+                                                                    }
+                                                            };
+
+    [UnityEngine.SerializeField]
+    droid.Runtime.Structs.Space.Sample.SampleSpace2 _sensor_size_space =
+        new droid.Runtime.Structs.Space.Sample.SampleSpace2 {
+                                                                _space =
+                                                                    new droid.Runtime.Structs.Space.Space2 {
+                                                                        Min =
+                                                                            new UnityEngine.Vector2(2.5f,
+                                                                              2.5f),
+                                                                        Max = new UnityEngine.Vector2(5, 5)
+                                                                    }
+                                                            };
+
+    [UnityEngine.SerializeField]
+    droid.Runtime.Structs.Space.Sample.SampleSpace2 _lens_shift_space =
+        new droid.Runtime.Structs.Space.Sample.SampleSpace2 {
+                                                                _space =
+                                                                    new droid.Runtime.Structs.Space.Space2 {
+                                                                        Min = new UnityEngine.Vector2(-0.1f,
+                                                                          -0.1f),
+                                                                        Max = new UnityEngine.Vector2(0.1f,
+                                                                          0.1f)
+                                                                    }
+                                                            };
+
+    [UnityEngine.SerializeField]
+    droid.Runtime.Structs.Space.Sample.SampleSpace1 _gate_fit_space =
+        new droid.Runtime.Structs.Space.Sample.SampleSpace1 {
+                                                                _space = droid.Runtime.Structs.Space.Space1
+                                                                      .DiscreteZeroOne
+                                                                  * 4
+                                                            };
 
     /// <summary>
     ///   Red
@@ -30,11 +68,13 @@ namespace droid.Runtime.Prototyping.Configurables.Experimental {
     /// <summary>
     ///   Red
     /// </summary>
-    string _sensor_width_str;
+    string _fov_str;
+
+    string _gate_fit_str;
 
     /// <summary>
     /// </summary>
-    string _sensor_height_str;
+    string _lens_shift_x_str;
 
     /// <summary>
     /// </summary>
@@ -42,30 +82,16 @@ namespace droid.Runtime.Prototyping.Configurables.Experimental {
 
     /// <summary>
     /// </summary>
-    string _lens_shift_x_str;
+    string _sensor_height_str;
 
-    string _gate_fit_str;
+    /// <summary>
+    ///   Red
+    /// </summary>
+    string _sensor_width_str;
 
-    [SerializeField] Camera _camera;
-    [SerializeField] SynchroniseCameraProperties _syncer;
-    [SerializeField] SampleSpace1 _fov_space = new SampleSpace1 {_space = new Space1 {Min = 60f, Max = 90f}};
-    [SerializeField] SampleSpace1 _focal_space = new SampleSpace1 {_space = new Space1 {Min = 2f, Max = 3f}};
-
-    [SerializeField]
-    SampleSpace2 _sensor_size_space =
-        new SampleSpace2 {_space = new Space2 {Min = new Vector2(2.5f, 2.5f), Max = new Vector2(5, 5)}};
-
-    [SerializeField]
-    SampleSpace2 _lens_shift_space = new SampleSpace2 {
-                                                          _space = new Space2 {
-                                                                                  Min = new Vector2(-0.1f,
-                                                                                                    -0.1f),
-                                                                                  Max = new Vector2(0.1f,
-                                                                                                    0.1f)
-                                                                              }
-                                                      };
-
-    [SerializeField] SampleSpace1 _gate_fit_space = new SampleSpace1 {_space = Space1.DiscreteZeroOne * 4};
+    public droid.Runtime.Interfaces.ISamplable ConfigurableValueSpace {
+      get { return this._sensor_size_space; }
+    }
 
     /// <inheritdoc />
     /// <summary>
@@ -79,11 +105,12 @@ namespace droid.Runtime.Prototyping.Configurables.Experimental {
       this._lens_shift_y_str = this.Identifier + "LensShiftY";
       this._gate_fit_str = this.Identifier + "GateFit";
       if (!this._camera) {
-        this._camera = this.GetComponent<Camera>();
+        this._camera = this.GetComponent<UnityEngine.Camera>();
       }
 
       if (!this._syncer) {
-        this._syncer = this.GetComponent<SynchroniseCameraProperties>();
+        this._syncer =
+            this.GetComponent<droid.Runtime.GameObjects.NeodroidCamera.SynchroniseCameraProperties>();
       }
     }
 
@@ -93,40 +120,48 @@ namespace droid.Runtime.Prototyping.Configurables.Experimental {
     protected override void RegisterComponent() {
       if (!this._camera.usePhysicalProperties) {
         this.ParentEnvironment =
-            NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                            c : (Configurable)this,
-                                                            identifier : this._fov_str);
+            droid.Runtime.Utilities.NeodroidRegistrationUtilities
+                 .RegisterComponent(r : this.ParentEnvironment,
+                                    c : (Configurable)this,
+                                    identifier : this._fov_str);
       } else {
         this.ParentEnvironment =
-            NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                            c : (Configurable)this,
-                                                            identifier : this._focal_str);
+            droid.Runtime.Utilities.NeodroidRegistrationUtilities
+                 .RegisterComponent(r : this.ParentEnvironment,
+                                    c : (Configurable)this,
+                                    identifier : this._focal_str);
         this.ParentEnvironment =
-            NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                            c : (Configurable)this,
-                                                            identifier : this._sensor_width_str);
+            droid.Runtime.Utilities.NeodroidRegistrationUtilities
+                 .RegisterComponent(r : this.ParentEnvironment,
+                                    c : (Configurable)this,
+                                    identifier : this._sensor_width_str);
         this.ParentEnvironment =
-            NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                            c : (Configurable)this,
-                                                            identifier : this._sensor_height_str);
+            droid.Runtime.Utilities.NeodroidRegistrationUtilities
+                 .RegisterComponent(r : this.ParentEnvironment,
+                                    c : (Configurable)this,
+                                    identifier : this._sensor_height_str);
         this.ParentEnvironment =
-            NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                            c : (Configurable)this,
-                                                            identifier : this._lens_shift_x_str);
+            droid.Runtime.Utilities.NeodroidRegistrationUtilities
+                 .RegisterComponent(r : this.ParentEnvironment,
+                                    c : (Configurable)this,
+                                    identifier : this._lens_shift_x_str);
         this.ParentEnvironment =
-            NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                            c : (Configurable)this,
-                                                            identifier : this._lens_shift_y_str);
+            droid.Runtime.Utilities.NeodroidRegistrationUtilities
+                 .RegisterComponent(r : this.ParentEnvironment,
+                                    c : (Configurable)this,
+                                    identifier : this._lens_shift_y_str);
         this.ParentEnvironment =
-            NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                            c : (Configurable)this,
-                                                            identifier : this._gate_fit_str);
+            droid.Runtime.Utilities.NeodroidRegistrationUtilities
+                 .RegisterComponent(r : this.ParentEnvironment,
+                                    c : (Configurable)this,
+                                    identifier : this._gate_fit_str);
       }
     }
 
     /// <inheritdoc />
     /// <summary>
-    /// </summary>n
+    /// </summary>
+    /// n
     protected override void UnRegisterComponent() {
       if (!this._camera.usePhysicalProperties) {
         this.ParentEnvironment?.UnRegister(t : this, identifier : this._fov_str);
@@ -140,23 +175,22 @@ namespace droid.Runtime.Prototyping.Configurables.Experimental {
       }
     }
 
-    public ISamplable ConfigurableValueSpace { get { return this._sensor_size_space; } }
-
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
     public override void UpdateCurrentConfiguration() { }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     /// <param name="configuration"></param>
-    public override void ApplyConfiguration(IConfigurableConfiguration configuration) {
+    public override void
+        ApplyConfiguration(droid.Runtime.Interfaces.IConfigurableConfiguration configuration) {
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        DebugPrinting.ApplyPrint(debugging : this.Debugging,
-                                 configuration : configuration,
-                                 identifier : this.Identifier);
+        droid.Runtime.Utilities.DebugPrinting.ApplyPrint(debugging : this.Debugging,
+                                                         configuration : configuration,
+                                                         identifier : this.Identifier);
       }
       #endif
 
@@ -181,8 +215,8 @@ namespace droid.Runtime.Prototyping.Configurables.Experimental {
         a.y = configuration.ConfigurableValue;
         this._camera.lensShift = a;
       } else if (configuration.ConfigurableName == this._gate_fit_str) {
-        Enum.TryParse(value : ((int)configuration.ConfigurableValue).ToString(),
-                      result : out Camera.GateFitMode gate_fit_mode);
+        System.Enum.TryParse(value : ((int)configuration.ConfigurableValue).ToString(),
+                             result : out UnityEngine.Camera.GateFitMode gate_fit_mode);
         this._camera.gateFit = gate_fit_mode;
       }
 
@@ -192,51 +226,51 @@ namespace droid.Runtime.Prototyping.Configurables.Experimental {
     }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    ///  <returns></returns>
-    ///  <exception cref="T:System.IndexOutOfRangeException"></exception>
-    public override Configuration[] SampleConfigurations() {
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="T:System.IndexOutOfRangeException"></exception>
+    public override droid.Runtime.Messaging.Messages.Configuration[] SampleConfigurations() {
       if (!this._camera.usePhysicalProperties) {
         return new[] {
-                         new Configuration(configurable_name : this._fov_str,
-                                           configurable_value : this._fov_space.Sample())
+                         new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._fov_str,
+                           configurable_value : this._fov_space.Sample())
                      };
       }
 
-      var r = Random.Range(0, 6);
+      var r = UnityEngine.Random.Range(0, 6);
       switch (r) {
         case 0:
           return new[] {
-                           new Configuration(configurable_name : this._focal_str,
-                                             configurable_value : this._focal_space.Sample())
+                           new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._focal_str,
+                             configurable_value : this._focal_space.Sample())
                        };
         case 1:
           return new[] {
-                           new Configuration(configurable_name : this._sensor_width_str,
-                                             configurable_value : this._sensor_size_space.Sample().x)
+                           new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._sensor_width_str,
+                             configurable_value : this._sensor_size_space.Sample().x)
                        };
         case 2:
           return new[] {
-                           new Configuration(configurable_name : this._sensor_height_str,
-                                             configurable_value : this._sensor_size_space.Sample().y)
+                           new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._sensor_height_str,
+                             configurable_value : this._sensor_size_space.Sample().y)
                        };
         case 3:
           return new[] {
-                           new Configuration(configurable_name : this._lens_shift_x_str,
-                                             configurable_value : this._lens_shift_space.Sample().x)
+                           new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._lens_shift_x_str,
+                             configurable_value : this._lens_shift_space.Sample().x)
                        };
         case 4:
           return new[] {
-                           new Configuration(configurable_name : this._lens_shift_y_str,
-                                             configurable_value : this._lens_shift_space.Sample().y)
+                           new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._lens_shift_y_str,
+                             configurable_value : this._lens_shift_space.Sample().y)
                        };
         case 5:
           return new[] {
-                           new Configuration(configurable_name : this._gate_fit_str,
-                                             configurable_value : this._gate_fit_space.Sample())
+                           new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._gate_fit_str,
+                             configurable_value : this._gate_fit_space.Sample())
                        };
-        default: throw new IndexOutOfRangeException();
+        default: throw new System.IndexOutOfRangeException();
       }
     }
   }

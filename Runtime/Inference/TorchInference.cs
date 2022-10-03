@@ -1,13 +1,12 @@
-﻿using System.Runtime.InteropServices;
-using UnityEngine;
-
-namespace droid.Runtime.Inference {
-  public class TorchInference : MonoBehaviour {
-    [DllImport("networks")] static extern void InitNetwork();
-
+﻿namespace droid.Runtime.Inference {
+  public class TorchInference : UnityEngine.MonoBehaviour {
     void Start() { InitNetwork(); }
 
-    [DllImport("networks")] static extern void ApplyNetwork(ref float data, ref float output);
+    [System.Runtime.InteropServices.DllImportAttribute("networks")]
+    static extern void InitNetwork();
+
+    [System.Runtime.InteropServices.DllImportAttribute("networks")]
+    static extern void ApplyNetwork(ref float data, ref float output);
 
     void SomeFunction() {
       var input = new float[1 * 3 * 64 * 64];

@@ -1,22 +1,42 @@
-﻿using System;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Messaging.Messages;
-using droid.Runtime.Prototyping.Configurables.Transforms;
-using droid.Runtime.Structs.Space;
-using droid.Runtime.Structs.Space.Sample;
-using droid.Runtime.Utilities;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Configurables.Rigidbody {
+﻿namespace droid.Runtime.Prototyping.Configurables.Rigidbody {
   /// <inheritdoc cref="Configurable" />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
-                               + "Rigidbody"
-                               + ConfigurableComponentMenuPath._Postfix)]
-  [RequireComponent(requiredComponent : typeof(UnityEngine.Rigidbody))]
-  public class RigidbodyConfigurable : SpatialConfigurable,
-                                       IHasRigidbody {
+  [UnityEngine.AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
+                                           + "Rigidbody"
+                                           + ConfigurableComponentMenuPath._Postfix)]
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.Rigidbody))]
+  public class RigidbodyConfigurable : droid.Runtime.Prototyping.Configurables.Transforms.SpatialConfigurable,
+                                       droid.Runtime.Interfaces.IHasRigidbody {
+    /// <summary>
+    /// </summary>
+    [UnityEngine.SerializeField]
+    UnityEngine.Vector3 _angular_velocity = UnityEngine.Vector3.zero;
+
+    /// <summary>
+    /// </summary>
+    [UnityEngine.SerializeField]
+    droid.Runtime.Structs.Space.Sample.SampleSpace3 _angular_velocity_space =
+        new droid.Runtime.Structs.Space.Sample.SampleSpace3 {
+                                                                _space = droid.Runtime.Structs.Space.Space3
+                                                                    .ZeroOne
+                                                            };
+
+    /// <summary>
+    /// </summary>
+    [UnityEngine.HeaderAttribute("Observation", order = 110)]
+    [UnityEngine.SerializeField]
+    UnityEngine.Vector3 _velocity = UnityEngine.Vector3.zero;
+
+    /// <summary>
+    /// </summary>
+    [UnityEngine.SerializeField]
+    droid.Runtime.Structs.Space.Sample.SampleSpace3 _velocity_space =
+        new droid.Runtime.Structs.Space.Sample.SampleSpace3 {
+                                                                _space = droid.Runtime.Structs.Space.Space3
+                                                                    .ZeroOne
+                                                            };
+
     /// <summary>
     /// </summary>
     string _ang_x;
@@ -28,16 +48,6 @@ namespace droid.Runtime.Prototyping.Configurables.Rigidbody {
     /// <summary>
     /// </summary>
     string _ang_z;
-
-    /// <summary>
-    /// </summary>
-    [SerializeField]
-    Vector3 _angular_velocity = Vector3.zero;
-
-    /// <summary>
-    /// </summary>
-    [SerializeField]
-    SampleSpace3 _angular_velocity_space = new SampleSpace3 {_space = Space3.ZeroOne};
 
     /// <summary>
     /// </summary>
@@ -57,34 +67,26 @@ namespace droid.Runtime.Prototyping.Configurables.Rigidbody {
 
     /// <summary>
     /// </summary>
-    [Header("Observation", order = 110)]
-    [SerializeField]
-    Vector3 _velocity = Vector3.zero;
-
-    /// <summary>
-    /// </summary>
-    [SerializeField]
-    SampleSpace3 _velocity_space = new SampleSpace3 {_space = Space3.ZeroOne};
-
-    /// <summary>
-    /// </summary>
     public override string PrototypingTypeName { get { return "RigidbodyConfigurable"; } }
 
-    /// <summary>
-    /// </summary>
-    public Vector3 Velocity { get { return this._velocity; } set { this._velocity = value; } }
+    public droid.Runtime.Interfaces.ISamplable ConfigurableValueSpace { get; }
 
     /// <summary>
     /// </summary>
-    public Vector3 AngularVelocity {
+    public UnityEngine.Vector3 Velocity { get { return this._velocity; } set { this._velocity = value; } }
+
+    /// <summary>
+    /// </summary>
+    public UnityEngine.Vector3 AngularVelocity {
       get { return this._angular_velocity; }
       private set { this._angular_velocity = value; }
     }
 
-    public Space3 VelocitySpace { get { return this._velocity_space._space; } }
-    public Space3 AngularSpace { get { return this._angular_velocity_space._space; } }
+    public droid.Runtime.Structs.Space.Space3 VelocitySpace { get { return this._velocity_space._space; } }
 
-    public ISamplable ConfigurableValueSpace { get; }
+    public droid.Runtime.Structs.Space.Space3 AngularSpace {
+      get { return this._angular_velocity_space._space; }
+    }
 
     /// <summary>
     /// </summary>
@@ -109,29 +111,29 @@ namespace droid.Runtime.Prototyping.Configurables.Rigidbody {
     /// </summary>
     protected override void RegisterComponent() {
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._vel_x);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._vel_x);
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._vel_y);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._vel_y);
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._vel_z);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._vel_z);
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._ang_x);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._ang_x);
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._ang_y);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._ang_y);
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._ang_z);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._ang_z);
     }
 
     /// <summary>
@@ -153,48 +155,61 @@ namespace droid.Runtime.Prototyping.Configurables.Rigidbody {
     /// <summary>
     /// </summary>
     /// <param name="simulator_configuration"></param>
-    public override void ApplyConfiguration(IConfigurableConfiguration simulator_configuration) {
+    public override void ApplyConfiguration(
+        droid.Runtime.Interfaces.IConfigurableConfiguration simulator_configuration) {
       var vel = this._rigidbody.velocity;
       var ang = this._rigidbody.velocity;
 
       if (this.RelativeToExistingValue) {
         if (simulator_configuration.ConfigurableName == this._vel_x) {
-          var v = this.VelocitySpace.Reproject(v : Vector3.one * simulator_configuration.ConfigurableValue).x;
+          var v = this.VelocitySpace
+                      .Reproject(v : UnityEngine.Vector3.one * simulator_configuration.ConfigurableValue).x;
           vel.Set(newX : v - vel.x, newY : vel.y, newZ : vel.z);
         } else if (simulator_configuration.ConfigurableName == this._vel_y) {
-          var v = this.VelocitySpace.Reproject(v : Vector3.one * simulator_configuration.ConfigurableValue).y;
+          var v = this.VelocitySpace
+                      .Reproject(v : UnityEngine.Vector3.one * simulator_configuration.ConfigurableValue).y;
           vel.Set(newX : vel.x, newY : v - vel.y, newZ : vel.z);
         } else if (simulator_configuration.ConfigurableName == this._vel_z) {
-          var v = this.VelocitySpace.Reproject(v : Vector3.one * simulator_configuration.ConfigurableValue).z;
+          var v = this.VelocitySpace
+                      .Reproject(v : UnityEngine.Vector3.one * simulator_configuration.ConfigurableValue).z;
           vel.Set(newX : vel.x, newY : vel.y, newZ : v - vel.z);
         } else if (simulator_configuration.ConfigurableName == this._ang_x) {
-          var v = this.AngularSpace.Reproject(v : Vector3.one * simulator_configuration.ConfigurableValue).x;
+          var v = this.AngularSpace
+                      .Reproject(v : UnityEngine.Vector3.one * simulator_configuration.ConfigurableValue).x;
           ang.Set(newX : v - ang.x, newY : ang.y, newZ : ang.z);
         } else if (simulator_configuration.ConfigurableName == this._ang_y) {
-          var v = this.AngularSpace.Reproject(v : Vector3.one * simulator_configuration.ConfigurableValue).y;
+          var v = this.AngularSpace
+                      .Reproject(v : UnityEngine.Vector3.one * simulator_configuration.ConfigurableValue).y;
           ang.Set(newX : ang.x, newY : v - ang.y, newZ : ang.z);
         } else if (simulator_configuration.ConfigurableName == this._ang_z) {
-          var v = this.AngularSpace.Reproject(v : Vector3.one * simulator_configuration.ConfigurableValue).z;
+          var v = this.AngularSpace
+                      .Reproject(v : UnityEngine.Vector3.one * simulator_configuration.ConfigurableValue).z;
           ang.Set(newX : ang.x, newY : ang.y, newZ : v - ang.z);
         }
       } else {
         if (simulator_configuration.ConfigurableName == this._vel_x) {
-          var v = this.VelocitySpace.Reproject(v : Vector3.one * simulator_configuration.ConfigurableValue).x;
+          var v = this.VelocitySpace
+                      .Reproject(v : UnityEngine.Vector3.one * simulator_configuration.ConfigurableValue).x;
           vel.Set(newX : v, newY : vel.y, newZ : vel.z);
         } else if (simulator_configuration.ConfigurableName == this._vel_y) {
-          var v = this.VelocitySpace.Reproject(v : Vector3.one * simulator_configuration.ConfigurableValue).y;
+          var v = this.VelocitySpace
+                      .Reproject(v : UnityEngine.Vector3.one * simulator_configuration.ConfigurableValue).y;
           vel.Set(newX : vel.x, newY : v, newZ : vel.z);
         } else if (simulator_configuration.ConfigurableName == this._vel_z) {
-          var v = this.VelocitySpace.Reproject(v : Vector3.one * simulator_configuration.ConfigurableValue).z;
+          var v = this.VelocitySpace
+                      .Reproject(v : UnityEngine.Vector3.one * simulator_configuration.ConfigurableValue).z;
           vel.Set(newX : vel.x, newY : vel.y, newZ : v);
         } else if (simulator_configuration.ConfigurableName == this._ang_x) {
-          var v = this.AngularSpace.Reproject(v : Vector3.one * simulator_configuration.ConfigurableValue).x;
+          var v = this.AngularSpace
+                      .Reproject(v : UnityEngine.Vector3.one * simulator_configuration.ConfigurableValue).x;
           ang.Set(newX : v, newY : ang.y, newZ : ang.z);
         } else if (simulator_configuration.ConfigurableName == this._ang_y) {
-          var v = this.AngularSpace.Reproject(v : Vector3.one * simulator_configuration.ConfigurableValue).y;
+          var v = this.AngularSpace
+                      .Reproject(v : UnityEngine.Vector3.one * simulator_configuration.ConfigurableValue).y;
           ang.Set(newX : ang.x, newY : v, newZ : ang.z);
         } else if (simulator_configuration.ConfigurableName == this._ang_z) {
-          var v = this.AngularSpace.Reproject(v : Vector3.one * simulator_configuration.ConfigurableValue).z;
+          var v = this.AngularSpace
+                      .Reproject(v : UnityEngine.Vector3.one * simulator_configuration.ConfigurableValue).z;
           ang.Set(newX : ang.x, newY : ang.y, newZ : v);
         }
       }
@@ -208,10 +223,10 @@ namespace droid.Runtime.Prototyping.Configurables.Rigidbody {
     /// </summary>
     /// <returns></returns>
     /// <exception cref="T:System.NotImplementedException"></exception>
-    public override Configuration[] SampleConfigurations() {
+    public override droid.Runtime.Messaging.Messages.Configuration[] SampleConfigurations() {
       return new[] {
-                       new Configuration(configurable_name : this._ang_z,
-                                         configurable_value : this._angular_velocity_space.Sample().z)
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._ang_z,
+                         configurable_value : this._angular_velocity_space.Sample().z)
                    };
     }
   }

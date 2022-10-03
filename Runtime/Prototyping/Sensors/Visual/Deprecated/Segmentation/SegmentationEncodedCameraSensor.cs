@@ -1,21 +1,19 @@
-﻿using System.Linq;
-using droid.Runtime.GameObjects.NeodroidCamera.Segmentation;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated.Segmentation {
+﻿namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated.Segmentation {
   /// <inheritdoc cref="Sensor" />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
-                               + "SegmentationCamera"
-                               + SensorComponentMenuPath._Postfix)]
-  [ExecuteInEditMode]
-  [RequireComponent(requiredComponent : typeof(Camera), requiredComponent2 : typeof(Segmenter))]
+  [UnityEngine.AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
+                                           + "SegmentationCamera"
+                                           + SensorComponentMenuPath._Postfix)]
+  [UnityEngine.ExecuteInEditMode]
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.Camera),
+                                requiredComponent2 :
+                                typeof(droid.Runtime.GameObjects.NeodroidCamera.Segmentation.Segmenter))]
   public class SegmentationEncodedCameraSensor : StringAugmentedEncodedCameraSensor {
     /// <summary>
     /// </summary>
-    [SerializeField]
-    Segmenter _segmenter = null;
+    [UnityEngine.SerializeField]
+    droid.Runtime.GameObjects.NeodroidCamera.Segmentation.Segmenter _segmenter = null;
 
     /// <inheritdoc />
     /// <summary>
@@ -23,10 +21,17 @@ namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated.Segmentation {
     public override void UpdateObservation() {
       base.UpdateObservation();
 
-      Debug.LogWarning(message : JsonUtility.ToJson(obj : this._segmenter.ColorsDict));
+      UnityEngine.Debug.LogWarning(message : UnityEngine.JsonUtility
+                                                        .ToJson(obj : this._segmenter.ColorsDict));
       this.serialised_string = this._segmenter != null
-                                   ? this._segmenter.ColorsDict.Select(c => $"{c.Key}: {c.Value.ToString()}")
-                                         .Aggregate("", (current, next) => $"{current}, {next}")
+                                   ? System.Linq.Enumerable.Aggregate(source :
+                                                                      System.Linq.Enumerable
+                                                                          .Select(source : this._segmenter
+                                                                                .ColorsDict,
+                                                                            c =>
+                                                                                $"{c.Key}: {c.Value.ToString()}"),
+                                                                      "",
+                                                                      (current, next) => $"{current}, {next}")
                                    : "Nothing";
     }
   }

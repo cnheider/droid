@@ -1,15 +1,17 @@
-﻿using UnityEngine;
-
-namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
+﻿namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
   /// <summary>
-  ///
   /// </summary>
-  [AddComponentMenu(menuName : EvaluationComponentMenuPath._ComponentMenuPath
-                               + "AngularVelocity"
-                               + EvaluationComponentMenuPath._Postfix)]
+  [UnityEngine.AddComponentMenu(menuName : EvaluationComponentMenuPath._ComponentMenuPath
+                                           + "AngularVelocity"
+                                           + EvaluationComponentMenuPath._Postfix)]
   public class AngularVelocityObjective : SpatialObjective {
-    [SerializeField] bool _penalty = false;
-    [SerializeField] Rigidbody _rigidbody = null;
+    [UnityEngine.SerializeField] bool _penalty = false;
+    [UnityEngine.SerializeField] UnityEngine.Rigidbody _rigidbody = null;
+
+    void OnDrawGizmosSelected() {
+      var rb_pos = this._rigidbody.position;
+      UnityEngine.Debug.DrawLine(start : rb_pos, end : rb_pos + this._rigidbody.angularVelocity);
+    }
 
     /// <summary>
     /// </summary>
@@ -27,23 +29,16 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
 
       return 0;
     }
-    
-    void OnDrawGizmosSelected() {
-      var rb_pos = this._rigidbody.position;
-      Debug.DrawLine(start :rb_pos , end : rb_pos + this._rigidbody.angularVelocity);
-    }
-
 
     /// <summary>
     /// </summary>
     public override void InternalReset() { }
 
     /// <summary>
-    ///
     /// </summary>
     public override void RemotePostSetup() {
       if (this._rigidbody == null) {
-        this._rigidbody = FindObjectOfType<Rigidbody>();
+        this._rigidbody = FindObjectOfType<UnityEngine.Rigidbody>();
       }
     }
   }

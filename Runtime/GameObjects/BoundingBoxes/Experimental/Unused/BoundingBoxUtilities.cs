@@ -1,123 +1,142 @@
-using UnityEngine;
-
 namespace droid.Runtime.GameObjects.BoundingBoxes.Experimental.Unused {
   public static class BoundingBoxUtilities {
     /// <summary>
-    ///
     /// </summary>
     /// <param name="p"></param>
     /// <param name="r"></param>
     /// <param name="c"></param>
-    public static void DrawBoxFromCenter(Vector3 p, float r, Color c) {
+    public static void DrawBoxFromCenter(UnityEngine.Vector3 p, float r, UnityEngine.Color c) {
       // p is pos.yition of the center, r is "radius" and c is the color of the box
       //Bottom lines
-      Debug.DrawLine(start : new Vector3(x : -r + p.x, y : -r + p.y, z : -r + p.z),
-                     end : new Vector3(x : r + p.x, y : -r + p.y, z : -r + p.z),
-                     color : c);
-      Debug.DrawLine(start : new Vector3(x : -r + p.x, y : -r + p.y, z : -r + p.z),
-                     end : new Vector3(x : -r + p.x, y : -r + p.y, z : r + p.z),
-                     color : c);
-      Debug.DrawLine(start : new Vector3(x : r + p.x, y : -r + p.y, z : r + p.z),
-                     end : new Vector3(x : -r + p.x, y : -r + p.y, z : r + p.z),
-                     color : c);
-      Debug.DrawLine(start : new Vector3(x : r + p.x, y : -r + p.y, z : r + p.z),
-                     end : new Vector3(x : r + p.x, y : -r + p.y, z : -r + p.z),
-                     color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -r + p.x, y : -r + p.y, z : -r + p.z),
+                                 end : new UnityEngine.Vector3(x : r + p.x, y : -r + p.y, z : -r + p.z),
+                                 color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -r + p.x, y : -r + p.y, z : -r + p.z),
+                                 end : new UnityEngine.Vector3(x : -r + p.x, y : -r + p.y, z : r + p.z),
+                                 color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : r + p.x, y : -r + p.y, z : r + p.z),
+                                 end : new UnityEngine.Vector3(x : -r + p.x, y : -r + p.y, z : r + p.z),
+                                 color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : r + p.x, y : -r + p.y, z : r + p.z),
+                                 end : new UnityEngine.Vector3(x : r + p.x, y : -r + p.y, z : -r + p.z),
+                                 color : c);
 
       //Vertical lines
-      Debug.DrawLine(start : new Vector3(x : -r + p.x, y : r + p.y, z : -r + p.z),
-                     end : new Vector3(x : r + p.x, y : r + p.y, z : -r + p.z),
-                     color : c);
-      Debug.DrawLine(start : new Vector3(x : -r + p.x, y : r + p.y, z : -r + p.z),
-                     end : new Vector3(x : -r + p.x, y : r + p.y, z : r + p.z),
-                     color : c);
-      Debug.DrawLine(start : new Vector3(x : r + p.x, y : r + p.y, z : r + p.z),
-                     end : new Vector3(x : -r + p.x, y : r + p.y, z : r + p.z),
-                     color : c);
-      Debug.DrawLine(start : new Vector3(x : r + p.x, y : r + p.y, z : r + p.z),
-                     end : new Vector3(x : r + p.x, y : r + p.y, z : -r + p.z),
-                     color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -r + p.x, y : r + p.y, z : -r + p.z),
+                                 end : new UnityEngine.Vector3(x : r + p.x, y : r + p.y, z : -r + p.z),
+                                 color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -r + p.x, y : r + p.y, z : -r + p.z),
+                                 end : new UnityEngine.Vector3(x : -r + p.x, y : r + p.y, z : r + p.z),
+                                 color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : r + p.x, y : r + p.y, z : r + p.z),
+                                 end : new UnityEngine.Vector3(x : -r + p.x, y : r + p.y, z : r + p.z),
+                                 color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : r + p.x, y : r + p.y, z : r + p.z),
+                                 end : new UnityEngine.Vector3(x : r + p.x, y : r + p.y, z : -r + p.z),
+                                 color : c);
 
       //Top lines
-      Debug.DrawLine(start : new Vector3(x : -r + p.x, y : -r + p.y, z : -r + p.z),
-                     end : new Vector3(x : -r + p.x, y : r + p.y, z : -r + p.z),
-                     color : c);
-      Debug.DrawLine(start : new Vector3(x : -r + p.x, y : -r + p.y, z : r + p.z),
-                     end : new Vector3(x : -r + p.x, y : r + p.y, z : r + p.z),
-                     color : c);
-      Debug.DrawLine(start : new Vector3(x : r + p.x, y : -r + p.y, z : -r + p.z),
-                     end : new Vector3(x : r + p.x, y : r + p.y, z : -r + p.z),
-                     color : c);
-      Debug.DrawLine(start : new Vector3(x : r + p.x, y : -r + p.y, z : r + p.z),
-                     end : new Vector3(x : r + p.x, y : r + p.y, z : r + p.z),
-                     color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -r + p.x, y : -r + p.y, z : -r + p.z),
+                                 end : new UnityEngine.Vector3(x : -r + p.x, y : r + p.y, z : -r + p.z),
+                                 color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -r + p.x, y : -r + p.y, z : r + p.z),
+                                 end : new UnityEngine.Vector3(x : -r + p.x, y : r + p.y, z : r + p.z),
+                                 color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : r + p.x, y : -r + p.y, z : -r + p.z),
+                                 end : new UnityEngine.Vector3(x : r + p.x, y : r + p.y, z : -r + p.z),
+                                 color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : r + p.x, y : -r + p.y, z : r + p.z),
+                                 end : new UnityEngine.Vector3(x : r + p.x, y : r + p.y, z : r + p.z),
+                                 color : c);
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="x_size"></param>
     /// <param name="y_size"></param>
     /// <param name="z_size"></param>
     /// <param name="pos"></param>
     /// <param name="color"></param>
-    public static void DrawRect(float x_size, float y_size, float z_size, Vector3 pos, Color color) {
+    public static void DrawRect(float x_size,
+                                float y_size,
+                                float z_size,
+                                UnityEngine.Vector3 pos,
+                                UnityEngine.Color color) {
       var x = x_size / 2;
       var y = y_size / 2;
       var z = z_size / 2;
 
       //Vertical lines
-      Debug.DrawLine(start : new Vector3(x : -x + pos.x, y : -y + pos.y, z : -z + pos.z),
-                     end : new Vector3(x : -x + pos.x, y : y + pos.y, z : -z + pos.z),
-                     color : color);
-      Debug.DrawLine(start : new Vector3(x : x + pos.x, y : -y + pos.y, z : -z + pos.z),
-                     end : new Vector3(x : x + pos.x, y : y + pos.y, z : -z + pos.z),
-                     color : color);
-      Debug.DrawLine(start : new Vector3(x : -x + pos.x, y : -y + pos.y, z : z + pos.z),
-                     end : new Vector3(x : -x + pos.x, y : y + pos.y, z : z + pos.z),
-                     color : color);
-      Debug.DrawLine(start : new Vector3(x : x + pos.x, y : -y + pos.y, z : z + pos.z),
-                     end : new Vector3(x : x + pos.x, y : y + pos.y, z : z + pos.z),
-                     color : color);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -x + pos.x,
+                                                                 y : -y + pos.y,
+                                                                 z : -z + pos.z),
+                                 end : new UnityEngine.Vector3(x : -x + pos.x, y : y + pos.y, z : -z + pos.z),
+                                 color : color);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : x + pos.x,
+                                                                 y : -y + pos.y,
+                                                                 z : -z + pos.z),
+                                 end : new UnityEngine.Vector3(x : x + pos.x, y : y + pos.y, z : -z + pos.z),
+                                 color : color);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -x + pos.x,
+                                                                 y : -y + pos.y,
+                                                                 z : z + pos.z),
+                                 end : new UnityEngine.Vector3(x : -x + pos.x, y : y + pos.y, z : z + pos.z),
+                                 color : color);
+      UnityEngine.Debug.DrawLine(start :
+                                 new UnityEngine.Vector3(x : x + pos.x, y : -y + pos.y, z : z + pos.z),
+                                 end : new UnityEngine.Vector3(x : x + pos.x, y : y + pos.y, z : z + pos.z),
+                                 color : color);
 
       //Horizontal top
-      Debug.DrawLine(start : new Vector3(x : -x + pos.x, y : y + pos.y, z : -z + pos.z),
-                     end : new Vector3(x : x + pos.x, y : y + pos.y, z : -z + pos.z),
-                     color : color);
-      Debug.DrawLine(start : new Vector3(x : -x + pos.x, y : y + pos.y, z : z + pos.z),
-                     end : new Vector3(x : x + pos.x, y : y + pos.y, z : z + pos.z),
-                     color : color);
-      Debug.DrawLine(start : new Vector3(x : -x + pos.x, y : y + pos.y, z : -z + pos.z),
-                     end : new Vector3(x : -x + pos.x, y : y + pos.y, z : z + pos.z),
-                     color : color);
-      Debug.DrawLine(start : new Vector3(x : x + pos.x, y : y + pos.y, z : -z + pos.z),
-                     end : new Vector3(x : x + pos.x, y : y + pos.y, z : z + pos.z),
-                     color : color);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -x + pos.x,
+                                                                 y : y + pos.y,
+                                                                 z : -z + pos.z),
+                                 end : new UnityEngine.Vector3(x : x + pos.x, y : y + pos.y, z : -z + pos.z),
+                                 color : color);
+      UnityEngine.Debug.DrawLine(start :
+                                 new UnityEngine.Vector3(x : -x + pos.x, y : y + pos.y, z : z + pos.z),
+                                 end : new UnityEngine.Vector3(x : x + pos.x, y : y + pos.y, z : z + pos.z),
+                                 color : color);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -x + pos.x,
+                                                                 y : y + pos.y,
+                                                                 z : -z + pos.z),
+                                 end : new UnityEngine.Vector3(x : -x + pos.x, y : y + pos.y, z : z + pos.z),
+                                 color : color);
+      UnityEngine.Debug.DrawLine(start :
+                                 new UnityEngine.Vector3(x : x + pos.x, y : y + pos.y, z : -z + pos.z),
+                                 end : new UnityEngine.Vector3(x : x + pos.x, y : y + pos.y, z : z + pos.z),
+                                 color : color);
 
       //Horizontal bottom
-      Debug.DrawLine(start : new Vector3(x : -x + pos.x, y : -y + pos.y, z : -z + pos.z),
-                     end : new Vector3(x : x + pos.x, y : -y + pos.y, z : -z + pos.z),
-                     color : color);
-      Debug.DrawLine(start : new Vector3(x : -x + pos.x, y : -y + pos.y, z : z + pos.z),
-                     end : new Vector3(x : x + pos.x, y : -y + pos.y, z : z + pos.z),
-                     color : color);
-      Debug.DrawLine(start : new Vector3(x : -x + pos.x, y : -y + pos.y, z : -z + pos.z),
-                     end : new Vector3(x : -x + pos.x, y : -y + pos.y, z : z + pos.z),
-                     color : color);
-      Debug.DrawLine(start : new Vector3(x : x + pos.x, y : -y + pos.y, z : -z + pos.z),
-                     end : new Vector3(x : x + pos.x, y : -y + pos.y, z : z + pos.z),
-                     color : color);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -x + pos.x,
+                                                                 y : -y + pos.y,
+                                                                 z : -z + pos.z),
+                                 end : new UnityEngine.Vector3(x : x + pos.x, y : -y + pos.y, z : -z + pos.z),
+                                 color : color);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -x + pos.x,
+                                                                 y : -y + pos.y,
+                                                                 z : z + pos.z),
+                                 end : new UnityEngine.Vector3(x : x + pos.x, y : -y + pos.y, z : z + pos.z),
+                                 color : color);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -x + pos.x,
+                                                                 y : -y + pos.y,
+                                                                 z : -z + pos.z),
+                                 end : new UnityEngine.Vector3(x : -x + pos.x, y : -y + pos.y, z : z + pos.z),
+                                 color : color);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : x + pos.x,
+                                                                 y : -y + pos.y,
+                                                                 z : -z + pos.z),
+                                 end : new UnityEngine.Vector3(x : x + pos.x, y : -y + pos.y, z : z + pos.z),
+                                 color : color);
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="old_transforms"></param>
     /// <param name="newly_acquired_transforms"></param>
     /// <returns></returns>
-    public static bool DidTransformsChange(
-        Transform[] old_transforms,
-        Transform[] newly_acquired_transforms) {
+    public static bool DidTransformsChange(UnityEngine.Transform[] old_transforms,
+                                           UnityEngine.Transform[] newly_acquired_transforms) {
       if (old_transforms.Length != newly_acquired_transforms.Length) {
         return true;
       }
@@ -137,16 +156,15 @@ namespace droid.Runtime.GameObjects.BoundingBoxes.Experimental.Unused {
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="object_transform"></param>
     /// <returns></returns>
-    public static Bounds GetTotalMeshFilterBounds(Transform object_transform) {
-      var mesh_filter = object_transform.GetComponent<MeshFilter>();
+    public static UnityEngine.Bounds GetTotalMeshFilterBounds(UnityEngine.Transform object_transform) {
+      var mesh_filter = object_transform.GetComponent<UnityEngine.MeshFilter>();
 
-      var result = mesh_filter != null ? mesh_filter.mesh.bounds : new Bounds();
+      var result = mesh_filter != null ? mesh_filter.mesh.bounds : new UnityEngine.Bounds();
 
-      foreach (Transform transform in object_transform) {
+      foreach (UnityEngine.Transform transform in object_transform) {
         var bounds = GetTotalMeshFilterBounds(object_transform : transform);
         result.Encapsulate(point : bounds.min);
         result.Encapsulate(point : bounds.max);
@@ -177,12 +195,12 @@ namespace droid.Runtime.GameObjects.BoundingBoxes.Experimental.Unused {
     /// </summary>
     /// <param name="object_transform"></param>
     /// <returns></returns>
-    public static Bounds GetTotalColliderBounds(Transform object_transform) {
-      var mesh_filter = object_transform.GetComponent<Collider>();
+    public static UnityEngine.Bounds GetTotalColliderBounds(UnityEngine.Transform object_transform) {
+      var mesh_filter = object_transform.GetComponent<UnityEngine.Collider>();
 
-      var result = mesh_filter != null ? mesh_filter.bounds : new Bounds();
+      var result = mesh_filter != null ? mesh_filter.bounds : new UnityEngine.Bounds();
 
-      foreach (Transform transform in object_transform) {
+      foreach (UnityEngine.Transform transform in object_transform) {
         var bounds = GetTotalColliderBounds(object_transform : transform);
         result.Encapsulate(point : bounds.min);
         result.Encapsulate(point : bounds.max);
@@ -202,9 +220,9 @@ namespace droid.Runtime.GameObjects.BoundingBoxes.Experimental.Unused {
     /// </summary>
     /// <param name="g"></param>
     /// <returns></returns>
-    public static Bounds GetMaxBounds(GameObject g) {
-      var b = new Bounds(center : g.transform.position, size : Vector3.zero);
-      foreach (var r in g.GetComponentsInChildren<Renderer>()) {
+    public static UnityEngine.Bounds GetMaxBounds(UnityEngine.GameObject g) {
+      var b = new UnityEngine.Bounds(center : g.transform.position, size : UnityEngine.Vector3.zero);
+      foreach (var r in g.GetComponentsInChildren<UnityEngine.Renderer>()) {
         b.Encapsulate(bounds : r.bounds);
       }
 
@@ -212,36 +230,35 @@ namespace droid.Runtime.GameObjects.BoundingBoxes.Experimental.Unused {
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="bounds"></param>
     /// <param name="cam"></param>
     /// <param name="margin"></param>
     /// <returns></returns>
-    public static Rect GetBoundsScreenRectEncapsulationSlow(this Bounds bounds,
-                                                            Camera cam,
-                                                            float margin = 0) {
-      var rect = new Rect();
+    public static UnityEngine.Rect GetBoundsScreenRectEncapsulationSlow(this UnityEngine.Bounds bounds,
+                                                                        UnityEngine.Camera cam,
+                                                                        float margin = 0) {
+      var rect = new UnityEngine.Rect();
 
-      var points = new Vector3[8];
-      var screen_pos = new Vector3[8];
+      var points = new UnityEngine.Vector3[8];
+      var screen_pos = new UnityEngine.Vector3[8];
 
       var b = bounds; // reference object ex Simple
-      points[0] = new Vector3(x : b.min.x, y : b.min.y, z : b.min.z);
-      points[1] = new Vector3(x : b.max.x, y : b.min.y, z : b.min.z);
-      points[2] = new Vector3(x : b.max.x, y : b.max.y, z : b.min.z);
-      points[3] = new Vector3(x : b.min.x, y : b.max.y, z : b.min.z);
-      points[4] = new Vector3(x : b.min.x, y : b.min.y, z : b.max.z);
-      points[5] = new Vector3(x : b.max.x, y : b.min.y, z : b.max.z);
-      points[6] = new Vector3(x : b.max.x, y : b.max.y, z : b.max.z);
-      points[7] = new Vector3(x : b.min.x, y : b.max.y, z : b.max.z);
+      points[0] = new UnityEngine.Vector3(x : b.min.x, y : b.min.y, z : b.min.z);
+      points[1] = new UnityEngine.Vector3(x : b.max.x, y : b.min.y, z : b.min.z);
+      points[2] = new UnityEngine.Vector3(x : b.max.x, y : b.max.y, z : b.min.z);
+      points[3] = new UnityEngine.Vector3(x : b.min.x, y : b.max.y, z : b.min.z);
+      points[4] = new UnityEngine.Vector3(x : b.min.x, y : b.min.y, z : b.max.z);
+      points[5] = new UnityEngine.Vector3(x : b.max.x, y : b.min.y, z : b.max.z);
+      points[6] = new UnityEngine.Vector3(x : b.max.x, y : b.max.y, z : b.max.z);
+      points[7] = new UnityEngine.Vector3(x : b.min.x, y : b.max.y, z : b.max.z);
 
-      var screen_bounds = new Bounds();
+      var screen_bounds = new UnityEngine.Bounds();
       for (var i = 0; i < 8; i++) {
         screen_pos[i] = cam.WorldToScreenPoint(position : points[i]);
 
         if (i == 0) {
-          screen_bounds = new Bounds(center : screen_pos[0], size : Vector3.zero);
+          screen_bounds = new UnityEngine.Bounds(center : screen_pos[0], size : UnityEngine.Vector3.zero);
         }
 
         screen_bounds.Encapsulate(point : screen_pos[i]);
@@ -304,30 +321,29 @@ namespace droid.Runtime.GameObjects.BoundingBoxes.Experimental.Unused {
     */
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="a_cam"></param>
     /// <param name="a_area"></param>
     /// <param name="a_limits"></param>
     /// <param name="a_max_height"></param>
-    public static void CalculateLimits(Camera a_cam,
-                                       Bounds a_area,
-                                       out Rect a_limits,
+    public static void CalculateLimits(UnityEngine.Camera a_cam,
+                                       UnityEngine.Bounds a_area,
+                                       out UnityEngine.Rect a_limits,
                                        out float a_max_height) {
       // Half the FOV angle in radians
-      var angle = a_cam.fieldOfView * Mathf.Deg2Rad * 0.5f;
+      var angle = a_cam.fieldOfView * UnityEngine.Mathf.Deg2Rad * 0.5f;
 
       // half the size of the viewing frustum at a distance of "1" from the camera
-      var tan = Vector2.one * Mathf.Tan(f : angle);
+      var tan = UnityEngine.Vector2.one * UnityEngine.Mathf.Tan(f : angle);
       tan.x *= a_cam.aspect;
 
       // the center point of the area and it's extents
       // the center point is taken from the bottom center of the bounding box
       var dim = a_area.extents;
-      var center = a_area.center - new Vector3(0, y : a_area.extents.y, 0);
+      var center = a_area.center - new UnityEngine.Vector3(0, y : a_area.extents.y, 0);
 
       // the maximum distance the camera can be above the area plane for each direction
-      var max_dist = new Vector2(x : dim.x / tan.x, y : dim.z / tan.y);
+      var max_dist = new UnityEngine.Vector2(x : dim.x / tan.x, y : dim.z / tan.y);
 
       // actual distance of the camera above our plane
       var dist = a_cam.transform.position.y - center.y;
@@ -337,37 +353,42 @@ namespace droid.Runtime.GameObjects.BoundingBoxes.Experimental.Unused {
       dim.z *= 1f - dist / max_dist.y;
 
       // maximum world space y coordinate the camera can be moved to
-      a_max_height = center.y + Mathf.Min(a : max_dist.x, b : max_dist.y);
+      a_max_height = center.y + UnityEngine.Mathf.Min(a : max_dist.x, b : max_dist.y);
 
       // the min and max x and z coordinates the camera can be at the current distance.
-      a_limits = new Rect(x : center.x - dim.x,
-                          y : center.z - dim.z,
-                          width : dim.x * 2,
-                          height : dim.z * 2);
+      a_limits = new UnityEngine.Rect(x : center.x - dim.x,
+                                      y : center.z - dim.z,
+                                      width : dim.x * 2,
+                                      height : dim.z * 2);
     }
 
-    public static bool CullToFrustum(Mesh mesh, Camera cam, Transform trans, bool update_position) {
+    public static bool CullToFrustum(UnityEngine.Mesh mesh,
+                                     UnityEngine.Camera cam,
+                                     UnityEngine.Transform trans,
+                                     bool update_position) {
       var fov = cam.fieldOfView;
       cam.fieldOfView = fov * 0.97f;
-      var planes = GeometryUtility.CalculateFrustumPlanes(camera : cam);
+      var planes = UnityEngine.GeometryUtility.CalculateFrustumPlanes(camera : cam);
       cam.fieldOfView = fov;
-      if (GeometryUtility.TestPlanesAABB(planes : planes, bounds : mesh.bounds)) {
+      if (UnityEngine.GeometryUtility.TestPlanesAABB(planes : planes, bounds : mesh.bounds)) {
         return true;
       }
 
-      Debug.Log(message : "Culling :" + trans.name);
+      UnityEngine.Debug.Log(message : "Culling :" + trans.name);
       return false;
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="bounds"></param>
     /// <param name="t"></param>
     /// <param name="cam"></param>
     /// <param name="margin"></param>
     /// <returns></returns>
-    public static Rect GetMinMaxRect(this Bounds bounds, Transform t, Camera cam, float margin = 0) {
+    public static UnityEngine.Rect GetMinMaxRect(this UnityEngine.Bounds bounds,
+                                                 UnityEngine.Transform t,
+                                                 UnityEngine.Camera cam,
+                                                 float margin = 0) {
       var cen = bounds.center;
       var ext = bounds.extents;
 
@@ -378,37 +399,38 @@ namespace droid.Runtime.GameObjects.BoundingBoxes.Experimental.Unused {
       var y_max = cen.y + ext.y;
       var z_max = cen.z + ext.z;
 
-      Vector2 min = cam.WorldToScreenPoint(position : new Vector3(x : x_min, y : y_min, z : z_min));
+      UnityEngine.Vector2 min =
+          cam.WorldToScreenPoint(position : new UnityEngine.Vector3(x : x_min, y : y_min, z : z_min));
       var max = min;
 
       var point = min;
       point.GetMinMax(min : ref min, max : ref max);
 
-      point = cam.WorldToScreenPoint(position : new Vector3(x : x_max, y : y_max, z : z_max));
+      point = cam.WorldToScreenPoint(position : new UnityEngine.Vector3(x : x_max, y : y_max, z : z_max));
       point.GetMinMax(min : ref min, max : ref max);
 
-      point = cam.WorldToScreenPoint(position : new Vector3(x : x_max, y : y_min, z : z_min));
+      point = cam.WorldToScreenPoint(position : new UnityEngine.Vector3(x : x_max, y : y_min, z : z_min));
       point.GetMinMax(min : ref min, max : ref max);
 
-      point = cam.WorldToScreenPoint(position : new Vector3(x : x_min, y : y_max, z : z_min));
+      point = cam.WorldToScreenPoint(position : new UnityEngine.Vector3(x : x_min, y : y_max, z : z_min));
       point.GetMinMax(min : ref min, max : ref max);
 
-      point = cam.WorldToScreenPoint(position : new Vector3(x : x_min, y : y_min, z : z_max));
+      point = cam.WorldToScreenPoint(position : new UnityEngine.Vector3(x : x_min, y : y_min, z : z_max));
       point.GetMinMax(min : ref min, max : ref max);
 
-      point = cam.WorldToScreenPoint(position : new Vector3(x : x_max, y : y_min, z : z_max));
+      point = cam.WorldToScreenPoint(position : new UnityEngine.Vector3(x : x_max, y : y_min, z : z_max));
       point.GetMinMax(min : ref min, max : ref max);
 
-      point = cam.WorldToScreenPoint(position : new Vector3(x : x_max, y : y_max, z : z_min));
+      point = cam.WorldToScreenPoint(position : new UnityEngine.Vector3(x : x_max, y : y_max, z : z_min));
       point.GetMinMax(min : ref min, max : ref max);
 
-      point = cam.WorldToScreenPoint(position : new Vector3(x : x_min, y : y_max, z : z_max));
+      point = cam.WorldToScreenPoint(position : new UnityEngine.Vector3(x : x_min, y : y_max, z : z_max));
       point.GetMinMax(min : ref min, max : ref max);
 
-      var r = Rect.MinMaxRect(xmin : min.x,
-                              ymin : min.y,
-                              xmax : max.x,
-                              ymax : max.y);
+      var r = UnityEngine.Rect.MinMaxRect(xmin : min.x,
+                                          ymin : min.y,
+                                          xmax : max.x,
+                                          ymax : max.y);
       r.xMin -= margin;
       r.xMax += margin;
       r.yMin -= margin;
@@ -418,27 +440,30 @@ namespace droid.Runtime.GameObjects.BoundingBoxes.Experimental.Unused {
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="vec"></param>
     /// <returns></returns>
-    public static float MaxDim(this Vector3 vec) { return Mathf.Max(vec.x, vec.y, vec.z); }
+    public static float MaxDim(this UnityEngine.Vector3 vec) {
+      return UnityEngine.Mathf.Max(vec.x, vec.y, vec.z);
+    }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="vec"></param>
     /// <returns></returns>
-    public static float MinDim(this Vector3 vec) { return Mathf.Min(vec.x, vec.y, vec.z); }
+    public static float MinDim(this UnityEngine.Vector3 vec) {
+      return UnityEngine.Mathf.Min(vec.x, vec.y, vec.z);
+    }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="mesh"></param>
     /// <param name="t"></param>
     /// <param name="cam"></param>
     /// <returns></returns>
-    public static Vector3[] GetMinMaxPoints(this MeshCollider mesh, Transform t, Camera cam) {
+    public static UnityEngine.Vector3[] GetMinMaxPoints(this UnityEngine.MeshCollider mesh,
+                                                        UnityEngine.Transform t,
+                                                        UnityEngine.Camera cam) {
       return mesh.sharedMesh.GetCameraMinMaxPoints(t : t, cam : cam);
     }
   }

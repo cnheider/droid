@@ -1,14 +1,5 @@
-﻿using droid.Runtime.GameObjects.BoundingBoxes;
-using droid.Runtime.GameObjects.ChildSensors;
-using droid.Runtime.Prototyping.Actors;
-using droid.Runtime.Prototyping.Sensors;
-using droid.Runtime.Utilities;
-using droid.Runtime.Utilities.Extensions;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
+﻿namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
   /// <summary>
-  ///
   /// </summary>
   enum ActorOverlapping {
     Inside_area_,
@@ -16,7 +7,6 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
   }
 
   /// <summary>
-  ///
   /// </summary>
   enum ActorColliding {
     Not_colliding_,
@@ -25,23 +15,23 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
 
   //[RequireComponent (typeof(BoundingBox))]
   //[RequireComponent (typeof(BoxCollider))]
-  [AddComponentMenu(menuName : EvaluationComponentMenuPath._ComponentMenuPath
-                               + "ReachArea"
-                               + EvaluationComponentMenuPath._Postfix)]
+  [UnityEngine.AddComponentMenu(menuName : EvaluationComponentMenuPath._ComponentMenuPath
+                                           + "ReachArea"
+                                           + EvaluationComponentMenuPath._Postfix)]
   public class ReachAreaObjective : SpatialObjective {
-    [SerializeField] Collider _actor = null;
+    [UnityEngine.SerializeField] UnityEngine.Collider _actor = null;
 
-    [SerializeField] Collider _area = null;
+    [UnityEngine.SerializeField] UnityEngine.Collider _area = null;
 
-    [SerializeField] bool _based_on_tags = false;
-    [SerializeField] ActorColliding _colliding = ActorColliding.Not_colliding_;
+    [UnityEngine.SerializeField] bool _based_on_tags = false;
+    [UnityEngine.SerializeField] ActorColliding _colliding = ActorColliding.Not_colliding_;
 
-    [SerializeField] Obstruction[] _obstructions;
+    [UnityEngine.SerializeField] droid.Runtime.Utilities.Extensions.Obstruction[] _obstructions;
 
     //Used for.. if outside playable area then reset
-    [SerializeField] ActorOverlapping _overlapping = ActorOverlapping.Outside_area_;
+    [UnityEngine.SerializeField] ActorOverlapping _overlapping = ActorOverlapping.Outside_area_;
 
-    [SerializeField] NeodroidBoundingBox _playable_area;
+    [UnityEngine.SerializeField] droid.Runtime.GameObjects.BoundingBoxes.NeodroidBoundingBox _playable_area;
 
     public override void InternalReset() { }
 
@@ -69,7 +59,8 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
       }
 
       if (this._playable_area && this._actor) {
-        if (!this._playable_area.Bounds.Intersects(bounds : this._actor.GetComponent<Collider>().bounds)) {
+        if (!this._playable_area.Bounds.Intersects(bounds : this._actor.GetComponent<UnityEngine.Collider>()
+                                                                .bounds)) {
           this.ParentEnvironment.Terminate("Actor is outside playable area");
         }
       }
@@ -79,52 +70,57 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
 
     public override void RemotePostSetup() {
       if (!this._area) {
-        this._area = FindObjectOfType<Sensor>().gameObject.GetComponent<Collider>();
+        this._area = FindObjectOfType<droid.Runtime.Prototyping.Sensors.Sensor>().gameObject
+            .GetComponent<UnityEngine.Collider>();
       }
 
       if (!this._actor) {
-        this._actor = FindObjectOfType<Actor>().gameObject.GetComponent<Collider>();
+        this._actor = FindObjectOfType<droid.Runtime.Prototyping.Actors.Actor>().gameObject
+            .GetComponent<UnityEngine.Collider>();
       }
 
       if (this._obstructions.Length <= 0) {
-        this._obstructions = FindObjectsOfType<Obstruction>();
+        this._obstructions = FindObjectsOfType<droid.Runtime.Utilities.Extensions.Obstruction>();
       }
 
       if (!this._playable_area) {
-        this._playable_area = FindObjectOfType<NeodroidBoundingBox>();
+        this._playable_area = FindObjectOfType<droid.Runtime.GameObjects.BoundingBoxes.NeodroidBoundingBox>();
       }
 
-      NeodroidRegistrationUtilities
-          .RegisterCollisionTriggerCallbacksOnChildren<ChildCollider3DSensor, Collider, Collision
-          >(caller : this,
-            parent : this._area.transform,
-            on_collision_enter_child : this.OnCollisionEnterChild,
-            on_trigger_enter_child : this.OnTriggerEnterChild,
-            on_collision_exit_child : this.OnCollisionExitChild,
-            on_trigger_exit_child : this.OnTriggerExitChild,
-            on_collision_stay_child : this.OnCollisionStayChild,
-            on_trigger_stay_child : this.OnTriggerStayChild);
+      droid.Runtime.Utilities.NeodroidRegistrationUtilities
+           .RegisterCollisionTriggerCallbacksOnChildren<
+               droid.Runtime.GameObjects.ChildSensors.ChildCollider3DSensor, UnityEngine.Collider,
+               UnityEngine.Collision>(caller : this,
+                                      parent : this._area.transform,
+                                      on_collision_enter_child : this.OnCollisionEnterChild,
+                                      on_trigger_enter_child : this.OnTriggerEnterChild,
+                                      on_collision_exit_child : this.OnCollisionExitChild,
+                                      on_trigger_exit_child : this.OnTriggerExitChild,
+                                      on_collision_stay_child : this.OnCollisionStayChild,
+                                      on_trigger_stay_child : this.OnTriggerStayChild);
 
-      NeodroidRegistrationUtilities
-          .RegisterCollisionTriggerCallbacksOnChildren<ChildCollider3DSensor, Collider, Collision
-          >(caller : this,
-            parent : this._actor.transform,
-            on_collision_enter_child : this.OnCollisionEnterChild,
-            on_trigger_enter_child : this.OnTriggerEnterChild,
-            on_collision_exit_child : this.OnCollisionExitChild,
-            on_trigger_exit_child : this.OnTriggerExitChild,
-            on_collision_stay_child : this.OnCollisionStayChild,
-            on_trigger_stay_child : this.OnTriggerStayChild);
+      droid.Runtime.Utilities.NeodroidRegistrationUtilities
+           .RegisterCollisionTriggerCallbacksOnChildren<
+               droid.Runtime.GameObjects.ChildSensors.ChildCollider3DSensor, UnityEngine.Collider,
+               UnityEngine.Collision>(caller : this,
+                                      parent : this._actor.transform,
+                                      on_collision_enter_child : this.OnCollisionEnterChild,
+                                      on_trigger_enter_child : this.OnTriggerEnterChild,
+                                      on_collision_exit_child : this.OnCollisionExitChild,
+                                      on_trigger_exit_child : this.OnTriggerExitChild,
+                                      on_collision_stay_child : this.OnCollisionStayChild,
+                                      on_trigger_stay_child : this.OnTriggerStayChild);
     }
 
-    void OnTriggerEnterChild(GameObject child_game_object, Collider other_game_object) {
+    void OnTriggerEnterChild(UnityEngine.GameObject child_game_object,
+                             UnityEngine.Collider other_game_object) {
       if (this._actor) {
         if (this._based_on_tags) {
           if (child_game_object.CompareTag(tag : this._area.tag)
               && other_game_object.CompareTag(tag : this._actor.tag)) {
             #if NEODROID_DEBUG
             if (this.Debugging) {
-              Debug.Log("Actor is inside area");
+              UnityEngine.Debug.Log("Actor is inside area");
             }
             #endif
 
@@ -135,7 +131,7 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
               && other_game_object.CompareTag("Obstruction")) {
             #if NEODROID_DEBUG
             if (this.Debugging) {
-              Debug.Log("Actor is colliding");
+              UnityEngine.Debug.Log("Actor is colliding");
             }
             #endif
 
@@ -146,7 +142,7 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
               && other_game_object.gameObject == this._actor.gameObject) {
             #if NEODROID_DEBUG
             if (this.Debugging) {
-              Debug.Log("Actor is inside area");
+              UnityEngine.Debug.Log("Actor is inside area");
             }
             #endif
 
@@ -156,7 +152,7 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
           if (child_game_object == this._actor.gameObject && other_game_object.CompareTag("Obstruction")) {
             #if NEODROID_DEBUG
             if (this.Debugging) {
-              Debug.Log("Actor is colliding");
+              UnityEngine.Debug.Log("Actor is colliding");
             }
             #endif
 
@@ -166,14 +162,15 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
       }
     }
 
-    void OnTriggerStayChild(GameObject child_game_object, Collider other_game_object) {
+    void OnTriggerStayChild(UnityEngine.GameObject child_game_object,
+                            UnityEngine.Collider other_game_object) {
       if (this._actor) {
         if (this._based_on_tags) {
           if (child_game_object.CompareTag(tag : this._area.tag)
               && other_game_object.CompareTag(tag : this._actor.tag)) {
             #if NEODROID_DEBUG
             if (this.Debugging) {
-              Debug.Log("Actor is inside area");
+              UnityEngine.Debug.Log("Actor is inside area");
             }
             #endif
 
@@ -184,7 +181,7 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
               && other_game_object.CompareTag("Obstruction")) {
             #if NEODROID_DEBUG
             if (this.Debugging) {
-              Debug.Log("Actor is colliding");
+              UnityEngine.Debug.Log("Actor is colliding");
             }
             #endif
 
@@ -195,7 +192,7 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
               && other_game_object.gameObject == this._actor.gameObject) {
             #if NEODROID_DEBUG
             if (this.Debugging) {
-              Debug.Log("Actor is inside area");
+              UnityEngine.Debug.Log("Actor is inside area");
             }
             #endif
 
@@ -205,7 +202,7 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
           if (child_game_object == this._actor.gameObject && other_game_object.CompareTag("Obstruction")) {
             #if NEODROID_DEBUG
             if (this.Debugging) {
-              Debug.Log("Actor is colliding");
+              UnityEngine.Debug.Log("Actor is colliding");
             }
             #endif
 
@@ -215,14 +212,15 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
       }
     }
 
-    void OnTriggerExitChild(GameObject child_game_object, Collider other_game_object) {
+    void OnTriggerExitChild(UnityEngine.GameObject child_game_object,
+                            UnityEngine.Collider other_game_object) {
       if (this._actor) {
         if (this._based_on_tags) {
           if (child_game_object.CompareTag(tag : this._area.tag)
               && other_game_object.CompareTag(tag : this._actor.tag)) {
             #if NEODROID_DEBUG
             if (this.Debugging) {
-              Debug.Log("Actor is outside area");
+              UnityEngine.Debug.Log("Actor is outside area");
             }
             #endif
 
@@ -233,7 +231,7 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
               && other_game_object.CompareTag("Obstruction")) {
             #if NEODROID_DEBUG
             if (this.Debugging) {
-              Debug.Log("Actor is not colliding");
+              UnityEngine.Debug.Log("Actor is not colliding");
             }
             #endif
 
@@ -244,7 +242,7 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
               && other_game_object.gameObject == this._actor.gameObject) {
             #if NEODROID_DEBUG
             if (this.Debugging) {
-              Debug.Log("Actor is outside area");
+              UnityEngine.Debug.Log("Actor is outside area");
             }
             #endif
 
@@ -254,7 +252,7 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
           if (child_game_object == this._actor.gameObject && other_game_object.CompareTag("Obstruction")) {
             #if NEODROID_DEBUG
             if (this.Debugging) {
-              Debug.Log("Actor is not colliding");
+              UnityEngine.Debug.Log("Actor is not colliding");
             }
             #endif
 
@@ -264,10 +262,10 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
       }
     }
 
-    void OnCollisionEnterChild(GameObject child_game_object, Collision collision) { }
+    void OnCollisionEnterChild(UnityEngine.GameObject child_game_object, UnityEngine.Collision collision) { }
 
-    void OnCollisionStayChild(GameObject child_game_object, Collision collision) { }
+    void OnCollisionStayChild(UnityEngine.GameObject child_game_object, UnityEngine.Collision collision) { }
 
-    void OnCollisionExitChild(GameObject child_game_object, Collision collision) { }
+    void OnCollisionExitChild(UnityEngine.GameObject child_game_object, UnityEngine.Collision collision) { }
   }
 }

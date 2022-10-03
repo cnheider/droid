@@ -1,18 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using droid.Runtime.GameObjects.StatusDisplayer.EventRecipients;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Messaging.Messages;
-using UnityEngine;
-
-namespace droid.Runtime.Environments.Prototyping {
+﻿namespace droid.Runtime.Environments.Prototyping {
   /// <inheritdoc cref="NeodroidEnvironment" />
   /// <summary>
   ///   Environment to be used with the prototyping components.
   /// </summary>
-  [AddComponentMenu("Neodroid/Environments/ActorisedPrototypingEnvironment")]
+  [UnityEngine.AddComponentMenu("Neodroid/Environments/ActorisedPrototypingEnvironment")]
   public class ActorisedPrototypingEnvironment : AbstractPrototypingEnvironment,
-                                                 IActorisedPrototypingEnvironment {
+                                                 droid.Runtime.Interfaces.IActorisedPrototypingEnvironment {
     #region NeodroidCallbacks
 
     /// <inheritdoc />
@@ -30,25 +23,30 @@ namespace droid.Runtime.Environments.Prototyping {
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public override Reaction SampleReaction() {
+    public override droid.Runtime.Messaging.Messages.Reaction SampleReaction() {
       if (this.Terminated) {
         #if NEODROID_DEBUG
         if (this.Debugging) {
-          Debug.Log("SampleReaction resetting environment");
+          UnityEngine.Debug.Log("SampleReaction resetting environment");
         }
         #endif
 
-        var reset_reaction = new ReactionParameters(reaction_type : ReactionTypeEnum.Reset_, false, true);
-        return new Reaction(reaction_parameters : reset_reaction, recipient_environment : this.Identifier);
+        var reset_reaction =
+            new droid.Runtime.Messaging.Messages.ReactionParameters(reaction_type : droid.Runtime.Messaging
+                                                                        .Messages.ReactionTypeEnum.Reset_,
+                                                                    false,
+                                                                    true);
+        return new droid.Runtime.Messaging.Messages.Reaction(reaction_parameters : reset_reaction,
+                                                             recipient_environment : this.Identifier);
       }
 
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        Debug.Log(message : $"Sampling a reaction for environment {this.Identifier}");
+        UnityEngine.Debug.Log(message : $"Sampling a reaction for environment {this.Identifier}");
       }
       #endif
 
-      var sample_motions = new List<IMotion>();
+      var sample_motions = new System.Collections.Generic.List<droid.Runtime.Interfaces.IMotion>();
 
       foreach (var actor in this.Actors) {
         var actor_value = actor.Value;
@@ -56,22 +54,27 @@ namespace droid.Runtime.Environments.Prototyping {
           foreach (var actuator in actor_value.Actuators) {
             var actuator_value = actuator.Value;
             if (actuator_value != null) {
-              sample_motions.Add(item : new ActuatorMotion(actor_name : actor.Key,
-                                                           actuator_name : actuator.Key,
-                                                           strength : actuator_value.Sample()));
+              sample_motions.Add(item : new droid.Runtime.Messaging.Messages.ActuatorMotion(actor_name :
+                                   actor.Key,
+                                   actuator_name : actuator.Key,
+                                   strength : actuator_value.Sample()));
             }
           }
         }
       }
 
-      var rp = new ReactionParameters(reaction_type : ReactionTypeEnum.Step_, true, episode_count : true);
-      return new Reaction(parameters : rp,
-                          motions : sample_motions.ToArray(),
-                          null,
-                          null,
-                          null,
-                          "",
-                          recipient_environment : this.Identifier);
+      var rp =
+          new droid.Runtime.Messaging.Messages.ReactionParameters(reaction_type : droid.Runtime.Messaging
+                                                                      .Messages.ReactionTypeEnum.Step_,
+                                                                  true,
+                                                                  episode_count : true);
+      return new droid.Runtime.Messaging.Messages.Reaction(parameters : rp,
+                                                           motions : sample_motions.ToArray(),
+                                                           null,
+                                                           null,
+                                                           null,
+                                                           "",
+                                                           recipient_environment : this.Identifier);
     }
 
     #endregion
@@ -82,7 +85,9 @@ namespace droid.Runtime.Environments.Prototyping {
 
     /// <summary>
     /// </summary>
-    public SortedDictionary<string, IActor> Actors { get; } = new SortedDictionary<string, IActor>();
+    public System.Collections.Generic.SortedDictionary<string, droid.Runtime.Interfaces.IActor>
+        Actors { get; } =
+      new System.Collections.Generic.SortedDictionary<string, droid.Runtime.Interfaces.IActor>();
 
     #endregion
 
@@ -92,25 +97,27 @@ namespace droid.Runtime.Environments.Prototyping {
     /// <summary>
     /// </summary>
     /// <param name="actor"></param>
-    public void Register(IActor actor) { this.Register(actor : actor, identifier : actor.Identifier); }
+    public void Register(droid.Runtime.Interfaces.IActor actor) {
+      this.Register(actor : actor, identifier : actor.Identifier);
+    }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     /// <param name="actor"></param>
     /// <param name="identifier"></param>
-    public void Register(IActor actor, string identifier) {
+    public void Register(droid.Runtime.Interfaces.IActor actor, string identifier) {
       if (!this.Actors.ContainsKey(key : identifier)) {
         #if NEODROID_DEBUG
         if (this.Debugging) {
-          Debug.Log(message : $"Environment {this.name} has registered actor {identifier}");
+          UnityEngine.Debug.Log(message : $"Environment {this.name} has registered actor {identifier}");
         }
         #endif
 
         this.Actors.Add(key : identifier, value : actor);
       } else {
-        Debug.LogWarning(message :
-                         $"WARNING! Please check for duplicates, Environment {this.name} already has actor {identifier} registered");
+        UnityEngine.Debug.LogWarning(message :
+                                     $"WARNING! Please check for duplicates, Environment {this.name} already has actor {identifier} registered");
       }
     }
 
@@ -118,18 +125,20 @@ namespace droid.Runtime.Environments.Prototyping {
     /// <summary>
     /// </summary>
     /// <param name="actor"></param>
-    public void UnRegister(IActor actor) { this.UnRegister(t : actor, obj : actor.Identifier); }
+    public void UnRegister(droid.Runtime.Interfaces.IActor actor) {
+      this.UnRegister(t : actor, obj : actor.Identifier);
+    }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     /// <param name="t"></param>
     /// <param name="obj"></param>
-    public void UnRegister(IActor t, string obj) {
+    public void UnRegister(droid.Runtime.Interfaces.IActor t, string obj) {
       if (this.Actors.ContainsKey(key : obj)) {
         #if NEODROID_DEBUG
         if (this.Debugging) {
-          Debug.Log(message : $"Environment {this.name} unregistered actor {obj}");
+          UnityEngine.Debug.Log(message : $"Environment {this.name} unregistered actor {obj}");
         }
         #endif
         this.Actors.Remove(key : obj);
@@ -146,27 +155,29 @@ namespace droid.Runtime.Environments.Prototyping {
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public override EnvironmentSnapshot Snapshot() {
+    public override droid.Runtime.Messaging.Messages.EnvironmentSnapshot Snapshot() {
       var signal = 0f;
 
       if (this.ObjectiveFunction != null) {
         signal = this.ObjectiveFunction.Evaluate();
       }
 
-      EnvironmentDescription description = null;
+      droid.Runtime.Messaging.Messages.EnvironmentDescription description = null;
       if (this.ProvideFullDescription
           || this.SimulationManager.SimulatorConfiguration.SerialiseIndividualObservables) {
         #if NEODROID_DEBUG
         if (this.Debugging) {
-          Debug.Log("Describing Environment");
+          UnityEngine.Debug.Log("Describing Environment");
         }
         #endif
 
-        description = new EnvironmentDescription(objective_function_function : this.ObjectiveFunction,
-                                                 actors : this.Actors,
-                                                 configurables : this.Configurables,
-                                                 sensors : this.Sensors,
-                                                 displayers : this.Displayers);
+        description =
+            new droid.Runtime.Messaging.Messages.EnvironmentDescription(objective_function_function :
+                                                                        this.ObjectiveFunction,
+                                                                        actors : this.Actors,
+                                                                        configurables : this.Configurables,
+                                                                        sensors : this.Sensors,
+                                                                        displayers : this.Displayers);
       }
 
       var obs = new float[] { };
@@ -181,14 +192,15 @@ namespace droid.Runtime.Environments.Prototyping {
             } else {
               #if NEODROID_DEBUG
               if (this.Debugging) {
-                Debug.Log(message : $"Sensor with key {item.Key} has a null FloatEnumerable value");
+                UnityEngine.Debug.Log(message :
+                                      $"Sensor with key {item.Key} has a null FloatEnumerable value");
               }
               #endif
             }
           } else {
             #if NEODROID_DEBUG
             if (this.Debugging) {
-              Debug.Log(message : $"Sensor with key {item.Key} has a null value");
+              UnityEngine.Debug.Log(message : $"Sensor with key {item.Key} has a null value");
             }
             #endif
           }
@@ -197,21 +209,22 @@ namespace droid.Runtime.Environments.Prototyping {
         obs = this._Observables.ToArray();
       }
 
-      var time = Time.realtimeSinceStartup - this.LastResetTime;
+      var time = UnityEngine.Time.realtimeSinceStartup - this.LastResetTime;
 
-      var state = new EnvironmentSnapshot(environment_name : this.Identifier,
-                                          frame_number : this.StepI,
-                                          time : time,
-                                          signal : signal,
-                                          terminated : this.Terminated,
-                                          observables : ref obs,
-                                          termination_reason : this.LastTerminationReason,
-                                          description : description);
+      var state = new droid.Runtime.Messaging.Messages.EnvironmentSnapshot(environment_name : this.Identifier,
+        frame_number : this.StepI,
+        time : time,
+        signal : signal,
+        terminated : this.Terminated,
+        observables : ref obs,
+        termination_reason : this.LastTerminationReason,
+        description : description);
 
       if (this.SimulationManager.SimulatorConfiguration.SerialiseUnobservables
           || this.ProvideFullDescription) {
         state.Unobservables =
-            new Unobservables(rigidbodies : ref this._Tracked_Rigid_Bodies, transforms : ref this._Poses);
+            new droid.Runtime.Messaging.Messages.Unobservables(rigidbodies : ref this._Tracked_Rigid_Bodies,
+                                                               transforms : ref this._Poses);
       }
 
       this.ProvideFullDescription = false;
@@ -223,20 +236,21 @@ namespace droid.Runtime.Environments.Prototyping {
     /// <summary>
     /// </summary>
     /// <param name="recipient"></param>
-    public override void ObservationsString(DataPoller recipient) {
+    public override void
+        ObservationsString(droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.DataPoller recipient) {
       recipient.PollData(data : string.Join("\n\n",
-                                            values :
-                                            this.Sensors.Values.Select(e =>
-                                                                           $"{e.Identifier}:\n{e}")));
+                                            values : System.Linq.Enumerable.Select(source : this.Sensors
+                                                  .Values,
+                                              e => $"{e.Identifier}:\n{e}")));
     }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
     public override void RemotePostSetup() {
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        Debug.Log("PostSetup");
+        UnityEngine.Debug.Log("PostSetup");
       }
       #endif
 
@@ -256,12 +270,12 @@ namespace droid.Runtime.Environments.Prototyping {
     /// <summary>
     /// </summary>
     /// <param name="reaction"></param>
-    void SendToDisplayers(Reaction reaction) {
+    void SendToDisplayers(droid.Runtime.Messaging.Messages.Reaction reaction) {
       if (reaction.Displayables != null && reaction.Displayables.Length > 0) {
         foreach (var displayable in reaction.Displayables) {
           #if NEODROID_DEBUG
           if (this.Debugging) {
-            Debug.Log(message : "Applying " + displayable + " To " + this.name + "'s displayers");
+            UnityEngine.Debug.Log(message : "Applying " + displayable + " To " + this.name + "'s displayers");
           }
           #endif
           var displayable_name = displayable.DisplayableName;
@@ -272,7 +286,8 @@ namespace droid.Runtime.Environments.Prototyping {
           } else {
             #if NEODROID_DEBUG
             if (this.Debugging) {
-              Debug.Log(message : "Could find not displayer with the specified name: " + displayable_name);
+              UnityEngine.Debug.Log(message : "Could find not displayer with the specified name: "
+                                              + displayable_name);
             }
             #endif
           }
@@ -283,12 +298,12 @@ namespace droid.Runtime.Environments.Prototyping {
     /// <summary>
     /// </summary>
     /// <param name="reaction"></param>
-    protected override void SendToActors(Reaction reaction) {
+    protected override void SendToActors(droid.Runtime.Messaging.Messages.Reaction reaction) {
       if (reaction.Motions != null && reaction.Motions.Length > 0) {
         foreach (var motion in reaction.Motions) {
           #if NEODROID_DEBUG
           if (this.Debugging) {
-            Debug.Log(message : "Applying " + motion + " To " + this.name + "'s actors");
+            UnityEngine.Debug.Log(message : "Applying " + motion + " To " + this.name + "'s actors");
           }
           #endif
           var motion_actor_name = motion.ActorName;
@@ -298,7 +313,8 @@ namespace droid.Runtime.Environments.Prototyping {
           } else {
             #if NEODROID_DEBUG
             if (this.Debugging) {
-              Debug.Log(message : "Could find not actor with the specified name: " + motion_actor_name);
+              UnityEngine.Debug.Log(message : "Could find not actor with the specified name: "
+                                              + motion_actor_name);
             }
             #endif
           }

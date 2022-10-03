@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace droid.Runtime.Messaging.Messages.Displayables {
+﻿namespace droid.Runtime.Messaging.Messages.Displayables {
   /// <summary>
   /// </summary>
   public class DisplayableFloat : Displayable {

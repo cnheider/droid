@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace droid.Runtime.Messaging.Messages {
+﻿namespace droid.Runtime.Messaging.Messages {
   /// <summary>
   /// </summary>
   public enum ExecutionPhaseEnum {
@@ -18,7 +16,6 @@ namespace droid.Runtime.Messaging.Messages {
   }
 
   /// <summary>
-  ///
   /// </summary>
   public enum ReactionTypeEnum {
     /// <summary>
@@ -70,7 +67,6 @@ namespace droid.Runtime.Messaging.Messages {
     public bool Describe { get; }
 
     /// <summary>
-    ///
     /// </summary>
     public ReactionTypeEnum ReactionType { get; }
 

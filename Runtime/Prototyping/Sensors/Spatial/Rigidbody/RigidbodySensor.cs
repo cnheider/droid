@@ -1,36 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Structs.Space;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Sensors.Spatial.Rigidbody {
+﻿namespace droid.Runtime.Prototyping.Sensors.Spatial.Rigidbody {
   /// <inheritdoc cref="Sensor" />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
-                               + "Rigidbody"
-                               + SensorComponentMenuPath._Postfix)]
-  [ExecuteInEditMode]
-  [RequireComponent(requiredComponent : typeof(UnityEngine.Rigidbody))]
+  [UnityEngine.AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
+                                           + "Rigidbody"
+                                           + SensorComponentMenuPath._Postfix)]
+  [UnityEngine.ExecuteInEditMode]
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.Rigidbody))]
   public class RigidbodySensor : Sensor,
-                                 IHasRigidbody {
-    [SerializeField] Space3 _angular_space = Space3.ZeroOne;
+                                 droid.Runtime.Interfaces.IHasRigidbody {
+    [UnityEngine.SerializeField]
+    droid.Runtime.Structs.Space.Space3 _angular_space = droid.Runtime.Structs.Space.Space3.ZeroOne;
 
-    [Header("Observation", order = 100)]
-    [SerializeField]
-    Vector3 _angular_velocity = Vector3.zero;
+    [UnityEngine.HeaderAttribute("Observation", order = 100)]
+    [UnityEngine.SerializeField]
+    UnityEngine.Vector3 _angular_velocity = UnityEngine.Vector3.zero;
 
-    [SerializeField] bool _differential = false;
+    [UnityEngine.SerializeField] bool _differential = false;
 
-    [SerializeField] float _last_update_time = 0;
+    [UnityEngine.SerializeField] float _last_update_time = 0;
 
-    [Header("Configuration", order = 110)]
-    [SerializeField]
+    [UnityEngine.HeaderAttribute("Configuration", order = 110)]
+    [UnityEngine.SerializeField]
     UnityEngine.Rigidbody _rigidbody = null;
 
-    [SerializeField] Vector3 _velocity = Vector3.zero;
-    [SerializeField] Space3 _velocity_space = Space3.ZeroOne;
+    [UnityEngine.SerializeField] UnityEngine.Vector3 _velocity = UnityEngine.Vector3.zero;
+
+    [UnityEngine.SerializeField]
+    droid.Runtime.Structs.Space.Space3 _velocity_space = droid.Runtime.Structs.Space.Space3.ZeroOne;
 
     /// <inheritdoc />
     /// <summary>
@@ -48,40 +45,7 @@ namespace droid.Runtime.Prototyping.Sensors.Spatial.Rigidbody {
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public Vector3 Velocity {
-      get { return this._velocity; }
-      set { this._velocity = this._velocity_space.Project(v : value); }
-    }
-
-    void OnDrawGizmosSelected() {
-      var rb_pos = this._rigidbody.position;
-      Debug.DrawLine(start : rb_pos, end : rb_pos + this._rigidbody.angularVelocity);
-      Debug.DrawLine(start : rb_pos, end : rb_pos + this._rigidbody.velocity,color : Color.red);
-    }
-
-    
-    /// <inheritdoc />
-    /// <summary>
-    /// </summary>
-    public Vector3 AngularVelocity {
-      get { return this._angular_velocity; }
-      set { this._angular_velocity = this._angular_space.Project(v : value); }
-    }
-
-    /// <inheritdoc />
-    /// <summary>
-    /// </summary>
-    public Space3 VelocitySpace { get { return this._velocity_space; } }
-
-    /// <inheritdoc />
-    /// <summary>
-    /// </summary>
-    public Space3 AngularSpace { get { return this._angular_space; } }
-
-    /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    public override IEnumerable<float> FloatEnumerable {
+    public override System.Collections.Generic.IEnumerable<float> FloatEnumerable {
       get {
         yield return this.Velocity.x;
         yield return this.Velocity.y;
@@ -92,11 +56,45 @@ namespace droid.Runtime.Prototyping.Sensors.Spatial.Rigidbody {
       }
     }
 
+    void OnDrawGizmosSelected() {
+      var rb_pos = this._rigidbody.position;
+      UnityEngine.Debug.DrawLine(start : rb_pos, end : rb_pos + this._rigidbody.angularVelocity);
+      UnityEngine.Debug.DrawLine(start : rb_pos,
+                                 end : rb_pos + this._rigidbody.velocity,
+                                 color : UnityEngine.Color.red);
+    }
+
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
+    public UnityEngine.Vector3 Velocity {
+      get { return this._velocity; }
+      set { this._velocity = this._velocity_space.Project(v : value); }
+    }
+
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
+    public UnityEngine.Vector3 AngularVelocity {
+      get { return this._angular_velocity; }
+      set { this._angular_velocity = this._angular_space.Project(v : value); }
+    }
+
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
+    public droid.Runtime.Structs.Space.Space3 VelocitySpace { get { return this._velocity_space; } }
+
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
+    public droid.Runtime.Structs.Space.Space3 AngularSpace { get { return this._angular_space; } }
+
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
     public override void UpdateObservation() {
-      var update_time_difference = Time.time - this._last_update_time;
+      var update_time_difference = UnityEngine.Time.time - this._last_update_time;
       if (this._differential && update_time_difference > 0) {
         var vel_diff = this.Velocity - this._rigidbody.velocity;
         var ang_diff = this.AngularVelocity - this._rigidbody.angularVelocity;
@@ -119,7 +117,7 @@ namespace droid.Runtime.Prototyping.Sensors.Spatial.Rigidbody {
         this.AngularVelocity = this._rigidbody.angularVelocity;
       }
 
-      this._last_update_time = Time.realtimeSinceStartup;
+      this._last_update_time = UnityEngine.Time.realtimeSinceStartup;
     }
 
     /// <inheritdoc />

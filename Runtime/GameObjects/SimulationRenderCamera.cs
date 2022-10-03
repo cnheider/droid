@@ -1,11 +1,9 @@
-﻿using UnityEngine;
+﻿namespace droid.Runtime.GameObjects {
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.Camera))]
+  public class SimulationRenderCamera : UnityEngine.MonoBehaviour {
+    UnityEngine.Camera _camera;
 
-namespace droid.Runtime.GameObjects {
-  [RequireComponent(requiredComponent : typeof(Camera))]
-  public class SimulationRenderCamera : MonoBehaviour {
-    Camera _camera;
-
-    void Awake() { this._camera = this.GetComponent<Camera>(); }
+    void Awake() { this._camera = this.GetComponent<UnityEngine.Camera>(); }
 
     internal void DisableCamera() {
       if (this._camera.enabled) {

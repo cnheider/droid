@@ -1,25 +1,25 @@
-﻿using System;
-using droid.Runtime.Prototyping.Actors;
-using UnityEngine;
-using Object = System.Object;
-
-namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
+﻿namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
   /// <inheritdoc />
-  ///  <summary>
-  ///  </summary>
-  [AddComponentMenu(menuName : EvaluationComponentMenuPath._ComponentMenuPath
-                               + "EuclideanDistance"
-                               + EvaluationComponentMenuPath._Postfix)]
+  /// <summary>
+  /// </summary>
+  [UnityEngine.AddComponentMenu(menuName : EvaluationComponentMenuPath._ComponentMenuPath
+                                           + "EuclideanDistance"
+                                           + EvaluationComponentMenuPath._Postfix)]
   class EuclideanDistanceObjective : SpatialObjective {
-    [SerializeField] Transform _g1;
-    [SerializeField] Transform _g2;
-    [SerializeField] float margin = 0.01f;
-    [SerializeField] bool inverse = false;
+    [UnityEngine.SerializeField] UnityEngine.Transform _g1;
+    [UnityEngine.SerializeField] UnityEngine.Transform _g2;
+    [UnityEngine.SerializeField] float margin = 0.01f;
+    [UnityEngine.SerializeField] bool inverse = false;
+
+    void OnDrawGizmosSelected() {
+      UnityEngine.Debug.DrawLine(start : this._g1.position, end : this._g2.position);
+    }
+
     public override void InternalReset() { }
 
     public override float InternalEvaluate() {
       var signal = 0.0f;
-      var distance = Vector3.Distance(a : this._g1.position, b : this._g2.position);
+      var distance = UnityEngine.Vector3.Distance(a : this._g1.position, b : this._g2.position);
 
       if (distance <= this.margin) {
         this.ParentEnvironment.Terminate("Within margin");
@@ -34,14 +34,10 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
 
       return signal;
     }
-    
-    void OnDrawGizmosSelected() {
-      Debug.DrawLine(start : this._g1.position, end : this._g2.position);
-    }
 
     public override void RemotePostSetup() {
       if (this._g1 == null) {
-        this._g1 = FindObjectOfType<Actor>().transform;
+        this._g1 = FindObjectOfType<droid.Runtime.Prototyping.Actors.Actor>().transform;
       }
 
       if (this._g2 == null) {

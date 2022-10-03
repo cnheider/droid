@@ -1,28 +1,15 @@
-﻿using System;
-using System.Collections;
-using droid.Runtime.GameObjects;
-using droid.Runtime.GameObjects.StatusDisplayer.EventRecipients;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Managers;
-using droid.Runtime.Messaging.Messages;
-using droid.Runtime.Utilities;
-using UnityEditor;
-using UnityEngine;
-
-namespace droid.Runtime.Environments {
-  /// <inheritdoc cref="PrototypingGameObject" />
+﻿namespace droid.Runtime.Environments {
+  /// <inheritdoc cref="GameObjects.PrototypingGameObject" />
   /// <summary>
   /// </summary>
-  public abstract class NeodroidEnvironment : PrototypingGameObject,
-                                              IEnvironment {
-    /// <summary>
-    ///
-    /// </summary>
-    protected WaitForFixedUpdate _Wait_For_Fixed_Update = new WaitForFixedUpdate();
-
+  public abstract class NeodroidEnvironment : droid.Runtime.GameObjects.PrototypingGameObject,
+                                              droid.Runtime.Interfaces.IEnvironment {
     #if UNITY_EDITOR
     const int _script_execution_order = -20;
     #endif
+    /// <summary>
+    /// </summary>
+    protected UnityEngine.WaitForFixedUpdate _Wait_For_Fixed_Update = new UnityEngine.WaitForFixedUpdate();
 
     /// <inheritdoc />
     /// <summary>
@@ -38,14 +25,14 @@ namespace droid.Runtime.Environments {
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public abstract Reaction SampleReaction();
+    public abstract droid.Runtime.Messaging.Messages.Reaction SampleReaction();
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     /// <param name="reaction"></param>
     /// <returns></returns>
-    public abstract void Step(Reaction reaction);
+    public abstract void Step(droid.Runtime.Messaging.Messages.Reaction reaction);
 
     /// <inheritdoc />
     /// <summary>
@@ -58,29 +45,13 @@ namespace droid.Runtime.Environments {
     /// </summary>
     /// <param name="reaction"></param>
     /// <returns></returns>
-    public abstract void Configure(Reaction reaction);
+    public abstract void Configure(droid.Runtime.Messaging.Messages.Reaction reaction);
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public abstract EnvironmentSnapshot Snapshot();
-
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
-    public void IdentifierString(DataPoller recipient) { recipient.PollData(data : this.Identifier); }
-
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
-    public void TerminatedBoolean(DataPoller recipient) {
-      if (this.Terminated) {
-        recipient.PollData(true);
-      }
-
-      recipient.PollData(false);
-    }
+    public abstract droid.Runtime.Messaging.Messages.EnvironmentSnapshot Snapshot();
 
     /// <inheritdoc />
     /// <summary>
@@ -89,18 +60,19 @@ namespace droid.Runtime.Environments {
       base.Setup();
 
       if (this.SimulationManager == null) {
-        this.SimulationManager = FindObjectOfType<AbstractNeodroidManager>();
+        this.SimulationManager = FindObjectOfType<droid.Runtime.Managers.AbstractNeodroidManager>();
       }
 
       #if UNITY_EDITOR
-      if (!Application.isPlaying) {
-        var manager_script = MonoScript.FromMonoBehaviour(behaviour : this);
-        if (MonoImporter.GetExecutionOrder(script : manager_script) != _script_execution_order) {
-          MonoImporter.SetExecutionOrder(script : manager_script,
-                                         order :
-                                         _script_execution_order); // Ensures that PreStep is called first, before all other scripts.
-          Debug.LogWarning("Execution Order changed, you will need to press play again to make everything function correctly!");
-          EditorApplication.isPlaying = false;
+      if (!UnityEngine.Application.isPlaying) {
+        var manager_script = UnityEditor.MonoScript.FromMonoBehaviour(behaviour : this);
+        if (UnityEditor.MonoImporter.GetExecutionOrder(script : manager_script) != _script_execution_order) {
+          UnityEditor.MonoImporter.SetExecutionOrder(script : manager_script,
+                                                     order :
+                                                     _script_execution_order); // Ensures that PreStep is called first, before all other scripts.
+          UnityEngine.Debug
+                     .LogWarning("Execution Order changed, you will need to press play again to make everything function correctly!");
+          UnityEditor.EditorApplication.isPlaying = false;
           //TODO: UnityEngine.Experimental.LowLevel.PlayerLoop.SetPlayerLoop(new UnityEngine.Experimental.LowLevel.PlayerLoopSystem());
         }
       }
@@ -112,7 +84,27 @@ namespace droid.Runtime.Environments {
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    IEnumerator RemotePostSetupIe() {
+    public void IdentifierString(
+        droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.DataPoller recipient) {
+      recipient.PollData(data : this.Identifier);
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
+    public void TerminatedBoolean(
+        droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.DataPoller recipient) {
+      if (this.Terminated) {
+        recipient.PollData(true);
+      }
+
+      recipient.PollData(false);
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
+    System.Collections.IEnumerator RemotePostSetupIe() {
       yield return this._Wait_For_Fixed_Update;
       this.RemotePostSetup();
     }
@@ -123,8 +115,9 @@ namespace droid.Runtime.Environments {
     protected override void RegisterComponent() {
       if (this.SimulationManager != null) {
         this.SimulationManager =
-            NeodroidRegistrationUtilities.RegisterComponent(r : (NeodroidManager)this.SimulationManager,
-                                                            c : this);
+            droid.Runtime.Utilities.NeodroidRegistrationUtilities
+                 .RegisterComponent(r : (droid.Runtime.Managers.NeodroidManager)this.SimulationManager,
+                                    c : this);
       }
     }
 
@@ -136,14 +129,17 @@ namespace droid.Runtime.Environments {
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public abstract void ObservationsString(DataPoller recipient);
+    public abstract void ObservationsString(
+        droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.DataPoller recipient);
 
     #region Public Methods
 
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public void FrameString(DataPoller recipient) { recipient.PollData(data : $"{this.StepI}"); }
+    public void FrameString(droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.DataPoller recipient) {
+      recipient.PollData(data : $"{this.StepI}");
+    }
 
     #endregion
 
@@ -152,59 +148,59 @@ namespace droid.Runtime.Environments {
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    [field : SerializeField]
+    [field : UnityEngine.SerializeField]
     public int StepI { get; protected internal set; }
 
     /// <summary>
     /// </summary>
-    [field : SerializeField]
+    [field : UnityEngine.SerializeField]
     protected float LastResetTime { get; set; }
 
     /// <summary>
     /// </summary>
-    [field : SerializeField]
+    [field : UnityEngine.SerializeField]
     protected bool Terminable { get; set; } = true;
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    [field : SerializeField]
+    [field : UnityEngine.SerializeField]
     public bool Terminated { get; set; } = false;
-
-    /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    [field : SerializeField]
-    public Reaction LastReaction { get; set; }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    [field : SerializeField]
+    [field : UnityEngine.SerializeField]
+    public droid.Runtime.Messaging.Messages.Reaction LastReaction { get; set; }
+
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
+    [field : UnityEngine.SerializeField]
     public bool IsResetting { get; set; }
 
     /// <summary>
     /// </summary>
 
-    [field : SerializeField]
+    [field : UnityEngine.SerializeField]
     public bool ProvideFullDescription { get; set; } = true;
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    [field : SerializeField]
+    [field : UnityEngine.SerializeField]
     public string LastTerminationReason { get; set; } = "None";
 
     /// <summary>
     /// </summary>
-    [field : SerializeField]
+    [field : UnityEngine.SerializeField]
     protected bool ShouldConfigure { get; set; }
 
     /// <summary>
     /// </summary>
-    [field : Header("Environment", order = 100)]
-    [field : SerializeField]
-    protected IManager SimulationManager { get; set; }
+    [field : UnityEngine.HeaderAttribute("Environment", order = 100)]
+    [field : UnityEngine.SerializeField]
+    protected droid.Runtime.Interfaces.IManager SimulationManager { get; set; }
 
     #endregion
   }

@@ -1,16 +1,12 @@
-﻿using System;
-using System.Text.RegularExpressions;
-using droid.Runtime.Utilities;
-using UnityEngine;
-
-namespace droid.Runtime.ScriptableObjects {
+﻿namespace droid.Runtime.ScriptableObjects {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [CreateAssetMenu(fileName = "PlayerMotions",
-                   menuName = ScriptableObjectMenuPath._ScriptableObjectMenuPath + "PlayerMotions",
-                   order = 1)]
-  public class PlayerMotions : ScriptableObject {
+  [UnityEngine.CreateAssetMenuAttribute(fileName = "PlayerMotions",
+                                        menuName = ScriptableObjectMenuPath._ScriptableObjectMenuPath
+                                                   + "PlayerMotions",
+                                        order = 1)]
+  public class PlayerMotions : UnityEngine.ScriptableObject {
     /// <summary>
     /// </summary>
     public PlayerMotion[] _Motions;
@@ -30,12 +26,13 @@ namespace droid.Runtime.ScriptableObjects {
         for (var i = 0; i < copy.Length; i++) {
           var actor = copy[i]._Actor;
           if (actor != null) {
-            copy[i]._Actor = Regex.Replace(input : actor, "[^\\w\\._]", "");
+            copy[i]._Actor = System.Text.RegularExpressions.Regex.Replace(input : actor, "[^\\w\\._]", "");
           }
 
           var actuator = copy[i]._Actuator;
           if (actuator != null) {
-            copy[i]._Actuator = Regex.Replace(input : actuator, "[^\\w\\._]", "");
+            copy[i]._Actuator =
+                System.Text.RegularExpressions.Regex.Replace(input : actuator, "[^\\w\\._]", "");
           }
         }
       }
@@ -46,12 +43,12 @@ namespace droid.Runtime.ScriptableObjects {
 
   /// <summary>
   /// </summary>
-  [Serializable]
+  [System.SerializableAttribute]
   public struct PlayerMotion {
     /// <summary>
     /// </summary>
-    [SearchableEnum]
-    public KeyCode _Key;
+    [droid.Runtime.Utilities.SearchableEnumAttribute]
+    public UnityEngine.KeyCode _Key;
 
     /// <summary>
     /// </summary>

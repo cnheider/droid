@@ -1,16 +1,15 @@
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace droid.Runtime.ScriptableObjects.SerialisableDictionary {
-  public abstract class SerializableDictionary<TK, TV> : ISerializationCallbackReceiver {
-    public Dictionary<TK, TV> _Dict;
-    [SerializeField] TK[] _keys;
+  public abstract class SerializableDictionary<TK, TV> : UnityEngine.ISerializationCallbackReceiver {
+    public System.Collections.Generic.Dictionary<TK, TV> _Dict;
+    [UnityEngine.SerializeField] TK[] _keys;
 
-    [SerializeField] TV[] _values;
+    [UnityEngine.SerializeField] TV[] _values;
+
+    #region ISerializationCallbackReceiver Members
 
     public void OnAfterDeserialize() {
       var c = this._keys.Length;
-      this._Dict = new Dictionary<TK, TV>(capacity : c);
+      this._Dict = new System.Collections.Generic.Dictionary<TK, TV>(capacity : c);
       for (var i = 0; i < c; i++) {
         this._Dict[key : this._keys[i]] = this._values[i];
       }
@@ -34,8 +33,10 @@ namespace droid.Runtime.ScriptableObjects.SerialisableDictionary {
       }
     }
 
+    #endregion
+
     public static T New<T>() where T : SerializableDictionary<TK, TV>, new() {
-      var result = new T {_Dict = new Dictionary<TK, TV>()};
+      var result = new T {_Dict = new System.Collections.Generic.Dictionary<TK, TV>()};
       return result;
     }
   }

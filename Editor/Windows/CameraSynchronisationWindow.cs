@@ -1,65 +1,46 @@
-﻿using UnityEngine;
-#if UNITY_EDITOR
-using droid.Runtime.GameObjects.NeodroidCamera;
-using UnityEditor;
-
+﻿#if UNITY_EDITOR
 namespace droid.Editor.Windows {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  public class CameraSynchronisationWindow : EditorWindow {
-    SynchroniseCameraProperties[] _cameras;
+  public class CameraSynchronisationWindow : UnityEditor.EditorWindow {
+    droid.Runtime.GameObjects.NeodroidCamera.SynchroniseCameraProperties[] _cameras;
 
-    Texture _icon;
-    Vector2 _scroll_position;
+    UnityEngine.Texture _icon;
+    UnityEngine.Vector2 _scroll_position;
     bool[] _show_camera_properties;
 
     /// <summary>
     /// </summary>
-    [MenuItem(itemName : EditorWindowMenuPath._WindowMenuPath + "CameraSynchronisationWindow")]
-    [MenuItem(itemName : EditorWindowMenuPath._ToolMenuPath + "CameraSynchronisationWindow")]
-    public static void ShowWindow() {
-      GetWindow(t : typeof(CameraSynchronisationWindow)); //Show existing window instance. If one doesn't exist, make one.
-    }
-
-    /// <summary>
-    /// </summary>
     void OnEnable() {
-      this._cameras = FindObjectsOfType<SynchroniseCameraProperties>();
+      this._cameras =
+          FindObjectsOfType<droid.Runtime.GameObjects.NeodroidCamera.SynchroniseCameraProperties>();
       this.Setup();
       this._icon =
-          (Texture2D)AssetDatabase.LoadAssetAtPath(assetPath :
-                                                   NeodroidSettings.Current.NeodroidImportLocationProp
-                                                   + "Gizmos/Icons/arrow_refresh.png",
-                                                   type : typeof(Texture2D));
-      this.titleContent = new GUIContent("Neo:Sync",
-                                         image : this._icon,
-                                         "Window for controlling synchronisation of cameras");
-    }
-
-    /// <summary>
-    /// </summary>
-    void Setup() {
-      this._show_camera_properties = new bool[this._cameras.Length];
-      for (var i = 0; i < this._cameras.Length; i++) {
-        this._show_camera_properties[i] = false;
-      }
+          (UnityEngine.Texture2D)UnityEditor.AssetDatabase.LoadAssetAtPath(assetPath :
+            $"{NeodroidSettings.Current.NeodroidImportLocationProp}Gizmos/Icons/arrow_refresh.png",
+            type : typeof(UnityEngine.Texture2D));
+      this.titleContent = new UnityEngine.GUIContent("Neo:Sync",
+                                                     image : this._icon,
+                                                     "Window for controlling synchronisation of cameras");
     }
 
     /// <summary>
     /// </summary>
     void OnGUI() {
-      this._cameras = FindObjectsOfType<SynchroniseCameraProperties>();
+      this._cameras =
+          FindObjectsOfType<droid.Runtime.GameObjects.NeodroidCamera.SynchroniseCameraProperties>();
       if (this._cameras.Length > 0) {
-        var serialised_object = new SerializedObject(obj : this);
-        this._scroll_position = EditorGUILayout.BeginScrollView(scrollPosition : this._scroll_position);
+        var serialised_object = new UnityEditor.SerializedObject(obj : this);
+        this._scroll_position =
+            UnityEditor.EditorGUILayout.BeginScrollView(scrollPosition : this._scroll_position);
         if (this._show_camera_properties != null) {
           for (var i = 0; i < this._show_camera_properties.Length; i++) {
             this._show_camera_properties[i] =
-                EditorGUILayout.Foldout(foldout : this._show_camera_properties[i],
-                                        content : this._cameras[i].name);
+                UnityEditor.EditorGUILayout.Foldout(foldout : this._show_camera_properties[i],
+                                                    content : this._cameras[i].name);
             if (this._show_camera_properties[i]) {
-              EditorGUILayout.BeginVertical("Box");
+              UnityEditor.EditorGUILayout.BeginVertical("Box");
               /*
               this._cameras[i].SyncOrthographicSize =
                   EditorGUILayout.Toggle("Synchronise Orthographic Size",
@@ -71,12 +52,12 @@ namespace droid.Editor.Windows {
               this._cameras[i].SyncCullingMask =
                   EditorGUILayout.Toggle("Synchronise Culling Mask", this._cameras[i].SyncCullingMask);
               */
-              EditorGUILayout.EndVertical();
+              UnityEditor.EditorGUILayout.EndVertical();
             }
           }
         }
 
-        EditorGUILayout.EndScrollView();
+        UnityEditor.EditorGUILayout.EndScrollView();
         serialised_object.ApplyModifiedProperties(); // Remember to apply modified properties
       }
 
@@ -90,6 +71,23 @@ namespace droid.Editor.Windows {
     /// <summary>
     /// </summary>
     public void OnInspectorUpdate() { this.Repaint(); }
+
+    /// <summary>
+    /// </summary>
+    [UnityEditor.MenuItem(itemName : EditorWindowMenuPath._WindowMenuPath + "CameraSynchronisationWindow")]
+    [UnityEditor.MenuItem(itemName : EditorWindowMenuPath._ToolMenuPath + "CameraSynchronisationWindow")]
+    public static void ShowWindow() {
+      GetWindow(t : typeof(CameraSynchronisationWindow)); //Show existing window instance. If one doesn't exist, make one.
+    }
+
+    /// <summary>
+    /// </summary>
+    void Setup() {
+      this._show_camera_properties = new bool[this._cameras.Length];
+      for (var i = 0; i < this._cameras.Length; i++) {
+        this._show_camera_properties[i] = false;
+      }
+    }
   }
 }
 

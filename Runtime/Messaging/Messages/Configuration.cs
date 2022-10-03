@@ -1,16 +1,15 @@
-﻿using System;
-using droid.Runtime.Interfaces;
-
-namespace droid.Runtime.Messaging.Messages {
+﻿namespace droid.Runtime.Messaging.Messages {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  public class Configuration : IConfigurableConfiguration {
+  public class Configuration : droid.Runtime.Interfaces.IConfigurableConfiguration {
     public Configuration(string configurable_name, float configurable_value, bool sample_random = false) {
       this.ConfigurableName = configurable_name;
       this.ConfigurableValue = configurable_value;
       this.SampleRandom = sample_random;
     }
+
+    #region IConfigurableConfiguration Members
 
     /// <inheritdoc />
     /// <summary>
@@ -18,14 +17,16 @@ namespace droid.Runtime.Messaging.Messages {
     public string ConfigurableName { get; set; }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
     public bool SampleRandom { get; set; }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     public float ConfigurableValue { get; set; }
+
+    #endregion
 
     /// <summary>
     /// </summary>

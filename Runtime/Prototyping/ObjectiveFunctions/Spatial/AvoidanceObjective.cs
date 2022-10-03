@@ -1,23 +1,26 @@
-﻿using droid.Runtime.GameObjects.ChildSensors;
-using UnityEngine;
-using Object = System.Object;
-
-namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
+﻿namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : EvaluationComponentMenuPath._ComponentMenuPath
-                               + "PunishmentFunction"
-                               + EvaluationComponentMenuPath._Postfix)]
-  [RequireComponent(requiredComponent : typeof(Rigidbody))]
+  [UnityEngine.AddComponentMenu(menuName : EvaluationComponentMenuPath._ComponentMenuPath
+                                           + "PunishmentFunction"
+                                           + EvaluationComponentMenuPath._Postfix)]
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.Rigidbody))]
   public class AvoidanceObjective : SpatialObjective {
-    [SerializeField] string _avoid_tag = "balls";
-    [SerializeField] int _hits = 0;
+    [UnityEngine.SerializeField] string _avoid_tag = "balls";
+    [UnityEngine.SerializeField] int _hits = 0;
 
     //[SerializeField] LayerMask _layer_mask;
 
-    [SerializeField] GameObject _player = null;
-    [SerializeField] GameObject[] tagged_gos;
+    [UnityEngine.SerializeField] UnityEngine.GameObject _player = null;
+    [UnityEngine.SerializeField] UnityEngine.GameObject[] tagged_gos;
+
+    void OnDrawGizmosSelected() {
+      var player_pos = this._player.transform.position;
+      foreach (var o in this.tagged_gos) {
+        UnityEngine.Debug.DrawLine(start : player_pos, end : o.transform.position);
+      }
+    }
 
     // Use this for initialization
     /// <inheritdoc />
@@ -26,13 +29,13 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
     public override void RemotePostSetup() {
       this.ResetHits();
 
-      tagged_gos = GameObject.FindGameObjectsWithTag(tag : this._avoid_tag);
+      this.tagged_gos = UnityEngine.GameObject.FindGameObjectsWithTag(tag : this._avoid_tag);
 
-      foreach (var ball in tagged_gos) {
+      foreach (var ball in this.tagged_gos) {
         if (ball) {
-          var publisher = ball.GetComponent<ChildCollider3DSensor>();
+          var publisher = ball.GetComponent<droid.Runtime.GameObjects.ChildSensors.ChildCollider3DSensor>();
           if (!publisher || publisher.Caller != this) {
-            publisher = ball.AddComponent<ChildCollider3DSensor>();
+            publisher = ball.AddComponent<droid.Runtime.GameObjects.ChildSensors.ChildCollider3DSensor>();
           }
 
           publisher.Caller = this;
@@ -41,22 +44,14 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
       }
     }
 
-    void OnDrawGizmosSelected() {
-      var player_pos = this._player.transform.position;
-      foreach (var o in this.tagged_gos) {
-        Debug.DrawLine(start : player_pos , end : o.transform.position);
-      }
-
-    }
-    
-    void OnChildCollision(GameObject child_sensor_game_object, Collision collision) {
+    void OnChildCollision(UnityEngine.GameObject child_sensor_game_object, UnityEngine.Collision collision) {
       if (collision.collider.name == this._player.name) {
         this._hits += 1;
       }
 
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        Debug.Log(message : this._hits);
+        UnityEngine.Debug.Log(message : this._hits);
       }
       #endif
     }

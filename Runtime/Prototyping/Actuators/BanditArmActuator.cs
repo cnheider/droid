@@ -1,26 +1,33 @@
-﻿using System;
-using droid.Runtime.Interfaces;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Actuators {
+﻿namespace droid.Runtime.Prototyping.Actuators {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : ActuatorComponentMenuPath._ComponentMenuPath
-                               + "BanditArm"
-                               + ActuatorComponentMenuPath._Postfix)]
+  [UnityEngine.AddComponentMenu(menuName : ActuatorComponentMenuPath._ComponentMenuPath
+                                           + "BanditArm"
+                                           + ActuatorComponentMenuPath._Postfix)]
   public class BanditArmActuator : Actuator {
-    [SerializeField] Material _material;
+    [UnityEngine.SerializeField] UnityEngine.Material _material;
+
+    public override string[] InnerMotionNames {
+      get {
+        return new[] {
+                         "1",
+                         "2",
+                         "3",
+                         "4"
+                     };
+      }
+    }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     public override void Setup() {
-      var renderr = this.GetComponent<Renderer>();
+      var renderr = this.GetComponent<UnityEngine.Renderer>();
       if (renderr) {
         this._material = renderr.sharedMaterial;
       } else {
-        var rendr = this.GetComponent<CanvasRenderer>();
+        var rendr = this.GetComponent<UnityEngine.CanvasRenderer>();
         if (rendr) {
           this._material = rendr.GetMaterial();
         }
@@ -32,33 +39,25 @@ namespace droid.Runtime.Prototyping.Actuators {
     /// </summary>
     /// <param name="motion"></param>
     /// <exception cref="T:System.ArgumentOutOfRangeException"></exception>
-    protected override void InnerApplyMotion(IMotion motion) {
+    protected override void InnerApplyMotion(droid.Runtime.Interfaces.IMotion motion) {
       if (this._material) {
         switch ((int)motion.Strength) {
           case 1:
-            this._material.color = Color.blue;
+            this._material.color = UnityEngine.Color.blue;
             break;
           case 2:
-            this._material.color = Color.black;
+            this._material.color = UnityEngine.Color.black;
             break;
           case 3:
-            this._material.color = Color.red;
+            this._material.color = UnityEngine.Color.red;
             break;
           case 4:
-            this._material.color = Color.green;
+            this._material.color = UnityEngine.Color.green;
             break;
           default:
-            throw new ArgumentOutOfRangeException();
+            throw new System.ArgumentOutOfRangeException();
         }
       }
     }
-
-    public override string[] InnerMotionNames =>
-        new[] {
-                  "1",
-                  "2",
-                  "3",
-                  "4"
-              };
   }
 }

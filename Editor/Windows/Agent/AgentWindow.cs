@@ -1,29 +1,24 @@
 #if UNITY_EDITOR
-using System;
-using droid.Editor.Utilities.Commands;
-using UnityEditor;
-using UnityEngine;
-
 namespace droid.Editor.Windows.Agent {
-  public class AgentWindow : EditorWindow {
-    [MenuItem(itemName : EditorWindowMenuPath._WindowMenuPath + "/Agents")]
-    static void ShowWindow() { GetWindow<AgentWindow>(); }
-
+  public class AgentWindow : UnityEditor.EditorWindow {
     //string _last_message = String.Empty;
 
-    void OnEnable() { this.titleContent = new GUIContent("Agents"); }
+    void OnEnable() { this.titleContent = new UnityEngine.GUIContent("Agents"); }
 
     void OnGUI() {
-      if (GUILayout.Button("DQN-Agent")) {
-        Commands.RunDqnAgent();
+      if (UnityEngine.GUILayout.Button("DQN-Agent")) {
+        droid.Editor.Utilities.Commands.Commands.RunDqnAgent();
       }
 
-      if (GUILayout.Button("PG-Agent")) {
-        Commands.RunPgAgent();
+      if (UnityEngine.GUILayout.Button("PG-Agent")) {
+        droid.Editor.Utilities.Commands.Commands.RunPgAgent();
       }
 
       //GUILayout.Label(text : this._last_message);
     }
+
+    [UnityEditor.MenuItem(itemName : EditorWindowMenuPath._WindowMenuPath + "/Agents")]
+    static void ShowWindow() { GetWindow<AgentWindow>(); }
   }
 }
 #endif

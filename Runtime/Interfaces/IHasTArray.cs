@@ -7,7 +7,6 @@
     dynamic[] ObservationArray { get; }
 
     /// <summary>
-    ///
     /// </summary>
     ISpace[] ObservationSpace { get; }
   }

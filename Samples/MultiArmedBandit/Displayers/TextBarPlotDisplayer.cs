@@ -1,24 +1,31 @@
-﻿using System;
-using droid.Runtime.Prototyping.Displayers;
-using droid.Runtime.Prototyping.Displayers.Canvas;
-using droid.Runtime.Prototyping.EnvironmentListener;
-using UnityEngine;
-
-namespace droid.Samples.MultiArmedBandit.Displayers {
+﻿namespace droid.Samples.MultiArmedBandit.Displayers {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : DisplayerComponentMenuPath._ComponentMenuPath
-                               + "TextBarPlot"
-                               + DisplayerComponentMenuPath._Postfix)]
-  public class TextBarPlotDisplayer : EnvironmentListener {
-    [SerializeField] CanvasBarDisplayer[] _canvas_bars = { };
-    [SerializeField] CanvasTextDisplayer[] _canvas_text = { };
+  [UnityEngine.AddComponentMenu(menuName : droid.Runtime.Prototyping.Displayers.DisplayerComponentMenuPath
+                                                ._ComponentMenuPath
+                                           + "TextBarPlot"
+                                           + droid.Runtime.Prototyping.Displayers.DisplayerComponentMenuPath
+                                                  ._Postfix)]
+  public class TextBarPlotDisplayer : droid.Runtime.Prototyping.EnvironmentListener.EnvironmentListener {
+    [UnityEngine.SerializeField]
+    droid.Runtime.Prototyping.Displayers.Canvas.CanvasBarDisplayer[] _canvas_bars = { };
+
+    [UnityEngine.SerializeField]
+    droid.Runtime.Prototyping.Displayers.Canvas.CanvasTextDisplayer[] _canvas_text = { };
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     public override string PrototypingTypeName { get { return "TextBarPlot"; } }
+
+    void Update() {
+      #if NEODROID_DEBUG
+      if (this.Debugging) {
+        //this.Display(this._values);
+      }
+      #endif
+    }
 
     /// <inheritdoc />
     /// <summary>
@@ -32,21 +39,13 @@ namespace droid.Samples.MultiArmedBandit.Displayers {
       }
     }
 
-    void Update() {
-      #if NEODROID_DEBUG
-      if (this.Debugging) {
-        //this.Display(this._values);
-      }
-      #endif
-    }
-
     /// <summary>
     /// </summary>
     /// <param name="values"></param>
     public void Display(float[] values) {
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        Debug.Log(message : $"Displaying {values} at {this.Identifier}");
+        UnityEngine.Debug.Log(message : $"Displaying {values} at {this.Identifier}");
       }
       #endif
 

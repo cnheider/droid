@@ -1,20 +1,22 @@
-﻿using UnityEngine;
-
-namespace droid.Runtime.Utilities.InternalReactions {
+﻿namespace droid.Runtime.Utilities.InternalReactions {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  public class KeyEventEnabler : MonoBehaviour {
-    [SerializeField] GameObject _game_object = null;
+  public class KeyEventEnabler : UnityEngine.MonoBehaviour {
+    [UnityEngine.SerializeField] UnityEngine.GameObject _game_object = null;
 
-    [SerializeField] [SearchableEnum] KeyCode _key = KeyCode.None;
+    [UnityEngine.SerializeField]
+    [SearchableEnum]
+    UnityEngine.KeyCode _key = UnityEngine.KeyCode.None;
 
     /// <summary>
     /// </summary>
     void Update() {
-      if (Input.GetKeyDown(key : this._key)) {
+      #if !INPUT_SYSTEM_EXISTS
+      if (UnityEngine.Input.GetKeyDown(key : this._key)) {
         this._game_object?.SetActive(value : !this._game_object.activeSelf);
       }
+      #endif
     }
   }
 }

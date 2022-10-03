@@ -1,28 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using droid.Runtime.GameObjects.ChildSensors;
-using UnityEngine;
-using Random = UnityEngine.Random;
-
-namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
+﻿namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
   public class SeekAndAvoidObjective : ObjectiveFunction {
-    [SerializeField] Transform _actor = null;
-    [SerializeField] GameObject _avoidable = null;
-    List<GameObject> _avoidables = null;
-    [SerializeField] GameObject _collectible = null;
-    List<GameObject> _collectibles = null;
-    [SerializeField] int _end_game_radius = 10;
-    Vector3 _initial_actor_position = Vector3.zero;
-    [SerializeField] int _num_avoidables = 50;
-    [SerializeField] int _num_collectibles = 50;
-    [SerializeField] int _penalty = -1;
-    [SerializeField] int _reward = 1;
+    [UnityEngine.SerializeField] UnityEngine.Transform _actor = null;
+    [UnityEngine.SerializeField] UnityEngine.GameObject _avoidable = null;
+    [UnityEngine.SerializeField] UnityEngine.GameObject _collectible = null;
+    [UnityEngine.SerializeField] int _end_game_radius = 10;
+    [UnityEngine.SerializeField] int _num_avoidables = 50;
+    [UnityEngine.SerializeField] int _num_collectibles = 50;
+    [UnityEngine.SerializeField] int _penalty = -1;
+    [UnityEngine.SerializeField] int _reward = 1;
+    [UnityEngine.SerializeField] int _spawn_radius = 10;
+    System.Collections.Generic.List<UnityEngine.GameObject> _avoidables = null;
+    System.Collections.Generic.List<UnityEngine.GameObject> _collectibles = null;
+    UnityEngine.Vector3 _initial_actor_position = UnityEngine.Vector3.zero;
     float _score;
-    [SerializeField] int _spawn_radius = 10;
-    List<Vector3> _spawned_locations = null;
+    System.Collections.Generic.List<UnityEngine.Vector3> _spawned_locations = null;
 
     /// <inheritdoc />
     /// <summary>
@@ -37,7 +31,7 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
       // The game ends if the number of good balls is 0, or if the robot is too far from start
       var actor = this._actor;
       if (actor != null) {
-        var dist = Vector3.Distance(a : this._initial_actor_position, b : actor.position);
+        var dist = UnityEngine.Vector3.Distance(a : this._initial_actor_position, b : actor.position);
         var game_objects = this._collectibles;
         var is_over = game_objects != null && (game_objects.Count == 0 || dist > this._end_game_radius);
 
@@ -53,18 +47,22 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
     /// <summary>
     /// </summary>
     public override void InternalReset() {
-      if (!Application.isPlaying) {
+      if (!UnityEngine.Application.isPlaying) {
         return;
       }
 
       var actor = this._actor;
       if (actor != null) {
         this._initial_actor_position = actor.position;
-        var remote_sensor = this._actor.GetComponentInChildren<ChildColliderSensor<Collider, Collision>>();
+        var remote_sensor = this._actor
+                                .GetComponentInChildren<droid.Runtime.GameObjects.ChildSensors.
+                                    ChildColliderSensor<UnityEngine.Collider, UnityEngine.Collision>>();
         if (!remote_sensor) {
-          var col = this._actor.GetComponentInChildren<Collider>();
+          var col = this._actor.GetComponentInChildren<UnityEngine.Collider>();
           if (col) {
-            remote_sensor = col.gameObject.AddComponent<ChildColliderSensor<Collider, Collision>>();
+            remote_sensor = col.gameObject
+                               .AddComponent<droid.Runtime.GameObjects.ChildSensors.ChildColliderSensor<
+                                   UnityEngine.Collider, UnityEngine.Collision>>();
           }
         }
 
@@ -80,11 +78,11 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
       this.SpawnAvoidables();
     }
 
-    void OnChildTriggerEnter(GameObject child_game_object, Collision collision) {
+    void OnChildTriggerEnter(UnityEngine.GameObject child_game_object, UnityEngine.Collision collision) {
       this.OnChildTriggerEnter(child_game_object : child_game_object, collider1 : collision.collider);
     }
 
-    void OnChildTriggerEnter(GameObject child_game_object, Collider collider1) {
+    void OnChildTriggerEnter(UnityEngine.GameObject child_game_object, UnityEngine.Collider collider1) {
       #if NEODROID_DEBUG
       if (this.Debugging) {
         print(message : $"{child_game_object} is colliding with {collider1}");
@@ -127,23 +125,23 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
       }
     }
 
-    GameObject RandomSpawn(GameObject prefab, Vector3 position) {
+    UnityEngine.GameObject RandomSpawn(UnityEngine.GameObject prefab, UnityEngine.Vector3 position) {
       this._spawned_locations.Add(item : position);
 
       if (prefab != null) {
-        Vector3 location;
+        UnityEngine.Vector3 location;
         do {
           location = this._actor.transform.position;
-          location.x += Random.Range(min : -this._spawn_radius, max : this._spawn_radius);
+          location.x += UnityEngine.Random.Range(minInclusive : -this._spawn_radius, maxExclusive : this._spawn_radius);
           location.y = position.y + 1f;
-          location.z += Random.Range(min : -this._spawn_radius, max : this._spawn_radius);
+          location.z += UnityEngine.Random.Range(minInclusive : -this._spawn_radius, maxExclusive : this._spawn_radius);
         } while (this._spawned_locations.Contains(item : location));
 
         this._spawned_locations.Add(item : location);
 
         return Instantiate(original : prefab,
                            position : location,
-                           rotation : Quaternion.identity,
+                           rotation : UnityEngine.Quaternion.identity,
                            parent : this.ParentEnvironment.Transform);
       }
 
@@ -154,7 +152,7 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
       if (this._spawned_locations != null) {
         this._spawned_locations.Clear();
       } else {
-        this._spawned_locations = new List<Vector3>();
+        this._spawned_locations = new System.Collections.Generic.List<UnityEngine.Vector3>();
       }
 
       if (this._collectibles != null) {
@@ -164,7 +162,7 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
 
         this._collectibles.Clear();
       } else {
-        this._collectibles = new List<GameObject>();
+        this._collectibles = new System.Collections.Generic.List<UnityEngine.GameObject>();
       }
 
       if (this._avoidables != null) {
@@ -174,7 +172,7 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
 
         this._avoidables.Clear();
       } else {
-        this._avoidables = new List<GameObject>();
+        this._avoidables = new System.Collections.Generic.List<UnityEngine.GameObject>();
       }
     }
   }

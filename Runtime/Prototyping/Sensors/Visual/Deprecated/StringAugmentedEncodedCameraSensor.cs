@@ -1,28 +1,23 @@
-﻿using System;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Utilities;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
+﻿namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
   /// <inheritdoc cref="Sensor" />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
-                               + "StringAugmentedCamera"
-                               + SensorComponentMenuPath._Postfix)]
-  [ExecuteInEditMode]
-  [RequireComponent(requiredComponent : typeof(Camera))]
+  [UnityEngine.AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
+                                           + "StringAugmentedCamera"
+                                           + SensorComponentMenuPath._Postfix)]
+  [UnityEngine.ExecuteInEditMode]
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.Camera))]
   public class StringAugmentedEncodedCameraSensor : EncodedCameraSensor,
-                                                    IHasString {
+                                                    droid.Runtime.Interfaces.IHasString {
     const string _color_identifier = "Colors";
-
-    string _colors;
 
     /// <summary>
     /// </summary>
-    [Header("Observation", order = 103)]
-    [SerializeField]
+    [UnityEngine.HeaderAttribute("Observation", order = 103)]
+    [UnityEngine.SerializeField]
     protected string serialised_string;
+
+    string _colors;
 
     /// <summary>
     /// </summary>
@@ -41,14 +36,14 @@ namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
     /// </summary>
     protected override void RegisterComponent() {
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : this,
-                                                          identifier : this.Identifier);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : this,
+            identifier : this.Identifier);
 
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : this,
-                                                          identifier : this._colors);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : this,
+            identifier : this._colors);
     }
 
     /// <inheritdoc />

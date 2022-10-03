@@ -1,22 +1,19 @@
-﻿using droid.Editor.Windows;
-using UnityEngine;
-#if UNITY_EDITOR
-using droid.Runtime.ScriptableObjects;
-using UnityEditor;
-
+﻿#if UNITY_EDITOR
 namespace droid.Editor.ScriptableObjects {
   public static class CreateSegmentations {
-    [MenuItem(itemName : EditorScriptableObjectMenuPath._ScriptableObjectMenuPath + "Segmentations")]
+    [UnityEditor.MenuItem(itemName : EditorScriptableObjectMenuPath._ScriptableObjectMenuPath
+                                     + "Segmentations")]
     public static void CreateSegmentationsAsset() {
-      var asset = ScriptableObject.CreateInstance<Segmentation>();
+      var asset = UnityEngine.ScriptableObject.CreateInstance<droid.Runtime.ScriptableObjects.Segmentation>();
 
-      AssetDatabase.CreateAsset(asset : asset,
-                                path : EditorWindowMenuPath._NewAssetPath + "Assets/NewSegmentations.asset");
-      AssetDatabase.SaveAssets();
+      UnityEditor.AssetDatabase.CreateAsset(asset : asset,
+                                            path :
+                                            $"{droid.Editor.Windows.EditorWindowMenuPath._NewAssetPath}Assets/NewSegmentations.asset");
+      UnityEditor.AssetDatabase.SaveAssets();
 
-      EditorUtility.FocusProjectWindow();
+      UnityEditor.EditorUtility.FocusProjectWindow();
 
-      Selection.activeObject = asset;
+      UnityEditor.Selection.activeObject = asset;
     }
   }
 }

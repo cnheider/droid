@@ -1,12 +1,12 @@
 #if UNITY_POST_PROCESSING_STACK_V2
-using droid.Runtime.Utilities.PostProcessesEffects;
-using UnityEditor.Rendering.PostProcessing;
-
 namespace droid.Editor.Utilities.PostProcessing {
-  [PostProcessEditor(settingsType : typeof(Flipper))]
-  public sealed class FlipEditor : PostProcessEffectEditor<Flipper> {
-    SerializedParameterOverride _m_flip_x;
-    SerializedParameterOverride _m_flip_y;
+  [UnityEditor.Rendering.PostProcessing.PostProcessEditorAttribute(settingsType :
+                                                                    typeof(droid.Runtime.Utilities.
+                                                                        PostProcessesEffects.Flipper))]
+  public sealed class FlipEditor : UnityEditor.Rendering.PostProcessing.PostProcessEffectEditor<
+      droid.Runtime.Utilities.PostProcessesEffects.Flipper> {
+    UnityEditor.Rendering.PostProcessing.SerializedParameterOverride _m_flip_x;
+    UnityEditor.Rendering.PostProcessing.SerializedParameterOverride _m_flip_y;
 
     public override void OnEnable() {
       this._m_flip_x = this.FindParameterOverride(x => x.flip_x);

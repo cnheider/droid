@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial.Waypoint {
+﻿namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial.Waypoint {
   /// <inheritdoc />
-  ///  <summary>
-  ///  </summary>
-  [AddComponentMenu(menuName : EvaluationComponentMenuPath._ComponentMenuPath
-                               + "WaypointSequence"
-                               + EvaluationComponentMenuPath._Postfix)]
+  /// <summary>
+  /// </summary>
+  [UnityEngine.AddComponentMenu(menuName : EvaluationComponentMenuPath._ComponentMenuPath
+                                           + "WaypointSequence"
+                                           + EvaluationComponentMenuPath._Postfix)]
   class WaypointSequenceObjective : SpatialObjective {
-    [SerializeField] Waypoint[] waypoints;
-    [SerializeField] Waypoint last_waypoint;
-    [SerializeField] Waypoint current_waypoint;
-    [SerializeField] Waypoint next_waypoint;
-    [SerializeField] Transform tracking_point;
-    [SerializeField] IEnumerator waypoint_enumerator;
+    [UnityEngine.SerializeField] Waypoint[] waypoints;
+    [UnityEngine.SerializeField] Waypoint last_waypoint;
+    [UnityEngine.SerializeField] Waypoint current_waypoint;
+    [UnityEngine.SerializeField] Waypoint next_waypoint;
+    [UnityEngine.SerializeField] UnityEngine.Transform tracking_point;
 
-    [SerializeField] float margin = 0.01f;
-    [SerializeField] bool inverse = false;
-    [SerializeField] bool reward_for_accounting_for_next;
-    [SerializeField] bool reward_for_smoothing_with_last;
+    [UnityEngine.SerializeField] float margin = 0.01f;
+    [UnityEngine.SerializeField] bool inverse = false;
+    [UnityEngine.SerializeField] bool reward_for_accounting_for_next;
+    [UnityEngine.SerializeField] bool reward_for_smoothing_with_last;
+    [UnityEngine.SerializeField] System.Collections.IEnumerator waypoint_enumerator;
 
     public override void InternalReset() {
       if (this.waypoint_enumerator == null) {
@@ -51,8 +47,8 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial.Waypoint {
 
     public override float InternalEvaluate() {
       var signal = 0.0f;
-      var distance = Vector3.Distance(a : this.tracking_point.position,
-                                      b : this.current_waypoint.transform.position);
+      var distance = UnityEngine.Vector3.Distance(a : this.tracking_point.position,
+                                                  b : this.current_waypoint.transform.position);
 
       if (distance <= this.current_waypoint.Radius + this.margin) {
         this.MoveToNext();
@@ -67,13 +63,15 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial.Waypoint {
 
       if (this.reward_for_accounting_for_next) {
         signal += 1
-                  / Vector3.Distance(a : this.tracking_point.position,
-                                     b : this.current_waypoint.transform.position);
-        signal += Vector3.Dot(lhs : this.tracking_point.forward, rhs : this.next_waypoint.transform.forward);
+                  / UnityEngine.Vector3.Distance(a : this.tracking_point.position,
+                                                 b : this.current_waypoint.transform.position);
+        signal += UnityEngine.Vector3.Dot(lhs : this.tracking_point.forward,
+                                          rhs : this.next_waypoint.transform.forward);
       }
 
       if (this.reward_for_smoothing_with_last) {
-        signal += Vector3.Dot(lhs : this.tracking_point.forward, rhs : this.next_waypoint.transform.forward);
+        signal += UnityEngine.Vector3.Dot(lhs : this.tracking_point.forward,
+                                          rhs : this.next_waypoint.transform.forward);
       }
 
       return signal;

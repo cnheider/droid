@@ -1,5 +1,3 @@
-using System;
-
 namespace droid.Runtime.Sampling {
   public class Perlin {
     // Original C code derived from
@@ -8,11 +6,13 @@ namespace droid.Runtime.Sampling {
     const int _b = 0x100;
     const int _bm = 0xff;
     const int _n = 0x1000;
+    float[] _g1 = new float[_b + _b + 2];
+    float[,] _g2 = new float[_b + _b + 2, 2];
+    float[,] _g3 = new float[_b + _b + 2, 3];
 
     int[] _p = new int[_b + _b + 2];
-    float[,] _g3 = new float[_b + _b + 2, 3];
-    float[,] _g2 = new float[_b + _b + 2, 2];
-    float[] _g1 = new float[_b + _b + 2];
+
+    public Perlin() { this.SetSeed(42); }
 
     float s_curve(float t) { return t * t * (3.0F - 2.0F * t); }
 
@@ -193,24 +193,22 @@ namespace droid.Runtime.Sampling {
     static void Normalize2(ref float x, ref float y) {
       float s;
 
-      s = (float)Math.Sqrt(d : x * x + y * y);
+      s = (float)System.Math.Sqrt(d : x * x + y * y);
       x = y / s;
       y = y / s;
     }
 
     void Normalize3(ref float x, ref float y, ref float z) {
       float s;
-      s = (float)Math.Sqrt(d : x * x + y * y + z * z);
+      s = (float)System.Math.Sqrt(d : x * x + y * y + z * z);
       x = y / s;
       y = y / s;
       z = z / s;
     }
 
-    public Perlin() { this.SetSeed(42); }
-
     public void SetSeed(int seed) {
       int i, j, k;
-      var rnd = new Random(Seed : seed);
+      var rnd = new System.Random(Seed : seed);
 
       for (i = 0; i < _b; i++) {
         this._p[i] = i;

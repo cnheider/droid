@@ -1,12 +1,7 @@
-﻿using System;
-using System.Linq;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Messaging.Messages.Displayables;
-
-namespace droid.Runtime.Messaging.Messages {
+﻿namespace droid.Runtime.Messaging.Messages {
   /// <summary>
   /// </summary>
-  [Serializable]
+  [System.SerializableAttribute]
   public class Reaction {
     /// <summary>
     /// </summary>
@@ -14,22 +9,25 @@ namespace droid.Runtime.Messaging.Messages {
     public override string ToString() {
       var motions_str = "";
       if (this.Motions != null) {
-        motions_str =
-            this.Motions.Aggregate(seed : motions_str, (current, motion) => current + (motion + "\n"));
+        motions_str = System.Linq.Enumerable.Aggregate(source : this.Motions,
+                                                       seed : motions_str,
+                                                       (current, motion) => current + (motion + "\n"));
       }
 
       var configurations_str = "";
       if (this.Configurations != null) {
-        configurations_str = this.Configurations.Aggregate(seed : configurations_str,
-                                                           (current, configuration) =>
-                                                               current + (configuration + "\n"));
+        configurations_str = System.Linq.Enumerable.Aggregate(source : this.Configurations,
+                                                              seed : configurations_str,
+                                                              (current, configuration) =>
+                                                                  current + (configuration + "\n"));
       }
 
       var displayables_str = "";
       if (this.Displayables != null) {
-        displayables_str = this.Displayables.Aggregate(seed : displayables_str,
-                                                       (current, displayable) =>
-                                                           current + (displayable + "\n"));
+        displayables_str = System.Linq.Enumerable.Aggregate(source : this.Displayables,
+                                                            seed : displayables_str,
+                                                            (current, displayable) =>
+                                                                current + (displayable + "\n"));
       }
 
       return "<Reaction>\n "
@@ -40,10 +38,10 @@ namespace droid.Runtime.Messaging.Messages {
     #region Constructors
 
     public Reaction(ReactionParameters parameters,
-                    IMotion[] motions,
+                    droid.Runtime.Interfaces.IMotion[] motions,
                     Configuration[] configurations,
                     Unobservables unobservables,
-                    Displayable[] displayables,
+                    droid.Runtime.Messaging.Messages.Displayables.Displayable[] displayables,
                     string serialised_message,
                     string recipient_environment = "all",
                     string reaction_source = "somewhere") {
@@ -58,7 +56,6 @@ namespace droid.Runtime.Messaging.Messages {
     }
 
     /// <summary>
-    ///
     /// </summary>
     public string ReactionSource { get; set; }
 
@@ -83,11 +80,11 @@ namespace droid.Runtime.Messaging.Messages {
 
     /// <summary>
     /// </summary>
-    public Displayable[] Displayables { get; }
+    public droid.Runtime.Messaging.Messages.Displayables.Displayable[] Displayables { get; }
 
     /// <summary>
     /// </summary>
-    public IMotion[] Motions { get; }
+    public droid.Runtime.Interfaces.IMotion[] Motions { get; }
 
     /// <summary>
     /// </summary>

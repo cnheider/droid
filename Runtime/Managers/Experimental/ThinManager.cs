@@ -1,9 +1,6 @@
-﻿using System;
-using UnityEngine;
-
-namespace droid.Runtime.Managers.Experimental {
-  [AddComponentMenu("Neodroid/Managers/NotUsed/Thin")]
+﻿namespace droid.Runtime.Managers.Experimental {
+  [UnityEngine.AddComponentMenu("Neodroid/Managers/NotUsed/Thin")]
   public class ThinManager : AbstractNeodroidManager {
-    public override void Setup() { throw new NotImplementedException(); }
+    public override void Setup() { throw new System.NotImplementedException(); }
   }
 }

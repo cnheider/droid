@@ -1,19 +1,14 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-#if UNITY_EDITOR
-using System;
-using UnityEditor;
-
+﻿#if UNITY_EDITOR
 namespace droid.Editor.Utilities.SearchableEnum {
   /// <inheritdoc />
   /// <summary>
   ///   A popup window that displays a list of options and may use a search
   ///   string to filter the displayed content.
   /// </summary>
-  public class SearchablePopup : PopupWindowContent {
+  public class SearchablePopup : UnityEditor.PopupWindowContent {
     #region -- Initialization ---------------------------------------------
 
-    SearchablePopup(string[] names, int current_index, Action<int> on_selection_made) {
+    SearchablePopup(string[] names, int current_index, System.Action<int> on_selection_made) {
       this._list = new FilteredList(items : names);
       this._current_index = current_index;
       this._on_selection_made = on_selection_made;
@@ -24,6 +19,8 @@ namespace droid.Editor.Utilities.SearchableEnum {
     }
 
     #endregion -- Initialization ------------------------------------------
+
+    #region Nested type: FilteredList
 
     #region -- Helper Classes ---------------------------------------------
 
@@ -39,7 +36,7 @@ namespace droid.Editor.Utilities.SearchableEnum {
       /// <param name="items">All The items to filter.</param>
       public FilteredList(string[] items) {
         this._all_items = items;
-        this.Entries = new List<Entry>();
+        this.Entries = new System.Collections.Generic.List<Entry>();
         this.UpdateFilter("");
       }
 
@@ -47,7 +44,7 @@ namespace droid.Editor.Utilities.SearchableEnum {
       public string Filter { get; private set; }
 
       /// <summary> All valid entries for the current filter. </summary>
-      public List<Entry> Entries { get; }
+      public System.Collections.Generic.List<Entry> Entries { get; }
 
       /// <summary> Total possible entries in the list. </summary>
       public int MaxLength { get { return this._all_items.Length; } }
@@ -75,7 +72,7 @@ namespace droid.Editor.Utilities.SearchableEnum {
             var entry = new Entry {_Index = i, _Text = this._all_items[i]};
             if (string.Equals(a : this._all_items[i],
                               b : this.Filter,
-                              comparisonType : StringComparison.CurrentCultureIgnoreCase)) {
+                              comparisonType : System.StringComparison.CurrentCultureIgnoreCase)) {
               this.Entries.Insert(0, item : entry);
             } else {
               this.Entries.Add(item : entry);
@@ -86,6 +83,8 @@ namespace droid.Editor.Utilities.SearchableEnum {
         return true;
       }
 
+      #region Nested type: Entry
+
       /// <summary>
       ///   An entry in the filtererd list, mapping the text to the
       ///   original index.
@@ -94,9 +93,13 @@ namespace droid.Editor.Utilities.SearchableEnum {
         public int _Index;
         public string _Text;
       }
+
+      #endregion
     }
 
     #endregion -- Helper Classes ------------------------------------------
+
+    #endregion
 
     #region -- Constants --------------------------------------------------
 
@@ -124,14 +127,14 @@ namespace droid.Editor.Utilities.SearchableEnum {
     /// <param name="on_selection_made">
     ///   Callback to trigger when a choice is made.
     /// </param>
-    public static void Show(Rect activator_rect,
+    public static void Show(UnityEngine.Rect activator_rect,
                             string[] options,
                             int current,
-                            Action<int> on_selection_made) {
+                            System.Action<int> on_selection_made) {
       var win = new SearchablePopup(names : options,
                                     current_index : current,
                                     on_selection_made : on_selection_made);
-      PopupWindow.Show(activatorRect : activator_rect, windowContent : win);
+      UnityEditor.PopupWindow.Show(activatorRect : activator_rect, windowContent : win);
     }
 
     /// <summary>
@@ -139,7 +142,7 @@ namespace droid.Editor.Utilities.SearchableEnum {
     ///   popup more responsive to mouse movement.
     /// </summary>
     static void Repaint() {
-      var window = EditorWindow.focusedWindow;
+      var window = UnityEditor.EditorWindow.focusedWindow;
       if (window) {
         window.Repaint();
       }
@@ -148,11 +151,11 @@ namespace droid.Editor.Utilities.SearchableEnum {
     /// <summary> Draw a generic box. </summary>
     /// <param name="rect">Where to draw.</param>
     /// <param name="tint">Color to tint the box.</param>
-    static void DrawBox(Rect rect, Color tint) {
-      var c = GUI.color;
-      GUI.color = tint;
-      GUI.Box(position : rect, "", style : _selection);
-      GUI.color = c;
+    static void DrawBox(UnityEngine.Rect rect, UnityEngine.Color tint) {
+      var c = UnityEngine.GUI.color;
+      UnityEngine.GUI.color = tint;
+      UnityEngine.GUI.Box(position : rect, "", style : _selection);
+      UnityEngine.GUI.color = c;
     }
 
     #endregion -- Static Functions ----------------------------------------
@@ -160,7 +163,7 @@ namespace droid.Editor.Utilities.SearchableEnum {
     #region -- Private Variables ------------------------------------------
 
     /// <summary> Callback to trigger when an item is selected. </summary>
-    readonly Action<int> _on_selection_made;
+    readonly System.Action<int> _on_selection_made;
 
     /// <summary>
     ///   Index of the item that was selected when the list was opened.
@@ -174,7 +177,7 @@ namespace droid.Editor.Utilities.SearchableEnum {
     readonly FilteredList _list;
 
     /// <summary> Scroll offset for the vertical scroll area. </summary>
-    Vector2 _scroll;
+    UnityEngine.Vector2 _scroll;
 
     /// <summary>
     ///   Index of the item under the mouse or selected with the keyboard.
@@ -201,10 +204,10 @@ namespace droid.Editor.Utilities.SearchableEnum {
     // the current skin which will be the editor skin and lets us get some
     // built-in styles.
 
-    static GUIStyle _search_box = "ToolbarSeachTextField";
-    static GUIStyle _cancel_button = "ToolbarSeachCancelButton";
-    static GUIStyle _disabled_cancel_button = "ToolbarSeachCancelButtonEmpty";
-    static GUIStyle _selection = "SelectionRect";
+    static UnityEngine.GUIStyle _search_box = "ToolbarSeachTextField";
+    static UnityEngine.GUIStyle _cancel_button = "ToolbarSeachCancelButton";
+    static UnityEngine.GUIStyle _disabled_cancel_button = "ToolbarSeachCancelButtonEmpty";
+    static UnityEngine.GUIStyle _selection = "SelectionRect";
 
     #endregion -- GUI Styles ----------------------------------------------
 
@@ -216,7 +219,7 @@ namespace droid.Editor.Utilities.SearchableEnum {
     public override void OnOpen() {
       base.OnOpen();
       // Force a repaint every frame to be responsive to mouse hover.
-      EditorApplication.update += Repaint;
+      UnityEditor.EditorApplication.update += Repaint;
     }
 
     /// <inheritdoc />
@@ -224,33 +227,34 @@ namespace droid.Editor.Utilities.SearchableEnum {
     /// </summary>
     public override void OnClose() {
       base.OnClose();
-      EditorApplication.update -= Repaint;
+      UnityEditor.EditorApplication.update -= Repaint;
     }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public override Vector2 GetWindowSize() {
-      return new Vector2(x : base.GetWindowSize().x,
-                         y : Mathf.Min(600,
-                                       b : this._list.MaxLength * _row_height
-                                           + EditorStyles.toolbar.fixedHeight));
+    public override UnityEngine.Vector2 GetWindowSize() {
+      return new UnityEngine.Vector2(x : base.GetWindowSize().x,
+                                     y : UnityEngine.Mathf.Min(600,
+                                                               b : this._list.MaxLength * _row_height
+                                                                   + UnityEditor.EditorStyles.toolbar
+                                                                       .fixedHeight));
     }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     /// <param name="rect"></param>
-    public override void OnGUI(Rect rect) {
-      var search_rect = new Rect(0,
-                                 0,
-                                 width : rect.width,
-                                 height : EditorStyles.toolbar.fixedHeight);
-      var scroll_rect = Rect.MinMaxRect(0,
-                                        ymin : search_rect.yMax,
-                                        xmax : rect.xMax,
-                                        ymax : rect.yMax);
+    public override void OnGUI(UnityEngine.Rect rect) {
+      var search_rect = new UnityEngine.Rect(0,
+                                             0,
+                                             width : rect.width,
+                                             height : UnityEditor.EditorStyles.toolbar.fixedHeight);
+      var scroll_rect = UnityEngine.Rect.MinMaxRect(0,
+                                                    ymin : search_rect.yMax,
+                                                    xmax : rect.xMax,
+                                                    ymax : rect.yMax);
 
       this.HandleKeyboard();
       this.DrawSearch(rect : search_rect);
@@ -261,74 +265,80 @@ namespace droid.Editor.Utilities.SearchableEnum {
 
     #region -- GUI --------------------------------------------------------
 
-    void DrawSearch(Rect rect) {
-      if (Event.current.type == EventType.Repaint) {
-        EditorStyles.toolbar.Draw(position : rect,
-                                  false,
-                                  false,
-                                  false,
-                                  false);
+    void DrawSearch(UnityEngine.Rect rect) {
+      if (UnityEngine.Event.current.type == UnityEngine.EventType.Repaint) {
+        UnityEditor.EditorStyles.toolbar.Draw(position : rect,
+                                              false,
+                                              false,
+                                              false,
+                                              false);
       }
 
-      var search_rect = new Rect(source : rect);
+      var search_rect = new UnityEngine.Rect(source : rect);
       search_rect.xMin += 6;
       search_rect.xMax -= 6;
       search_rect.y += 2;
       search_rect.width -= _cancel_button.fixedWidth;
 
-      GUI.FocusControl(name : _search_control_name);
-      GUI.SetNextControlName(name : _search_control_name);
-      var new_text = GUI.TextField(position : search_rect, text : this._list.Filter, style : _search_box);
+      UnityEngine.GUI.FocusControl(name : _search_control_name);
+      UnityEngine.GUI.SetNextControlName(name : _search_control_name);
+      var new_text =
+          UnityEngine.GUI.TextField(position : search_rect, text : this._list.Filter, style : _search_box);
 
       if (this._list.UpdateFilter(filter : new_text)) {
         this._hover_index = 0;
-        this._scroll = Vector2.zero;
+        this._scroll = UnityEngine.Vector2.zero;
       }
 
       search_rect.x = search_rect.xMax;
       search_rect.width = _cancel_button.fixedWidth;
 
       if (string.IsNullOrEmpty(value : this._list.Filter)) {
-        GUI.Box(position : search_rect, content : GUIContent.none, style : _disabled_cancel_button);
-      } else if (GUI.Button(position : search_rect, "x", style : _cancel_button)) {
+        UnityEngine.GUI.Box(position : search_rect,
+                            content : UnityEngine.GUIContent.none,
+                            style : _disabled_cancel_button);
+      } else if (UnityEngine.GUI.Button(position : search_rect, "x", style : _cancel_button)) {
         this._list.UpdateFilter("");
-        this._scroll = Vector2.zero;
+        this._scroll = UnityEngine.Vector2.zero;
       }
     }
 
-    void DrawSelectionArea(Rect scroll_rect) {
-      var content_rect = new Rect(0,
-                                  0,
-                                  width : scroll_rect.width - GUI.skin.verticalScrollbar.fixedWidth,
-                                  height : this._list.Entries.Count * _row_height);
+    void DrawSelectionArea(UnityEngine.Rect scroll_rect) {
+      var content_rect = new UnityEngine.Rect(0,
+                                              0,
+                                              width : scroll_rect.width
+                                                      - UnityEngine.GUI.skin.verticalScrollbar.fixedWidth,
+                                              height : this._list.Entries.Count * _row_height);
 
-      this._scroll = GUI.BeginScrollView(position : scroll_rect,
-                                         scrollPosition : this._scroll,
-                                         viewRect : content_rect);
+      this._scroll = UnityEngine.GUI.BeginScrollView(position : scroll_rect,
+                                                     scrollPosition : this._scroll,
+                                                     viewRect : content_rect);
 
-      var row_rect = new Rect(0,
-                              0,
-                              width : scroll_rect.width,
-                              height : _row_height);
+      var row_rect = new UnityEngine.Rect(0,
+                                          0,
+                                          width : scroll_rect.width,
+                                          height : _row_height);
 
       for (var i = 0; i < this._list.Entries.Count; i++) {
         if (this._scroll_to_index == i
-            && (Event.current.type == EventType.Repaint || Event.current.type == EventType.Layout)) {
-          var r = new Rect(source : row_rect);
+            && (UnityEngine.Event.current.type == UnityEngine.EventType.Repaint
+                || UnityEngine.Event.current.type == UnityEngine.EventType.Layout)) {
+          var r = new UnityEngine.Rect(source : row_rect);
           r.y += this._scroll_offset;
-          GUI.ScrollTo(position : r);
+          UnityEngine.GUI.ScrollTo(position : r);
           this._scroll_to_index = -1;
           this._scroll.x = 0;
         }
 
-        if (row_rect.Contains(point : Event.current.mousePosition)) {
-          if (Event.current.type == EventType.MouseMove || Event.current.type == EventType.ScrollWheel) {
+        if (row_rect.Contains(point : UnityEngine.Event.current.mousePosition)) {
+          if (UnityEngine.Event.current.type == UnityEngine.EventType.MouseMove
+              || UnityEngine.Event.current.type == UnityEngine.EventType.ScrollWheel) {
             this._hover_index = i;
           }
 
-          if (Event.current.type == EventType.MouseDown) {
+          if (UnityEngine.Event.current.type == UnityEngine.EventType.MouseDown) {
             this._on_selection_made(obj : this._list.Entries[index : i]._Index);
-            EditorWindow.focusedWindow.Close();
+            UnityEditor.EditorWindow.focusedWindow.Close();
           }
         }
 
@@ -337,50 +347,51 @@ namespace droid.Editor.Utilities.SearchableEnum {
         row_rect.y = row_rect.yMax;
       }
 
-      GUI.EndScrollView();
+      UnityEngine.GUI.EndScrollView();
     }
 
-    void DrawRow(Rect row_rect, int i) {
+    void DrawRow(UnityEngine.Rect row_rect, int i) {
       if (this._list.Entries[index : i]._Index == this._current_index) {
-        DrawBox(rect : row_rect, tint : Color.cyan);
+        DrawBox(rect : row_rect, tint : UnityEngine.Color.cyan);
       } else if (i == this._hover_index) {
-        DrawBox(rect : row_rect, tint : Color.white);
+        DrawBox(rect : row_rect, tint : UnityEngine.Color.white);
       }
 
-      var label_rect = new Rect(source : row_rect);
+      var label_rect = new UnityEngine.Rect(source : row_rect);
       label_rect.xMin += _row_indent;
 
-      GUI.Label(position : label_rect, text : this._list.Entries[index : i]._Text);
+      UnityEngine.GUI.Label(position : label_rect, text : this._list.Entries[index : i]._Text);
     }
 
     /// <summary>
     ///   Process keyboard input to navigate the choices or make a selection.
     /// </summary>
     void HandleKeyboard() {
-      if (Event.current.type == EventType.KeyDown) {
-        if (Event.current.keyCode == KeyCode.DownArrow) {
-          this._hover_index = Mathf.Min(a : this._list.Entries.Count - 1, b : this._hover_index + 1);
-          Event.current.Use();
+      if (UnityEngine.Event.current.type == UnityEngine.EventType.KeyDown) {
+        if (UnityEngine.Event.current.keyCode == UnityEngine.KeyCode.DownArrow) {
+          this._hover_index =
+              UnityEngine.Mathf.Min(a : this._list.Entries.Count - 1, b : this._hover_index + 1);
+          UnityEngine.Event.current.Use();
           this._scroll_to_index = this._hover_index;
           this._scroll_offset = _row_height;
         }
 
-        if (Event.current.keyCode == KeyCode.UpArrow) {
-          this._hover_index = Mathf.Max(0, b : this._hover_index - 1);
-          Event.current.Use();
+        if (UnityEngine.Event.current.keyCode == UnityEngine.KeyCode.UpArrow) {
+          this._hover_index = UnityEngine.Mathf.Max(0, b : this._hover_index - 1);
+          UnityEngine.Event.current.Use();
           this._scroll_to_index = this._hover_index;
           this._scroll_offset = -_row_height;
         }
 
-        if (Event.current.keyCode == KeyCode.Return) {
+        if (UnityEngine.Event.current.keyCode == UnityEngine.KeyCode.Return) {
           if (this._hover_index >= 0 && this._hover_index < this._list.Entries.Count) {
             this._on_selection_made(obj : this._list.Entries[index : this._hover_index]._Index);
-            EditorWindow.focusedWindow.Close();
+            UnityEditor.EditorWindow.focusedWindow.Close();
           }
         }
 
-        if (Event.current.keyCode == KeyCode.Escape) {
-          EditorWindow.focusedWindow.Close();
+        if (UnityEngine.Event.current.keyCode == UnityEngine.KeyCode.Escape) {
+          UnityEditor.EditorWindow.focusedWindow.Close();
         }
       }
     }

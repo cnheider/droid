@@ -1,6 +1,5 @@
 namespace droid.Runtime {
   /// <summary>
-  ///
   /// </summary>
   public static class NeodroidRuntimeInfo {
     /// <summary>

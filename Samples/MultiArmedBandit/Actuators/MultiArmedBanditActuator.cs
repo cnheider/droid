@@ -1,38 +1,32 @@
-﻿using System;
-using System.Linq;
-using droid.Runtime.GameObjects.StatusDisplayer.EventRecipients;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Prototyping.Actuators;
-using UnityEngine;
-using UnityEngine.UI;
-using Random = UnityEngine.Random;
+﻿namespace droid.Samples.MultiArmedBandit.Actuators {
+  using Enumerable = System.Linq.Enumerable;
 
-namespace droid.Samples.MultiArmedBandit.Actuators {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : ActuatorComponentMenuPath._ComponentMenuPath
-                               + "MultiArmedBandit"
-                               + ActuatorComponentMenuPath._Postfix)]
-  public class MultiArmedBanditActuator : Actuator {
-    [SerializeField] Color _inactive_color = Color.yellow;
+  [UnityEngine.AddComponentMenu(menuName :
+                                 droid.Runtime.Prototyping.Actuators.ActuatorComponentMenuPath
+                                      ._ComponentMenuPath
+                                 + "MultiArmedBandit"
+                                 + droid.Runtime.Prototyping.Actuators.ActuatorComponentMenuPath._Postfix)]
+  public class MultiArmedBanditActuator : droid.Runtime.Prototyping.Actuators.Actuator {
+    [UnityEngine.SerializeField] UnityEngine.Color _inactive_color = UnityEngine.Color.yellow;
 
     /// <summary>
-    ///
     /// </summary>
-    [SerializeField]
-    protected Material[] _Indicators;
+    [UnityEngine.SerializeField]
+    protected UnityEngine.Material[] _Indicators;
 
-    [SerializeField] int _last_index;
-    [SerializeField] Color _lose_color = Color.red;
+    [UnityEngine.SerializeField] int _last_index;
+    [UnityEngine.SerializeField] UnityEngine.Color _lose_color = UnityEngine.Color.red;
 
-    [SerializeField] protected float[] _Win_Amounts;
+    [UnityEngine.SerializeField] protected float[] _Win_Amounts;
 
-    [SerializeField] Color _win_color = Color.green;
+    [UnityEngine.SerializeField] UnityEngine.Color _win_color = UnityEngine.Color.green;
 
-    [SerializeField] protected float[] _Win_Likelihoods;
+    [UnityEngine.SerializeField] protected float[] _Win_Likelihoods;
 
-    [SerializeField] bool _won;
+    [UnityEngine.SerializeField] bool _won;
 
     /// <summary>
     /// </summary>
@@ -51,6 +45,10 @@ namespace droid.Samples.MultiArmedBandit.Actuators {
     public float[] WinLikelihoods {
       get { return this._Win_Likelihoods; }
       set { this._Win_Likelihoods = value; }
+    }
+
+    public override string[] InnerMotionNames {
+      get { return Enumerable.ToArray(Enumerable.Select(this._Indicators, m => this.Identifier)); }
     }
 
     /// <inheritdoc />
@@ -77,35 +75,54 @@ namespace droid.Samples.MultiArmedBandit.Actuators {
       }
     }
 
-    public void UpdatePayoutArm1(Text amount) {
+    public void UpdatePayoutArm1(UnityEngine.UI.Text amount) {
       this.UpdatePayoutArm(0, amount : float.Parse(s : amount.text));
     }
 
-    public void UpdatePayoutArm2(Text amount) {
+    public void UpdatePayoutArm2(UnityEngine.UI.Text amount) {
       this.UpdatePayoutArm(1, amount : float.Parse(s : amount.text));
     }
 
-    public void UpdatePayoutArm3(Text amount) {
+    public void UpdatePayoutArm3(UnityEngine.UI.Text amount) {
       this.UpdatePayoutArm(2, amount : float.Parse(s : amount.text));
     }
 
-    public void GetPayoutArm1(DataPoller recipient) { recipient.PollData(data : this.GetPayoutArm(0)); }
-    public void GetPayoutArm2(DataPoller recipient) { recipient.PollData(data : this.GetPayoutArm(1)); }
-    public void GetPayoutArm3(DataPoller recipient) { recipient.PollData(data : this.GetPayoutArm(2)); }
+    public void
+        GetPayoutArm1(droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.DataPoller recipient) {
+      recipient.PollData(data : this.GetPayoutArm(0));
+    }
 
-    public void GetPctArm1(DataPoller recipient) { recipient.PollData(data : this.GetPctArm(0)); }
-    public void GetPctArm2(DataPoller recipient) { recipient.PollData(data : this.GetPctArm(1)); }
-    public void GetPctArm3(DataPoller recipient) { recipient.PollData(data : this.GetPctArm(2)); }
+    public void
+        GetPayoutArm2(droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.DataPoller recipient) {
+      recipient.PollData(data : this.GetPayoutArm(1));
+    }
 
-    public void UpdatePercentageArm1(Text amount) {
+    public void
+        GetPayoutArm3(droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.DataPoller recipient) {
+      recipient.PollData(data : this.GetPayoutArm(2));
+    }
+
+    public void GetPctArm1(droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.DataPoller recipient) {
+      recipient.PollData(data : this.GetPctArm(0));
+    }
+
+    public void GetPctArm2(droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.DataPoller recipient) {
+      recipient.PollData(data : this.GetPctArm(1));
+    }
+
+    public void GetPctArm3(droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.DataPoller recipient) {
+      recipient.PollData(data : this.GetPctArm(2));
+    }
+
+    public void UpdatePercentageArm1(UnityEngine.UI.Text amount) {
       this.UpdatePercentageArm(0, amount : float.Parse(s : amount.text));
     }
 
-    public void UpdatePercentageArm2(Text amount) {
+    public void UpdatePercentageArm2(UnityEngine.UI.Text amount) {
       this.UpdatePercentageArm(1, amount : float.Parse(s : amount.text));
     }
 
-    public void UpdatePercentageArm3(Text amount) {
+    public void UpdatePercentageArm3(UnityEngine.UI.Text amount) {
       this.UpdatePercentageArm(2, amount : float.Parse(s : amount.text));
     }
 
@@ -121,7 +138,7 @@ namespace droid.Samples.MultiArmedBandit.Actuators {
     /// <summary>
     /// </summary>
     /// <param name="motion"></param>
-    protected override void InnerApplyMotion(IMotion motion) {
+    protected override void InnerApplyMotion(droid.Runtime.Interfaces.IMotion motion) {
       foreach (var indicator in this._Indicators) {
         indicator.color = this._inactive_color;
       }
@@ -130,13 +147,13 @@ namespace droid.Samples.MultiArmedBandit.Actuators {
 
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        Debug.Log(message : $"MultiArmedBandit got index {index}");
+        UnityEngine.Debug.Log(message : $"MultiArmedBandit got index {index}");
       }
       #endif
 
       this._last_index = index;
 
-      var random_value = Random.Range(0f, 1f);
+      var random_value = UnityEngine.Random.Range(0f, 1f);
       if (random_value < this._Win_Likelihoods[this._last_index]) {
         this._Indicators[this._last_index].color = this._win_color;
         this._won = true;
@@ -145,7 +162,5 @@ namespace droid.Samples.MultiArmedBandit.Actuators {
         this._won = false;
       }
     }
-
-    public override string[] InnerMotionNames => this._Indicators.Select(m => this.Identifier).ToArray();
   }
 }

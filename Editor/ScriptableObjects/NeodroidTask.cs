@@ -1,28 +1,24 @@
-﻿using droid.Editor.Windows;
-using UnityEngine;
-#if UNITY_EDITOR
-using droid.Runtime.ScriptableObjects.Deprecated;
-using UnityEditor;
-
+﻿#if UNITY_EDITOR
 namespace droid.Editor.ScriptableObjects {
   /// <summary>
-  /// 
   /// </summary>
   public static class CreateNeodroidTask {
     /// <summary>
-    /// 
     /// </summary>
-    [MenuItem(itemName : EditorScriptableObjectMenuPath._ScriptableObjectMenuPath + "NeodroidTask")]
+    [UnityEditor.MenuItem(itemName :
+                           EditorScriptableObjectMenuPath._ScriptableObjectMenuPath + "NeodroidTask")]
     public static void CreateNeodroidTaskAsset() {
-      var asset = ScriptableObject.CreateInstance<NeodroidTask>();
+      var asset = UnityEngine.ScriptableObject
+                             .CreateInstance<droid.Runtime.ScriptableObjects.Deprecated.NeodroidTask>();
 
-      AssetDatabase.CreateAsset(asset : asset,
-                                path : EditorWindowMenuPath._NewAssetPath + "Assets/NewNeodroidTask.asset");
-      AssetDatabase.SaveAssets();
+      UnityEditor.AssetDatabase.CreateAsset(asset : asset,
+                                            path :
+                                            $"{droid.Editor.Windows.EditorWindowMenuPath._NewAssetPath}Assets/NewNeodroidTask.asset");
+      UnityEditor.AssetDatabase.SaveAssets();
 
-      EditorUtility.FocusProjectWindow();
+      UnityEditor.EditorUtility.FocusProjectWindow();
 
-      Selection.activeObject = asset;
+      UnityEditor.Selection.activeObject = asset;
     }
   }
 }

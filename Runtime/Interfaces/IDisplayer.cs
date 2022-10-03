@@ -1,6 +1,3 @@
-using droid.Runtime.Structs;
-using UnityEngine;
-
 namespace droid.Runtime.Interfaces {
   public interface IDisplayer : IRegisterable {
     //void Display(dynamic o);
@@ -26,34 +23,34 @@ namespace droid.Runtime.Interfaces {
     /// <summary>
     /// </summary>
     /// <param name="value"></param>
-    void Display(Vector3 value);
+    void Display(UnityEngine.Vector3 value);
 
     /// <summary>
     /// </summary>
     /// <param name="value"></param>
-    void Display(Vector3[] value);
+    void Display(UnityEngine.Vector3[] value);
 
     /// <summary>
     /// </summary>
     /// <param name="point"></param>
-    void Display(Points.ValuePoint point);
+    void Display(droid.Runtime.Structs.Points.ValuePoint point);
 
     /// <summary>
     /// </summary>
     /// <param name="points"></param>
-    void Display(Points.ValuePoint[] points);
+    void Display(droid.Runtime.Structs.Points.ValuePoint[] points);
 
     /// <summary>
     /// </summary>
     /// <param name="point"></param>
-    void Display(Points.StringPoint point);
+    void Display(droid.Runtime.Structs.Points.StringPoint point);
 
     /// <summary>
     /// </summary>
     /// <param name="points"></param>
-    void Display(Points.StringPoint[] points);
+    void Display(droid.Runtime.Structs.Points.StringPoint[] points);
 
     // void PlotSeries(dynamic points);
-    void PlotSeries(Points.ValuePoint[] points);
+    void PlotSeries(droid.Runtime.Structs.Points.ValuePoint[] points);
   }
 }

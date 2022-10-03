@@ -1,58 +1,67 @@
-﻿using System;
-using System.Collections.Generic;
-using droid.Runtime.Enums;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Managers;
-using droid.Runtime.Structs.Space;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
+﻿namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
   /// <summary>
-  ///
   /// </summary>
-  [AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
-                               + "FloatArrayCamera"
-                               + SensorComponentMenuPath._Postfix)]
+  [UnityEngine.AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
+                                           + "FloatArrayCamera"
+                                           + SensorComponentMenuPath._Postfix)]
   public class FloatArrayCameraSensor : Sensor,
-                                        IHasFloatArray {
-    [SerializeField] bool _black_white = false;
+                                        droid.Runtime.Interfaces.IHasFloatArray {
+    [UnityEngine.SerializeField] bool _black_white = false;
 
-    [Header("Specific", order = 102)]
-    [SerializeField]
-    Camera _camera = null;
+    [UnityEngine.HeaderAttribute("Specific", order = 102)]
+    [UnityEngine.SerializeField]
+    UnityEngine.Camera _camera = null;
+
+    [UnityEngine.SerializeField] UnityEngine.Texture2D _texture = null;
 
     bool _grab = true;
 
-    IManager _manager = null;
-
-    [SerializeField] Texture2D _texture = null;
+    droid.Runtime.Interfaces.IManager _manager = null;
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    [field : Header("Observation", order = 103)]
+    /// <summary>
+    /// </summary>
+    public override System.Collections.Generic.IEnumerable<float> FloatEnumerable {
+      get { return this.ObservationArray; }
+    }
+
+    /// <summary>
+    /// </summary>
+    protected virtual void OnPostRender() {
+      if (this._camera.targetTexture) {
+        this.UpdateArray();
+      }
+    }
+
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
+    [field : UnityEngine.HeaderAttribute("Observation", order = 103)]
     public float[] ObservationArray { get; private set; } = null;
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    public Space1[] ObservationSpace { get { return new[] {Space1.ZeroOne}; } }
+    /// <summary>
+    /// </summary>
+    public droid.Runtime.Structs.Space.Space1[] ObservationSpace {
+      get { return new[] {droid.Runtime.Structs.Space.Space1.ZeroOne}; }
+    }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
     public override void PreSetup() {
       if (this._manager == null) {
-        this._manager = FindObjectOfType<AbstractNeodroidManager>();
+        this._manager = FindObjectOfType<droid.Runtime.Managers.AbstractNeodroidManager>();
       }
 
       if (this._camera == null) {
-        this._camera = this.GetComponent<Camera>();
+        this._camera = this.GetComponent<UnityEngine.Camera>();
       }
 
       var target_texture = this._camera.targetTexture;
       if (target_texture) {
-        this._texture = new Texture2D(width : target_texture.width, height : target_texture.height);
+        this._texture =
+            new UnityEngine.Texture2D(width : target_texture.width, height : target_texture.height);
         if (this._black_white) {
           this.ObservationArray = new float[this._texture.width * this._texture.height * 1]; // *1 for clarity
         } else {
@@ -64,16 +73,6 @@ namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
     }
 
     /// <summary>
-    ///
-    /// </summary>
-    protected virtual void OnPostRender() {
-      if (this._camera.targetTexture) {
-        this.UpdateArray();
-      }
-    }
-
-    /// <summary>
-    ///
     /// </summary>
     protected virtual void UpdateArray() {
       if (!this._grab) {
@@ -82,16 +81,16 @@ namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
 
       this._grab = false;
 
-      var current_render_texture = RenderTexture.active;
+      var current_render_texture = UnityEngine.RenderTexture.active;
       var target_texture = this._camera.targetTexture;
-      RenderTexture.active = target_texture;
+      UnityEngine.RenderTexture.active = target_texture;
 
-      this._texture.ReadPixels(source : new Rect(0,
-                                                 0,
-                                                 width : target_texture.width,
-                                                 height : target_texture.height),
-                               destX : 0,
-                               destY : 0);
+      this._texture.ReadPixels(source : new UnityEngine.Rect(0,
+                                                             0,
+                                                             width : target_texture.width,
+                                                             height : target_texture.height),
+                               0,
+                               0);
       this._texture.Apply();
 
       if (!this._black_white) {
@@ -112,23 +111,19 @@ namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
         }
       }
 
-      RenderTexture.active = current_render_texture;
+      UnityEngine.RenderTexture.active = current_render_texture;
     }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    public override IEnumerable<float> FloatEnumerable { get { return this.ObservationArray; } }
-
-    /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
     public override void UpdateObservation() {
       #if NEODROID_DEBUG
       if (this.Debugging) {
         if (this._manager?.SimulatorConfiguration != null) {
-          if (this._manager.SimulatorConfiguration.SimulationType != SimulationTypeEnum.Frame_dependent_) {
-            Debug.LogWarning("WARNING! Camera Observations may be out of sync other data");
+          if (this._manager.SimulatorConfiguration.SimulationType
+              != droid.Runtime.Enums.SimulationTypeEnum.Frame_dependent_) {
+            UnityEngine.Debug.LogWarning("WARNING! Camera Observations may be out of sync other data");
           }
         }
       }
@@ -137,7 +132,8 @@ namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
       this._grab = true;
       var manager = this._manager;
       if (manager != null
-          && manager.SimulatorConfiguration.SimulationType != SimulationTypeEnum.Frame_dependent_) {
+          && manager.SimulatorConfiguration.SimulationType
+          != droid.Runtime.Enums.SimulationTypeEnum.Frame_dependent_) {
         this.UpdateArray();
       }
     }

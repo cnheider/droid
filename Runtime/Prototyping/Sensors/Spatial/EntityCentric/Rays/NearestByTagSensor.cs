@@ -1,62 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Structs.Space;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Sensors.Spatial.EntityCentric.Rays {
+﻿namespace droid.Runtime.Prototyping.Sensors.Spatial.EntityCentric.Rays {
   /// <inheritdoc cref="Sensor" />
-  ///  <summary>
-  ///  </summary>
-  [AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
-                               + "NearestByTag"
-                               + SensorComponentMenuPath._Postfix)]
+  /// <summary>
+  /// </summary>
+  [UnityEngine.AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
+                                           + "NearestByTag"
+                                           + SensorComponentMenuPath._Postfix)]
   public class NearestByTagSensor : Sensor,
-                                    IHasEulerTransform {
-    [SerializeField] Vector3 _direction;
-    [SerializeField] Space3 _direction_space = Space3.ZeroOne;
+                                    droid.Runtime.Interfaces.IHasEulerTransform {
+    [UnityEngine.SerializeField] UnityEngine.Vector3 _direction;
 
-    [Header("Specific", order = 102)]
-    [SerializeField]
-    GameObject _nearest_object;
+    [UnityEngine.SerializeField]
+    droid.Runtime.Structs.Space.Space3 _direction_space = droid.Runtime.Structs.Space.Space3.ZeroOne;
 
-    [Header("Observation", order = 103)]
-    [SerializeField]
-    Vector3 _position;
+    [UnityEngine.HeaderAttribute("Specific", order = 102)]
+    [UnityEngine.SerializeField]
+    UnityEngine.GameObject _nearest_object;
 
-    [SerializeField] Space3 _position_space = Space3.ZeroOne;
-    [SerializeField] Vector3 _rotation;
-    [SerializeField] Space3 _rotation_space = Space3.ZeroOne;
-    [SerializeField] string _tag = "";
+    [UnityEngine.HeaderAttribute("Observation", order = 103)]
+    [UnityEngine.SerializeField]
+    UnityEngine.Vector3 _position;
+
+    [UnityEngine.SerializeField]
+    droid.Runtime.Structs.Space.Space3 _position_space = droid.Runtime.Structs.Space.Space3.ZeroOne;
+
+    [UnityEngine.SerializeField] UnityEngine.Vector3 _rotation;
+
+    [UnityEngine.SerializeField]
+    droid.Runtime.Structs.Space.Space3 _rotation_space = droid.Runtime.Structs.Space.Space3.ZeroOne;
+
+    [UnityEngine.SerializeField] string _tag = "";
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
     public override string PrototypingTypeName { get { return base.PrototypingTypeName + this._tag; } }
 
-    /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    public Vector3 Position {
-      get { return this._position; }
-      set { this._position = this._position_space.Project(v : value); }
-    }
-
-    public Vector3 Rotation {
-      get { return this._rotation; }
-      set { this._rotation = this._rotation_space.Project(v : value); }
-    }
-
-    public Space3 PositionSpace { get { return this._position_space; } }
-    public Space3 DirectionSpace { get { return this._direction_space; } }
-    public Space3 RotationSpace { get { return this._rotation_space; } }
-
-    public Vector3 Direction {
-      get { return this._direction; }
-      set { this._direction = this._direction_space.Project(v : value); }
-    }
-
-    public override IEnumerable<float> FloatEnumerable {
+    public override System.Collections.Generic.IEnumerable<float> FloatEnumerable {
       get {
         yield return this.Position.x;
         yield return this.Position.y;
@@ -68,6 +47,28 @@ namespace droid.Runtime.Prototyping.Sensors.Spatial.EntityCentric.Rays {
         yield return this.Rotation.y;
         yield return this.Rotation.z;
       }
+    }
+
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
+    public UnityEngine.Vector3 Position {
+      get { return this._position; }
+      set { this._position = this._position_space.Project(v : value); }
+    }
+
+    public UnityEngine.Vector3 Rotation {
+      get { return this._rotation; }
+      set { this._rotation = this._rotation_space.Project(v : value); }
+    }
+
+    public droid.Runtime.Structs.Space.Space3 PositionSpace { get { return this._position_space; } }
+    public droid.Runtime.Structs.Space.Space3 DirectionSpace { get { return this._direction_space; } }
+    public droid.Runtime.Structs.Space.Space3 RotationSpace { get { return this._rotation_space; } }
+
+    public UnityEngine.Vector3 Direction {
+      get { return this._direction; }
+      set { this._direction = this._direction_space.Project(v : value); }
     }
 
     public override void UpdateObservation() {
@@ -87,14 +88,15 @@ namespace droid.Runtime.Prototyping.Sensors.Spatial.EntityCentric.Rays {
       }
     }
 
-    GameObject FindNearest() {
-      var candidates = FindObjectsOfType<GameObject>();
+    UnityEngine.GameObject FindNearest() {
+      var candidates = FindObjectsOfType<UnityEngine.GameObject>();
       var nearest_object = this.gameObject;
       var nearest_distance = -1.0;
       for (var index = 0; index < candidates.Length; index++) {
         var candidate = candidates[index];
         if (candidate.CompareTag(tag : this._tag)) {
-          var dist = Vector3.Distance(a : this.transform.position, b : candidate.transform.position);
+          var dist = UnityEngine.Vector3.Distance(a : this.transform.position,
+                                                  b : candidate.transform.position);
           if (nearest_distance > dist || nearest_distance < 0) {
             nearest_distance = dist;
             nearest_object = candidate;

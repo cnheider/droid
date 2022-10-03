@@ -1,21 +1,18 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-
-namespace droid.Runtime.GameObjects.StatusDisplayer.EventRecipients {
+﻿namespace droid.Runtime.GameObjects.StatusDisplayer.EventRecipients {
   /// <inheritdoc cref="DataPoller" />
   /// <summary>
   /// </summary>
-  [RequireComponent(requiredComponent : typeof(InputField))]
-  [ExecuteInEditMode]
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.UI.InputField))]
+  [UnityEngine.ExecuteInEditMode]
   public class InputFieldUpdater : DataPoller {
     /// <summary>
     /// </summary>
-    [SerializeField]
-    InputField _input_field;
+    [UnityEngine.SerializeField]
+    UnityEngine.UI.InputField _input_field;
 
     /// <summary>
     /// </summary>
-    void Start() { this._input_field = this.GetComponent<InputField>(); }
+    void Start() { this._input_field = this.GetComponent<UnityEngine.UI.InputField>(); }
 
     /// <inheritdoc />
     /// <summary>

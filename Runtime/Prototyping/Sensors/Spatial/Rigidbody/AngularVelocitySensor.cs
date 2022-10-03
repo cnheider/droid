@@ -1,30 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Structs.Space;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Sensors.Spatial.Rigidbody {
+﻿namespace droid.Runtime.Prototyping.Sensors.Spatial.Rigidbody {
   public class AngularVelocitySensor : Sensor,
-                                       IHasTriple {
-    [SerializeField] Vector3 _angular_velocity;
-    [SerializeField] Space3 _angular_velocity_space = Space3.ZeroOne;
+                                       droid.Runtime.Interfaces.IHasTriple {
+    [UnityEngine.SerializeField] UnityEngine.Vector3 _angular_velocity;
 
-    [SerializeField] UnityEngine.Rigidbody _rigidbody;
+    [UnityEngine.SerializeField]
+    droid.Runtime.Structs.Space.Space3 _angular_velocity_space = droid.Runtime.Structs.Space.Space3.ZeroOne;
 
-    public Vector3 ObservationValue {
-      get { return this._angular_velocity; }
-      set { this._angular_velocity = value; }
-    }
+    [UnityEngine.SerializeField] UnityEngine.Rigidbody _rigidbody;
 
-    public Space3 TripleSpace { get { return this._angular_velocity_space; } }
-
-    /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    public override void PreSetup() { this._rigidbody = this.GetComponent<UnityEngine.Rigidbody>(); }
-
-    public override IEnumerable<float> FloatEnumerable {
+    public override System.Collections.Generic.IEnumerable<float> FloatEnumerable {
       get {
         yield return this.ObservationValue.x;
         yield return this.ObservationValue.y;
@@ -34,13 +18,24 @@ namespace droid.Runtime.Prototyping.Sensors.Spatial.Rigidbody {
 
     void OnDrawGizmosSelected() {
       var rb_pos = this._rigidbody.position;
-      Debug.DrawLine(start : rb_pos, end : rb_pos + this._rigidbody.angularVelocity);
+      UnityEngine.Debug.DrawLine(start : rb_pos, end : rb_pos + this._rigidbody.angularVelocity);
     }
 
-    
+    public UnityEngine.Vector3 ObservationValue {
+      get { return this._angular_velocity; }
+      set { this._angular_velocity = value; }
+    }
+
+    public droid.Runtime.Structs.Space.Space3 TripleSpace { get { return this._angular_velocity_space; } }
+
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
+    public override void PreSetup() { this._rigidbody = this.GetComponent<UnityEngine.Rigidbody>(); }
+
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
     public override void UpdateObservation() { this.ObservationValue = this._rigidbody.angularVelocity; }
   }
 }

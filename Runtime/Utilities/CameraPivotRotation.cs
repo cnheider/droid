@@ -1,65 +1,63 @@
-﻿using droid.Runtime.Structs.Space;
-using UnityEngine;
-
-namespace droid.Runtime.Utilities {
+﻿namespace droid.Runtime.Utilities {
   /// <summary>
-  ///
   /// </summary>
-  public class CameraPivotRotation : MonoBehaviour {
+  public class CameraPivotRotation : UnityEngine.MonoBehaviour {
     /// <summary>
-    ///
     /// </summary>
     public float rotateSpeed = 1f;
 
     /// <summary>
-    ///
     /// </summary>
     public float scrollSpeed = 200f;
 
     /// <summary>
-    ///
     /// </summary>
-    public Transform pivot;
+    public UnityEngine.Transform pivot;
 
     /// <summary>
-    ///
     /// </summary>
-    public SphericalSpace _sphericalSpace;
+    public droid.Runtime.Structs.Space.SphericalSpace _sphericalSpace;
 
     void Start() {
-      this._sphericalSpace = SphericalSpace.FromCartesian(cartesian_coordinate : this.transform.position,
-                                                          3f,
-                                                          10f,
-                                                          0f,
-                                                          max_polar : Mathf.PI * 2f,
-                                                          0f,
-                                                          max_elevation : Mathf.PI / 4f);
+      this._sphericalSpace =
+          droid.Runtime.Structs.Space.SphericalSpace.FromCartesian(cartesian_coordinate :
+                                                                   this.transform.position,
+                                                                   3f,
+                                                                   10f,
+                                                                   0f,
+                                                                   max_polar : UnityEngine.Mathf.PI * 2f,
+                                                                   0f,
+                                                                   max_elevation : UnityEngine.Mathf.PI / 4f);
       // Initialize position
       this.transform.position = this._sphericalSpace.ToCartesian() + this.pivot.position;
     }
 
     void Update() {
-      var kh = Input.GetAxis("Horizontal");
-      var kv = Input.GetAxis("Vertical");
+      var kh = UnityEngine.Input.GetAxis("Horizontal");
+      var kv = UnityEngine.Input.GetAxis("Vertical");
 
-      var any_mouse_button = Input.GetMouseButton(0) | Input.GetMouseButton(1) | Input.GetMouseButton(2);
-      var mh = any_mouse_button ? Input.GetAxis("Mouse X") : 0f;
-      var mv = any_mouse_button ? Input.GetAxis("Mouse Y") : 0f;
+      var any_mouse_button = UnityEngine.Input.GetMouseButton(0)
+                             | UnityEngine.Input.GetMouseButton(1)
+                             | UnityEngine.Input.GetMouseButton(2);
+      var mh = any_mouse_button ? UnityEngine.Input.GetAxis("Mouse X") : 0f;
+      var mv = any_mouse_button ? UnityEngine.Input.GetAxis("Mouse Y") : 0f;
 
       var h = kh * kh > mh * mh ? kh : mh;
       var v = kv * kv > mv * mv ? kv : mv;
 
       if (h * h > .1f || v * v > .1f) {
         this.transform.position =
-            this._sphericalSpace.Rotate(polar_delta : h * this.rotateSpeed * Time.deltaTime,
-                                        elevation_delta : v * this.rotateSpeed * Time.deltaTime).ToCartesian()
+            this._sphericalSpace.Rotate(polar_delta : h * this.rotateSpeed * UnityEngine.Time.deltaTime,
+                                        elevation_delta : v * this.rotateSpeed * UnityEngine.Time.deltaTime)
+                .ToCartesian()
             + this.pivot.position;
       }
 
-      var sw = -Input.GetAxis("Mouse ScrollWheel");
-      if (sw * sw > Mathf.Epsilon) {
+      var sw = -UnityEngine.Input.GetAxis("Mouse ScrollWheel");
+      if (sw * sw > UnityEngine.Mathf.Epsilon) {
         this.transform.position =
-            this._sphericalSpace.TranslateRadius(scroll_speed : sw * Time.deltaTime * this.scrollSpeed)
+            this._sphericalSpace
+                .TranslateRadius(scroll_speed : sw * UnityEngine.Time.deltaTime * this.scrollSpeed)
                 .ToCartesian()
             + this.pivot.position;
       }

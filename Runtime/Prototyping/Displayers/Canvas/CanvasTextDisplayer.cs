@@ -1,26 +1,19 @@
-﻿using System;
-using System.Globalization;
-using droid.Runtime.Structs;
-using droid.Runtime.Utilities;
-using UnityEngine;
-using UnityEngine.UI;
-
-namespace droid.Runtime.Prototyping.Displayers.Canvas {
+﻿namespace droid.Runtime.Prototyping.Displayers.Canvas {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [ExecuteInEditMode]
-  [RequireComponent(requiredComponent : typeof(Text))]
-  [AddComponentMenu(menuName : DisplayerComponentMenuPath._ComponentMenuPath
-                               + "Canvas/CanvasText"
-                               + DisplayerComponentMenuPath._Postfix)]
+  [UnityEngine.ExecuteInEditMode]
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.UI.Text))]
+  [UnityEngine.AddComponentMenu(menuName : DisplayerComponentMenuPath._ComponentMenuPath
+                                           + "Canvas/CanvasText"
+                                           + DisplayerComponentMenuPath._Postfix)]
   public class CanvasTextDisplayer : Displayer {
-    Text _text_component;
+    UnityEngine.UI.Text _text_component;
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public override void Setup() { this._text_component = this.GetComponent<Text>(); }
+    public override void Setup() { this._text_component = this.GetComponent<UnityEngine.UI.Text>(); }
 
     //public override void Display(Object o) { throw new NotImplementedException(); }
 
@@ -29,10 +22,12 @@ namespace droid.Runtime.Prototyping.Displayers.Canvas {
     /// </summary>
     public override void Display(float value) {
       #if NEODROID_DEBUG
-      DebugPrinting.DisplayPrint(value : value, identifier : this.Identifier, debugging : this.Debugging);
+      droid.Runtime.Utilities.DebugPrinting.DisplayPrint(value : value,
+                                                         identifier : this.Identifier,
+                                                         debugging : this.Debugging);
       #endif
 
-      this.SetText(text : value.ToString(provider : CultureInfo.InvariantCulture));
+      this.SetText(text : value.ToString(provider : System.Globalization.CultureInfo.InvariantCulture));
     }
 
     /// <inheritdoc />
@@ -40,10 +35,12 @@ namespace droid.Runtime.Prototyping.Displayers.Canvas {
     /// </summary>
     public override void Display(double value) {
       #if NEODROID_DEBUG
-      DebugPrinting.DisplayPrint(value : value, identifier : this.Identifier, debugging : this.Debugging);
+      droid.Runtime.Utilities.DebugPrinting.DisplayPrint(value : value,
+                                                         identifier : this.Identifier,
+                                                         debugging : this.Debugging);
       #endif
 
-      this.SetText(text : value.ToString(provider : CultureInfo.InvariantCulture));
+      this.SetText(text : value.ToString(provider : System.Globalization.CultureInfo.InvariantCulture));
     }
 
     /// <inheritdoc />
@@ -51,10 +48,12 @@ namespace droid.Runtime.Prototyping.Displayers.Canvas {
     /// </summary>
     public override void Display(float[] values) {
       #if NEODROID_DEBUG
-      DebugPrinting.DisplayPrint(value : values[0], identifier : this.Identifier, debugging : this.Debugging);
+      droid.Runtime.Utilities.DebugPrinting.DisplayPrint(value : values[0],
+                                                         identifier : this.Identifier,
+                                                         debugging : this.Debugging);
       #endif
 
-      this.SetText(text : values[0].ToString(provider : CultureInfo.InvariantCulture));
+      this.SetText(text : values[0].ToString(provider : System.Globalization.CultureInfo.InvariantCulture));
     }
 
     /// <inheritdoc />
@@ -62,7 +61,9 @@ namespace droid.Runtime.Prototyping.Displayers.Canvas {
     /// </summary>
     public override void Display(string value) {
       #if NEODROID_DEBUG
-      DebugPrinting.DisplayPrint(value : value, identifier : this.Identifier, debugging : this.Debugging);
+      droid.Runtime.Utilities.DebugPrinting.DisplayPrint(value : value,
+                                                         identifier : this.Identifier,
+                                                         debugging : this.Debugging);
       #endif
 
       this.SetText(text : value);
@@ -71,9 +72,11 @@ namespace droid.Runtime.Prototyping.Displayers.Canvas {
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public override void Display(Vector3 value) {
+    public override void Display(UnityEngine.Vector3 value) {
       #if NEODROID_DEBUG
-      DebugPrinting.DisplayPrint(value : value, identifier : this.Identifier, debugging : this.Debugging);
+      droid.Runtime.Utilities.DebugPrinting.DisplayPrint(value : value,
+                                                         identifier : this.Identifier,
+                                                         debugging : this.Debugging);
       #endif
 
       this.SetText(text : value.ToString());
@@ -82,9 +85,11 @@ namespace droid.Runtime.Prototyping.Displayers.Canvas {
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public override void Display(Vector3[] value) {
+    public override void Display(UnityEngine.Vector3[] value) {
       #if NEODROID_DEBUG
-      DebugPrinting.DisplayPrint(value : value, identifier : this.Identifier, debugging : this.Debugging);
+      droid.Runtime.Utilities.DebugPrinting.DisplayPrint(value : value,
+                                                         identifier : this.Identifier,
+                                                         debugging : this.Debugging);
       #endif
 
       this.SetText(text : value.ToString());
@@ -93,9 +98,11 @@ namespace droid.Runtime.Prototyping.Displayers.Canvas {
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public override void Display(Points.ValuePoint points) {
+    public override void Display(droid.Runtime.Structs.Points.ValuePoint points) {
       #if NEODROID_DEBUG
-      DebugPrinting.DisplayPrint(value : points, identifier : this.Identifier, debugging : this.Debugging);
+      droid.Runtime.Utilities.DebugPrinting.DisplayPrint(value : points,
+                                                         identifier : this.Identifier,
+                                                         debugging : this.Debugging);
       #endif
 
       this.SetText(text : points.ToString());
@@ -104,9 +111,11 @@ namespace droid.Runtime.Prototyping.Displayers.Canvas {
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public override void Display(Points.ValuePoint[] points) {
+    public override void Display(droid.Runtime.Structs.Points.ValuePoint[] points) {
       #if NEODROID_DEBUG
-      DebugPrinting.DisplayPrint(value : points, identifier : this.Identifier, debugging : this.Debugging);
+      droid.Runtime.Utilities.DebugPrinting.DisplayPrint(value : points,
+                                                         identifier : this.Identifier,
+                                                         debugging : this.Debugging);
       #endif
 
       this.SetText(text : points.ToString());
@@ -115,9 +124,11 @@ namespace droid.Runtime.Prototyping.Displayers.Canvas {
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public override void Display(Points.StringPoint point) {
+    public override void Display(droid.Runtime.Structs.Points.StringPoint point) {
       #if NEODROID_DEBUG
-      DebugPrinting.DisplayPrint(value : point, identifier : this.Identifier, debugging : this.Debugging);
+      droid.Runtime.Utilities.DebugPrinting.DisplayPrint(value : point,
+                                                         identifier : this.Identifier,
+                                                         debugging : this.Debugging);
       #endif
 
       this.SetText(text : point.ToString());
@@ -126,17 +137,21 @@ namespace droid.Runtime.Prototyping.Displayers.Canvas {
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public override void Display(Points.StringPoint[] points) {
+    public override void Display(droid.Runtime.Structs.Points.StringPoint[] points) {
       #if NEODROID_DEBUG
-      DebugPrinting.DisplayPrint(value : points, identifier : this.Identifier, debugging : this.Debugging);
+      droid.Runtime.Utilities.DebugPrinting.DisplayPrint(value : points,
+                                                         identifier : this.Identifier,
+                                                         debugging : this.Debugging);
       #endif
 
       this.SetText(text : points.ToString());
     }
 
-    public override void PlotSeries(Points.ValuePoint[] points) {
+    public override void PlotSeries(droid.Runtime.Structs.Points.ValuePoint[] points) {
       #if NEODROID_DEBUG
-      DebugPrinting.DisplayPrint(value : points, identifier : this.Identifier, debugging : this.Debugging);
+      droid.Runtime.Utilities.DebugPrinting.DisplayPrint(value : points,
+                                                         identifier : this.Identifier,
+                                                         debugging : this.Debugging);
       #endif
 
       this.SetText(text : points.ToString());

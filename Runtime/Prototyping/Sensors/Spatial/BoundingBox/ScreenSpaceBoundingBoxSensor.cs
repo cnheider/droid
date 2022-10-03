@@ -1,39 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using droid.Runtime.GameObjects.BoundingBoxes;
-using droid.Runtime.GameObjects.BoundingBoxes.Experimental;
-using droid.Runtime.Interfaces;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Sensors.Spatial.BoundingBox {
+﻿namespace droid.Runtime.Prototyping.Sensors.Spatial.BoundingBox {
   /// <inheritdoc cref="Sensor" />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
-                               + "Experimental/ScreenSpaceBoundingBox"
-                               + SensorComponentMenuPath._Postfix)]
-  [ExecuteInEditMode]
+  [UnityEngine.AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
+                                           + "Experimental/ScreenSpaceBoundingBox"
+                                           + SensorComponentMenuPath._Postfix)]
+  [UnityEngine.ExecuteInEditMode]
   //[ExecuteAlways]
-  [RequireComponent(requiredComponent : typeof(NeodroidBoundingBox))]
+  [UnityEngine.RequireComponent(requiredComponent :
+                                 typeof(droid.Runtime.GameObjects.BoundingBoxes.NeodroidBoundingBox))]
   public class ScreenSpaceBoundingBoxSensor : Sensor,
-                                              IHasString {
-    NeodroidBoundingBox _neodroid_bounding_box = null;
-    [SerializeField] Camera _camera = null;
-    [SerializeField] Rect _out_rect = new Rect();
+                                              droid.Runtime.Interfaces.IHasString {
+    [UnityEngine.SerializeField] UnityEngine.Camera _camera = null;
+    [UnityEngine.SerializeField] UnityEngine.Rect _out_rect = new UnityEngine.Rect();
+
+    [UnityEngine.SerializeField] bool NormaliseObservation = true;
+    droid.Runtime.GameObjects.BoundingBoxes.NeodroidBoundingBox _neodroid_bounding_box = null;
+
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
+    public override System.Collections.Generic.IEnumerable<float> FloatEnumerable { get { return null; } }
+
+    /// <summary>
+    /// </summary>
+    public string ObservationValue { get; set; }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     public override void PreSetup() {
-      this._neodroid_bounding_box = this.GetComponent<NeodroidBoundingBox>();
+      this._neodroid_bounding_box =
+          this.GetComponent<droid.Runtime.GameObjects.BoundingBoxes.NeodroidBoundingBox>();
     }
-
-    [SerializeField] bool NormaliseObservation = true;
-
-    /// <inheritdoc />
-    /// <summary>
-    /// </summary>
-    public override IEnumerable<float> FloatEnumerable { get { return null; } }
 
     /// <inheritdoc />
     /// <summary>
@@ -56,7 +55,10 @@ namespace droid.Runtime.Prototyping.Sensors.Spatial.BoundingBox {
             h = r.height;
           }
 
-          this._out_rect = rect.Normalise(width : w, height : h);
+          this._out_rect =
+              droid.Runtime.GameObjects.BoundingBoxes.Experimental.BoundingBoxUtilities.Normalise(rect : rect,
+                width : w,
+                height : h);
         } else {
           this._out_rect = rect;
         }
@@ -67,11 +69,6 @@ namespace droid.Runtime.Prototyping.Sensors.Spatial.BoundingBox {
 
       this.ObservationValue = str_rep;
     }
-
-    /// <summary>
-    ///
-    /// </summary>
-    public string ObservationValue { get; set; }
 
     /// <inheritdoc />
     /// <summary>

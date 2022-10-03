@@ -1,22 +1,19 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-
-namespace droid.Runtime.GameObjects.StatusDisplayer.EventRecipients {
+﻿namespace droid.Runtime.GameObjects.StatusDisplayer.EventRecipients {
   /// <inheritdoc cref="DataPoller" />
   /// <summary>
   /// </summary>
-  [RequireComponent(requiredComponent : typeof(Toggle))]
-  [ExecuteInEditMode]
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.UI.Toggle))]
+  [UnityEngine.ExecuteInEditMode]
   public class ToggleUpdater : DataPoller {
     /// <summary>
     /// </summary>
-    [SerializeField]
-    Toggle _toggle;
+    [UnityEngine.SerializeField]
+    UnityEngine.UI.Toggle _toggle;
 
     // Use this for initialization
     /// <summary>
     /// </summary>
-    void Start() { this._toggle = this.GetComponent<Toggle>(); }
+    void Start() { this._toggle = this.GetComponent<UnityEngine.UI.Toggle>(); }
 
     /// <inheritdoc />
     /// <summary>

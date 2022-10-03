@@ -1,29 +1,12 @@
-﻿using System;
-using droid.Runtime.Enums;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Messaging.Messages;
-using droid.Runtime.Structs.Space;
-using droid.Runtime.Structs.Space.Sample;
-using droid.Runtime.Utilities;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Configurables.Transforms {
+﻿namespace droid.Runtime.Prototyping.Configurables.Transforms {
   /// <inheritdoc cref="Configurable" />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
-                               + "Position"
-                               + ConfigurableComponentMenuPath._Postfix)]
+  [UnityEngine.AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
+                                           + "Position"
+                                           + ConfigurableComponentMenuPath._Postfix)]
   public class PositionConfigurable : SpatialConfigurable,
-                                      IHasTriple {
-    #region Fields
-
-    [SerializeField] Vector3 _position = Vector3.zero;
-    [SerializeField] bool fetch_env_bounds = true;
-    [SerializeField] SampleSpace3 _pos_space = new SampleSpace3 {Space = Space3.ZeroOne};
-
-    #endregion
-
+                                      droid.Runtime.Interfaces.IHasTriple {
     /// <summary>
     /// </summary>
     string _x;
@@ -36,19 +19,23 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
     /// </summary>
     string _z;
 
+    /// <summary>
+    /// </summary>
+    public droid.Runtime.Interfaces.ISamplable ConfigurableValueSpace { get { return this._pos_space; } }
+
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public Vector3 ObservationValue { get { return this._position; } }
+    public UnityEngine.Vector3 ObservationValue { get { return this._position; } }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    public Space3 TripleSpace { get { return this._pos_space._space; } }
+    /// <summary>
+    /// </summary>
+    public droid.Runtime.Structs.Space.Space3 TripleSpace { get { return this._pos_space._space; } }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
     public override void RemotePostSetup() {
       if (this.fetch_env_bounds) {
         if (this.ParentEnvironment?.PlayableArea) {
@@ -58,8 +45,9 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
           }
 
           this._pos_space.Space =
-              Space3.FromCenterExtents(bounds_extents : this.ParentEnvironment.PlayableArea.Bounds.extents,
-                                       decimal_granularity : dec_gran);
+              droid.Runtime.Structs.Space.Space3.FromCenterExtents(bounds_extents : this.ParentEnvironment
+                                                                       .PlayableArea.Bounds.extents,
+                                                                   decimal_granularity : dec_gran);
         }
       }
     }
@@ -70,7 +58,7 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
     public override void PreSetup() {
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        Debug.Log("PreSetup");
+        UnityEngine.Debug.Log("PreSetup");
       }
       #endif
 
@@ -84,22 +72,22 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
     /// </summary>
     protected override void RegisterComponent() {
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : this,
-                                                          identifier : this._x);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : this,
+            identifier : this._x);
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : this,
-                                                          identifier : this._y);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : this,
+            identifier : this._y);
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : this,
-                                                          identifier : this._z);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : this,
+            identifier : this._z);
     }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
     protected override void UnRegisterComponent() {
       if (this.ParentEnvironment == null) {
         return;
@@ -110,41 +98,37 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
       this.ParentEnvironment.UnRegister(t : this, identifier : this._z);
     }
 
-    /// <summary>
-    ///
-    /// </summary>
-    public ISamplable ConfigurableValueSpace { get { return this._pos_space; } }
-
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
     public override void UpdateCurrentConfiguration() {
       switch (this._coordinate_spaceEnum) {
-        case CoordinateSpaceEnum.Environment_:
+        case droid.Runtime.Enums.CoordinateSpaceEnum.Environment_:
           this._position = this.ParentEnvironment.TransformPoint(point : this.transform.position);
           break;
-        case CoordinateSpaceEnum.Global_:
+        case droid.Runtime.Enums.CoordinateSpaceEnum.Global_:
           this._position = this.transform.position;
           break;
-        case CoordinateSpaceEnum.Local_:
+        case droid.Runtime.Enums.CoordinateSpaceEnum.Local_:
           this._position = this.transform.localPosition;
           break;
       }
     }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    ///  <param name="simulator_configuration"></param>
-    public override void ApplyConfiguration(IConfigurableConfiguration simulator_configuration) {
-      Vector3 pos;
-      if (this._coordinate_spaceEnum == CoordinateSpaceEnum.Local_) {
+    /// <summary>
+    /// </summary>
+    /// <param name="simulator_configuration"></param>
+    public override void ApplyConfiguration(
+        droid.Runtime.Interfaces.IConfigurableConfiguration simulator_configuration) {
+      UnityEngine.Vector3 pos;
+      if (this._coordinate_spaceEnum == droid.Runtime.Enums.CoordinateSpaceEnum.Local_) {
         pos = this.transform.localPosition;
       } else {
         pos = this.transform.position;
       }
 
-      if (this._coordinate_spaceEnum == CoordinateSpaceEnum.Environment_) {
+      if (this._coordinate_spaceEnum == droid.Runtime.Enums.CoordinateSpaceEnum.Environment_) {
         pos = this.ParentEnvironment.TransformPoint(point : this.transform.position);
       }
 
@@ -160,7 +144,8 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
 
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        Debug.Log(message : $"Applying {v} to {simulator_configuration.ConfigurableName} configurable");
+        UnityEngine.Debug.Log(message :
+                              $"Applying {v} to {simulator_configuration.ConfigurableName} configurable");
       }
       #endif
 
@@ -183,18 +168,18 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
       }
 
       var inv_pos = pos;
-      if (this._coordinate_spaceEnum == CoordinateSpaceEnum.Environment_) {
+      if (this._coordinate_spaceEnum == droid.Runtime.Enums.CoordinateSpaceEnum.Environment_) {
         inv_pos = this.ParentEnvironment.InverseTransformPoint(point : inv_pos);
       }
 
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        Debug.Log(message :
-                  $"Setting pos of {this} to {inv_pos}, from {pos} and r {simulator_configuration.ConfigurableValue}");
+        UnityEngine.Debug.Log(message :
+                              $"Setting pos of {this} to {inv_pos}, from {pos} and r {simulator_configuration.ConfigurableValue}");
       }
       #endif
 
-      if (this._coordinate_spaceEnum == CoordinateSpaceEnum.Local_) {
+      if (this._coordinate_spaceEnum == droid.Runtime.Enums.CoordinateSpaceEnum.Local_) {
         this.transform.localPosition = inv_pos;
       } else {
         this.transform.position = inv_pos;
@@ -202,16 +187,33 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
     }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    ///  <returns></returns>
-    public override Configuration[] SampleConfigurations() {
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
+    public override droid.Runtime.Messaging.Messages.Configuration[] SampleConfigurations() {
       var sample = this._pos_space.Sample();
       return new[] {
-                       new Configuration(configurable_name : this._x, configurable_value : sample.x),
-                       new Configuration(configurable_name : this._y, configurable_value : sample.y),
-                       new Configuration(configurable_name : this._z, configurable_value : sample.z)
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._x,
+                         configurable_value : sample.x),
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._y,
+                         configurable_value : sample.y),
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._z,
+                         configurable_value : sample.z)
                    };
     }
+
+    #region Fields
+
+    [UnityEngine.SerializeField] UnityEngine.Vector3 _position = UnityEngine.Vector3.zero;
+    [UnityEngine.SerializeField] bool fetch_env_bounds = true;
+
+    [UnityEngine.SerializeField]
+    droid.Runtime.Structs.Space.Sample.SampleSpace3 _pos_space =
+        new droid.Runtime.Structs.Space.Sample.SampleSpace3 {
+                                                                Space = droid.Runtime.Structs.Space.Space3
+                                                                    .ZeroOne
+                                                            };
+
+    #endregion
   }
 }

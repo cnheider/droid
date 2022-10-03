@@ -1,12 +1,9 @@
-﻿using System;
-using droid.Runtime.Interfaces;
-
-namespace droid.Runtime.Messaging.Messages {
+﻿namespace droid.Runtime.Messaging.Messages {
   /// <summary>
   ///   Has a possible direction given by the sign of the float in strength
   /// </summary>
-  [Serializable]
-  public class ActuatorMotion : IMotion {
+  [System.SerializableAttribute]
+  public class ActuatorMotion : droid.Runtime.Interfaces.IMotion {
     public ActuatorMotion(string actor_name, string actuator_name, float strength) {
       this.ActorName = actor_name;
       this.ActuatorName = actuator_name;

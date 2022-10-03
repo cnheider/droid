@@ -1,16 +1,43 @@
-﻿using droid.Runtime.GameObjects.BoundingBoxes;
-using droid.Runtime.GameObjects.ChildSensors;
-using droid.Runtime.Utilities.Extensions;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
+﻿namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : EvaluationComponentMenuPath._ComponentMenuPath
-                               + "DotProduct"
-                               + EvaluationComponentMenuPath._Postfix)]
+  [UnityEngine.AddComponentMenu(menuName : EvaluationComponentMenuPath._ComponentMenuPath
+                                           + "DotProduct"
+                                           + EvaluationComponentMenuPath._Postfix)]
   public class DotProductObjective : SpatialObjective {
+    void OnDrawGizmosSelected() {
+      var goal_position = this.target_direction.position;
+      var actor_position = this._actor_transform.position;
+
+      var off_up = goal_position
+                   + UnityEngine.Vector3.up
+                   * UnityEngine.Vector3.SignedAngle(@from : this.target_direction.forward,
+                                                     to : this._actor_transform.forward,
+                                                     axis : UnityEngine.Vector3.up)
+                   / 180;
+      UnityEngine.Debug.DrawLine(start : goal_position, end : off_up);
+      UnityEngine.Debug.DrawLine(start : actor_position, end : off_up);
+
+      var up = this._actor_transform.up;
+      var up1 = this.target_direction.up;
+      var off_forward = goal_position
+                        + UnityEngine.Vector3.forward
+                        * UnityEngine.Vector3.SignedAngle(@from : up1,
+                                                          to : up,
+                                                          axis : UnityEngine.Vector3.forward)
+                        / 180;
+      UnityEngine.Debug.DrawLine(start : goal_position, end : off_forward);
+      UnityEngine.Debug.DrawLine(start : actor_position, end : off_forward);
+
+      var off_left = goal_position
+                     + UnityEngine.Vector3.left
+                     * UnityEngine.Vector3.SignedAngle(@from : up1, to : up, axis : UnityEngine.Vector3.left)
+                     / 180;
+      UnityEngine.Debug.DrawLine(start : goal_position, end : off_left);
+      UnityEngine.Debug.DrawLine(start : actor_position, end : off_left);
+    }
+
     /// <inheritdoc />
     /// <summary>
     /// </summary>
@@ -18,11 +45,11 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
     public override float InternalEvaluate() {
       var signal = this.DefaultSignal;
 
-      var angle = Vector3.Dot(lhs : this.target_direction.transform.up,
-                              rhs : this._actor_transform.transform.up);
+      var angle = UnityEngine.Vector3.Dot(lhs : this.target_direction.transform.up,
+                                          rhs : this._actor_transform.transform.up);
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        Debug.Log(message : $"Distance: {angle}");
+        UnityEngine.Debug.Log(message : $"Distance: {angle}");
       }
       #endif
 
@@ -38,11 +65,11 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
 
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        Debug.Log(message : $"Frame Number: {this.ParentEnvironment?.StepI}, "
-                            + $"Terminated: {this.ParentEnvironment?.Terminated}, "
-                            + $"Last Reason: {this.ParentEnvironment?.LastTerminationReason}, "
-                            + $"Internal Feedback Signal: {signal}, "
-                            + $"Distance: {angle}");
+        UnityEngine.Debug.Log(message : $"Frame Number: {this.ParentEnvironment?.StepI}, "
+                                        + $"Terminated: {this.ParentEnvironment?.Terminated}, "
+                                        + $"Last Reason: {this.ParentEnvironment?.LastTerminationReason}, "
+                                        + $"Internal Feedback Signal: {signal}, "
+                                        + $"Distance: {angle}");
       }
       #endif
 
@@ -59,18 +86,21 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
     /// </summary>
     public override void RemotePostSetup() {
       if (!this.target_direction) {
-        this.target_direction = FindObjectOfType<Transform>();
+        this.target_direction = FindObjectOfType<UnityEngine.Transform>();
       }
 
       if (!this._actor_transform) {
-        this._actor_transform = FindObjectOfType<Transform>();
+        this._actor_transform = FindObjectOfType<UnityEngine.Transform>();
 
-        var remote_sensor =
-            this._actor_transform.GetComponentInChildren<ChildColliderSensor<Collider, Collision>>();
+        var remote_sensor = this._actor_transform
+                                .GetComponentInChildren<droid.Runtime.GameObjects.ChildSensors.
+                                    ChildColliderSensor<UnityEngine.Collider, UnityEngine.Collision>>();
         if (!remote_sensor) {
-          var col = this._actor_transform.GetComponentInChildren<Collider>();
+          var col = this._actor_transform.GetComponentInChildren<UnityEngine.Collider>();
           if (col) {
-            remote_sensor = col.gameObject.AddComponent<ChildColliderSensor<Collider, Collision>>();
+            remote_sensor = col.gameObject
+                               .AddComponent<droid.Runtime.GameObjects.ChildSensors.ChildColliderSensor<
+                                   UnityEngine.Collider, UnityEngine.Collision>>();
           }
         }
 
@@ -82,39 +112,16 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
       }
 
       if (this._obstructions == null || this._obstructions.Length <= 0) {
-        this._obstructions = FindObjectsOfType<Obstruction>();
+        this._obstructions = FindObjectsOfType<droid.Runtime.Utilities.Extensions.Obstruction>();
       }
 
       if (!this._playable_area) {
-        this._playable_area = FindObjectOfType<NeodroidBoundingBox>();
+        this._playable_area = FindObjectOfType<droid.Runtime.GameObjects.BoundingBoxes.NeodroidBoundingBox>();
       }
     }
-    
-    void OnDrawGizmosSelected() {
-      var goal_position = this.target_direction.position;
-      var actor_position = this._actor_transform.position;
 
-      var off_up = goal_position + Vector3.up * Vector3.SignedAngle(@from : this.target_direction.forward,
-                                                                    to : this
-                                                                         ._actor_transform.forward, axis : Vector3.up)/180;
-      Debug.DrawLine(start : goal_position, end : off_up);
-      Debug.DrawLine(start : actor_position, end : off_up);
-
-      var up = this
-               ._actor_transform.up;
-      var up1 = this.target_direction.up;
-      var off_forward = goal_position + Vector3.forward * Vector3.SignedAngle(@from : up1,
-                                                                              to : up, axis : Vector3.forward)/180;
-      Debug.DrawLine(start : goal_position, end : off_forward);
-      Debug.DrawLine(start : actor_position, end : off_forward);
-      
-      var off_left = goal_position + Vector3.left * Vector3.SignedAngle(@from : up1,
-                                                                        to : up, axis : Vector3.left)/180;
-      Debug.DrawLine(start : goal_position, end : off_left);
-      Debug.DrawLine(start : actor_position, end : off_left);
-    }
-
-    void OnChildTriggerEnter(GameObject child_sensor_game_object, Collision collision) {
+    void OnChildTriggerEnter(UnityEngine.GameObject child_sensor_game_object,
+                             UnityEngine.Collision collision) {
       if (collision.collider.CompareTag("Obstruction")) {
         if (this._terminate_on_obstruction_collision) {
           this.ParentEnvironment.Terminate("Collided with obstruction");
@@ -124,7 +131,8 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
       this._has_collided = true;
     }
 
-    void OnChildTriggerEnter(GameObject child_sensor_game_object, Collider collider1) {
+    void OnChildTriggerEnter(UnityEngine.GameObject child_sensor_game_object,
+                             UnityEngine.Collider collider1) {
       if (collider1.CompareTag("Obstruction")) {
         if (this._terminate_on_obstruction_collision) {
           this.ParentEnvironment.Terminate("Collided with obstruction");
@@ -136,16 +144,19 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
 
     #region Fields
 
-    [Header("Specific", order = 102)]
-    [SerializeField]
+    [UnityEngine.HeaderAttribute("Specific", order = 102)]
+    [UnityEngine.SerializeField]
     bool _inverse = false;
 
-    [SerializeField] Transform target_direction = null;
-    [SerializeField] Transform _actor_transform = null;
-    [SerializeField] NeodroidBoundingBox _playable_area = null;
-    [SerializeField] Obstruction[] _obstructions = null;
-    [SerializeField] bool _terminate_on_obstruction_collision = true;
-    [SerializeField] bool _has_collided = false;
+    [UnityEngine.SerializeField] UnityEngine.Transform target_direction = null;
+    [UnityEngine.SerializeField] UnityEngine.Transform _actor_transform = null;
+
+    [UnityEngine.SerializeField]
+    droid.Runtime.GameObjects.BoundingBoxes.NeodroidBoundingBox _playable_area = null;
+
+    [UnityEngine.SerializeField] droid.Runtime.Utilities.Extensions.Obstruction[] _obstructions = null;
+    [UnityEngine.SerializeField] bool _terminate_on_obstruction_collision = true;
+    [UnityEngine.SerializeField] bool _has_collided = false;
 
     #endregion
   }

@@ -1,30 +1,26 @@
 ﻿#if UNITY_EDITOR
-using System;
-using UnityEditor;
-
 namespace droid.Editor.Windows {
   /// <inheritdoc />
-  ///  <summary>
-  ///  </summary>
-  public class WindowManager : EditorWindow {
-    static Type[] _desired_dock_next_toos = {
-                                                typeof(RenderTextureConfiguratorWindow),
-                                                typeof(CameraSynchronisationWindow),
-                                                #if NEODROID_DEBUG
-                                                typeof(DebugWindow),
-                                                #endif
-                                                typeof(SegmentationWindow),
-                                                typeof(PrototypingWindow),
-                                                typeof(TaskWindow),
-                                                typeof(DemonstrationWindow),
-                                                typeof(SimulationWindow)
-                                            };
+  /// <summary>
+  /// </summary>
+  public class WindowManager : UnityEditor.EditorWindow {
+    static System.Type[] _desired_dock_next_toos = {
+                                                       typeof(RenderTextureConfiguratorWindow),
+                                                       typeof(CameraSynchronisationWindow),
+                                                       #if NEODROID_DEBUG
+                                                       typeof(DebugWindow),
+                                                       #endif
+                                                       typeof(SegmentationWindow),
+                                                       typeof(PrototypingWindow),
+                                                       typeof(TaskWindow),
+                                                       typeof(DemonstrationWindow),
+                                                       typeof(SimulationWindow)
+                                                   };
 
     /// <summary>
-    ///
     /// </summary>
-    [MenuItem(itemName : EditorWindowMenuPath._WindowMenuPath + "ShowAllWindows")]
-    [MenuItem(itemName : EditorWindowMenuPath._ToolMenuPath + "ShowAllWindows")]
+    [UnityEditor.MenuItem(itemName : EditorWindowMenuPath._WindowMenuPath + "ShowAllWindows")]
+    [UnityEditor.MenuItem(itemName : EditorWindowMenuPath._ToolMenuPath + "ShowAllWindows")]
     public static void ShowWindow() {
       //Show existing window instance. If one doesn't exist, make one.
       GetWindow<RenderTextureConfiguratorWindow>(desiredDockNextTo : _desired_dock_next_toos);

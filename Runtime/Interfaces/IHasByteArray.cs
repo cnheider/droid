@@ -7,12 +7,10 @@
     byte[] Bytes { get; }
 
     /// <summary>
-    ///
     /// </summary>
     int[] Shape { get; }
 
     /// <summary>
-    ///
     /// </summary>
     string ArrayEncoding { get; }
   }

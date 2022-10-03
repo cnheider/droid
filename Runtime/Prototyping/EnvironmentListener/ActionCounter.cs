@@ -1,16 +1,13 @@
-﻿using droid.Runtime.Interfaces;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.EnvironmentListener {
+﻿namespace droid.Runtime.Prototyping.EnvironmentListener {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
   public class ActionCounter : EnvironmentListener {
-    [SerializeField] IAbstractPrototypingEnvironment _environment;
+    [UnityEngine.SerializeField] droid.Runtime.Interfaces.IAbstractPrototypingEnvironment _environment;
 
     /// <summary>
     /// </summary>
-    public IAbstractPrototypingEnvironment ParentEnvironment {
+    public droid.Runtime.Interfaces.IAbstractPrototypingEnvironment ParentEnvironment {
       get { return this._environment; }
       set { this._environment = value; }
     }
@@ -29,7 +26,6 @@ namespace droid.Runtime.Prototyping.EnvironmentListener {
     }
 
     /// <summary>
-    ///
     /// </summary>
     public override void PrototypingReset() { }
 

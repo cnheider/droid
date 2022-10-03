@@ -1,75 +1,64 @@
-﻿using System.Collections.Generic;
-#if UNITY_EDITOR
-using UnityEditor;
-using UnityEngine;
+﻿#if UNITY_EDITOR
 
 namespace droid.Editor.Windows {
   /// <summary>
-  ///
   /// </summary>
-  public class RenderTextureConfiguratorWindow : EditorWindow {
-    Texture _icon;
-
+  public class RenderTextureConfiguratorWindow : UnityEditor.EditorWindow {
     const int _preview_image_size = 100;
+    UnityEngine.Texture _icon;
 
     //float[] _render_texture_height;
     //float[] _render_texture_width;
 
-    List<RenderTexture> _render_textures = new List<RenderTexture>();
+    System.Collections.Generic.List<UnityEngine.RenderTexture> _render_textures =
+        new System.Collections.Generic.List<UnityEngine.RenderTexture>();
 
-    Vector2 _scroll_position;
-    Vector2 _texture_size;
-
-    /// <summary>
-    ///
-    /// </summary>
-    [MenuItem(itemName : EditorWindowMenuPath._WindowMenuPath + "RenderTextureConfiguratorWindow")]
-    [MenuItem(itemName : EditorWindowMenuPath._ToolMenuPath + "RenderTextureConfiguratorWindow")]
-    public static void ShowWindow() {
-      GetWindow(t : typeof(RenderTextureConfiguratorWindow)); //Show existing window instance. If one doesn't exist, make one.
-    }
+    UnityEngine.Vector2 _scroll_position;
+    UnityEngine.Vector2 _texture_size;
 
     void OnEnable() {
       this._icon =
-          (Texture2D)AssetDatabase.LoadAssetAtPath(assetPath :
-                                                   NeodroidSettings.Current.NeodroidImportLocationProp
-                                                   + "Gizmos/Icons/images.png",
-                                                   type : typeof(Texture2D));
+          (UnityEngine.Texture2D)UnityEditor.AssetDatabase.LoadAssetAtPath(assetPath :
+            $"{NeodroidSettings.Current.NeodroidImportLocationProp}Gizmos/Icons/images.png",
+            type : typeof(UnityEngine.Texture2D));
       this.titleContent =
-          new GUIContent("Neo:Tex", image : this._icon, "Window for RenderTexture configuration");
+          new UnityEngine.GUIContent("Neo:Tex", image : this._icon, "Window for RenderTexture configuration");
     }
 
     void OnGUI() {
       this._render_textures.Clear();
-      var cameras = FindObjectsOfType<Camera>();
+      var cameras = FindObjectsOfType<UnityEngine.Camera>();
       foreach (var camera in cameras) {
         if (camera.targetTexture != null) {
           this._render_textures.Add(item : camera.targetTexture);
         }
       }
 
-      this._scroll_position = EditorGUILayout.BeginScrollView(scrollPosition : this._scroll_position);
+      this._scroll_position =
+          UnityEditor.EditorGUILayout.BeginScrollView(scrollPosition : this._scroll_position);
       foreach (var render_texture in this._render_textures) {
-        EditorGUILayout.BeginVertical("Box");
-        EditorGUILayout.BeginHorizontal();
-        GUILayout.FlexibleSpace();
-        GUILayout.Label(text : render_texture.name);
-        GUILayout.FlexibleSpace();
-        EditorGUILayout.EndHorizontal();
-        EditorGUILayout.BeginHorizontal();
-        GUILayout.FlexibleSpace();
-        var rect = GUILayoutUtility.GetRect(width : _preview_image_size, height : _preview_image_size);
-        EditorGUI.DrawPreviewTexture(position : rect, image : render_texture);
-        this._texture_size = new Vector2(x : render_texture.width, y : render_texture.height);
-        GUILayout.FlexibleSpace();
-        EditorGUILayout.EndHorizontal();
-        EditorGUILayout.EndVertical();
+        UnityEditor.EditorGUILayout.BeginVertical("Box");
+        UnityEditor.EditorGUILayout.BeginHorizontal();
+        UnityEngine.GUILayout.FlexibleSpace();
+        UnityEngine.GUILayout.Label(text : render_texture.name);
+        UnityEngine.GUILayout.FlexibleSpace();
+        UnityEditor.EditorGUILayout.EndHorizontal();
+        UnityEditor.EditorGUILayout.BeginHorizontal();
+        UnityEngine.GUILayout.FlexibleSpace();
+        var rect = UnityEngine.GUILayoutUtility.GetRect(width : _preview_image_size,
+                                                        height : _preview_image_size);
+        UnityEditor.EditorGUI.DrawPreviewTexture(position : rect, image : render_texture);
+        this._texture_size = new UnityEngine.Vector2(x : render_texture.width, y : render_texture.height);
+        UnityEngine.GUILayout.FlexibleSpace();
+        UnityEditor.EditorGUILayout.EndHorizontal();
+        UnityEditor.EditorGUILayout.EndVertical();
       }
 
-      EditorGUILayout.EndScrollView();
+      UnityEditor.EditorGUILayout.EndScrollView();
       this._texture_size =
-          EditorGUILayout.Vector2Field("Set All Render Texture Sizes:", value : this._texture_size);
-      if (GUILayout.Button("Apply(Does not work yet)")) {
+          UnityEditor.EditorGUILayout.Vector2Field("Set All Render Texture Sizes:",
+                                                   value : this._texture_size);
+      if (UnityEngine.GUILayout.Button("Apply(Does not work yet)")) {
         // ReSharper disable once UnusedVariable
         foreach (var render_texture in this._render_textures) {
 //render_texture.width = (int)_texture_size[0]; //TODO: Read only property to change the asset, it has to be replaced with a new asset
@@ -79,9 +68,17 @@ namespace droid.Editor.Windows {
     }
 
     /// <summary>
-    ///
     /// </summary>
     public void OnInspectorUpdate() { this.Repaint(); }
+
+    /// <summary>
+    /// </summary>
+    [UnityEditor.MenuItem(itemName : EditorWindowMenuPath._WindowMenuPath
+                                     + "RenderTextureConfiguratorWindow")]
+    [UnityEditor.MenuItem(itemName : EditorWindowMenuPath._ToolMenuPath + "RenderTextureConfiguratorWindow")]
+    public static void ShowWindow() {
+      GetWindow(t : typeof(RenderTextureConfiguratorWindow)); //Show existing window instance. If one doesn't exist, make one.
+    }
   }
 }
 #endif

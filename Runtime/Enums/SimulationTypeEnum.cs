@@ -1,6 +1,6 @@
 namespace droid.Runtime.Enums {
   /// <summary>
-  ///   Determines the discrete timesteps of the simulation environment.
+  ///   Determines the discrete time steps of the simulation environment.
   /// </summary>
   public enum SimulationTypeEnum {
     /// <summary>
@@ -18,6 +18,8 @@ namespace droid.Runtime.Enums {
     ///   Camera sensors should be manually rendered to ensure validity and freshness with camera.Render()
     /// </summary>
     Event_dependent_,
+    
+    //TODO: MAKE MANUAL PHYSICS CALL VARIANT!
 
     /// <summary>
     ///   Continue simulation

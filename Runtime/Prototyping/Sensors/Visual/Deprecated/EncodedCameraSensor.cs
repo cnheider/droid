@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using droid.Runtime.Enums;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Managers;
-using droid.Runtime.Utilities;
-using UnityEngine;
-using UnityEngine.Experimental.Rendering;
-
-namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
+﻿namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
   /// <summary>
   /// </summary>
   enum ImageFormat {
@@ -35,19 +26,32 @@ namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
   /// <inheritdoc cref="Sensor" />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
-                               + "EncodedCamera"
-                               + SensorComponentMenuPath._Postfix)]
-  [ExecuteInEditMode]
-  [DisallowMultipleComponent]
-  [RequireComponent(requiredComponent : typeof(Camera))]
+  [UnityEngine.AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
+                                           + "EncodedCamera"
+                                           + SensorComponentMenuPath._Postfix)]
+  [UnityEngine.ExecuteInEditMode]
+  [UnityEngine.DisallowMultipleComponent]
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.Camera))]
   public class EncodedCameraSensor : Sensor,
-                                     IHasByteArray {
+                                     droid.Runtime.Interfaces.IHasByteArray {
     /// <summary>
     /// </summary>
-    [Header("Specific", order = 102)]
-    [SerializeField]
-    protected Camera _Camera;
+    [UnityEngine.HeaderAttribute("Specific", order = 102)]
+    [UnityEngine.SerializeField]
+    protected UnityEngine.Camera _Camera;
+
+    /// <summary>
+    /// </summary>
+    [UnityEngine.SerializeField]
+    ImageFormat imageFormat = ImageFormat.Png_;
+
+    /// <summary>
+    /// </summary>
+    [UnityEngine.SerializeField]
+    [UnityEngine.RangeAttribute(0, 100)]
+    int jpegQuality = 75;
+
+    [UnityEngine.SerializeField] bool disable_encoding = false;
 
     /// <summary>
     /// </summary>
@@ -55,48 +59,42 @@ namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
 
     /// <summary>
     /// </summary>
-    [SerializeField]
-    ImageFormat imageFormat = ImageFormat.Png_;
+    protected droid.Runtime.Interfaces.IManager _Manager = null;
 
     /// <summary>
     /// </summary>
-    [SerializeField]
-    [Range(0, 100)]
-    int jpegQuality = 75;
+    UnityEngine.Texture2D _texture = null;
 
     /// <summary>
-    /// </summary>
-    protected IManager _Manager = null;
-
-    /// <summary>
-    ///
     /// </summary>
     public override string PrototypingTypeName { get { return ""; } }
 
     /// <summary>
     /// </summary>
-    Texture2D _texture = null;
-
-    [SerializeField] bool disable_encoding = false;
-
-    /// <inheritdoc />
-    /// <summary>
-    /// </summary>
-    [field : Header("Observation", order = 103)]
-    public byte[] Bytes { get; private set; } = { };
-
-    /// <summary>
-    ///
-    /// </summary>
-    public GraphicsFormat DataType {
+    public UnityEngine.Experimental.Rendering.GraphicsFormat DataType {
       get {
-        return GraphicsFormat.None; //this.imageFormat;
+        return UnityEngine.Experimental.Rendering.GraphicsFormat.None; //this.imageFormat;
       }
     }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
+    public override System.Collections.Generic.IEnumerable<float> FloatEnumerable { get { return null; } }
+
+    /// <summary>
+    /// </summary>
+    protected virtual void OnPostRender() { this.UpdateBytes(); }
+
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
+    [field : UnityEngine.HeaderAttribute("Observation", order = 103)]
+    public byte[] Bytes { get; private set; } = { };
+
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
     public int[] Shape {
       get {
         var channels = 4;
@@ -109,9 +107,9 @@ namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
     }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    ///  <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+    /// <summary>
+    /// </summary>
+    /// <exception cref="T:System.ArgumentOutOfRangeException"></exception>
     public string ArrayEncoding {
       get {
         switch (this.imageFormat) {
@@ -125,7 +123,7 @@ namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
             return "TGA";
           case ImageFormat.Raw_:
             return "RAW";
-          default: throw new ArgumentOutOfRangeException();
+          default: throw new System.ArgumentOutOfRangeException();
         }
       }
     }
@@ -135,41 +133,44 @@ namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
     /// </summary>
     public override void PreSetup() {
       if (this._Manager == null) {
-        this._Manager = FindObjectOfType<AbstractNeodroidManager>();
+        this._Manager = FindObjectOfType<droid.Runtime.Managers.AbstractNeodroidManager>();
       }
 
       if (this._Camera == null) {
-        this._Camera = this.GetComponent<Camera>();
+        this._Camera = this.GetComponent<UnityEngine.Camera>();
       }
 
       if (this._Camera) {
         var target_texture = this._Camera.targetTexture;
         if (!target_texture) {
-          Debug.LogWarning(message :
-                           $"No targetTexture defaulting to a texture of size ({NeodroidConstants._Default_Width}, {NeodroidConstants._Default_Height})");
+          UnityEngine.Debug.LogWarning(message :
+                                       $"No targetTexture defaulting to a texture of size ({droid.Runtime.Utilities.NeodroidConstants._Default_Width}, {droid.Runtime.Utilities.NeodroidConstants._Default_Height})");
 
-          this._texture = new Texture2D(width : NeodroidConstants._Default_Width,
-                                        height : NeodroidConstants._Default_Height);
+          this._texture =
+              new UnityEngine.Texture2D(width : droid.Runtime.Utilities.NeodroidConstants._Default_Width,
+                                        height : droid.Runtime.Utilities.NeodroidConstants._Default_Height);
         } else {
           var texture_format_str = target_texture.format.ToString();
-          if (Enum.TryParse(value : texture_format_str, result : out TextureFormat texture_format)) {
-            this._texture = new Texture2D(width : target_texture.width,
-                                          height : target_texture.height,
-                                          textureFormat : texture_format,
-                                          mipChain : target_texture.useMipMap,
-                                          linear : !target_texture.sRGB);
+          if (System.Enum.TryParse(value : texture_format_str,
+                                   result : out UnityEngine.TextureFormat texture_format)) {
+            this._texture = new UnityEngine.Texture2D(width : target_texture.width,
+                                                      height : target_texture.height,
+                                                      textureFormat : texture_format,
+                                                      mipChain : target_texture.useMipMap,
+                                                      linear : !target_texture.sRGB);
           } else {
             #if NEODROID_DEBUG
-            Debug.LogWarning(message :
-                             $"Texture format {texture_format_str} is not a valid TextureFormat for Texture2D for sensor {this.Identifier}");
+            UnityEngine.Debug.LogWarning(message :
+                                         $"Texture format {texture_format_str} is not a valid TextureFormat for Texture2D for sensor {this.Identifier}");
             #endif
           }
         }
       }
       #if NEODROID_DEBUG
       if (this._Manager?.SimulatorConfiguration != null) {
-        if (this._Manager.SimulatorConfiguration.SimulationType != SimulationTypeEnum.Frame_dependent_
-            && Application.isEditor) {
+        if (this._Manager.SimulatorConfiguration.SimulationType
+            != droid.Runtime.Enums.SimulationTypeEnum.Frame_dependent_
+            && UnityEngine.Application.isEditor) {
           //Debug.Log("Notice that camera observations may be out of sync with other observation data, because simulation configuration is not frame dependent");
         }
       }
@@ -178,11 +179,7 @@ namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
 
     /// <summary>
     /// </summary>
-    protected virtual void OnPostRender() { this.UpdateBytes(); }
-
-    /// <summary>
-    /// </summary>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     protected void UpdateBytes() {
       if (!this._Grab) {
         return;
@@ -191,41 +188,43 @@ namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
       this._Grab = false;
 
       if (this._Camera) {
-        var current_render_texture = RenderTexture.active;
-        RenderTexture.active = this._Camera.targetTexture;
+        var current_render_texture = UnityEngine.RenderTexture.active;
+        UnityEngine.RenderTexture.active = this._Camera.targetTexture;
 
         if (this._texture) {
-          this._texture.ReadPixels(source : new Rect(0,
-                                                     0,
-                                                     width : this._texture.width,
-                                                     height : this._texture.height),
-                                   destX : 0,
-                                   destY : 0);
+          this._texture.ReadPixels(source : new UnityEngine.Rect(0,
+                                                                 0,
+                                                                 width : this._texture.width,
+                                                                 height : this._texture.height),
+                                   0,
+                                   0);
           this._texture.Apply();
         } else {
           #if NEODROID_DEBUG
-          Debug.LogWarning("Texture not available!");
+          UnityEngine.Debug.LogWarning("Texture not available!");
           #endif
           var target_texture = this._Camera.targetTexture;
-          this._texture = new Texture2D(width : target_texture.width,
-                                        height : target_texture.height,
-                                        textureFormat : NeodroidConstants._Default_TextureFormat,
-                                        false);
+          this._texture = new UnityEngine.Texture2D(width : target_texture.width,
+                                                    height : target_texture.height,
+                                                    textureFormat : droid.Runtime.Utilities.NeodroidConstants
+                                                        ._Default_TextureFormat,
+                                                    false);
         }
 
         if (!this.disable_encoding) {
           switch (this.imageFormat) {
             case ImageFormat.Jpg_:
-              this.Bytes = this._texture.EncodeToJPG(quality : this.jpegQuality);
+              this.Bytes =
+                  UnityEngine.ImageConversion.EncodeToJPG(tex : this._texture, quality : this.jpegQuality);
               break;
             case ImageFormat.Png_:
-              this.Bytes = this._texture.EncodeToPNG();
+              this.Bytes = UnityEngine.ImageConversion.EncodeToPNG(tex : this._texture);
               break;
             case ImageFormat.Exr_:
-              this.Bytes = this._texture.EncodeToEXR();
+              this.Bytes = UnityEngine.ImageConversion.EncodeToEXR(tex : this._texture);
               break;
             case ImageFormat.Tga_:
-              this.Bytes = this._texture.EncodeToTGA();
+              this.Bytes = UnityEngine.ImageConversion.EncodeToTGA(tex : this._texture);
               break;
             case ImageFormat.Raw_:
               this.Bytes = this._texture.GetRawTextureData();
@@ -246,28 +245,24 @@ namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
             Debug.Log(string.Format("Wrote screenshot {0} of size {1}", filename, fileData.Length));
         }).Start();
             */
-            default: throw new ArgumentOutOfRangeException();
+            default: throw new System.ArgumentOutOfRangeException();
           }
         }
 
-        RenderTexture.active = current_render_texture;
+        UnityEngine.RenderTexture.active = current_render_texture;
       } else {
-        Debug.LogWarning(message : $"No camera found on {this}");
+        UnityEngine.Debug.LogWarning(message : $"No camera found on {this}");
       }
     }
-
-    /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    public override IEnumerable<float> FloatEnumerable { get { return null; } }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     public override void UpdateObservation() {
       this._Grab = true;
-      if (this._Manager?.SimulatorConfiguration?.SimulationType != SimulationTypeEnum.Frame_dependent_) {
-        if (Application.isPlaying) {
+      if (this._Manager?.SimulatorConfiguration?.SimulationType
+          != droid.Runtime.Enums.SimulationTypeEnum.Frame_dependent_) {
+        if (UnityEngine.Application.isPlaying) {
           this._Camera.Render();
         }
 
@@ -276,7 +271,6 @@ namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     public override string ToString() { return $"Rendered {this.imageFormat} image"; }

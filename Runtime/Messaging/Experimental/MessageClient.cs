@@ -1,23 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using AsyncIO;
-using droid.Runtime.Messaging.FBS;
-using droid.Runtime.Messaging.Messages;
-using FlatBuffers;
-using NetMQ;
-using NetMQ.Sockets;
-using Newtonsoft.Json;
-using UnityEngine;
-using UnityEngine.UI;
-
-namespace droid.Runtime.Messaging.Experimental {
+﻿namespace droid.Runtime.Messaging.Experimental {
   /// <summary>
   /// </summary>
-  [Serializable]
+  [System.SerializableAttribute]
   public class MessageClient {
     #region PublicMembers
 
@@ -31,7 +15,7 @@ namespace droid.Runtime.Messaging.Experimental {
 
     /// <summary>
     /// </summary>
-    Thread _polling_thread;
+    System.Threading.Thread _polling_thread;
     #if NEODROID_DEBUG
     int _last_send_frame_number;
 
@@ -40,7 +24,7 @@ namespace droid.Runtime.Messaging.Experimental {
 
     /// <summary>
     /// </summary>
-    Thread _wait_for_client_thread;
+    System.Threading.Thread _wait_for_client_thread;
 
     /// <summary>
     /// </summary>
@@ -66,7 +50,7 @@ namespace droid.Runtime.Messaging.Experimental {
 
     /// <summary>
     /// </summary>
-    ResponseSocket _socket;
+    NetMQ.Sockets.ResponseSocket _socket;
 
     //PairSocket _socket;
     /// <summary>
@@ -95,7 +79,7 @@ namespace droid.Runtime.Messaging.Experimental {
     /// </summary>
     /// <param name="callback"></param>
     /// <param name="debug_callback"></param>
-    void BindSocket(Action callback, Action<string> debug_callback) {
+    void BindSocket(System.Action callback, System.Action<string> debug_callback) {
       if (this._debugging) {
         debug_callback?.Invoke("Start listening for clients");
       }
@@ -113,7 +97,7 @@ namespace droid.Runtime.Messaging.Experimental {
         }
 
         this._Listening_For_Clients = true;
-      } catch (Exception exception) {
+      } catch (System.Exception exception) {
         if (this._debugging) {
           debug_callback?.Invoke(obj : $"BindSocket threw exception: {exception}");
         }
@@ -124,22 +108,25 @@ namespace droid.Runtime.Messaging.Experimental {
     /// </summary>
     /// <param name="wait_time"></param>
     /// <returns></returns>
-    public Reaction[] Receive(TimeSpan wait_time) {
+    public droid.Runtime.Messaging.Messages.Reaction[] Receive(System.TimeSpan wait_time) {
       //this._socket.Poll(); // TODO: MAYBE WAIT FOR CLIENT TO SEND
 
-      Reaction[] reactions = null;
+      droid.Runtime.Messaging.Messages.Reaction[] reactions = null;
       lock (this._thread_lock) {
         try {
           byte[] msg;
 
-          if (wait_time > TimeSpan.Zero) {
+          if (wait_time > System.TimeSpan.Zero) {
             #if NEODROID_DEBUG
-            var received = this._socket.TryReceiveFrameBytes(timeout : wait_time, bytes : out msg);
+            var received =
+                NetMQ.ReceivingSocketExtensions.TryReceiveFrameBytes(socket : this._socket,
+                                                                     timeout : wait_time,
+                                                                     bytes : out msg);
             if (this.Debugging) {
               if (received) {
-                Debug.Log("Received frame bytes");
+                UnityEngine.Debug.Log("Received frame bytes");
               } else {
-                Debug.Log(message : $"Received nothing in {wait_time} seconds");
+                UnityEngine.Debug.Log(message : $"Received nothing in {wait_time} seconds");
               }
             }
             #else
@@ -147,27 +134,29 @@ namespace droid.Runtime.Messaging.Experimental {
             #endif
           } else {
             try {
-              msg = this._socket.ReceiveFrameBytes();
-            } catch (ArgumentNullException e) {
+              msg = NetMQ.ReceivingSocketExtensions.ReceiveFrameBytes(socket : this._socket);
+            } catch (System.ArgumentNullException e) {
               msg = null;
-              Debug.Log(message : e);
+              UnityEngine.Debug.Log(message : e);
             }
           }
 
           if (msg != null) { //&& msg.Length >= 4) {
-            var flat_reaction = FReactions.GetRootAsFReactions(_bb : new ByteBuffer(buffer : msg));
+            var flat_reaction =
+                droid.Runtime.Messaging.FBS.FReactions
+                     .GetRootAsFReactions(_bb : new FlatBuffers.ByteBuffer(buffer : msg));
             var tuple = FbsReactionUtilities.deserialise_reactions(reactions : flat_reaction);
             reactions = tuple.Item1; //TODO: Change tuple to the Reactions class
             var close = tuple.Item2;
             var api_version = tuple.Item3;
             var simulator_configuration = tuple.Item4;
           }
-        } catch (Exception exception) {
-          if (exception is TerminatingException) {
+        } catch (System.Exception exception) {
+          if (exception is NetMQ.TerminatingException) {
             return reactions;
           }
 
-          Debug.Log(message : exception);
+          UnityEngine.Debug.Log(message : exception);
         }
       }
 
@@ -179,13 +168,14 @@ namespace droid.Runtime.Messaging.Experimental {
     /// <param name="receive_callback"></param>
     /// <param name="disconnect_callback"></param>
     /// <param name="debug_callback"></param>
-    void PollingThread(Action<Reaction[]> receive_callback,
-                       Action disconnect_callback,
-                       Action<string> debug_callback) {
+    void PollingThread(System.Action<droid.Runtime.Messaging.Messages.Reaction[]> receive_callback,
+                       System.Action disconnect_callback,
+                       System.Action<string> debug_callback) {
       while (this._stop_thread == false) {
         lock (this._thread_lock) {
           if (!this._waiting_for_main_loop_to_send) {
-            var reactions = this.Receive(wait_time : TimeSpan.FromSeconds(value : this._wait_time_seconds));
+            var reactions =
+                this.Receive(wait_time : System.TimeSpan.FromSeconds(value : this._wait_time_seconds));
             if (reactions != null) {
               receive_callback(obj : reactions);
               this._waiting_for_main_loop_to_send = true;
@@ -211,7 +201,7 @@ namespace droid.Runtime.Messaging.Experimental {
         this._socket.Dispose();
         this._socket.Close();
       } finally {
-        NetMQConfig.Cleanup(false);
+        NetMQ.NetMQConfig.Cleanup(false);
       }
     }
 
@@ -229,44 +219,46 @@ namespace droid.Runtime.Messaging.Experimental {
     /// <param name="do_serialise_observables"></param>
     /// <param name="simulator_configuration_message"></param>
     /// <param name="api_version"></param>
-    public void SendStates(EnvironmentSnapshot[] environment_states,
+    public void SendStates(droid.Runtime.Messaging.Messages.EnvironmentSnapshot[] environment_states,
                            bool do_serialise_unobservables = false,
                            bool serialise_individual_observables = false,
                            bool do_serialise_observables = false,
-                           SimulatorConfigurationMessage simulator_configuration_message = null,
+                           droid.Runtime.Messaging.Messages.SimulatorConfigurationMessage
+                               simulator_configuration_message = null,
                            string api_version = NeodroidRuntimeInfo._Version) {
       lock (this._thread_lock) {
         #if NEODROID_DEBUG
         if (this.Debugging) {
-          var environment_state = environment_states.ToArray();
+          var environment_state = System.Linq.Enumerable.ToArray(source : environment_states);
           if (environment_state.Length > 0) {
             if (environment_state[0] != null) {
               var frame_number = environment_state[0].FrameNumber;
               var time = environment_state[0].Time;
               var frame_number_duplicate = this._last_send_frame_number == frame_number;
               if (frame_number_duplicate && frame_number > 0) {
-                Debug.LogWarning(message : $"Sending duplicate frame! Frame number: {frame_number}");
+                UnityEngine.Debug.LogWarning(message :
+                                             $"Sending duplicate frame! Frame number: {frame_number}");
               }
 
               if (frame_number <= this._last_send_frame_number) {
-                Debug.LogWarning(message :
-                                 $"The current frame number {frame_number} is less or equal the last {this._last_send_frame_number}, SINCE AWAKE ({Time.frameCount})");
+                UnityEngine.Debug.LogWarning(message :
+                                             $"The current frame number {frame_number} is less or equal the last {this._last_send_frame_number}, SINCE AWAKE ({UnityEngine.Time.frameCount})");
               }
 
               if (time <= this._last_send_time) {
-                Debug.LogWarning(message :
-                                 $"The current time {time} is less or equal the last {this._last_send_time}");
+                UnityEngine.Debug.LogWarning(message :
+                                             $"The current time {time} is less or equal the last {this._last_send_time}");
               }
 
               if (environment_state[0].Description != null) {
-                Debug.Log(message : $"State has description: {environment_state[0].Description}");
+                UnityEngine.Debug.Log(message : $"State has description: {environment_state[0].Description}");
               }
 
               this._last_send_frame_number = frame_number;
               this._last_send_time = time;
             }
           } else {
-            Debug.LogWarning("No environment states where send.");
+            UnityEngine.Debug.LogWarning("No environment states where send.");
           }
         }
         #endif
@@ -278,7 +270,7 @@ namespace droid.Runtime.Messaging.Experimental {
                                                         simulator_configuration_message,
                                                         do_serialise_observables : do_serialise_observables,
                                                         api_version : api_version);
-        this._socket.SendFrame(data : this._byte_buffer);
+        NetMQ.OutgoingSocketExtensions.SendFrame(socket : this._socket, data : this._byte_buffer);
         this._waiting_for_main_loop_to_send = false;
       }
     }
@@ -286,7 +278,7 @@ namespace droid.Runtime.Messaging.Experimental {
     /// <summary>
     /// </summary>
     /// <param name="debug_callback"></param>
-    public void ListenForClientToConnect(Action<string> debug_callback) {
+    public void ListenForClientToConnect(System.Action<string> debug_callback) {
       this.BindSocket(null, debug_callback : debug_callback);
     }
 
@@ -294,13 +286,13 @@ namespace droid.Runtime.Messaging.Experimental {
     /// </summary>
     /// <param name="callback"></param>
     /// <param name="debug_callback"></param>
-    public void ListenForClientToConnect(Action callback, Action<string> debug_callback) {
+    public void ListenForClientToConnect(System.Action callback, System.Action<string> debug_callback) {
       this._wait_for_client_thread =
-          new Thread(unused_param =>
-                         this.BindSocket(callback : callback, debug_callback : debug_callback)) {
-                                                                                                    IsBackground
-                                                                                                        = true
-                                                                                                };
+          new System.Threading.Thread(unused_param =>
+                                          this.BindSocket(callback : callback,
+                                                          debug_callback : debug_callback)) {
+              IsBackground = true
+          };
       // Is terminated with foreground threads, when they terminate
       this._wait_for_client_thread.Start();
     }
@@ -310,16 +302,16 @@ namespace droid.Runtime.Messaging.Experimental {
     /// <param name="cmd_callback"></param>
     /// <param name="disconnect_callback"></param>
     /// <param name="debug_callback"></param>
-    public void StartReceiving(Action<Reaction[]> cmd_callback,
-                               Action disconnect_callback,
-                               Action<string> debug_callback) {
+    public void StartReceiving(System.Action<droid.Runtime.Messaging.Messages.Reaction[]> cmd_callback,
+                               System.Action disconnect_callback,
+                               System.Action<string> debug_callback) {
       this._polling_thread =
-          new Thread(unused_param => this.PollingThread(receive_callback : cmd_callback,
-                                                        disconnect_callback : disconnect_callback,
-                                                        debug_callback : debug_callback)) {
-                                                                                              IsBackground =
-                                                                                                  true
-                                                                                          };
+          new System.Threading.Thread(unused_param => this.PollingThread(receive_callback : cmd_callback,
+                                                                           disconnect_callback :
+                                                                           disconnect_callback,
+                                                                           debug_callback : debug_callback)) {
+              IsBackground = true
+          };
       // Is terminated with foreground threads, when they terminate
       this._polling_thread.Start();
     }
@@ -339,15 +331,15 @@ namespace droid.Runtime.Messaging.Experimental {
 
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        Debug.Log(message : $"Starting a message server at address:port {ip_address}:{port}");
+        UnityEngine.Debug.Log(message : $"Starting a message server at address:port {ip_address}:{port}");
       }
       #endif
 
       if (!this._use_inter_process_communication) {
-        ForceDotNet.Force();
+        AsyncIO.ForceDotNet.Force();
       }
 
-      this._socket = new ResponseSocket();
+      this._socket = new NetMQ.Sockets.ResponseSocket();
     }
 
     public MessageClient(bool debug = false) : this("127.0.0.1",
@@ -391,13 +383,13 @@ namespace droid.Runtime.Messaging.Experimental {
           this._socket.Dispose();
           this._socket.Close();
         } finally {
-          NetMQConfig.Cleanup(false);
+          NetMQ.NetMQConfig.Cleanup(false);
         }
 
         this._wait_for_client_thread?.Join();
         this._polling_thread?.Join();
       } catch {
-        Console.WriteLine("Exception thrown while killing threads");
+        System.Console.WriteLine("Exception thrown while killing threads");
       }
     }
 
@@ -405,26 +397,23 @@ namespace droid.Runtime.Messaging.Experimental {
   }
 
   /// <summary>
-  ///
   /// </summary>
-  public class DepthPrediction : MonoBehaviour {
-    RequestSocket _client = new RequestSocket();
-
-    List<Vector3> _feature_points;
-
-    bool _server_working = false;
-
+  public class DepthPrediction : UnityEngine.MonoBehaviour {
     /// <summary>
-    ///
     /// </summary>
     public bool recording;
 
-    [SerializeField] Text textBox;
-    [SerializeField] Texture2D _tex;
+    [UnityEngine.SerializeField] UnityEngine.UI.Text textBox;
+    [UnityEngine.SerializeField] UnityEngine.Texture2D _tex;
+    NetMQ.Sockets.RequestSocket _client = new NetMQ.Sockets.RequestSocket();
+
+    System.Collections.Generic.List<UnityEngine.Vector3> _feature_points;
+
+    bool _server_working = false;
 
     void Start() {
       this._client.Connect("tcp://10.24.11.87:8989");
-      Debug.Log("connected");
+      UnityEngine.Debug.Log("connected");
     }
 
     void FixedUpdate() {
@@ -435,37 +424,46 @@ namespace droid.Runtime.Messaging.Experimental {
 
     void GrabFrame() {
       try {
-        var bytes = this._tex.EncodeToJPG();
+        var bytes = UnityEngine.ImageConversion.EncodeToJPG(tex : this._tex);
 
         this.StartCoroutine(routine : this.SendZmqRequest(bytes : bytes));
-      } catch (Exception e) {
+      } catch (System.Exception e) {
         var text = $"{this.textBox.text}{e}\n{e.Message}\n";
         this.textBox.text = text;
       }
     }
 
-    IEnumerator SendZmqRequest(byte[] bytes) {
-      var task = new Task(() => this._client.SendFrame(data : bytes));
+    System.Collections.IEnumerator SendZmqRequest(byte[] bytes) {
+      var task =
+          new System.Threading.Tasks.Task(() =>
+                                              NetMQ.OutgoingSocketExtensions.SendFrame(socket : this._client,
+                                                data : bytes));
       task.Start();
 
       while (!task.IsCompleted && !task.IsCanceled) {
-        Debug.Log("sending a frame");
-        yield return new WaitForEndOfFrame();
+        UnityEngine.Debug.Log("sending a frame");
+        yield return new UnityEngine.WaitForEndOfFrame();
       }
 
       var response = "";
-      var task2 = new Task(() => response = this._client.ReceiveFrameString());
+      var task2 =
+          new System.Threading.Tasks.Task(() => response =
+                                                    NetMQ.ReceivingSocketExtensions
+                                                         .ReceiveFrameString(socket : this._client));
       task2.Start();
 
       while (!task2.IsCompleted) {
-        Debug.Log("waiting for response");
-        yield return new WaitForEndOfFrame();
+        UnityEngine.Debug.Log("waiting for response");
+        yield return new UnityEngine.WaitForEndOfFrame();
       }
 
       this.textBox.text += response + "\n";
 
       try {
-        var l = JsonConvert.DeserializeObject<List<Dictionary<string, int[]>>>(value : response);
+        var l = Newtonsoft.Json.JsonConvert
+                          .DeserializeObject<
+                              System.Collections.Generic.List<
+                                  System.Collections.Generic.Dictionary<string, int[]>>>(value : response);
 
         this.textBox.text += l.Count + " in list\n";
 
@@ -477,7 +475,7 @@ namespace droid.Runtime.Messaging.Experimental {
 
           this.textBox.text += dict.Count + " in dict\n";
 
-          var point_dict = new Dictionary<string, Vector3>();
+          var point_dict = new System.Collections.Generic.Dictionary<string, UnityEngine.Vector3>();
 
           foreach (var kvp in dict) {
             var text = this.textBox.text;
@@ -488,12 +486,12 @@ namespace droid.Runtime.Messaging.Experimental {
 
             text += "after val\n";
 
-            var scale_x = Screen.width / 240f;
-            var scale_y = Screen.height / 426f;
+            var scale_x = UnityEngine.Screen.width / 240f;
+            var scale_y = UnityEngine.Screen.height / 426f;
 
             text += "after scale\n";
 
-            var scaled_vec = new Vector3(x : val[0] * scale_x, y : val[1] * scale_y, z : val[2]);
+            var scaled_vec = new UnityEngine.Vector3(x : val[0] * scale_x, y : val[1] * scale_y, z : val[2]);
 
             text += "after applying scale\n";
             this.textBox.text = text;
@@ -503,11 +501,11 @@ namespace droid.Runtime.Messaging.Experimental {
             this.textBox.text += "after dict add\n";
           }
         }
-      } catch (Exception e) {
+      } catch (System.Exception e) {
         this.textBox.text += e.ToString();
       }
 
-      yield return new WaitForEndOfFrame();
+      yield return new UnityEngine.WaitForEndOfFrame();
 
       this._server_working = false;
     }

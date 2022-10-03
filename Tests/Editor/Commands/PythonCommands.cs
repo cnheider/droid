@@ -1,13 +1,11 @@
-using NUnit.Framework;
-
 namespace droid.Tests.Editor.Commands {
-  [TestFixture]
+  [NUnit.Framework.TestFixtureAttribute]
   public class PythonCommands {
-    [Test]
+    [NUnit.Framework.TestAttribute]
     public void TestPythonAddition() {
       droid.Editor.Utilities.Commands.Commands.PythonCommand("print(1+1)");
 
-      Assert.That(true, expression : Is.True);
+      NUnit.Framework.Assert.That(true, expression : NUnit.Framework.Is.True);
     }
   }
 }

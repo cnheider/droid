@@ -1,44 +1,37 @@
-﻿using System.Collections.Generic;
-using droid.Runtime.Environments.Prototyping;
-using droid.Runtime.GameObjects;
-using droid.Runtime.GameObjects.BoundingBoxes.Experimental;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Utilities;
-using UnityEditor;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Actors {
-  /// <inheritdoc cref="PrototypingGameObject" />
+﻿namespace droid.Runtime.Prototyping.Actors {
+  /// <inheritdoc cref="GameObjects.PrototypingGameObject" />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : ActorComponentMenuPath._ComponentMenuPath
-                               + "Base"
-                               + ActorComponentMenuPath._Postfix)]
-  [ExecuteInEditMode]
-  public class Actor : PrototypingGameObject,
-                       IActor {
+  [UnityEngine.AddComponentMenu(menuName : ActorComponentMenuPath._ComponentMenuPath
+                                           + "Base"
+                                           + ActorComponentMenuPath._Postfix)]
+  [UnityEngine.ExecuteInEditMode]
+  public class Actor : droid.Runtime.GameObjects.PrototypingGameObject,
+                       droid.Runtime.Interfaces.IActor {
     /// <summary>
     /// </summary>
-    [SerializeField]
-    Bounds _bounds;
-
-    /// <summary>
-    /// </summary>
-    [SerializeField]
+    [UnityEngine.SerializeField]
     bool _draw_bounds = false;
 
     /// <summary>
     /// </summary>
-    public Bounds ActorBounds {
+    [UnityEngine.SerializeField]
+    UnityEngine.Bounds _bounds;
+
+    /// <summary>
+    /// </summary>
+    public UnityEngine.Bounds ActorBounds {
       get {
-        var col = this.GetComponent<BoxCollider>();
-        this._bounds = new Bounds(center : this.transform.position, size : Vector3.zero); // position and size
+        var col = this.GetComponent<UnityEngine.BoxCollider>();
+        this._bounds =
+            new UnityEngine.Bounds(center : this.transform.position,
+                                   size : UnityEngine.Vector3.zero); // position and size
 
         if (col) {
           this._bounds.Encapsulate(bounds : col.bounds);
         }
 
-        var cols = this.GetComponentsInChildren<Collider>();
+        var cols = this.GetComponentsInChildren<UnityEngine.Collider>();
         for (var index = 0; index < cols.Length; index++) {
           var child_col = cols[index];
           if (child_col != col) {
@@ -50,18 +43,41 @@ namespace droid.Runtime.Prototyping.Actors {
       }
     }
 
-    SortedDictionary<string, IActuator> IActor.Actuators { get { return this._Actuators; } }
+    /// <summary>
+    /// </summary>
+    void Update() {
+      if (this._draw_bounds) {
+        var corners =
+            droid.Runtime.GameObjects.BoundingBoxes.Experimental.Corners.ExtractCorners(v3_center :
+              this.ActorBounds.center,
+              v3_extents : this.ActorBounds.extents,
+              reference_transform : this.transform);
 
-    public Transform CachedTransform { get { return this.transform; } }
+        droid.Runtime.GameObjects.BoundingBoxes.Experimental.Corners.DrawBox(v3_front_top_left : corners[0],
+          v3_front_top_right : corners[1],
+          v3_front_bottom_left : corners[2],
+          v3_front_bottom_right : corners[3],
+          v3_back_top_left : corners[4],
+          v3_back_top_right : corners[5],
+          v3_back_bottom_left : corners[6],
+          v3_back_bottom_right : corners[7],
+          color : UnityEngine.Color.gray);
+      }
+    }
+
+    System.Collections.Generic.SortedDictionary<string, droid.Runtime.Interfaces.IActuator>
+        droid.Runtime.Interfaces.IActor.Actuators { get { return this._Actuators; } }
+
+    public UnityEngine.Transform CachedTransform { get { return this.transform; } }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     /// <param name="motion"></param>
-    public virtual void ApplyMotion(IMotion motion) {
+    public virtual void ApplyMotion(droid.Runtime.Interfaces.IMotion motion) {
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        Debug.Log(message : $"Applying {motion} To {this.name}'s Actuators");
+        UnityEngine.Debug.Log(message : $"Applying {motion} To {this.name}'s Actuators");
       }
       #endif
 
@@ -72,8 +88,8 @@ namespace droid.Runtime.Prototyping.Actors {
       } else {
         #if NEODROID_DEBUG
         if (this.Debugging) {
-          Debug.Log(message :
-                    $"Could find not Actuator with the specified name: {motion_actuator_name} on actor {this.name}");
+          UnityEngine.Debug.Log(message :
+                                $"Could find not Actuator with the specified name: {motion_actuator_name} on actor {this.name}");
         }
         #endif
       }
@@ -95,12 +111,12 @@ namespace droid.Runtime.Prototyping.Actors {
     /// </summary>
     /// <param name="actuator"></param>
     /// <param name="identifier"></param>
-    public void UnRegister(IActuator actuator, string identifier) {
+    public void UnRegister(droid.Runtime.Interfaces.IActuator actuator, string identifier) {
       if (this._Actuators != null) {
         if (this._Actuators.ContainsKey(key : identifier)) {
           #if NEODROID_DEBUG
           if (this.Debugging) {
-            Debug.Log(message : $"Actor {this.name} unregistered Actuator {identifier}");
+            UnityEngine.Debug.Log(message : $"Actor {this.name} unregistered Actuator {identifier}");
           }
           #endif
 
@@ -113,7 +129,7 @@ namespace droid.Runtime.Prototyping.Actors {
     /// <summary>
     /// </summary>
     /// <param name="actuator"></param>
-    public void UnRegister(IActuator actuator) {
+    public void UnRegister(droid.Runtime.Interfaces.IActuator actuator) {
       this.UnRegister(actuator : actuator, identifier : actuator.Identifier);
     }
 
@@ -122,14 +138,15 @@ namespace droid.Runtime.Prototyping.Actors {
     /// </summary>
     public override void Setup() {
       #if UNITY_EDITOR
-      if (!Application.isPlaying) {
-        var manager_script = MonoScript.FromMonoBehaviour(behaviour : this);
-        if (MonoImporter.GetExecutionOrder(script : manager_script) != _script_execution_order) {
-          MonoImporter.SetExecutionOrder(script : manager_script,
-                                         order :
-                                         _script_execution_order); // Ensures that PreStep is called first, before all other scripts.
-          Debug.LogWarning("Execution Order changed, you will need to press play again to make everything function correctly!");
-          EditorApplication.isPlaying = false;
+      if (!UnityEngine.Application.isPlaying) {
+        var manager_script = UnityEditor.MonoScript.FromMonoBehaviour(behaviour : this);
+        if (UnityEditor.MonoImporter.GetExecutionOrder(script : manager_script) != _script_execution_order) {
+          UnityEditor.MonoImporter.SetExecutionOrder(script : manager_script,
+                                                     order :
+                                                     _script_execution_order); // Ensures that PreStep is called first, before all other scripts.
+          UnityEngine.Debug
+                     .LogWarning("Execution Order changed, you will need to press play again to make everything function correctly!");
+          UnityEditor.EditorApplication.isPlaying = false;
           //TODO: UnityEngine.Experimental.LowLevel.PlayerLoop.SetPlayerLoop(new UnityEngine.Experimental.LowLevel.PlayerLoopSystem());
         }
       }
@@ -146,7 +163,8 @@ namespace droid.Runtime.Prototyping.Actors {
     /// </summary>
     protected override void RegisterComponent() {
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment, c : this);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : this);
     }
 
     /// <inheritdoc />
@@ -156,32 +174,12 @@ namespace droid.Runtime.Prototyping.Actors {
 
     /// <summary>
     /// </summary>
-    void Update() {
-      if (this._draw_bounds) {
-        var corners = Corners.ExtractCorners(v3_center : this.ActorBounds.center,
-                                             v3_extents : this.ActorBounds.extents,
-                                             reference_transform : this.transform);
-
-        Corners.DrawBox(v3_front_top_left : corners[0],
-                        v3_front_top_right : corners[1],
-                        v3_front_bottom_left : corners[2],
-                        v3_front_bottom_right : corners[3],
-                        v3_back_top_left : corners[4],
-                        v3_back_top_right : corners[5],
-                        v3_back_bottom_left : corners[6],
-                        v3_back_bottom_right : corners[7],
-                        color : Color.gray);
-      }
-    }
-
-    /// <summary>
-    /// </summary>
     /// <param name="actuator"></param>
     /// <param name="identifier"></param>
-    public void RegisterActuator(IActuator actuator, string identifier) {
+    public void RegisterActuator(droid.Runtime.Interfaces.IActuator actuator, string identifier) {
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        Debug.Log(message : "Actor " + this.name + " has Actuator " + identifier);
+        UnityEngine.Debug.Log(message : "Actor " + this.name + " has Actuator " + identifier);
       }
       #endif
 
@@ -190,7 +188,8 @@ namespace droid.Runtime.Prototyping.Actors {
       } else {
         #if NEODROID_DEBUG
         if (this.Debugging) {
-          Debug.Log(message : $"A Actuator with the identifier {identifier} is already registered");
+          UnityEngine.Debug.Log(message :
+                                $"A Actuator with the identifier {identifier} is already registered");
         }
         #endif
       }
@@ -200,15 +199,17 @@ namespace droid.Runtime.Prototyping.Actors {
 
     /// <summary>
     /// </summary>
-    [Header("References", order = 99)]
-    [SerializeField]
-    ActorisedPrototypingEnvironment _environment;
+    [UnityEngine.HeaderAttribute("References", order = 99)]
+    [UnityEngine.SerializeField]
+    droid.Runtime.Environments.Prototyping.ActorisedPrototypingEnvironment _environment;
 
     /// <summary>
     /// </summary>
-    [Header("General", order = 101)]
-    [SerializeField]
-    protected SortedDictionary<string, IActuator> _Actuators = new SortedDictionary<string, IActuator>();
+    [UnityEngine.HeaderAttribute("General", order = 101)]
+    [UnityEngine.SerializeField]
+    protected System.Collections.Generic.SortedDictionary<string, droid.Runtime.Interfaces.IActuator>
+        _Actuators =
+            new System.Collections.Generic.SortedDictionary<string, droid.Runtime.Interfaces.IActuator>();
 
     #if UNITY_EDITOR
     const int _script_execution_order = -10;
@@ -221,7 +222,7 @@ namespace droid.Runtime.Prototyping.Actors {
     /// <summary>
     /// </summary>
     /// <param name="actuator"></param>
-    public void Register(IActuator actuator) {
+    public void Register(droid.Runtime.Interfaces.IActuator actuator) {
       this.RegisterActuator(actuator : actuator, identifier : actuator.Identifier);
     }
 
@@ -230,17 +231,19 @@ namespace droid.Runtime.Prototyping.Actors {
     /// </summary>
     /// <param name="actuator"></param>
     /// <param name="identifier"></param>
-    public void Register(IActuator actuator, string identifier) {
+    public void Register(droid.Runtime.Interfaces.IActuator actuator, string identifier) {
       this.RegisterActuator(actuator : actuator, identifier : identifier);
     }
 
     /// <summary>
     /// </summary>
-    public SortedDictionary<string, IActuator> Actuators { get { return this._Actuators; } }
+    public System.Collections.Generic.SortedDictionary<string, droid.Runtime.Interfaces.IActuator> Actuators {
+      get { return this._Actuators; }
+    }
 
     /// <summary>
     /// </summary>
-    public ActorisedPrototypingEnvironment ParentEnvironment {
+    public droid.Runtime.Environments.Prototyping.ActorisedPrototypingEnvironment ParentEnvironment {
       get { return this._environment; }
       set { this._environment = value; }
     }

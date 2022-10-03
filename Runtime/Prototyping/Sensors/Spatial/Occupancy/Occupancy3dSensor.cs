@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Structs.Space;
-using droid.Runtime.Utilities;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Sensors.Spatial.Occupancy {
+﻿namespace droid.Runtime.Prototyping.Sensors.Spatial.Occupancy {
   /// <summary>
-  ///
   /// </summary>
   enum IntersectionType {
     Cone_sphere_,
@@ -18,42 +9,27 @@ namespace droid.Runtime.Prototyping.Sensors.Spatial.Occupancy {
   /// <inheritdoc cref="Sensor" />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
-                               + "Occupancy3d"
-                               + SensorComponentMenuPath._Postfix)]
-  [ExecuteInEditMode]
+  [UnityEngine.AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
+                                           + "Occupancy3d"
+                                           + SensorComponentMenuPath._Postfix)]
+  [UnityEngine.ExecuteInEditMode]
   public class Occupancy3dSensor : Sensor,
-                                   IHasTripleArray {
-    [Header("Observation", order = 103)]
-    [SerializeField]
-    Vector3[] _observation_value;
+                                   droid.Runtime.Interfaces.IHasTripleArray {
+    [UnityEngine.HeaderAttribute("Observation", order = 103)]
+    [UnityEngine.SerializeField]
+    UnityEngine.Vector3[] _observation_value;
 
-    [SerializeField] Space1 _observation_value_space = Space1.ZeroOne;
-    Light _light;
-    IEnumerable<UnityEngine.Transform> _transforms;
+    [UnityEngine.SerializeField]
+    droid.Runtime.Structs.Space.Space1 _observation_value_space = droid.Runtime.Structs.Space.Space1.ZeroOne;
+
+    UnityEngine.Light _light;
+    System.Collections.Generic.IEnumerable<UnityEngine.Transform> _transforms;
 
     /// <summary>
-    ///
     /// </summary>
-    public Space1 SingleSpace { get { return this._observation_value_space; } }
+    public droid.Runtime.Structs.Space.Space1 SingleSpace { get { return this._observation_value_space; } }
 
-    /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    public Vector3[] ObservationArray {
-      get { return this._observation_value; }
-      set { this._observation_value = this.SingleSpace.Project(v : value); }
-    }
-
-    /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    public override void PreSetup() {
-      this._light = this.GetComponent<Light>();
-      this._transforms = FindObjectsOfType<MeshFilter>().Select(o => o.transform);
-    }
-
-    public override IEnumerable<float> FloatEnumerable {
+    public override System.Collections.Generic.IEnumerable<float> FloatEnumerable {
       get {
         var a = new float[this.ObservationArray.Length * 3];
         for (var i = 0; i < this.ObservationArray.Length * 3; i += 3) {
@@ -67,17 +43,40 @@ namespace droid.Runtime.Prototyping.Sensors.Spatial.Occupancy {
     }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    public override void UpdateObservation() {
-      foreach (var transform1 in this._transforms) {
-        if (IntersectionUtilities.ConeSphereIntersection(spot_light : this._light,
-                                                         dynamic_object : transform1)) {
-          //Debug.Log("Intersect");
-        }
-      }
+    /// <summary>
+    /// </summary>
+    public UnityEngine.Vector3[] ObservationArray {
+      get { return this._observation_value; }
+      set { this._observation_value = this.SingleSpace.Project(v : value); }
     }
 
-    public Space1[] ObservationSpace { get; } = new Space1[1];
+    public droid.Runtime.Structs.Space.Space1[] ObservationSpace { get; } =
+      new droid.Runtime.Structs.Space.Space1[1];
+
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
+    public override void PreSetup() {
+      this._light = this.GetComponent<UnityEngine.Light>();
+      this._transforms =
+          System.Linq.Enumerable.Select(source : FindObjectsOfType<UnityEngine.MeshFilter>(),
+                                        o => o.transform);
+    }
+
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
+    public override void UpdateObservation() {
+      var a = new System.Collections.Generic.List<UnityEngine.Vector3>();
+      foreach (var transform1 in this._transforms) {
+        if (droid.Runtime.Utilities.IntersectionUtilities.ConeSphereIntersection(spot_light : this._light,
+          dynamic_object : transform1)) {
+          a.Add(item : transform1.position);
+          
+        }
+      }
+
+      this._observation_value = a.ToArray();
+    }
   }
 }

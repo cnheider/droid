@@ -1,38 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Messaging.Messages;
-using droid.Runtime.Structs.Space;
-using droid.Runtime.Structs.Space.Sample;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Configurables.Selection {
+﻿namespace droid.Runtime.Prototyping.Configurables.Selection {
   /// <inheritdoc cref="Configurable" />
-  ///  <summary>
-  ///  </summary>
-  [AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
-                               + "ChildSelector"
-                               + ConfigurableComponentMenuPath._Postfix)]
+  /// <summary>
+  /// </summary>
+  [UnityEngine.AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
+                                           + "ChildSelector"
+                                           + ConfigurableComponentMenuPath._Postfix)]
   public class ChildSelectorConfigurable : Configurable,
-                                           ICategoryProvider {
-    [SerializeField] Renderer active;
-    [SerializeField] Renderer[] children;
-    [SerializeField] int len;
-    [SerializeField] SampleSpace1 _configurable_value_space = new SampleSpace1();
+                                           droid.Runtime.Interfaces.ICategoryProvider {
+    [UnityEngine.SerializeField] UnityEngine.Renderer active;
+    [UnityEngine.SerializeField] UnityEngine.Renderer[] children;
+    [UnityEngine.SerializeField] int len;
+
+    [UnityEngine.SerializeField]
+    droid.Runtime.Structs.Space.Sample.SampleSpace1 _configurable_value_space =
+        new droid.Runtime.Structs.Space.Sample.SampleSpace1();
+
+    /// <summary>
+    /// </summary>
+    public droid.Runtime.Interfaces.ISamplable ConfigurableValueSpace {
+      get { return this._configurable_value_space; }
+    }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
+    [field : UnityEngine.SerializeField]
+    public int CurrentCategoryValue { get; set; }
+
+    /// <summary>
+    /// </summary>
+    public droid.Runtime.Structs.Space.Space1 Space1 { get { return this._configurable_value_space._space; } }
+
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
     public override void Setup() {
       base.Setup();
 
-      if (!Application.isPlaying) {
+      if (!UnityEngine.Application.isPlaying) {
         return;
       }
 
-      var la = new List<Renderer>();
-      foreach (Transform child in this.transform) {
-        var o = child.gameObject.GetComponent<Renderer>();
+      var la = new System.Collections.Generic.List<UnityEngine.Renderer>();
+      foreach (UnityEngine.Transform child in this.transform) {
+        var o = child.gameObject.GetComponent<UnityEngine.Renderer>();
         o.enabled = false;
         this.active = o;
         la.Add(item : o);
@@ -50,19 +61,15 @@ namespace droid.Runtime.Prototyping.Configurables.Selection {
       this._configurable_value_space._space.Max = this.len - 1;
     }
 
-    /// <summary>
-    ///
-    /// </summary>
-    public ISamplable ConfigurableValueSpace { get { return this._configurable_value_space; } }
-
     public override void UpdateCurrentConfiguration() { }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    ///  <param name="configuration"></param>
-    public override void ApplyConfiguration(IConfigurableConfiguration configuration) {
-      if (!Application.isPlaying) {
+    /// <summary>
+    /// </summary>
+    /// <param name="configuration"></param>
+    public override void
+        ApplyConfiguration(droid.Runtime.Interfaces.IConfigurableConfiguration configuration) {
+      if (!UnityEngine.Application.isPlaying) {
         return;
       }
 
@@ -72,7 +79,7 @@ namespace droid.Runtime.Prototyping.Configurables.Selection {
       }
 
       if (this.children != null && (int)configuration.ConfigurableValue < this.len) {
-        this.CurrentCategoryValue = Mathf.RoundToInt(f : configuration.ConfigurableValue);
+        this.CurrentCategoryValue = UnityEngine.Mathf.RoundToInt(f : configuration.ConfigurableValue);
         this.active = this.children[this.CurrentCategoryValue];
       }
 
@@ -82,25 +89,14 @@ namespace droid.Runtime.Prototyping.Configurables.Selection {
     }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    ///  <returns></returns>
-    public override Configuration[] SampleConfigurations() {
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
+    public override droid.Runtime.Messaging.Messages.Configuration[] SampleConfigurations() {
       return new[] {
-                       new Configuration(configurable_name : this.Identifier,
-                                         configurable_value : this._configurable_value_space.Sample())
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this.Identifier,
+                         configurable_value : this._configurable_value_space.Sample())
                    };
     }
-
-    /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    [field : SerializeField]
-    public int CurrentCategoryValue { get; set; }
-
-    /// <summary>
-    ///
-    /// </summary>
-    public Space1 Space1 { get { return this._configurable_value_space._space; } }
   }
 }

@@ -1,31 +1,28 @@
-﻿using System;
-using UnityEngine;
-
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 
 namespace droid.Runtime.Utilities {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [Serializable]
-  public class Note : MonoBehaviour {
+  [System.SerializableAttribute]
+  public class Note : UnityEngine.MonoBehaviour {
     /// <summary>
     /// </summary>
-    [NonSerialized]
-    public bool _Editing;
-
-    /// <summary>
-    /// </summary>
-    [TextArea]
-    [Tooltip("A component for holding notes or comments")]
-    [SerializeField]
+    [UnityEngine.TextAreaAttribute]
+    [UnityEngine.TooltipAttribute("A component for holding notes or comments")]
+    [UnityEngine.SerializeField]
     public string _Text;
 
     /// <summary>
     /// </summary>
-    public void EditToggle() { this._Editing = !this._Editing; }
+    [System.NonSerializedAttribute]
+    public bool _Editing;
 
     void Start() { this.enabled = false; }
+
+    /// <summary>
+    /// </summary>
+    public void EditToggle() { this._Editing = !this._Editing; }
   }
 }
 #endif

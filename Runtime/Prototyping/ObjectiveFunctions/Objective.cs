@@ -1,21 +1,11 @@
-﻿using System;
-using System.Globalization;
-using droid.Runtime.Environments.Prototyping;
-using droid.Runtime.GameObjects;
-using droid.Runtime.GameObjects.StatusDisplayer.EventRecipients;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Structs.Space;
-using droid.Runtime.Utilities;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.ObjectiveFunctions {
+﻿namespace droid.Runtime.Prototyping.ObjectiveFunctions {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [Serializable]
-  public abstract class ObjectiveFunction : PrototypingGameObject,
+  [System.SerializableAttribute]
+  public abstract class ObjectiveFunction : droid.Runtime.GameObjects.PrototypingGameObject,
                                             //IHasRegister<Term>,
-                                            IObjectiveFunction {
+                                            droid.Runtime.Interfaces.IObjectiveFunction {
     /// <inheritdoc />
     /// <summary>
     /// </summary>
@@ -26,7 +16,7 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions {
 
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        Debug.Log(message : $"Signal for this step: {signal}");
+        UnityEngine.Debug.Log(message : $"Signal for this step: {signal}");
       }
       #endif
 
@@ -50,23 +40,28 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions {
       this.PreSetup();
 
       if (this.ParentEnvironment == null) {
-        this.ParentEnvironment = NeodroidSceneUtilities
-            .RecursiveFirstSelfSiblingParentGetComponent<AbstractPrototypingEnvironment
-            >(child : this.transform);
+        this.ParentEnvironment = droid.Runtime.Utilities.NeodroidSceneUtilities
+                                      .RecursiveFirstSelfSiblingParentGetComponent<
+                                          droid.Runtime.Environments.Prototyping.
+                                          AbstractPrototypingEnvironment>(child : this.transform);
       }
     }
 
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public void SignalString(DataPoller recipient) {
-      recipient.PollData(data : $"{this.LastSignal.ToString(provider : CultureInfo.InvariantCulture)}");
+    public void SignalString(droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.DataPoller recipient) {
+      recipient.PollData(data :
+                         $"{this.LastSignal.ToString(provider : System.Globalization.CultureInfo.InvariantCulture)}");
     }
 
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public void EpisodeLengthString(DataPoller recipient) { recipient.PollData(data : $""); }
+    public void EpisodeLengthString(
+        droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.DataPoller recipient) {
+      recipient.PollData("");
+    }
 
     /// <inheritdoc />
     /// <summary>
@@ -91,22 +86,21 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions {
 
     /// <summary>
     /// </summary>
-    [field : Header("References", order = 100)]
-    [field : SerializeField]
-    public IAbstractPrototypingEnvironment ParentEnvironment { get; set; } = null;
+    [field : UnityEngine.HeaderAttribute("References", order = 100)]
+    [field : UnityEngine.SerializeField]
+    public droid.Runtime.Interfaces.IAbstractPrototypingEnvironment ParentEnvironment { get; set; } = null;
 
     /// <summary>
-    ///
     /// </summary>
-    [field : Header("General", order = 101)]
-    [field : SerializeField]
+    [field : UnityEngine.HeaderAttribute("General", order = 101)]
+    [field : UnityEngine.SerializeField]
     public float LastSignal { get; protected set; } = 0f;
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    [field : SerializeField]
-    public Space1 SignalSpace { get; set; }
+    [field : UnityEngine.SerializeField]
+    public droid.Runtime.Structs.Space.Space1 SignalSpace { get; set; }
 
     #endregion
   }

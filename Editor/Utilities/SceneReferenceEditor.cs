@@ -1,7 +1,4 @@
-﻿using System;
-#if UNITY_EDITOR
-using UnityEditor;
-using UnityEngine;
+﻿#if UNITY_EDITOR
 
 namespace droid.Editor.Utilities {
   /// <inheritdoc />
@@ -9,36 +6,40 @@ namespace droid.Editor.Utilities {
   ///   Editor for a scene reference that can display error prompts and offer
   ///   solutions when the scene is not valid.
   /// </summary>
-  [CustomPropertyDrawer(type : typeof(SceneReference))]
-  public class SceneReferenceEditor : PropertyDrawer {
+  [UnityEditor.CustomPropertyDrawer(type : typeof(SceneReference))]
+  public class SceneReferenceEditor : UnityEditor.PropertyDrawer {
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     /// <param name="position"></param>
     /// <param name="property"></param>
     /// <param name="label"></param>
-    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
-      label = EditorGUI.BeginProperty(totalPosition : position, label : label, property : property);
-      position = EditorGUI.PrefixLabel(totalPosition : position, label : label);
+    public override void OnGUI(UnityEngine.Rect position,
+                               UnityEditor.SerializedProperty property,
+                               UnityEngine.GUIContent label) {
+      label = UnityEditor.EditorGUI.BeginProperty(totalPosition : position,
+                                                  label : label,
+                                                  property : property);
+      position = UnityEditor.EditorGUI.PrefixLabel(totalPosition : position, label : label);
 
       this.CacheProperties(property : property);
       this.UpdateSceneState();
 
       position = this.DisplayErrorsIfNecessary(position : position);
 
-      EditorGUI.BeginChangeCheck();
-      EditorGUI.PropertyField(position : position,
-                              property : this._scene,
-                              label : GUIContent.none,
-                              false);
-      if (EditorGUI.EndChangeCheck()) {
+      UnityEditor.EditorGUI.BeginChangeCheck();
+      UnityEditor.EditorGUI.PropertyField(position : position,
+                                          property : this._scene,
+                                          label : UnityEngine.GUIContent.none,
+                                          false);
+      if (UnityEditor.EditorGUI.EndChangeCheck()) {
         property.serializedObject.ApplyModifiedProperties();
         this.CacheProperties(property : property);
         this.UpdateSceneState();
         this.Validate();
       }
 
-      EditorGUI.EndProperty();
+      UnityEditor.EditorGUI.EndProperty();
     }
 
     /// <summary>
@@ -47,17 +48,18 @@ namespace droid.Editor.Utilities {
     ///   PropertyDrawer can be reused on different properties.
     /// </summary>
     /// <param name="property">Property to search through.</param>
-    void CacheProperties(SerializedProperty property) {
+    void CacheProperties(UnityEditor.SerializedProperty property) {
       this._scene = property.FindPropertyRelative("Scene");
       this._scene_name = property.FindPropertyRelative("SceneName");
       this._scene_index = property.FindPropertyRelative("sceneIndex");
       this._scene_enabled = property.FindPropertyRelative("sceneEnabled");
-      this._scene_asset = this._scene.objectReferenceValue as SceneAsset;
+      this._scene_asset = this._scene.objectReferenceValue as UnityEditor.SceneAsset;
 
       if (this._scene_asset != null) {
-        this._scene_asset_path = AssetDatabase.GetAssetPath(assetObject : this._scene.objectReferenceValue);
+        this._scene_asset_path =
+            UnityEditor.AssetDatabase.GetAssetPath(assetObject : this._scene.objectReferenceValue);
         if (this._scene_asset_path != null) {
-          this._scene_asset_guid = AssetDatabase.AssetPathToGUID(path : this._scene_asset_path);
+          this._scene_asset_guid = UnityEditor.AssetDatabase.AssetPathToGUID(path : this._scene_asset_path);
         }
       } else {
         this._scene_asset_path = null;
@@ -71,7 +73,7 @@ namespace droid.Editor.Utilities {
     /// </summary>
     void UpdateSceneState() {
       if (this._scene_asset != null) {
-        var scenes = EditorBuildSettings.scenes;
+        var scenes = UnityEditor.EditorBuildSettings.scenes;
 
         this._scene_index.intValue = -1;
         for (var i = 0; i < scenes.Length; i++) {
@@ -102,29 +104,30 @@ namespace droid.Editor.Utilities {
     /// </summary>
     /// <param name="message">Message to display.</param>
     void DisplaySceneErrorPrompt(string message) {
-      var scenes = EditorBuildSettings.scenes;
+      var scenes = UnityEditor.EditorBuildSettings.scenes;
 
-      var choice = EditorUtility.DisplayDialogComplex("Scene Not In Build",
-                                                      message : message,
-                                                      "Yes",
-                                                      "No",
-                                                      "Open Build Settings");
+      var choice = UnityEditor.EditorUtility.DisplayDialogComplex("Scene Not In Build",
+                                                                  message : message,
+                                                                  "Yes",
+                                                                  "No",
+                                                                  "Open Build Settings");
 
       if (choice == 0) {
         var new_count = this._scene_index.intValue < 0 ? scenes.Length + 1 : scenes.Length;
-        var new_scenes = new EditorBuildSettingsScene[new_count];
-        Array.Copy(sourceArray : scenes, destinationArray : new_scenes, length : scenes.Length);
+        var new_scenes = new UnityEditor.EditorBuildSettingsScene[new_count];
+        System.Array.Copy(sourceArray : scenes, destinationArray : new_scenes, length : scenes.Length);
 
         if (this._scene_index.intValue < 0) {
-          new_scenes[scenes.Length] = new EditorBuildSettingsScene(path : this._scene_asset_path, true);
+          new_scenes[scenes.Length] =
+              new UnityEditor.EditorBuildSettingsScene(path : this._scene_asset_path, true);
           this._scene_index.intValue = scenes.Length;
         }
 
         new_scenes[this._scene_index.intValue].enabled = true;
 
-        EditorBuildSettings.scenes = new_scenes;
+        UnityEditor.EditorBuildSettings.scenes = new_scenes;
       } else if (choice == 2) {
-        EditorApplication.ExecuteMenuItem("File/Build Settings...");
+        UnityEditor.EditorApplication.ExecuteMenuItem("File/Build Settings...");
       }
     }
 
@@ -140,28 +143,32 @@ namespace droid.Editor.Utilities {
     ///   there are no errors, this is the same as the input position Rect.
     ///   Otherwise, it will be the input rect adjusted to fit the error.
     /// </returns>
-    Rect DisplayErrorsIfNecessary(Rect position) {
+    UnityEngine.Rect DisplayErrorsIfNecessary(UnityEngine.Rect position) {
       if (this._error_style == null) {
         this._error_style = "CN EntryErrorIconSmall";
-        this._error_tooltip = new GUIContent("", "error");
+        this._error_tooltip = new UnityEngine.GUIContent("", "error");
       }
 
       if (this._scene_asset == null) {
         return position;
       }
 
-      var warning_rect = new Rect(source : position) {width = this._error_style.fixedWidth + 4};
+      var warning_rect = new UnityEngine.Rect(source : position) {width = this._error_style.fixedWidth + 4};
 
       if (this._scene_index.intValue < 0) {
         this._error_tooltip.tooltip = _tooltip_scene_missing;
         position.xMin = warning_rect.xMax;
-        if (GUI.Button(position : warning_rect, content : this._error_tooltip, style : this._error_style)) {
+        if (UnityEngine.GUI.Button(position : warning_rect,
+                                   content : this._error_tooltip,
+                                   style : this._error_style)) {
           this.DisplaySceneErrorPrompt(message : _error_scene_missing);
         }
       } else if (!this._scene_enabled.boolValue) {
         this._error_tooltip.tooltip = _tooltip_scene_disabled;
         position.xMin = warning_rect.xMax;
-        if (GUI.Button(position : warning_rect, content : this._error_tooltip, style : this._error_style)) {
+        if (UnityEngine.GUI.Button(position : warning_rect,
+                                   content : this._error_tooltip,
+                                   style : this._error_style)) {
           this.DisplaySceneErrorPrompt(message : _error_scene_disabled);
         }
       }
@@ -175,7 +182,7 @@ namespace droid.Editor.Utilities {
     /// </summary>
     void Validate() {
       if (this._scene_asset != null) {
-        var scenes = EditorBuildSettings.scenes;
+        var scenes = UnityEditor.EditorBuildSettings.scenes;
 
         this._scene_index.intValue = -1;
         for (var i = 0; i < scenes.Length; i++) {
@@ -222,16 +229,16 @@ namespace droid.Editor.Utilities {
 
     #region -- Private Variables ------------------------------------------
 
-    SerializedProperty _scene;
-    SerializedProperty _scene_name;
-    SerializedProperty _scene_index;
-    SerializedProperty _scene_enabled;
-    SceneAsset _scene_asset;
+    UnityEditor.SerializedProperty _scene;
+    UnityEditor.SerializedProperty _scene_name;
+    UnityEditor.SerializedProperty _scene_index;
+    UnityEditor.SerializedProperty _scene_enabled;
+    UnityEditor.SceneAsset _scene_asset;
     string _scene_asset_path;
     string _scene_asset_guid;
 
-    GUIContent _error_tooltip;
-    GUIStyle _error_style;
+    UnityEngine.GUIContent _error_tooltip;
+    UnityEngine.GUIStyle _error_style;
 
     #endregion -- Private Variables ---------------------------------------
   }

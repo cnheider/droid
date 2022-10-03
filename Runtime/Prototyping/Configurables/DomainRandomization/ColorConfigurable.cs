@@ -1,18 +1,11 @@
-﻿using droid.Runtime.Interfaces;
-using droid.Runtime.Messaging.Messages;
-using droid.Runtime.Structs.Space;
-using droid.Runtime.Structs.Space.Sample;
-using droid.Runtime.Utilities;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Configurables.DomainRandomization {
+﻿namespace droid.Runtime.Prototyping.Configurables.DomainRandomization {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
-                               + "Color"
-                               + ConfigurableComponentMenuPath._Postfix)]
-  [RequireComponent(requiredComponent : typeof(Renderer))]
+  [UnityEngine.AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
+                                           + "Color"
+                                           + ConfigurableComponentMenuPath._Postfix)]
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.Renderer))]
   public class ColorConfigurable : Configurable {
     /// <summary>
     ///   Alpha
@@ -34,18 +27,27 @@ namespace droid.Runtime.Prototyping.Configurables.DomainRandomization {
     /// </summary>
     const char _r = 'R';
 
-    string _r_id;
+    [UnityEngine.SerializeField]
+    droid.Runtime.Structs.Space.Sample.SampleSpace4 _space =
+        new droid.Runtime.Structs.Space.Sample.SampleSpace4 {
+                                                                _space = droid.Runtime.Structs.Space.Space4
+                                                                    .TwentyEighty
+                                                            };
+
+    [UnityEngine.SerializeField] bool use_shared = false;
+    string _a_id;
     string _b_id;
     string _g_id;
-    string _a_id;
+
+    string _r_id;
 
     /// <summary>
     /// </summary>
-    Renderer _renderer;
+    UnityEngine.Renderer _renderer;
 
-    [SerializeField] SampleSpace4 _space = new SampleSpace4 {_space = Space4.TwentyEighty};
-
-    [SerializeField] bool use_shared = false;
+    /// <summary>
+    /// </summary>
+    public droid.Runtime.Interfaces.ISamplable ConfigurableValueSpace { get { return this._space; } }
 
     /// <inheritdoc />
     /// <summary>
@@ -56,7 +58,7 @@ namespace droid.Runtime.Prototyping.Configurables.DomainRandomization {
       this._g_id = this.Identifier + _g;
       this._a_id = this.Identifier + _a;
 
-      this._renderer = this.GetComponent<Renderer>();
+      this._renderer = this.GetComponent<UnityEngine.Renderer>();
     }
 
     /// <inheritdoc />
@@ -64,21 +66,21 @@ namespace droid.Runtime.Prototyping.Configurables.DomainRandomization {
     /// </summary>
     protected override void RegisterComponent() {
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : this,
-                                                          identifier : this._r_id);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : this,
+            identifier : this._r_id);
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : this,
-                                                          identifier : this._g_id);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : this,
+            identifier : this._g_id);
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : this,
-                                                          identifier : this._b_id);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : this,
+            identifier : this._b_id);
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : this,
-                                                          identifier : this._a_id);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : this,
+            identifier : this._a_id);
     }
 
     /// <inheritdoc />
@@ -95,11 +97,6 @@ namespace droid.Runtime.Prototyping.Configurables.DomainRandomization {
       this.ParentEnvironment.UnRegister(t : this, identifier : this._a_id);
     }
 
-    /// <summary>
-    ///
-    /// </summary>
-    public ISamplable ConfigurableValueSpace { get { return this._space; } }
-
     /// <inheritdoc />
     /// <summary>
     /// </summary>
@@ -109,12 +106,13 @@ namespace droid.Runtime.Prototyping.Configurables.DomainRandomization {
     /// <summary>
     /// </summary>
     /// <param name="configuration"></param>
-    public override void ApplyConfiguration(IConfigurableConfiguration configuration) {
+    public override void
+        ApplyConfiguration(droid.Runtime.Interfaces.IConfigurableConfiguration configuration) {
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        DebugPrinting.ApplyPrint(debugging : this.Debugging,
-                                 configuration : configuration,
-                                 identifier : this.Identifier);
+        droid.Runtime.Utilities.DebugPrinting.ApplyPrint(debugging : this.Debugging,
+                                                         configuration : configuration,
+                                                         identifier : this.Identifier);
       }
       #endif
 
@@ -166,8 +164,8 @@ namespace droid.Runtime.Prototyping.Configurables.DomainRandomization {
     }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
     protected override void Randomise() {
       if (this.use_shared) {
         foreach (var mat in this._renderer.sharedMaterials) {
@@ -184,14 +182,18 @@ namespace droid.Runtime.Prototyping.Configurables.DomainRandomization {
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public override Configuration[] SampleConfigurations() {
+    public override droid.Runtime.Messaging.Messages.Configuration[] SampleConfigurations() {
       var v = this._space.Sample();
 
       return new[] {
-                       new Configuration(configurable_name : this._r_id, configurable_value : v.x),
-                       new Configuration(configurable_name : this._g_id, configurable_value : v.y),
-                       new Configuration(configurable_name : this._b_id, configurable_value : v.z),
-                       new Configuration(configurable_name : this._a_id, configurable_value : v.w)
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._r_id,
+                         configurable_value : v.x),
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._g_id,
+                         configurable_value : v.y),
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._b_id,
+                         configurable_value : v.z),
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._a_id,
+                         configurable_value : v.w)
                    };
     }
   }

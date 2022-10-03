@@ -1,8 +1,4 @@
-﻿using System;
-using droid.Runtime.Structs;
-using UnityEngine;
-
-#if TEXT_MESH_PRO_EXISTS
+﻿#if TEXT_MESH_PRO_EXISTS
 using TMPro;
 
 namespace droid.Neodroid.Prototyping.Displayers {
@@ -77,12 +73,13 @@ namespace droid.Neodroid.Prototyping.Displayers {
 namespace droid.Runtime.Prototyping.Displayers {
   /// <summary>
   /// </summary>
-  [ExecuteInEditMode]
-  [AddComponentMenu("Neodroid/Displayers/TextMesh")]
+  [UnityEngine.ExecuteInEditMode]
+  [UnityEngine.AddComponentMenu("Neodroid/Displayers/TextMesh")]
   public class TextMeshDisplayer : Displayer {
     /// <inheritdoc />
     public override void Setup() {
-      Debug.Log("TextMeshPro is not defined in project, add 'TEXT_MESH_PRO_EXISTS' to your unity projects 'define symbols' under the player settings or '-define:TEXT_MESH_PRO_EXISTS' in mcs.rsp to enable TextMeshPro displayer integration");
+      UnityEngine.Debug
+                 .Log("TextMeshPro is not defined in project, add 'TEXT_MESH_PRO_EXISTS' to your unity projects 'define symbols' under the player settings or '-define:TEXT_MESH_PRO_EXISTS' in mcs.rsp to enable TextMeshPro displayer integration");
     }
 
     /// <summary>
@@ -91,7 +88,7 @@ namespace droid.Runtime.Prototyping.Displayers {
     public void SetText(string text) {
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        Debug.Log(message : "Applying " + text + " To " + this.name);
+        UnityEngine.Debug.Log(message : "Applying " + text + " To " + this.name);
       }
       #endif
     }
@@ -101,20 +98,20 @@ namespace droid.Runtime.Prototyping.Displayers {
     /// <summary>
     /// </summary>
     /// <param name="value"></param>
-    /// <exception cref="NotImplementedException"></exception>
-    public override void Display(float value) { throw new NotImplementedException(); }
+    /// <exception cref="System.NotImplementedException"></exception>
+    public override void Display(float value) { throw new System.NotImplementedException(); }
 
     /// <summary>
     /// </summary>
     /// <param name="value"></param>
-    /// <exception cref="NotImplementedException"></exception>
-    public override void Display(double value) { throw new NotImplementedException(); }
+    /// <exception cref="System.NotImplementedException"></exception>
+    public override void Display(double value) { throw new System.NotImplementedException(); }
 
     /// <summary>
     /// </summary>
     /// <param name="values"></param>
-    /// <exception cref="NotImplementedException"></exception>
-    public override void Display(float[] values) { throw new NotImplementedException(); }
+    /// <exception cref="System.NotImplementedException"></exception>
+    public override void Display(float[] values) { throw new System.NotImplementedException(); }
 
     /// <summary>
     /// </summary>
@@ -122,22 +119,34 @@ namespace droid.Runtime.Prototyping.Displayers {
     public override void Display(string value) {
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        Debug.Log(message : "Applying " + value + " To " + this.name);
+        UnityEngine.Debug.Log(message : "Applying " + value + " To " + this.name);
       }
       #endif
       this.SetText(text : value);
     }
 
-    public override void Display(Vector3 value) { throw new NotImplementedException(); }
-    public override void Display(Vector3[] value) { throw new NotImplementedException(); }
+    public override void Display(UnityEngine.Vector3 value) { throw new System.NotImplementedException(); }
+    public override void Display(UnityEngine.Vector3[] value) { throw new System.NotImplementedException(); }
 
-    public override void Display(Points.ValuePoint points) { throw new NotImplementedException(); }
+    public override void Display(droid.Runtime.Structs.Points.ValuePoint points) {
+      throw new System.NotImplementedException();
+    }
 
-    public override void Display(Points.ValuePoint[] points) { throw new NotImplementedException(); }
+    public override void Display(droid.Runtime.Structs.Points.ValuePoint[] points) {
+      throw new System.NotImplementedException();
+    }
 
-    public override void Display(Points.StringPoint point) { throw new NotImplementedException(); }
-    public override void Display(Points.StringPoint[] points) { throw new NotImplementedException(); }
-    public override void PlotSeries(Points.ValuePoint[] points) { throw new NotImplementedException(); }
+    public override void Display(droid.Runtime.Structs.Points.StringPoint point) {
+      throw new System.NotImplementedException();
+    }
+
+    public override void Display(droid.Runtime.Structs.Points.StringPoint[] points) {
+      throw new System.NotImplementedException();
+    }
+
+    public override void PlotSeries(droid.Runtime.Structs.Points.ValuePoint[] points) {
+      throw new System.NotImplementedException();
+    }
   }
 }
 #endif

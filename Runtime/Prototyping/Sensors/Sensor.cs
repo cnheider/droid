@@ -1,31 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using droid.Runtime.Environments.Prototyping;
-using droid.Runtime.GameObjects;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Utilities;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Sensors {
-  /// <inheritdoc cref="PrototypingGameObject" />
+﻿namespace droid.Runtime.Prototyping.Sensors {
+  /// <inheritdoc cref="GameObjects.PrototypingGameObject" />
   /// <summary>
   /// </summary>
-  [ExecuteInEditMode]
-  [Serializable]
-  public abstract class Sensor : PrototypingGameObject,
-                                 ISensor {
+  [UnityEngine.ExecuteInEditMode]
+  [System.SerializableAttribute]
+  public abstract class Sensor : droid.Runtime.GameObjects.PrototypingGameObject,
+                                 droid.Runtime.Interfaces.ISensor {
+    #region Fields
+
+    [UnityEngine.HeaderAttribute("References", order = 99)]
+    [UnityEngine.SerializeField]
+    droid.Runtime.Environments.Prototyping.AbstractPrototypingEnvironment _environment;
+
+    #endregion
+
     /// <summary>
     /// </summary>
-    public AbstractPrototypingEnvironment ParentEnvironment {
+    public droid.Runtime.Environments.Prototyping.AbstractPrototypingEnvironment ParentEnvironment {
       get { return this._environment; }
       set { this._environment = value; }
+    }
+
+    /// <summary>
+    /// </summary>
+    protected virtual void Update() {
+      if (UnityEngine.Application.isPlaying) {
+        if (this.FloatEnumerable == null) {
+          #if NEODROID_DEBUG
+          if (this.Debugging) {
+            UnityEngine.Debug.LogWarning(message :
+                                         $"FloatEnumerable of {this.Identifier} is empty! Maybe you forget an assignment to it when updating observations");
+          }
+          #endif
+        }
+      }
     }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public abstract IEnumerable<float> FloatEnumerable { get; }
+    public abstract System.Collections.Generic.IEnumerable<float> FloatEnumerable { get; }
 
     /// <inheritdoc />
     /// <summary>
@@ -37,28 +51,14 @@ namespace droid.Runtime.Prototyping.Sensors {
     /// </summary>
     protected override void RegisterComponent() {
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment, c : this);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : this);
     }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     protected override void UnRegisterComponent() { this.ParentEnvironment?.UnRegister(sensor : this); }
-
-    /// <summary>
-    /// </summary>
-    protected virtual void Update() {
-      if (Application.isPlaying) {
-        if (this.FloatEnumerable == null) {
-          #if NEODROID_DEBUG
-          if (this.Debugging) {
-            Debug.LogWarning(message :
-                             $"FloatEnumerable of {this.Identifier} is empty! Maybe you forget an assignment to it when updating observations");
-          }
-          #endif
-        }
-      }
-    }
 
     /// <inheritdoc />
     /// <summary>
@@ -75,13 +75,5 @@ namespace droid.Runtime.Prototyping.Sensors {
 
       return any ? string.Join(",", values : this.FloatEnumerable) : "Empty FloatEnumerable";
     }
-
-    #region Fields
-
-    [Header("References", order = 99)]
-    [SerializeField]
-    AbstractPrototypingEnvironment _environment;
-
-    #endregion
   }
 }

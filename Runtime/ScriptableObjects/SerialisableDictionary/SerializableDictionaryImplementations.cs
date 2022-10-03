@@ -1,10 +1,9 @@
-using System;
-using UnityEngine;
-
 namespace droid.Runtime.ScriptableObjects.SerialisableDictionary {
-  [Serializable] public class StringIntDictionary : SerializableDictionary<string, int> { }
+  [System.SerializableAttribute] public class StringIntDictionary : SerializableDictionary<string, int> { }
 
-  [Serializable] public class GameObjectFloatDictionary : SerializableDictionary<GameObject, float> { }
+  [System.SerializableAttribute]
+  public class GameObjectFloatDictionary : SerializableDictionary<UnityEngine.GameObject, float> { }
 
-  [Serializable] public class StringGameObjectDictionary : SerializableDictionary<string, GameObject> { }
+  [System.SerializableAttribute]
+  public class StringGameObjectDictionary : SerializableDictionary<string, UnityEngine.GameObject> { }
 }

@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace droid.Runtime.Utilities.Procedural {
+﻿namespace droid.Runtime.Utilities.Procedural {
   public static class NeodroidUtilities {
     /// <summary>
     /// </summary>
     /// <param name="length"></param>
     /// <returns></returns>
-    public static IEnumerable<Vector3> SnakeSpaceFillingGenerator(int length = 100) {
+    public static System.Collections.Generic.IEnumerable<UnityEngine.Vector3> SnakeSpaceFillingGenerator(
+        int length = 100) {
       var x = 0;
       var y = 0;
       var state = GeneratorState.Expand_x_;
 
-      var out_vectors = new Vector3[length];
+      var out_vectors = new UnityEngine.Vector3[length];
       if (length == 0) {
         return out_vectors;
       }
@@ -57,14 +54,16 @@ namespace droid.Runtime.Utilities.Procedural {
             }
 
             break;
-          default: throw new ArgumentOutOfRangeException();
+          default: throw new System.ArgumentOutOfRangeException();
         }
 
-        out_vectors[i] = new Vector3(x : x, 0, z : y);
+        out_vectors[i] = new UnityEngine.Vector3(x : x, 0, z : y);
       }
 
       return out_vectors;
     }
+
+    #region Nested type: GeneratorState
 
     /// <summary>
     /// </summary>
@@ -78,5 +77,7 @@ namespace droid.Runtime.Utilities.Procedural {
       Inc_y_ = 4,
       Dec_y_ = 5
     }
+
+    #endregion
   }
 }

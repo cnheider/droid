@@ -1,26 +1,28 @@
-﻿using System;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Messaging.Messages;
-using droid.Runtime.Structs.Space;
-using droid.Runtime.Structs.Space.Sample;
-using droid.Runtime.Utilities;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Configurables.Transforms {
+﻿namespace droid.Runtime.Prototyping.Configurables.Transforms {
   /// <inheritdoc cref="Configurable" />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
-                               + "Rotation"
-                               + ConfigurableComponentMenuPath._Postfix)]
+  [UnityEngine.AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
+                                           + "Rotation"
+                                           + ConfigurableComponentMenuPath._Postfix)]
   public class RotationConfigurable : SpatialConfigurable,
-                                      IHasQuadruple {
-    [SerializeField] SampleSpace4 _quad_space = new SampleSpace4 {_space = Space4.MinusOneOne};
-    [SerializeField] bool _use_environments_space = false;
+                                      droid.Runtime.Interfaces.IHasQuadruple {
+    [UnityEngine.SerializeField]
+    droid.Runtime.Structs.Space.Sample.SampleSpace4 _quad_space =
+        new droid.Runtime.Structs.Space.Sample.SampleSpace4 {
+                                                                _space = droid.Runtime.Structs.Space.Space4
+                                                                    .MinusOneOne
+                                                            };
 
-    [Header("Observation", order = 103)]
-    [SerializeField]
-    Quaternion observation_value = Quaternion.identity;
+    [UnityEngine.SerializeField] bool _use_environments_space = false;
+
+    [UnityEngine.HeaderAttribute("Observation", order = 103)]
+    [UnityEngine.SerializeField]
+    UnityEngine.Quaternion observation_value = UnityEngine.Quaternion.identity;
+
+    /// <summary>
+    /// </summary>
+    string _w;
 
     /// <summary>
     /// </summary>
@@ -36,14 +38,14 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
 
     /// <summary>
     /// </summary>
-    string _w;
+    public droid.Runtime.Interfaces.ISamplable ConfigurableValueSpace { get { return this._quad_space; } }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public Quaternion ObservationValue { get { return this.observation_value; } }
+    public UnityEngine.Quaternion ObservationValue { get { return this.observation_value; } }
 
-    public Space4 QuadSpace { get { return this._quad_space._space; } }
+    public droid.Runtime.Structs.Space.Space4 QuadSpace { get { return this._quad_space._space; } }
 
     /// <inheritdoc />
     /// <summary>
@@ -60,21 +62,21 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
     /// </summary>
     protected override void RegisterComponent() {
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._x);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._x);
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._y);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._y);
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._z);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._z);
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._w);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._w);
     }
 
     /// <inheritdoc />
@@ -91,14 +93,9 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
       this.ParentEnvironment.UnRegister(t : this, identifier : this._w);
     }
 
-    /// <summary>
-    ///
-    /// </summary>
-    public ISamplable ConfigurableValueSpace { get { return this._quad_space; } }
-
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
     public override void UpdateCurrentConfiguration() {
       if (this._use_environments_space && this.ParentEnvironment != null) {
         this.observation_value =
@@ -109,10 +106,10 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="simulator_configuration"></param>
-    public override void ApplyConfiguration(IConfigurableConfiguration simulator_configuration) {
+    public override void ApplyConfiguration(
+        droid.Runtime.Interfaces.IConfigurableConfiguration simulator_configuration) {
       //TODO: Denormalize configuration if space is marked as normalised
 
       var rot = this.transform.rotation;
@@ -122,12 +119,13 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
 
       var v = simulator_configuration.ConfigurableValue;
       if (this.QuadSpace.DecimalGranularity >= 0) {
-        v = (int)Math.Round(value : v, digits : this.QuadSpace.DecimalGranularity);
+        v = (int)System.Math.Round(value : v, digits : this.QuadSpace.DecimalGranularity);
       }
 
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        Debug.Log(message : $"Applying {v} to {simulator_configuration.ConfigurableName} configurable");
+        UnityEngine.Debug.Log(message :
+                              $"Applying {v} to {simulator_configuration.ConfigurableName} configurable");
       }
       #endif
 
@@ -135,8 +133,9 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
         if (simulator_configuration.ConfigurableName == this._x) {
           if (this.QuadSpace.Min.x.CompareTo(this.QuadSpace.Max.x) != 0) {
             if (v < this.QuadSpace.Min.x || v > this.QuadSpace.Max.x) {
-              Debug.Log(message : $"ConfigurableX does not accept input {v}, outside allowed range "
-                                  + $"{this.QuadSpace.Min.x} to {this.QuadSpace.Max.x}");
+              UnityEngine.Debug.Log(message :
+                                    $"ConfigurableX does not accept input {v}, outside allowed range "
+                                    + $"{this.QuadSpace.Min.x} to {this.QuadSpace.Max.x}");
               return; // Do nothing
             }
           }
@@ -148,8 +147,9 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
         } else if (simulator_configuration.ConfigurableName == this._y) {
           if (this.QuadSpace.Min.y.CompareTo(this.QuadSpace.Max.y) != 0) {
             if (v < this.QuadSpace.Min.y || v > this.QuadSpace.Max.y) {
-              Debug.Log(message : $"ConfigurableY does not accept input {v}, outside allowed range "
-                                  + $"{this.QuadSpace.Min.y} to {this.QuadSpace.Max.y}");
+              UnityEngine.Debug.Log(message :
+                                    $"ConfigurableY does not accept input {v}, outside allowed range "
+                                    + $"{this.QuadSpace.Min.y} to {this.QuadSpace.Max.y}");
               return; // Do nothing
             }
           }
@@ -161,8 +161,9 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
         } else if (simulator_configuration.ConfigurableName == this._z) {
           if (this.QuadSpace.Min.z.CompareTo(this.QuadSpace.Max.z) != 0) {
             if (v < this.QuadSpace.Min.z || v > this.QuadSpace.Max.z) {
-              Debug.Log(message : $"ConfigurableZ does not accept input {v}, outside allowed range "
-                                  + $"{this.QuadSpace.Min.z} to {this.QuadSpace.Max.z}");
+              UnityEngine.Debug.Log(message :
+                                    $"ConfigurableZ does not accept input {v}, outside allowed range "
+                                    + $"{this.QuadSpace.Min.z} to {this.QuadSpace.Max.z}");
               return; // Do nothing
             }
           }
@@ -174,8 +175,9 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
         } else if (simulator_configuration.ConfigurableName == this._w) {
           if (this.QuadSpace.Min.w.CompareTo(this.QuadSpace.Max.w) != 0) {
             if (v < this.QuadSpace.Min.w || v > this.QuadSpace.Max.w) {
-              Debug.Log(message : $"ConfigurableW does not accept input {v}, outside allowed range "
-                                  + $"{this.QuadSpace.Min.w} to {this.QuadSpace.Max.w}");
+              UnityEngine.Debug.Log(message :
+                                    $"ConfigurableW does not accept input {v}, outside allowed range "
+                                    + $"{this.QuadSpace.Min.w} to {this.QuadSpace.Max.w}");
               return; // Do nothing
             }
           }
@@ -189,8 +191,9 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
         if (simulator_configuration.ConfigurableName == this._x) {
           if (this.QuadSpace.Min.x.CompareTo(this.QuadSpace.Max.x) != 0) {
             if (v < this.QuadSpace.Min.x || v > this.QuadSpace.Max.x) {
-              Debug.Log(message : $"ConfigurableX does not accept input {v}, outside allowed range "
-                                  + $"{this.QuadSpace.Min.x} to {this.QuadSpace.Max.x}");
+              UnityEngine.Debug.Log(message :
+                                    $"ConfigurableX does not accept input {v}, outside allowed range "
+                                    + $"{this.QuadSpace.Min.x} to {this.QuadSpace.Max.x}");
               return; // Do nothing
             }
           }
@@ -203,8 +206,9 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
         } else if (simulator_configuration.ConfigurableName == this._y) {
           if (this.QuadSpace.Min.y.CompareTo(this.QuadSpace.Max.y) != 0) {
             if (v < this.QuadSpace.Min.y || v > this.QuadSpace.Max.y) {
-              Debug.Log(message : $"ConfigurableY does not accept input {v}, outside allowed range "
-                                  + $"{this.QuadSpace.Min.y} to {this.QuadSpace.Max.y}");
+              UnityEngine.Debug.Log(message :
+                                    $"ConfigurableY does not accept input {v}, outside allowed range "
+                                    + $"{this.QuadSpace.Min.y} to {this.QuadSpace.Max.y}");
               return; // Do nothing
             }
           }
@@ -217,8 +221,9 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
         } else if (simulator_configuration.ConfigurableName == this._z) {
           if (this.QuadSpace.Min.z.CompareTo(this.QuadSpace.Max.z) != 0) {
             if (v < this.QuadSpace.Min.z || v > this.QuadSpace.Max.z) {
-              Debug.Log(message : $"ConfigurableZ does not accept input {v}, outside allowed range "
-                                  + $"{this.QuadSpace.Min.z} to {this.QuadSpace.Max.z}");
+              UnityEngine.Debug.Log(message :
+                                    $"ConfigurableZ does not accept input {v}, outside allowed range "
+                                    + $"{this.QuadSpace.Min.z} to {this.QuadSpace.Max.z}");
               return; // Do nothing
             }
           }
@@ -231,8 +236,9 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
         } else if (simulator_configuration.ConfigurableName == this._w) {
           if (this.QuadSpace.Min.w.CompareTo(this.QuadSpace.Max.w) != 0) {
             if (v < this.QuadSpace.Min.w || v > this.QuadSpace.Max.w) {
-              Debug.Log(message : $"ConfigurableW does not accept input {v}, outside allowed range "
-                                  + $"{this.QuadSpace.Min.w} to {this.QuadSpace.Max.w}");
+              UnityEngine.Debug.Log(message :
+                                    $"ConfigurableW does not accept input {v}, outside allowed range "
+                                    + $"{this.QuadSpace.Min.w} to {this.QuadSpace.Max.w}");
               return; // Do nothing
             }
           }
@@ -253,16 +259,20 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
     }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    ///  <returns></returns>
-    public override Configuration[] SampleConfigurations() {
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
+    public override droid.Runtime.Messaging.Messages.Configuration[] SampleConfigurations() {
       var sample = this._quad_space.Sample();
       return new[] {
-                       new Configuration(configurable_name : this._x, configurable_value : sample.x),
-                       new Configuration(configurable_name : this._y, configurable_value : sample.y),
-                       new Configuration(configurable_name : this._z, configurable_value : sample.z),
-                       new Configuration(configurable_name : this._w, configurable_value : sample.w)
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._x,
+                         configurable_value : sample.x),
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._y,
+                         configurable_value : sample.y),
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._z,
+                         configurable_value : sample.z),
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._w,
+                         configurable_value : sample.w)
                    };
     }
   }

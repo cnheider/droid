@@ -1,38 +1,15 @@
-using System.Runtime.InteropServices;
-using UnityEngine;
-
 namespace droid.Runtime.Utilities.Extensions {
   /// <summary>
-  ///
   /// </summary>
   public static class TextureExtentions {
     /// <summary>
-    ///
-    /// </summary>
-    [StructLayout(layoutKind : LayoutKind.Explicit)]
-    public struct Color32Array {
-      /// <summary>
-      ///
-      /// </summary>
-      [FieldOffset(0)]
-      public byte[] byteArray;
-
-      /// <summary>
-      ///
-      /// </summary>
-      [FieldOffset(0)]
-      public Color32[] colors;
-    }
-
-    /// <summary>
-    ///
     /// </summary>
     /// <param name="texture"></param>
     /// <returns></returns>
-    public static Texture2D ToTexture2D(this WebCamTexture texture) {
-      var color_array = new Color32Array {colors = new Color32[texture.width * texture.height]};
+    public static UnityEngine.Texture2D ToTexture2D(this UnityEngine.WebCamTexture texture) {
+      var color_array = new Color32Array {colors = new UnityEngine.Color32[texture.width * texture.height]};
       texture.GetPixels32(colors : color_array.colors);
-      var tex = new Texture2D(2, 2);
+      var tex = new UnityEngine.Texture2D(2, 2);
       tex.LoadRawTextureData(data : color_array.byteArray);
       tex.Apply();
 
@@ -49,5 +26,25 @@ namespace droid.Runtime.Utilities.Extensions {
                                              ntv_p);
     */
     }
+
+    #region Nested type: Color32Array
+
+    /// <summary>
+    /// </summary>
+    [System.Runtime.InteropServices.StructLayoutAttribute(layoutKind : System.Runtime.InteropServices
+                                                                             .LayoutKind.Explicit)]
+    public struct Color32Array {
+      /// <summary>
+      /// </summary>
+      [System.Runtime.InteropServices.FieldOffsetAttribute(0)]
+      public byte[] byteArray;
+
+      /// <summary>
+      /// </summary>
+      [System.Runtime.InteropServices.FieldOffsetAttribute(0)]
+      public UnityEngine.Color32[] colors;
+    }
+
+    #endregion
   }
 }

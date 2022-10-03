@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace droid.Runtime.Utilities.Grasping {
+﻿namespace droid.Runtime.Utilities.Grasping {
   /// <summary>
   /// </summary>
   public static class GraspingUtilities {
@@ -9,49 +7,49 @@ namespace droid.Runtime.Utilities.Grasping {
     /// <param name="p"></param>
     /// <param name="r"></param>
     /// <param name="c"></param>
-    public static void DrawBoxFromCenter(Vector3 p, float r, Color c) {
-      // p is pos.yition of the center, r is "radius" and c is the color of the box
+    public static void DrawBoxFromCenter(UnityEngine.Vector3 p, float r, UnityEngine.Color c) {
+      // p is position of the center, r is "radius" and c is the color of the box
       //Bottom lines
-      Debug.DrawLine(start : new Vector3(x : -r + p.x, y : -r + p.y, z : -r + p.z),
-                     end : new Vector3(x : r + p.x, y : -r + p.y, z : -r + p.z),
-                     color : c);
-      Debug.DrawLine(start : new Vector3(x : -r + p.x, y : -r + p.y, z : -r + p.z),
-                     end : new Vector3(x : -r + p.x, y : -r + p.y, z : r + p.z),
-                     color : c);
-      Debug.DrawLine(start : new Vector3(x : r + p.x, y : -r + p.y, z : r + p.z),
-                     end : new Vector3(x : -r + p.x, y : -r + p.y, z : r + p.z),
-                     color : c);
-      Debug.DrawLine(start : new Vector3(x : r + p.x, y : -r + p.y, z : r + p.z),
-                     end : new Vector3(x : r + p.x, y : -r + p.y, z : -r + p.z),
-                     color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -r + p.x, y : -r + p.y, z : -r + p.z),
+                                 end : new UnityEngine.Vector3(x : r + p.x, y : -r + p.y, z : -r + p.z),
+                                 color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -r + p.x, y : -r + p.y, z : -r + p.z),
+                                 end : new UnityEngine.Vector3(x : -r + p.x, y : -r + p.y, z : r + p.z),
+                                 color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : r + p.x, y : -r + p.y, z : r + p.z),
+                                 end : new UnityEngine.Vector3(x : -r + p.x, y : -r + p.y, z : r + p.z),
+                                 color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : r + p.x, y : -r + p.y, z : r + p.z),
+                                 end : new UnityEngine.Vector3(x : r + p.x, y : -r + p.y, z : -r + p.z),
+                                 color : c);
 
       //Vertical lines
-      Debug.DrawLine(start : new Vector3(x : -r + p.x, y : r + p.y, z : -r + p.z),
-                     end : new Vector3(x : r + p.x, y : r + p.y, z : -r + p.z),
-                     color : c);
-      Debug.DrawLine(start : new Vector3(x : -r + p.x, y : r + p.y, z : -r + p.z),
-                     end : new Vector3(x : -r + p.x, y : r + p.y, z : r + p.z),
-                     color : c);
-      Debug.DrawLine(start : new Vector3(x : r + p.x, y : r + p.y, z : r + p.z),
-                     end : new Vector3(x : -r + p.x, y : r + p.y, z : r + p.z),
-                     color : c);
-      Debug.DrawLine(start : new Vector3(x : r + p.x, y : r + p.y, z : r + p.z),
-                     end : new Vector3(x : r + p.x, y : r + p.y, z : -r + p.z),
-                     color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -r + p.x, y : r + p.y, z : -r + p.z),
+                                 end : new UnityEngine.Vector3(x : r + p.x, y : r + p.y, z : -r + p.z),
+                                 color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -r + p.x, y : r + p.y, z : -r + p.z),
+                                 end : new UnityEngine.Vector3(x : -r + p.x, y : r + p.y, z : r + p.z),
+                                 color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : r + p.x, y : r + p.y, z : r + p.z),
+                                 end : new UnityEngine.Vector3(x : -r + p.x, y : r + p.y, z : r + p.z),
+                                 color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : r + p.x, y : r + p.y, z : r + p.z),
+                                 end : new UnityEngine.Vector3(x : r + p.x, y : r + p.y, z : -r + p.z),
+                                 color : c);
 
       //Top lines
-      Debug.DrawLine(start : new Vector3(x : -r + p.x, y : -r + p.y, z : -r + p.z),
-                     end : new Vector3(x : -r + p.x, y : r + p.y, z : -r + p.z),
-                     color : c);
-      Debug.DrawLine(start : new Vector3(x : -r + p.x, y : -r + p.y, z : r + p.z),
-                     end : new Vector3(x : -r + p.x, y : r + p.y, z : r + p.z),
-                     color : c);
-      Debug.DrawLine(start : new Vector3(x : r + p.x, y : -r + p.y, z : -r + p.z),
-                     end : new Vector3(x : r + p.x, y : r + p.y, z : -r + p.z),
-                     color : c);
-      Debug.DrawLine(start : new Vector3(x : r + p.x, y : -r + p.y, z : r + p.z),
-                     end : new Vector3(x : r + p.x, y : r + p.y, z : r + p.z),
-                     color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -r + p.x, y : -r + p.y, z : -r + p.z),
+                                 end : new UnityEngine.Vector3(x : -r + p.x, y : r + p.y, z : -r + p.z),
+                                 color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -r + p.x, y : -r + p.y, z : r + p.z),
+                                 end : new UnityEngine.Vector3(x : -r + p.x, y : r + p.y, z : r + p.z),
+                                 color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : r + p.x, y : -r + p.y, z : -r + p.z),
+                                 end : new UnityEngine.Vector3(x : r + p.x, y : r + p.y, z : -r + p.z),
+                                 color : c);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : r + p.x, y : -r + p.y, z : r + p.z),
+                                 end : new UnityEngine.Vector3(x : r + p.x, y : r + p.y, z : r + p.z),
+                                 color : c);
     }
 
     /// <summary>
@@ -61,52 +59,77 @@ namespace droid.Runtime.Utilities.Grasping {
     /// <param name="z_size"></param>
     /// <param name="pos"></param>
     /// <param name="color"></param>
-    public static void DrawRect(float x_size, float y_size, float z_size, Vector3 pos, Color color) {
+    public static void DrawRect(float x_size,
+                                float y_size,
+                                float z_size,
+                                UnityEngine.Vector3 pos,
+                                UnityEngine.Color color) {
       var x = x_size / 2;
       var y = y_size / 2;
       var z = z_size / 2;
 
       //Vertical lines
-      Debug.DrawLine(start : new Vector3(x : -x + pos.x, y : -y + pos.y, z : -z + pos.z),
-                     end : new Vector3(x : -x + pos.x, y : y + pos.y, z : -z + pos.z),
-                     color : color);
-      Debug.DrawLine(start : new Vector3(x : x + pos.x, y : -y + pos.y, z : -z + pos.z),
-                     end : new Vector3(x : x + pos.x, y : y + pos.y, z : -z + pos.z),
-                     color : color);
-      Debug.DrawLine(start : new Vector3(x : -x + pos.x, y : -y + pos.y, z : z + pos.z),
-                     end : new Vector3(x : -x + pos.x, y : y + pos.y, z : z + pos.z),
-                     color : color);
-      Debug.DrawLine(start : new Vector3(x : x + pos.x, y : -y + pos.y, z : z + pos.z),
-                     end : new Vector3(x : x + pos.x, y : y + pos.y, z : z + pos.z),
-                     color : color);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -x + pos.x,
+                                                                 y : -y + pos.y,
+                                                                 z : -z + pos.z),
+                                 end : new UnityEngine.Vector3(x : -x + pos.x, y : y + pos.y, z : -z + pos.z),
+                                 color : color);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : x + pos.x,
+                                                                 y : -y + pos.y,
+                                                                 z : -z + pos.z),
+                                 end : new UnityEngine.Vector3(x : x + pos.x, y : y + pos.y, z : -z + pos.z),
+                                 color : color);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -x + pos.x,
+                                                                 y : -y + pos.y,
+                                                                 z : z + pos.z),
+                                 end : new UnityEngine.Vector3(x : -x + pos.x, y : y + pos.y, z : z + pos.z),
+                                 color : color);
+      UnityEngine.Debug.DrawLine(start :
+                                 new UnityEngine.Vector3(x : x + pos.x, y : -y + pos.y, z : z + pos.z),
+                                 end : new UnityEngine.Vector3(x : x + pos.x, y : y + pos.y, z : z + pos.z),
+                                 color : color);
 
       //Horizontal top
-      Debug.DrawLine(start : new Vector3(x : -x + pos.x, y : y + pos.y, z : -z + pos.z),
-                     end : new Vector3(x : x + pos.x, y : y + pos.y, z : -z + pos.z),
-                     color : color);
-      Debug.DrawLine(start : new Vector3(x : -x + pos.x, y : y + pos.y, z : z + pos.z),
-                     end : new Vector3(x : x + pos.x, y : y + pos.y, z : z + pos.z),
-                     color : color);
-      Debug.DrawLine(start : new Vector3(x : -x + pos.x, y : y + pos.y, z : -z + pos.z),
-                     end : new Vector3(x : -x + pos.x, y : y + pos.y, z : z + pos.z),
-                     color : color);
-      Debug.DrawLine(start : new Vector3(x : x + pos.x, y : y + pos.y, z : -z + pos.z),
-                     end : new Vector3(x : x + pos.x, y : y + pos.y, z : z + pos.z),
-                     color : color);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -x + pos.x,
+                                                                 y : y + pos.y,
+                                                                 z : -z + pos.z),
+                                 end : new UnityEngine.Vector3(x : x + pos.x, y : y + pos.y, z : -z + pos.z),
+                                 color : color);
+      UnityEngine.Debug.DrawLine(start :
+                                 new UnityEngine.Vector3(x : -x + pos.x, y : y + pos.y, z : z + pos.z),
+                                 end : new UnityEngine.Vector3(x : x + pos.x, y : y + pos.y, z : z + pos.z),
+                                 color : color);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -x + pos.x,
+                                                                 y : y + pos.y,
+                                                                 z : -z + pos.z),
+                                 end : new UnityEngine.Vector3(x : -x + pos.x, y : y + pos.y, z : z + pos.z),
+                                 color : color);
+      UnityEngine.Debug.DrawLine(start :
+                                 new UnityEngine.Vector3(x : x + pos.x, y : y + pos.y, z : -z + pos.z),
+                                 end : new UnityEngine.Vector3(x : x + pos.x, y : y + pos.y, z : z + pos.z),
+                                 color : color);
 
       //Horizontal bottom
-      Debug.DrawLine(start : new Vector3(x : -x + pos.x, y : -y + pos.y, z : -z + pos.z),
-                     end : new Vector3(x : x + pos.x, y : -y + pos.y, z : -z + pos.z),
-                     color : color);
-      Debug.DrawLine(start : new Vector3(x : -x + pos.x, y : -y + pos.y, z : z + pos.z),
-                     end : new Vector3(x : x + pos.x, y : -y + pos.y, z : z + pos.z),
-                     color : color);
-      Debug.DrawLine(start : new Vector3(x : -x + pos.x, y : -y + pos.y, z : -z + pos.z),
-                     end : new Vector3(x : -x + pos.x, y : -y + pos.y, z : z + pos.z),
-                     color : color);
-      Debug.DrawLine(start : new Vector3(x : x + pos.x, y : -y + pos.y, z : -z + pos.z),
-                     end : new Vector3(x : x + pos.x, y : -y + pos.y, z : z + pos.z),
-                     color : color);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -x + pos.x,
+                                                                 y : -y + pos.y,
+                                                                 z : -z + pos.z),
+                                 end : new UnityEngine.Vector3(x : x + pos.x, y : -y + pos.y, z : -z + pos.z),
+                                 color : color);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -x + pos.x,
+                                                                 y : -y + pos.y,
+                                                                 z : z + pos.z),
+                                 end : new UnityEngine.Vector3(x : x + pos.x, y : -y + pos.y, z : z + pos.z),
+                                 color : color);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : -x + pos.x,
+                                                                 y : -y + pos.y,
+                                                                 z : -z + pos.z),
+                                 end : new UnityEngine.Vector3(x : -x + pos.x, y : -y + pos.y, z : z + pos.z),
+                                 color : color);
+      UnityEngine.Debug.DrawLine(start : new UnityEngine.Vector3(x : x + pos.x,
+                                                                 y : -y + pos.y,
+                                                                 z : -z + pos.z),
+                                 end : new UnityEngine.Vector3(x : x + pos.x, y : -y + pos.y, z : z + pos.z),
+                                 color : color);
     }
 
     /// <summary>
@@ -114,9 +137,8 @@ namespace droid.Runtime.Utilities.Grasping {
     /// <param name="old_transforms"></param>
     /// <param name="newly_acquired_transforms"></param>
     /// <returns></returns>
-    public static bool DidTransformsChange(
-        Transform[] old_transforms,
-        Transform[] newly_acquired_transforms) {
+    public static bool DidTransformsChange(UnityEngine.Transform[] old_transforms,
+                                           UnityEngine.Transform[] newly_acquired_transforms) {
       if (old_transforms.Length != newly_acquired_transforms.Length) {
         return true;
       }
@@ -139,12 +161,12 @@ namespace droid.Runtime.Utilities.Grasping {
     /// </summary>
     /// <param name="object_transform"></param>
     /// <returns></returns>
-    public static Bounds GetTotalMeshFilterBounds(Transform object_transform) {
-      var mesh_filter = object_transform.GetComponent<MeshFilter>();
+    public static UnityEngine.Bounds GetTotalMeshFilterBounds(UnityEngine.Transform object_transform) {
+      var mesh_filter = object_transform.GetComponent<UnityEngine.MeshFilter>();
 
-      var result = mesh_filter != null ? mesh_filter.mesh.bounds : new Bounds();
+      var result = mesh_filter != null ? mesh_filter.mesh.bounds : new UnityEngine.Bounds();
 
-      foreach (Transform transform in object_transform) {
+      foreach (UnityEngine.Transform transform in object_transform) {
         var bounds = GetTotalMeshFilterBounds(object_transform : transform);
         result.Encapsulate(point : bounds.min);
         result.Encapsulate(point : bounds.max);
@@ -174,12 +196,12 @@ namespace droid.Runtime.Utilities.Grasping {
     /// </summary>
     /// <param name="object_transform"></param>
     /// <returns></returns>
-    public static Bounds GetTotalColliderBounds(Transform object_transform) {
-      var mesh_filter = object_transform.GetComponent<Collider>();
+    public static UnityEngine.Bounds GetTotalColliderBounds(UnityEngine.Transform object_transform) {
+      var mesh_filter = object_transform.GetComponent<UnityEngine.Collider>();
 
-      var result = mesh_filter != null ? mesh_filter.bounds : new Bounds();
+      var result = mesh_filter != null ? mesh_filter.bounds : new UnityEngine.Bounds();
 
-      foreach (Transform transform in object_transform) {
+      foreach (UnityEngine.Transform transform in object_transform) {
         var bounds = GetTotalColliderBounds(object_transform : transform);
         result.Encapsulate(point : bounds.min);
         result.Encapsulate(point : bounds.max);
@@ -198,9 +220,9 @@ namespace droid.Runtime.Utilities.Grasping {
     /// </summary>
     /// <param name="g"></param>
     /// <returns></returns>
-    public static Bounds GetMaxBounds(GameObject g) {
-      var b = new Bounds(center : g.transform.position, size : Vector3.zero);
-      var rs = g.GetComponentsInChildren<Renderer>();
+    public static UnityEngine.Bounds GetMaxBounds(UnityEngine.GameObject g) {
+      var b = new UnityEngine.Bounds(center : g.transform.position, size : UnityEngine.Vector3.zero);
+      var rs = g.GetComponentsInChildren<UnityEngine.Renderer>();
       for (var index = 0; index < rs.Length; index++) {
         var r = rs[index];
         b.Encapsulate(bounds : r.bounds);

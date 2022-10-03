@@ -1,22 +1,20 @@
-﻿using System;
-using UnityEngine;
-
-namespace droid.Runtime.ScriptableObjects.Deprecated {
-  [CreateAssetMenu(fileName = "Curriculum",
-                   menuName = ScriptableObjectMenuPath._ScriptableObjectMenuPath + "Curriculum",
-                   order = 1)]
-  public class Curriculum : ScriptableObject {
+﻿namespace droid.Runtime.ScriptableObjects.Deprecated {
+  [UnityEngine.CreateAssetMenuAttribute(fileName = "Curriculum",
+                                        menuName = ScriptableObjectMenuPath._ScriptableObjectMenuPath
+                                                   + "Curriculum",
+                                        order = 1)]
+  public class Curriculum : UnityEngine.ScriptableObject {
     public Level[] _Levels;
   }
 
-  [Serializable]
+  [System.SerializableAttribute]
   public struct Level {
     public ConfigurableEntry[] _Configurable_Entries;
     public float _Min_Reward;
     public float _Max_Reward;
   }
 
-  [Serializable]
+  [System.SerializableAttribute]
   public struct ConfigurableEntry {
     public string _Configurable_Name;
     public float _Min_Value;

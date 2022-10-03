@@ -1,39 +1,39 @@
-﻿using UnityEngine;
-using UnityEngine.Rendering;
-
-namespace droid.Runtime.GameObjects.NeodroidCamera {
+﻿namespace droid.Runtime.GameObjects.NeodroidCamera {
   /// <summary>
-  ///
   /// </summary>
-  [RequireComponent(requiredComponent : typeof(Camera))]
-  [ExecuteInEditMode]
-  public class PostComputeTransform : MonoBehaviour {
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.Camera))]
+  [UnityEngine.ExecuteInEditMode]
+  public class PostComputeTransform : UnityEngine.MonoBehaviour {
     /// <summary>
-    ///
     /// </summary>
-    public ComputeShader _TransformationComputeShader;
+    public UnityEngine.ComputeShader _TransformationComputeShader;
 
     //[SerializeField] Material _post_material;
 
-    [Header("Specific", order = 102)]
-    [SerializeField]
-    Camera _camera = null;
+    [UnityEngine.HeaderAttribute("Specific", order = 102)]
+    [UnityEngine.SerializeField]
+    UnityEngine.Camera _camera = null;
 
-    ComputeBuffer _transformation_compute_buffer;
-    CommandBuffer _transformation_command_buffer;
+    UnityEngine.Rendering.CommandBuffer _transformation_command_buffer;
+
+    UnityEngine.ComputeBuffer _transformation_compute_buffer;
+
+    /// <summary>
+    /// </summary>
+    public UnityEngine.RenderTexture MyRenderTexture { get; set; }
 
     void Awake() {
       if (this._camera == null) {
-        this._camera = this.GetComponent<Camera>();
+        this._camera = this.GetComponent<UnityEngine.Camera>();
       }
 
-      this.MyRenderTexture = new RenderTexture(256, 256, 0) {enableRandomWrite = true};
+      this.MyRenderTexture = new UnityEngine.RenderTexture(256, 256, 0) {enableRandomWrite = true};
       this.MyRenderTexture.Create();
 
       if (this._TransformationComputeShader) {
         var kernel_id = this._TransformationComputeShader.FindKernel("CSMain");
 
-        this._transformation_command_buffer = new CommandBuffer();
+        this._transformation_command_buffer = new UnityEngine.Rendering.CommandBuffer();
 
         /*
       var target_texture = this._camera.targetTexture;
@@ -80,14 +80,9 @@ namespace droid.Runtime.GameObjects.NeodroidCamera {
         this._TransformationComputeShader.Dispatch(0,
                                                    threadGroupsX : 256 / 32,
                                                    threadGroupsY : 256 / 32,
-                                                   threadGroupsZ : 1);
+                                                   1);
       }
     }
-
-    /// <summary>
-    ///
-    /// </summary>
-    public RenderTexture MyRenderTexture { get; set; }
 
 // Postprocess the image
 /*
@@ -99,22 +94,21 @@ namespace droid.Runtime.GameObjects.NeodroidCamera {
   }
 */
 
-    /// <summary>
-    ///
-    /// </summary>
-    public void OnDisable() { this.Cleanup(); }
-
-    void Cleanup() {
-      if (this._transformation_command_buffer != null) {
-        this._camera.RemoveCommandBuffer(evt : CameraEvent.AfterEverything,
-                                         buffer : this._transformation_command_buffer);
-      }
-    }
+/// <summary>
+/// </summary>
+public void OnDisable() { this.Cleanup(); }
 
     void OnDestroy() {
       this.Cleanup();
 
 //DestroyImmediate(this._GammaCommandBuffer);
+    }
+
+    void Cleanup() {
+      if (this._transformation_command_buffer != null) {
+        this._camera.RemoveCommandBuffer(evt : UnityEngine.Rendering.CameraEvent.AfterEverything,
+                                         buffer : this._transformation_command_buffer);
+      }
     }
   }
 }

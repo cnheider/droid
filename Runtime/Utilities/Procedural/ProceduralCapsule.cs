@@ -4,15 +4,14 @@
 //  2016/05/27                  //
 //------------------------------//
 
-using UnityEngine;
-
 namespace droid.Runtime.Utilities.Procedural {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [RequireComponent(requiredComponent : typeof(MeshFilter), requiredComponent2 : typeof(MeshRenderer))]
-  [ExecuteInEditMode]
-  public class ProceduralCapsule : MonoBehaviour {
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.MeshFilter),
+                                requiredComponent2 : typeof(UnityEngine.MeshRenderer))]
+  [UnityEngine.ExecuteInEditMode]
+  public class ProceduralCapsule : UnityEngine.MonoBehaviour {
     /// <summary>
     /// </summary>
     public float _Height = 2f;
@@ -24,21 +23,21 @@ namespace droid.Runtime.Utilities.Procedural {
     /// <summary>
     /// </summary>
     public int _Segments = 24;
-    #if UNITY_EDITOR
-    /// <summary>
-    /// </summary>
-    [ContextMenu("Generate Procedural Capsule")]
-    public void GenerateProceduralCapsule() { this.CreateMesh(); }
-    #endif
 
     void Start() {
-      var mesh_filter = this.GetComponent<MeshFilter>();
+      var mesh_filter = this.GetComponent<UnityEngine.MeshFilter>();
       if (!mesh_filter.sharedMesh
           || mesh_filter.sharedMesh.vertexCount == 0
           || mesh_filter.sharedMesh.name != "ProceduralCapsule") {
         this.CreateMesh();
       }
     }
+    #if UNITY_EDITOR
+    /// <summary>
+    /// </summary>
+    [UnityEngine.ContextMenu("Generate Procedural Capsule")]
+    public void GenerateProceduralCapsule() { this.CreateMesh(); }
+    #endif
 
     /// <summary>
     /// </summary>
@@ -61,10 +60,10 @@ namespace droid.Runtime.Utilities.Procedural {
       var calc_v = 0f;
 
       for (var i = 0; i < points; i++) {
-        p_x[i] = Mathf.Sin(f : calc_h * Mathf.Deg2Rad);
-        p_z[i] = Mathf.Cos(f : calc_h * Mathf.Deg2Rad);
-        p_y[i] = Mathf.Cos(f : calc_v * Mathf.Deg2Rad);
-        p_r[i] = Mathf.Sin(f : calc_v * Mathf.Deg2Rad);
+        p_x[i] = UnityEngine.Mathf.Sin(f : calc_h * UnityEngine.Mathf.Deg2Rad);
+        p_z[i] = UnityEngine.Mathf.Cos(f : calc_h * UnityEngine.Mathf.Deg2Rad);
+        p_y[i] = UnityEngine.Mathf.Cos(f : calc_v * UnityEngine.Mathf.Deg2Rad);
+        p_r[i] = UnityEngine.Mathf.Sin(f : calc_v * UnityEngine.Mathf.Deg2Rad);
 
         calc_h += 360f / this._Segments;
         calc_v += 180f / this._Segments;
@@ -72,8 +71,8 @@ namespace droid.Runtime.Utilities.Procedural {
 
       // - Vertices and UVs -
 
-      var vertices = new Vector3[points * (points + 1)];
-      var uvs = new Vector2[vertices.Length];
+      var vertices = new UnityEngine.Vector3[points * (points + 1)];
+      var uvs = new UnityEngine.Vector2[vertices.Length];
       var ind = 0;
 
       // Y-offset is half the height minus the diameter
@@ -88,32 +87,34 @@ namespace droid.Runtime.Utilities.Procedural {
       float uv_x, uv_y;
 
       // Top Hemisphere
-      var top = Mathf.CeilToInt(f : points * 0.5f);
+      var top = UnityEngine.Mathf.CeilToInt(f : points * 0.5f);
 
       for (var y = 0; y < top; y++) {
         for (var x = 0; x < points; x++) {
-          vertices[ind] = new Vector3(x : p_x[x] * p_r[y], y : p_y[y], z : p_z[x] * p_r[y]) * this._Radius;
+          vertices[ind] = new UnityEngine.Vector3(x : p_x[x] * p_r[y], y : p_y[y], z : p_z[x] * p_r[y])
+                          * this._Radius;
           vertices[ind].y = y_off + vertices[ind].y;
 
           uv_x = 1f - step_x * x;
           uv_y = (vertices[ind].y + this._Height * 0.5f) / this._Height;
-          uvs[ind] = new Vector2(x : uv_x, y : uv_y);
+          uvs[ind] = new UnityEngine.Vector2(x : uv_x, y : uv_y);
 
           ind++;
         }
       }
 
       // Bottom Hemisphere
-      var btm = Mathf.FloorToInt(f : points * 0.5f);
+      var btm = UnityEngine.Mathf.FloorToInt(f : points * 0.5f);
 
       for (var y = btm; y < points; y++) {
         for (var x = 0; x < points; x++) {
-          vertices[ind] = new Vector3(x : p_x[x] * p_r[y], y : p_y[y], z : p_z[x] * p_r[y]) * this._Radius;
+          vertices[ind] = new UnityEngine.Vector3(x : p_x[x] * p_r[y], y : p_y[y], z : p_z[x] * p_r[y])
+                          * this._Radius;
           vertices[ind].y = -y_off + vertices[ind].y;
 
           uv_x = 1f - step_x * x;
           uv_y = (vertices[ind].y + this._Height * 0.5f) / this._Height;
-          uvs[ind] = new Vector2(x : uv_x, y : uv_y);
+          uvs[ind] = new UnityEngine.Vector2(x : uv_x, y : uv_y);
 
           ind++;
         }
@@ -137,10 +138,10 @@ namespace droid.Runtime.Utilities.Procedural {
 
       // - Assign Mesh -
 
-      var mf = this.gameObject.GetComponent<MeshFilter>();
+      var mf = this.gameObject.GetComponent<UnityEngine.MeshFilter>();
       var mesh = mf.sharedMesh;
       if (!mesh) {
-        mesh = new Mesh();
+        mesh = new UnityEngine.Mesh();
         mf.sharedMesh = mesh;
       }
 

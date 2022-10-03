@@ -1,50 +1,51 @@
-﻿using droid.Runtime.Interfaces;
-using droid.Runtime.Messaging.Messages;
-using droid.Runtime.Sampling;
-using droid.Runtime.Structs.Space;
-using droid.Runtime.Structs.Space.Sample;
-using droid.Runtime.Utilities;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Configurables.Experimental {
+﻿namespace droid.Runtime.Prototyping.Configurables.Experimental {
   /// <inheritdoc cref="Configurable" />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
-                               + "Mesh"
-                               + ConfigurableComponentMenuPath._Postfix)]
-  [RequireComponent(requiredComponent : typeof(MeshFilter))]
+  [UnityEngine.AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
+                                           + "Mesh"
+                                           + ConfigurableComponentMenuPath._Postfix)]
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.MeshFilter))]
   public class MeshConfigurable : Configurable {
-    string _mesh_str;
+    [UnityEngine.SerializeField] UnityEngine.Mesh[] _meshes = null;
+    [UnityEngine.SerializeField] UnityEngine.MeshFilter _mesh_filter = null;
+    [UnityEngine.SerializeField] bool _displace_mesh = false;
 
-    Mesh _deforming_mesh = null;
-    Vector3[] _original_vertices = null, _displaced_vertices = null;
-    Perlin _noise = null;
+    [UnityEngine.SerializeField]
+    droid.Runtime.Structs.Space.Sample.SampleSpace1 _deformation_space =
+        new droid.Runtime.Structs.Space.Sample.SampleSpace1 {
+                                                                _space =
+                                                                    new droid.Runtime.Structs.Space.Space1 {
+                                                                        Min = 1f, Max = 5f
+                                                                    }
+                                                            };
+
+    UnityEngine.Mesh _deforming_mesh = null;
+    string _mesh_str;
+    droid.Runtime.Sampling.Perlin _noise = null;
+    UnityEngine.Vector3[] _original_vertices = null, _displaced_vertices = null;
     float _speed = 1.0f;
 
-    [SerializeField] Mesh[] _meshes = null;
-    [SerializeField] MeshFilter _mesh_filter = null;
-    [SerializeField] bool _displace_mesh = false;
-
-    [SerializeField]
-    SampleSpace1 _deformation_space = new SampleSpace1 {_space = new Space1 {Min = 1f, Max = 5f}};
+    public droid.Runtime.Interfaces.ISamplable ConfigurableValueSpace {
+      get { return this._deformation_space; }
+    }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     public override void PreSetup() {
       this._mesh_str = this.Identifier + "Mesh";
-      this._mesh_filter = this.GetComponent<MeshFilter>();
-      if (Application.isPlaying) {
+      this._mesh_filter = this.GetComponent<UnityEngine.MeshFilter>();
+      if (UnityEngine.Application.isPlaying) {
         this._deforming_mesh = this._mesh_filter.mesh;
         this._original_vertices = this._deforming_mesh.vertices;
-        this._displaced_vertices = new Vector3[this._original_vertices.Length];
+        this._displaced_vertices = new UnityEngine.Vector3[this._original_vertices.Length];
         for (var i = 0; i < this._original_vertices.Length; i++) {
           this._displaced_vertices[i] = this._original_vertices[i];
         }
       }
 
-      this._noise = new Perlin();
+      this._noise = new droid.Runtime.Sampling.Perlin();
     }
 
     /// <inheritdoc />
@@ -52,19 +53,18 @@ namespace droid.Runtime.Prototyping.Configurables.Experimental {
     /// </summary>
     protected override void RegisterComponent() {
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._mesh_str);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._mesh_str);
     }
 
     /// <inheritdoc />
     /// <summary>
-    /// </summary>n
+    /// </summary>
+    /// n
     protected override void UnRegisterComponent() {
       this.ParentEnvironment?.UnRegister(t : this, identifier : this._mesh_str);
     }
-
-    public ISamplable ConfigurableValueSpace { get { return this._deformation_space; } }
 
     /// <inheritdoc />
     /// <summary>
@@ -75,19 +75,20 @@ namespace droid.Runtime.Prototyping.Configurables.Experimental {
     /// <summary>
     /// </summary>
     /// <param name="configuration"></param>
-    public override void ApplyConfiguration(IConfigurableConfiguration configuration) {
+    public override void
+        ApplyConfiguration(droid.Runtime.Interfaces.IConfigurableConfiguration configuration) {
       #if NEODROID_DEBUG
-      DebugPrinting.ApplyPrint(debugging : this.Debugging,
-                               configuration : configuration,
-                               identifier : this.Identifier);
+      droid.Runtime.Utilities.DebugPrinting.ApplyPrint(debugging : this.Debugging,
+                                                       configuration : configuration,
+                                                       identifier : this.Identifier);
       #endif
 
       if (configuration.ConfigurableName == this._mesh_str) {
         if (this._displace_mesh) {
           if (this._deforming_mesh) {
-            var time_x = Time.time * this._speed + 0.1365143f;
-            var time_y = Time.time * this._speed + 1.21688f;
-            var time_z = Time.time * this._speed + 2.5564f;
+            var time_x = UnityEngine.Time.time * this._speed + 0.1365143f;
+            var time_y = UnityEngine.Time.time * this._speed + 1.21688f;
+            var time_z = UnityEngine.Time.time * this._speed + 2.5564f;
 
             for (var i = 0; i < this._displaced_vertices.Length; i++) {
               var orig = this._original_vertices[i];
@@ -119,10 +120,10 @@ namespace droid.Runtime.Prototyping.Configurables.Experimental {
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public override Configuration[] SampleConfigurations() {
+    public override droid.Runtime.Messaging.Messages.Configuration[] SampleConfigurations() {
       return new[] {
-                       new Configuration(configurable_name : this._mesh_str,
-                                         configurable_value : this._deformation_space.Sample())
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._mesh_str,
+                         configurable_value : this._deformation_space.Sample())
                    };
     }
   }

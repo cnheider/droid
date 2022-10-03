@@ -1,14 +1,11 @@
-﻿using System;
-using UnityEngine;
-
-namespace droid.Editor.Utilities.ObjectDropdown {
+﻿namespace droid.Editor.Utilities.ObjectDropdown {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  public class ObjectDropdownAttribute : PropertyAttribute { }
+  public class ObjectDropdownAttribute : UnityEngine.PropertyAttribute { }
 
-  public class ObjectDropdownFilterAttribute : PropertyAttribute {
-    public Type _FilterType;
-    public ObjectDropdownFilterAttribute(Type a_type) { this._FilterType = a_type; }
+  public class ObjectDropdownFilterAttribute : UnityEngine.PropertyAttribute {
+    public System.Type _FilterType;
+    public ObjectDropdownFilterAttribute(System.Type a_type) { this._FilterType = a_type; }
   }
 }

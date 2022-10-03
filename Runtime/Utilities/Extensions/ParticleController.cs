@@ -1,18 +1,16 @@
 ﻿//[ExecuteInEditMode]
 
-using UnityEngine;
-
 namespace droid.Runtime.Utilities.Extensions {
-  [RequireComponent(requiredComponent : typeof(ParticleSystem))]
-  public class ParticleController : MonoBehaviour {
-    ParticleSystem _particle_system;
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.ParticleSystem))]
+  public class ParticleController : UnityEngine.MonoBehaviour {
+    UnityEngine.ParticleSystem _particle_system;
 
     // Use this for initialization
-    void Start() { this._particle_system = this.GetComponent<ParticleSystem>(); }
+    void Start() { this._particle_system = this.GetComponent<UnityEngine.ParticleSystem>(); }
 
     // Update is called once per frame
     void Update() {
-      if (Input.GetKey(key : KeyCode.Space)) {
+      if (UnityEngine.Input.GetKey(key : UnityEngine.KeyCode.Space)) {
         if (this._particle_system.isPlaying) {
           return;
         }

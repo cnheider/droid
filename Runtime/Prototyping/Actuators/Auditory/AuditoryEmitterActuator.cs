@@ -1,33 +1,29 @@
-﻿using System;
-using droid.Runtime.Interfaces;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Actuators.Auditory {
+﻿namespace droid.Runtime.Prototyping.Actuators.Auditory {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [RequireComponent(requiredComponent : typeof(AudioSource))]
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.AudioSource))]
   public class AuditoryEmitterActuator : Actuator {
-    AudioSource _audio_source;
+    UnityEngine.AudioSource _audio_source;
+
+    public override string[] InnerMotionNames { get; }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     public override void PreSetup() {
       base.PreSetup();
-      this._audio_source = this.GetComponent<AudioSource>();
+      this._audio_source = this.GetComponent<UnityEngine.AudioSource>();
     }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     /// <param name="motion"></param>
-    protected override void InnerApplyMotion(IMotion motion) {
+    protected override void InnerApplyMotion(droid.Runtime.Interfaces.IMotion motion) {
       if (this._audio_source && this._audio_source.clip && !this._audio_source.mute) {
         this._audio_source.Play();
       }
     }
-
-    public override string[] InnerMotionNames { get; }
   }
 }

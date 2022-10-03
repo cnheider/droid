@@ -1,10 +1,7 @@
-﻿using System;
-
-namespace droid.Runtime.Messaging.Messages {
+﻿namespace droid.Runtime.Messaging.Messages {
   /// <summary>
-  ///
   /// </summary>
-  [Serializable]
+  [System.SerializableAttribute]
   public class EnvironmentSnapshot {
     public EnvironmentSnapshot(string environment_name,
                                int frame_number,
@@ -27,17 +24,15 @@ namespace droid.Runtime.Messaging.Messages {
     }
 
     /// <summary>
-    ///
     /// </summary>
     public float[] Observables { get; }
 
     /// <summary>
-    /// The reason for termination
+    ///   The reason for termination
     /// </summary>
     public string TerminationReason { get; }
 
     /// <summary>
-    ///
     /// </summary>
     public string EnvironmentName { get; }
 
@@ -70,7 +65,6 @@ namespace droid.Runtime.Messaging.Messages {
     public Unobservables Unobservables { get; set; }
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     public override string ToString() { return $"SnapShot: {this.Description},Term.{this.Terminated}"; }

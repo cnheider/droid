@@ -1,20 +1,18 @@
-﻿using UnityEngine;
-
-namespace droid.Runtime.Prototyping.EnvironmentListener {
+﻿namespace droid.Runtime.Prototyping.EnvironmentListener {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : EnvironmentListenerComponentMenuPath._ComponentMenuPath
-                               + "Transform"
-                               + EnvironmentListenerComponentMenuPath._Postfix)]
+  [UnityEngine.AddComponentMenu(menuName : EnvironmentListenerComponentMenuPath._ComponentMenuPath
+                                           + "Transform"
+                                           + EnvironmentListenerComponentMenuPath._Postfix)]
   public class TransformEnvironmentListener : EnvironmentListener {
     /// <summary>
     /// </summary>
-    Vector3 _original_position;
+    UnityEngine.Vector3 _original_position;
 
     /// <summary>
     /// </summary>
-    Quaternion _original_rotation;
+    UnityEngine.Quaternion _original_rotation;
 
     /// <inheritdoc />
     /// <summary>

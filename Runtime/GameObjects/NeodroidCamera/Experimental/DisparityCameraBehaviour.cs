@@ -1,10 +1,8 @@
-﻿using UnityEngine;
-
-namespace droid.Runtime.GameObjects.NeodroidCamera.Experimental {
+﻿namespace droid.Runtime.GameObjects.NeodroidCamera.Experimental {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  public class DisparityCameraBehaviour : MonoBehaviour {
+  public class DisparityCameraBehaviour : UnityEngine.MonoBehaviour {
     //TODO: Implement
   }
 }

@@ -1,26 +1,22 @@
-﻿using droid.Runtime.GameObjects.BoundingBoxes;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
+﻿namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
   public abstract class SpatialObjective : EpisodicObjective {
     /// <summary>
-    ///
     /// </summary>
-    [field : SerializeField]
-    protected NeodroidBoundingBox Box { get; set; }
+    [field : UnityEngine.SerializeField]
+    protected droid.Runtime.GameObjects.BoundingBoxes.NeodroidBoundingBox Box { get; set; }
 
     /// <summary>
-    ///     // TODO: Look at how to simplify a way to describe which objects should be in this list
+    ///   // TODO: Look at how to simplify a way to describe which objects should be in this list
     /// </summary>
-    [field : SerializeField]
-    protected Transform[] TerminatingTransforms { get; set; }
+    [field : UnityEngine.SerializeField]
+    protected UnityEngine.Transform[] TerminatingTransforms { get; set; }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
     public override void RemotePostSetup() {
       base.RemotePostSetup();
 
@@ -28,7 +24,8 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
         if (this.ParentEnvironment.PlayableArea) {
           this.Box = this.ParentEnvironment.PlayableArea;
         } else {
-          this.Box = this.gameObject.GetComponent<NeodroidBoundingBox>();
+          this.Box =
+              this.gameObject.GetComponent<droid.Runtime.GameObjects.BoundingBoxes.NeodroidBoundingBox>();
         }
       }
     }
@@ -47,7 +44,7 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
       if (this.EpisodeLength > 0 && this.ParentEnvironment?.StepI >= this.EpisodeLength) {
         #if NEODROID_DEBUG
         if (this.Debugging) {
-          Debug.Log(message : $"Maximum episode length reached, Length {this.ParentEnvironment.StepI}");
+          UnityEngine.Debug.Log(message : $"Maximum episode length reached, Length {this.ParentEnvironment.StepI}");
         }
         #endif
 
@@ -63,12 +60,11 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
 
             #if NEODROID_DEBUG
             if (this.Debugging) {
-              Debug.Log(message : $"The transform {t} outside bounds, terminating {this.ParentEnvironment}");
+              UnityEngine.Debug.Log(message : $"The transform {t} outside bounds, terminating {this.ParentEnvironment}");
             }
             #endif
 
-            this.ParentEnvironment?.Terminate(reason :
-                                              $"The transform {t} is not inside {this.Box.gameObject} bounds");
+            this.ParentEnvironment?.Terminate(reason : $"The transform {t} is not inside {this.Box.gameObject} bounds");
             break;
           }
         }
@@ -76,7 +72,7 @@ namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
 
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        Debug.Log(message : signal);
+        UnityEngine.Debug.Log(message : signal);
       }
       #endif
 

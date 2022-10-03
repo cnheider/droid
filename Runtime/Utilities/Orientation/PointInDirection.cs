@@ -1,18 +1,18 @@
-﻿using UnityEngine;
-
-namespace droid.Runtime.Utilities.Orientation {
+﻿namespace droid.Runtime.Utilities.Orientation {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [ExecuteInEditMode]
-  public class PointInDirection : MonoBehaviour {
+  [UnityEngine.ExecuteInEditMode]
+  public class PointInDirection : UnityEngine.MonoBehaviour {
     /// <summary>
     /// </summary>
-    [SerializeField]
-    Vector3 _direction = Vector3.down;
+    [UnityEngine.SerializeField]
+    UnityEngine.Vector3 _direction = UnityEngine.Vector3.down;
 
     /// <summary>
     /// </summary>
-    void Update() { this.transform.rotation = Quaternion.LookRotation(forward : this._direction); }
+    void Update() {
+      this.transform.rotation = UnityEngine.Quaternion.LookRotation(forward : this._direction);
+    }
   }
 }

@@ -1,33 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Structs.Space;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Sensors.Spatial.Grid {
+﻿namespace droid.Runtime.Prototyping.Sensors.Spatial.Grid {
   /// <inheritdoc cref="Sensor" />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
-                               + "GridPosition"
-                               + SensorComponentMenuPath._Postfix)]
+  [UnityEngine.AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
+                                           + "GridPosition"
+                                           + SensorComponentMenuPath._Postfix)]
   public class GridPositionSensor : Sensor,
-                                    IHasSingle {
+                                    droid.Runtime.Interfaces.IHasSingle {
+    /// <summary>
+    /// </summary>
+    [UnityEngine.SerializeField]
+    int _height = 0;
+
+    [UnityEngine.HeaderAttribute("Observation", order = 103)]
+    [UnityEngine.SerializeField]
+    float _observation_value;
+
+    [UnityEngine.SerializeField] droid.Runtime.Structs.Space.Space1 _observation_value_space;
+    [UnityEngine.SerializeField] int _width = 0;
+
     /// <summary>
     /// </summary>
     int[,] _grid = null;
 
-    /// <summary>
-    /// </summary>
-    [SerializeField]
-    int _height = 0;
-
-    [Header("Observation", order = 103)]
-    [SerializeField]
-    float _observation_value;
-
-    [SerializeField] Space1 _observation_value_space;
-    [SerializeField] int _width = 0;
+    public override System.Collections.Generic.IEnumerable<float> FloatEnumerable {
+      get { yield return this.ObservationValue; }
+    }
 
     /// <inheritdoc />
     /// <summary>
@@ -37,7 +35,7 @@ namespace droid.Runtime.Prototyping.Sensors.Spatial.Grid {
       set { this._observation_value = this.SingleSpace.Project(v : value); }
     }
 
-    public Space1 SingleSpace { get { return this._observation_value_space; } }
+    public droid.Runtime.Structs.Space.Space1 SingleSpace { get { return this._observation_value_space; } }
 
     public override void PreSetup() {
       this._grid = new int[this._width, this._height];
@@ -49,8 +47,6 @@ namespace droid.Runtime.Prototyping.Sensors.Spatial.Grid {
         }
       }
     }
-
-    public override IEnumerable<float> FloatEnumerable { get { yield return this.ObservationValue; } }
 
     public override void UpdateObservation() {
       var position = this.transform.position;

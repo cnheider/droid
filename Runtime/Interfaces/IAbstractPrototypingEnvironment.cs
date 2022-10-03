@@ -1,8 +1,3 @@
-using System;
-using droid.Runtime.GameObjects.BoundingBoxes;
-using droid.Runtime.Prototyping.ObjectiveFunctions;
-using UnityEngine;
-
 namespace droid.Runtime.Interfaces {
   /// <inheritdoc cref="IEnvironment" />
   /// <summary>
@@ -14,68 +9,65 @@ namespace droid.Runtime.Interfaces {
                                                      IHasRegister<IDisplayer> {
     /// <summary>
     /// </summary>
-    Transform Transform { get; }
+    UnityEngine.Transform Transform { get; }
 
     /// <summary>
     /// </summary>
-    NeodroidBoundingBox PlayableArea { get; }
+    droid.Runtime.GameObjects.BoundingBoxes.NeodroidBoundingBox PlayableArea { get; }
+
+    /// <summary>
+    /// </summary>
+    droid.Runtime.Prototyping.ObjectiveFunctions.EpisodicObjective ObjectiveFunction { get; }
 
     /// <summary>
     /// </summary>
     /// <param name="transform_forward"></param>
     /// <returns></returns>
-    Vector3 TransformDirection(Vector3 transform_forward);
+    UnityEngine.Vector3 TransformDirection(UnityEngine.Vector3 transform_forward);
 
     /// <summary>
     /// </summary>
     /// <param name="point"></param>
     /// <returns></returns>
-    Vector3 TransformPoint(Vector3 point);
+    UnityEngine.Vector3 TransformPoint(UnityEngine.Vector3 point);
 
     /// <summary>
     /// </summary>
     /// <param name="point"></param>
     /// <returns></returns>
-    Vector3 InverseTransformPoint(Vector3 point);
+    UnityEngine.Vector3 InverseTransformPoint(UnityEngine.Vector3 point);
 
     /// <summary>
     /// </summary>
     /// <param name="inv_dir"></param>
     /// <returns></returns>
-    Vector3 InverseTransformDirection(Vector3 inv_dir);
+    UnityEngine.Vector3 InverseTransformDirection(UnityEngine.Vector3 inv_dir);
 
     /// <summary>
     /// </summary>
     /// <param name="transform_rotation"></param>
     /// <returns></returns>
-    Quaternion TransformRotation(Quaternion transform_rotation);
+    UnityEngine.Quaternion TransformRotation(UnityEngine.Quaternion transform_rotation);
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="transform_rotation"></param>
     /// <returns></returns>
-    Quaternion InverseTransformRotation(Quaternion transform_rotation);
+    UnityEngine.Quaternion InverseTransformRotation(UnityEngine.Quaternion transform_rotation);
 
     /// <summary>
     /// </summary>
-    event Action PreStepEvent;
+    event System.Action PreStepEvent;
 
     /// <summary>
     /// </summary>
-    event Action StepEvent;
+    event System.Action StepEvent;
 
     /// <summary>
     /// </summary>
-    event Action PostStepEvent;
+    event System.Action PostStepEvent;
 
     /// <summary>
-    ///
-    /// </summary>
-    EpisodicObjective ObjectiveFunction { get; }
-
-    /// <summary>
-    ///
     /// </summary>
     /// <param name="reason"></param>
     void Terminate(string reason);

@@ -1,15 +1,10 @@
-﻿using droid.Runtime.GameObjects.BoundingBoxes;
-using droid.Runtime.GameObjects.ChildSensors;
-using droid.Runtime.Utilities.Extensions;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
+﻿namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : EvaluationComponentMenuPath._ComponentMenuPath
-                               + "ConstantSpatial"
-                               + EvaluationComponentMenuPath._Postfix)]
+  [UnityEngine.AddComponentMenu(menuName : EvaluationComponentMenuPath._ComponentMenuPath
+                                           + "ConstantSpatial"
+                                           + EvaluationComponentMenuPath._Postfix)]
   public class ConstantSpatialObjective : SpatialObjective {
     public override void InternalReset() { }
 

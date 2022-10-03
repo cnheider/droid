@@ -1,18 +1,16 @@
-﻿using UnityEngine;
-
-namespace droid.Runtime.GameObjects.NeodroidCamera {
+﻿namespace droid.Runtime.GameObjects.NeodroidCamera {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [ExecuteInEditMode]
-  public class ReplacementShaderEffect : MonoBehaviour {
-    [SerializeField] string _replace_render_type = "";
+  [UnityEngine.ExecuteInEditMode]
+  public class ReplacementShaderEffect : UnityEngine.MonoBehaviour {
+    [UnityEngine.SerializeField] string _replace_render_type = "";
 
-    [SerializeField] Shader _replacement_shader = null;
+    [UnityEngine.SerializeField] UnityEngine.Shader _replacement_shader = null;
 
     void Start() {
       if (this._replacement_shader != null) {
-        this.GetComponent<Camera>()
+        this.GetComponent<UnityEngine.Camera>()
             .SetReplacementShader(shader : this._replacement_shader,
                                   replacementTag : this._replace_render_type);
       }
@@ -20,12 +18,12 @@ namespace droid.Runtime.GameObjects.NeodroidCamera {
 
     void OnEnable() {
       if (this._replacement_shader != null) {
-        this.GetComponent<Camera>()
+        this.GetComponent<UnityEngine.Camera>()
             .SetReplacementShader(shader : this._replacement_shader,
                                   replacementTag : this._replace_render_type);
       }
     }
 
-    void OnDisable() { this.GetComponent<Camera>().ResetReplacementShader(); }
+    void OnDisable() { this.GetComponent<UnityEngine.Camera>().ResetReplacementShader(); }
   }
 }

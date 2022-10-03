@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
-using Random = UnityEngine.Random;
-
-namespace droid.Runtime.Sampling {
+﻿namespace droid.Runtime.Sampling {
   /// <summary>
   /// </summary>
-  [Serializable]
+  [System.SerializableAttribute]
   public enum DistributionEnum {
     /// <summary>
     /// </summary>
@@ -31,11 +26,10 @@ namespace droid.Runtime.Sampling {
 
   /// <summary>
   /// </summary>
-  [Serializable]
+  [System.SerializableAttribute]
   public struct DistributionSampler {
+    [UnityEngine.SerializeField] DistributionEnum _de;
     Distributions.ConfidenceLevel _conf_level;
-
-    [SerializeField] DistributionEnum _de;
 
     public DistributionSampler(DistributionEnum distribution_enum = DistributionEnum.Uniform_,
                                Distributions.DirectionE d = Distributions.DirectionE.Left_) {
@@ -59,14 +53,14 @@ namespace droid.Runtime.Sampling {
     /// <param name="max"></param>
     /// <param name="granularity"></param>
     /// <returns></returns>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public float Range(float min, float max, int granularity = 0) {
       switch (this._de) {
         case DistributionEnum.Uniform_:
           if (granularity == 0) {
-            return Random.Range(min : (int)min, max : (int)max + 1);
+            return UnityEngine.Random.Range(minInclusive : (int)min, maxExclusive : (int)max + 1);
           } else {
-            return Random.Range(min : min, max : max);
+            return UnityEngine.Random.Range(minInclusive : min, maxInclusive : max);
           }
         case DistributionEnum.Normal_:
           return Distributions.RandomRangeNormalDistribution(min : min,
@@ -85,9 +79,9 @@ namespace droid.Runtime.Sampling {
         case DistributionEnum.Linear_: return Distributions.RandomLinear(slope : this.DistributionParameter);
         default:
           if (granularity == 0) {
-            return Random.Range(min : (int)min, max : (int)max + 1);
+            return UnityEngine.Random.Range(minInclusive : (int)min, maxExclusive : (int)max + 1);
           } else {
-            return Random.Range(min : min, max : max);
+            return UnityEngine.Random.Range(minInclusive : min, maxInclusive : max);
           }
       }
     }
@@ -235,22 +229,22 @@ namespace droid.Runtime.Sampling {
 
       float s; // this is the hypotenuse squared.
       do {
-        u = Random.Range(-1f, 1f);
-        v = Random.Range(-1f, 1f);
+        u = UnityEngine.Random.Range(-1f, 1f);
+        v = UnityEngine.Random.Range(-1f, 1f);
         s = u * u + v * v;
       } while (!(s != 0 && s < 1)); // keep going until s is nonzero and less than one
 
       // TODO allow a user to specify how many random numbers they want!
       // choose between u and v for seed (z0 vs z1)
       float seed;
-      if (Random.Range(0, 2) == 0) {
+      if (UnityEngine.Random.Range(0, 2) == 0) {
         seed = u;
       } else {
         seed = v;
       }
 
       // create normally distributed number.
-      var z = seed * Mathf.Sqrt(f : -2.0f * Mathf.Log(f : s) / s);
+      var z = seed * UnityEngine.Mathf.Sqrt(f : -2.0f * UnityEngine.Mathf.Log(f : s) / s);
 
       return z;
     }
@@ -282,7 +276,7 @@ namespace droid.Runtime.Sampling {
 
       var max_cdf = Sec_Squared_CumulativeDistribution(x : max_x);
 
-      var u = Random.Range(0.0f, max : max_cdf);
+      var u = UnityEngine.Random.Range(0.0f, maxInclusive : max_cdf);
       var x_val = Sec_Squared_InverseCumulativeDistribution(x : u);
 
       // scale to [0,1]
@@ -306,14 +300,14 @@ namespace droid.Runtime.Sampling {
       // Note: arcsec(x) = arccos(1/x)
 
       // return arcsec(sqrt(y))
-      return Mathf.Acos(f : 1.0f / Mathf.Sqrt(f : y));
+      return UnityEngine.Mathf.Acos(f : 1.0f / UnityEngine.Mathf.Sqrt(f : y));
     }
 
     // The integral of sec^2
     static float Sec_Squared_CumulativeDistribution(float x) {
       // The cumulative distribution function for sec^2 is just the definite integral of sec^2(x) = tan(x) - tan(0) = tan(x)
 
-      return Mathf.Tan(f : x);
+      return UnityEngine.Mathf.Tan(f : x);
     }
 
     // The inverse of the integral of sec^2
@@ -321,7 +315,7 @@ namespace droid.Runtime.Sampling {
       // The cumulative distribution function for sec^2 is just the definite integral of sec^2(x) = tan(x) - tan(0) = tan(x)
       // Then the Inverse cumulative distribution function is just atan(x)
 
-      return Mathf.Atan(f : x);
+      return UnityEngine.Mathf.Atan(f : x);
     }
 
     //--------------------------------------------------------------------------------------------
@@ -331,7 +325,7 @@ namespace droid.Runtime.Sampling {
     // Returns random in range [min, max] with linear distribution of given slope.
     public static float RandomRangeLinear(float min, float max, float slope) {
       if (slope == 0) {
-        return Random.Range(min : min, max : max);
+        return UnityEngine.Random.Range(minInclusive : min, maxInclusive : max);
       }
 
       var val = RandomLinear(slope : slope);
@@ -341,7 +335,7 @@ namespace droid.Runtime.Sampling {
 
     // Returns random in range [0,1] with linear distribution of given slope.
     public static float RandomLinear(float slope) {
-      var abs_value = RandomFromLinearWithPositiveSlope(slope : Mathf.Abs(f : slope));
+      var abs_value = RandomFromLinearWithPositiveSlope(slope : UnityEngine.Mathf.Abs(f : slope));
       if (slope < 0) {
         return 1 - abs_value;
       }
@@ -352,13 +346,13 @@ namespace droid.Runtime.Sampling {
     // Returns random in range [0,1] with linear distribution of given slope.
     static float RandomFromLinearWithPositiveSlope(float slope) {
       if (slope == 0) {
-        return Random.Range(0.0f, 1.0f);
+        return UnityEngine.Random.Range(0.0f, 1.0f);
       }
 
       float x, y;
       do {
-        x = Random.Range(0.0f, 1.0f);
-        y = Random.Range(0.0f, 1.0f);
+        x = UnityEngine.Random.Range(0.0f, 1.0f);
+        y = UnityEngine.Random.Range(0.0f, 1.0f);
         if (slope < 1) {
           y -= (1 - slope) / 2.0f;
         }
@@ -400,7 +394,7 @@ namespace droid.Runtime.Sampling {
       // our curve will go from 0 to 1.
       var max_cdf = ExponentialRightCdf(1.0f, exponent : exponent);
 
-      var u = Random.Range(0.0f, max : max_cdf);
+      var u = UnityEngine.Random.Range(0.0f, maxInclusive : max_cdf);
       var x_val = ExponentialRightInverseCdf(x : u, exponent : exponent);
 
       if (direction == DirectionE.Left_) {
@@ -412,19 +406,19 @@ namespace droid.Runtime.Sampling {
 
     // The inverse of the curve.
     static float ExponentialRightInverse(float y, float exponent) {
-      return Mathf.Pow(f : y, p : 1.0f / exponent);
+      return UnityEngine.Mathf.Pow(f : y, p : 1.0f / exponent);
     }
 
     // The integral of the exponent curve.
     static float ExponentialRightCdf(float x, float exponent) {
       var integral_exp = exponent + 1.0f;
-      return Mathf.Pow(f : x, p : integral_exp) / integral_exp;
+      return UnityEngine.Mathf.Pow(f : x, p : integral_exp) / integral_exp;
     }
 
     // The inverse of the integral of the exponent curve.
     static float ExponentialRightInverseCdf(float x, float exponent) {
       var integral_exp = exponent + 1.0f;
-      return Mathf.Pow(f : integral_exp * x, p : 1.0f / integral_exp);
+      return UnityEngine.Mathf.Pow(f : integral_exp * x, p : 1.0f / integral_exp);
     }
 
     //--------------------------------------------------------------------------------------------
@@ -440,7 +434,8 @@ namespace droid.Runtime.Sampling {
     /// <param name="probabilities">
     ///   A list of probabilities from which to choose an index. All values must be >= 0!
     /// </param>
-    public static int RandomChoiceFollowingDistribution(List<float> probabilities) {
+    public static int
+        RandomChoiceFollowingDistribution(System.Collections.Generic.List<float> probabilities) {
       // Sum to create CDF:
       var cdf = new float[probabilities.Count];
       float sum = 0;
@@ -450,8 +445,8 @@ namespace droid.Runtime.Sampling {
       }
 
       // Choose from CDF:
-      var cdf_value = Random.Range(0.0f, max : cdf[probabilities.Count - 1]);
-      var index = Array.BinarySearch(array : cdf, value : cdf_value);
+      var cdf_value = UnityEngine.Random.Range(0.0f, maxInclusive : cdf[probabilities.Count - 1]);
+      var index = System.Array.BinarySearch(array : cdf, value : cdf_value);
 
       if (index < 0) {
         index = ~index; // if not found (probably won't be) BinarySearch returns bitwise complement of next-highest index.

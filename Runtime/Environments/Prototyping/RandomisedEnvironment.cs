@@ -1,10 +1,8 @@
-using UnityEngine;
-
 namespace droid.Runtime.Environments.Prototyping {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [AddComponentMenu("Neodroid/Environments/RandomisedEnvironment")]
+  [UnityEngine.AddComponentMenu("Neodroid/Environments/RandomisedEnvironment")]
   public class RandomisedEnvironment : PrototypingEnvironment {
     /// <summary>
     /// </summary>

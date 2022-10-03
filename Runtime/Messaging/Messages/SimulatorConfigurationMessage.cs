@@ -1,7 +1,4 @@
-﻿using droid.Runtime.Interfaces;
-using droid.Runtime.Messaging.FBS;
-
-namespace droid.Runtime.Messaging.Messages {
+﻿namespace droid.Runtime.Messaging.Messages {
   /// <summary>
   /// </summary>
   public partial class SimulatorConfigurationMessage {
@@ -64,7 +61,8 @@ namespace droid.Runtime.Messaging.Messages {
     /// <summary>
     /// </summary>
     /// <param name="simulator_configuration"></param>
-    public SimulatorConfigurationMessage(ISimulatorConfiguration simulator_configuration) {
+    public SimulatorConfigurationMessage(
+        droid.Runtime.Interfaces.ISimulatorConfiguration simulator_configuration) {
       this.FrameSkips = simulator_configuration.FrameSkips;
       this.FullScreen = simulator_configuration.FullScreen;
       this.Height = simulator_configuration.Height;
@@ -87,7 +85,7 @@ namespace droid.Runtime.Messaging.Messages {
     /// <summary>
     /// </summary>
     /// <param name="flat_simulator_configuration"></param>
-    public void FbsParse(FSimulatorConfiguration flat_simulator_configuration) {
+    public void FbsParse(droid.Runtime.Messaging.FBS.FSimulatorConfiguration flat_simulator_configuration) {
       this.FrameSkips = flat_simulator_configuration.FrameSkips;
       this.FullScreen = flat_simulator_configuration.FullScreen;
       this.Height = flat_simulator_configuration.Height;

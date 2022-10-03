@@ -1,44 +1,33 @@
-﻿using droid.Runtime.Prototyping.ObjectiveFunctions.Tasks;
-#if UNITY_EDITOR
-using UnityEditor;
-using UnityEngine;
+﻿#if UNITY_EDITOR
 
 namespace droid.Editor.Windows {
-  public class TaskWindow : EditorWindow {
-    Texture _icon;
-    Vector2 _scroll_position;
+  public class TaskWindow : UnityEditor.EditorWindow {
+    UnityEngine.Texture _icon;
+    UnityEngine.Vector2 _scroll_position;
 
-    TaskSequence _task_sequence;
-
-    [MenuItem(itemName : EditorWindowMenuPath._WindowMenuPath + "TaskWindow")]
-    [MenuItem(itemName : EditorWindowMenuPath._ToolMenuPath + "TaskWindow")]
-    public static void ShowWindow() {
-      GetWindow(t : typeof(TaskWindow)); //Show existing window instance. If one doesn't exist, make one.
-    }
+    droid.Runtime.Prototyping.ObjectiveFunctions.Tasks.TaskSequence _task_sequence;
 
     void OnEnable() {
       this._icon =
-          (Texture2D)AssetDatabase.LoadAssetAtPath(assetPath :
-                                                   NeodroidSettings.Current.NeodroidImportLocationProp
-                                                   + "Gizmos/Icons/script.png",
-                                                   type : typeof(Texture2D));
-      this.titleContent = new GUIContent("Neo:Task", image : this._icon, "Window for task descriptions");
+          (UnityEngine.Texture2D)UnityEditor.AssetDatabase.LoadAssetAtPath(assetPath :
+            $"{NeodroidSettings.Current.NeodroidImportLocationProp}Gizmos/Icons/script.png",
+            type : typeof(UnityEngine.Texture2D));
+      this.titleContent =
+          new UnityEngine.GUIContent("Neo:Task", image : this._icon, "Window for task descriptions");
       if (!this._task_sequence) {
-        this._task_sequence = FindObjectOfType<TaskSequence>();
+        this._task_sequence =
+            FindObjectOfType<droid.Runtime.Prototyping.ObjectiveFunctions.Tasks.TaskSequence>();
       }
     }
 
-    /// <summary>
-    ///
-    /// </summary>
-    public void OnInspectorUpdate() { this.Repaint(); }
-
     void OnGUI() {
-      GUILayout.Label("Task list", style : EditorStyles.boldLabel);
-      this._task_sequence = FindObjectOfType<TaskSequence>();
+      UnityEngine.GUILayout.Label("Task list", style : UnityEditor.EditorStyles.boldLabel);
+      this._task_sequence =
+          FindObjectOfType<droid.Runtime.Prototyping.ObjectiveFunctions.Tasks.TaskSequence>();
       if (this._task_sequence != null) {
-        this._scroll_position = EditorGUILayout.BeginScrollView(scrollPosition : this._scroll_position);
-        EditorGUILayout.BeginVertical("Box");
+        this._scroll_position =
+            UnityEditor.EditorGUILayout.BeginScrollView(scrollPosition : this._scroll_position);
+        UnityEditor.EditorGUILayout.BeginVertical("Box");
 
         var seq = this._task_sequence.GetSequence();
         if (seq != null) {
@@ -46,17 +35,27 @@ namespace droid.Editor.Windows {
             if (g != null) {
               if (this._task_sequence.CurrentGoalCell != null
                   && this._task_sequence.CurrentGoalCell.name == g.name) {
-                GUILayout.Label(text : g.name, style : EditorStyles.whiteLabel);
+                UnityEngine.GUILayout.Label(text : g.name, style : UnityEditor.EditorStyles.whiteLabel);
               } else {
-                GUILayout.Label(text : g.name);
+                UnityEngine.GUILayout.Label(text : g.name);
               }
             }
           }
         }
 
-        EditorGUILayout.EndVertical();
-        EditorGUILayout.EndScrollView();
+        UnityEditor.EditorGUILayout.EndVertical();
+        UnityEditor.EditorGUILayout.EndScrollView();
       }
+    }
+
+    /// <summary>
+    /// </summary>
+    public void OnInspectorUpdate() { this.Repaint(); }
+
+    [UnityEditor.MenuItem(itemName : EditorWindowMenuPath._WindowMenuPath + "TaskWindow")]
+    [UnityEditor.MenuItem(itemName : EditorWindowMenuPath._ToolMenuPath + "TaskWindow")]
+    public static void ShowWindow() {
+      GetWindow(t : typeof(TaskWindow)); //Show existing window instance. If one doesn't exist, make one.
     }
   }
 }

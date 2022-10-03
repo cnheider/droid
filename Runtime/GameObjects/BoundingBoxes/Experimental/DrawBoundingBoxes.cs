@@ -1,22 +1,16 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-
-namespace droid.Runtime.GameObjects.BoundingBoxes.Experimental {
+﻿namespace droid.Runtime.GameObjects.BoundingBoxes.Experimental {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [ExecuteInEditMode]
-  public class ShowBoundingBoxes : MonoBehaviour {
-    public Color _Color = Color.green;
-    public GameObject _Line_Object;
-    Dictionary<GameObject, GameObject> _lines = new Dictionary<GameObject, GameObject>();
+  [UnityEngine.ExecuteInEditMode]
+  public class ShowBoundingBoxes : UnityEngine.MonoBehaviour {
+    public UnityEngine.Color _Color = UnityEngine.Color.green;
+    public UnityEngine.GameObject _Line_Object;
 
-    MeshFilter[] _mesh_filter_objects;
+    System.Collections.Generic.Dictionary<UnityEngine.GameObject, UnityEngine.GameObject> _lines =
+        new System.Collections.Generic.Dictionary<UnityEngine.GameObject, UnityEngine.GameObject>();
 
-    void ReallocateLineRenderers() {
-      this._mesh_filter_objects = FindObjectsOfType<MeshFilter>();
-      this._lines.Clear();
-    }
+    UnityEngine.MeshFilter[] _mesh_filter_objects;
 
     // void OnWillRenderObject() { throw new System.NotImplementedException(); }
 
@@ -28,16 +22,21 @@ namespace droid.Runtime.GameObjects.BoundingBoxes.Experimental {
       this.CalcPositionsAndDrawBoxes();
     }
 
+    void ReallocateLineRenderers() {
+      this._mesh_filter_objects = FindObjectsOfType<UnityEngine.MeshFilter>();
+      this._lines.Clear();
+    }
+
     void CalcPositionsAndDrawBoxes() {
       for (var index = 0; index < this._mesh_filter_objects.Length; index++) {
         var mesh_filter_object = this._mesh_filter_objects[index];
         if (mesh_filter_object.gameObject.CompareTag("Target")) {
-          GameObject liner;
+          UnityEngine.GameObject liner;
           if (!this._lines.ContainsKey(key : mesh_filter_object.gameObject)) {
             liner = Instantiate(original : this._Line_Object, parent : this._Line_Object.transform);
             this._lines.Add(key : mesh_filter_object.gameObject, value : liner);
           } else {
-            Debug.Log("found Target");
+            UnityEngine.Debug.Log("found Target");
             liner = this._lines[key : mesh_filter_object.gameObject];
           }
 
@@ -57,8 +56,8 @@ namespace droid.Runtime.GameObjects.BoundingBoxes.Experimental {
                                                v3_extents : v3_extents,
                                                reference_transform : mesh_filter_object.transform);
 
-          liner.GetComponent<LineRenderer>().SetPosition(0, position : corners[4]);
-          liner.GetComponent<LineRenderer>().SetPosition(1, position : corners[5]);
+          liner.GetComponent<UnityEngine.LineRenderer>().SetPosition(0, position : corners[4]);
+          liner.GetComponent<UnityEngine.LineRenderer>().SetPosition(1, position : corners[5]);
 
           Corners.DrawBox(v3_front_top_left : corners[0],
                           v3_front_top_right : corners[1],

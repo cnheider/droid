@@ -1,48 +1,50 @@
-﻿using droid.Runtime.Utilities.Orientation;
-using UnityEngine;
-
-namespace droid.Runtime.Utilities.Extensions {
+﻿namespace droid.Runtime.Utilities.Extensions {
+  /// <inheritdoc cref="droid.Runtime.Utilities.Orientation.IMotionTracker" />
   /// <summary>
-  ///
   /// </summary>
-  public class Obstruction : MonoBehaviour,
-                             IMotionTracker {
-    Vector3 _last_recorded_move;
-    Quaternion _last_recorded_rotation;
-    Vector3 _previous_position;
-    Quaternion _previous_rotation;
+  public class Obstruction : UnityEngine.MonoBehaviour,
+                             droid.Runtime.Utilities.Orientation.IMotionTracker {
+    UnityEngine.Vector3 _last_recorded_move;
+    UnityEngine.Quaternion _last_recorded_rotation;
+    UnityEngine.Vector3 _previous_position;
+    UnityEngine.Quaternion _previous_rotation;
+
+    void Start() {
+      this.UpdatePreviousTransform();
+      this.UpdateLastRecordedTransform();
+    }
+
+    void Update() { this.UpdatePreviousTransform(); }
 
     public bool IsInMotion() {
-      return this.transform.position != this._previous_position
-             || this.transform.rotation != this._previous_rotation;
+      var transform1 = this.transform;
+      return transform1.position != this._previous_position
+             || transform1.rotation != this._previous_rotation;
     }
 
     public bool IsInMotion(float sensitivity) {
-      var distance_moved = Vector3.Distance(a : this.transform.position, b : this._last_recorded_move);
-      var angle_rotated = Quaternion.Angle(a : this.transform.rotation, b : this._last_recorded_rotation);
+      var distance_moved =
+          UnityEngine.Vector3.Distance(a : this.transform.position, b : this._last_recorded_move);
+      var angle_rotated =
+          UnityEngine.Quaternion.Angle(a : this.transform.rotation, b : this._last_recorded_rotation);
       if (distance_moved > sensitivity || angle_rotated > sensitivity) {
-        this.UpdateLastRecordedTranform();
+        this.UpdateLastRecordedTransform();
         return true;
       }
 
       return false;
     }
 
-    void UpdatePreviousTranform() {
-      this._previous_position = this.transform.position;
-      this._previous_rotation = this.transform.rotation;
+    void UpdatePreviousTransform() {
+      var transform1 = this.transform;
+      this._previous_position = transform1.position;
+      this._previous_rotation = transform1.rotation;
     }
 
-    void UpdateLastRecordedTranform() {
-      this._last_recorded_move = this.transform.position;
-      this._last_recorded_rotation = this.transform.rotation;
+    void UpdateLastRecordedTransform() {
+      var transform1 = this.transform;
+      this._last_recorded_move = transform1.position;
+      this._last_recorded_rotation = transform1.rotation;
     }
-
-    void Start() {
-      this.UpdatePreviousTranform();
-      this.UpdateLastRecordedTranform();
-    }
-
-    void Update() { this.UpdatePreviousTranform(); }
   }
 }

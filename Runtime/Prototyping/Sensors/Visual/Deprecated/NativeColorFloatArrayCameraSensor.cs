@@ -1,71 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using droid.Runtime.Enums;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Managers;
-using droid.Runtime.Structs.Space;
-using droid.Runtime.Utilities;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
+﻿namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
   /// <summary>
-  ///
   /// </summary>
-  [AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
-                               + "NativeColorArrayCamera"
-                               + SensorComponentMenuPath._Postfix)]
+  [UnityEngine.AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
+                                           + "NativeColorArrayCamera"
+                                           + SensorComponentMenuPath._Postfix)]
   public class NativeColorFloatArrayCameraSensor : Sensor,
-                                                   IHasFloatArray {
-    [Header("Specific", order = 102)]
-    [SerializeField]
-    Camera _camera = null;
+                                                   droid.Runtime.Interfaces.IHasFloatArray {
+    [UnityEngine.HeaderAttribute("Specific", order = 102)]
+    [UnityEngine.SerializeField]
+    UnityEngine.Camera _camera = null;
+
+    [UnityEngine.SerializeField] UnityEngine.Texture2D _texture = null;
 
     bool _grab = true;
 
-    IManager _manager = null;
-
-    [SerializeField] Texture2D _texture = null;
+    droid.Runtime.Interfaces.IManager _manager = null;
 
     /// <summary>
-    ///
     /// </summary>
-    [field : Header("Observation", order = 103)]
-    public float[] ObservationArray { get; private set; }
+    public override string PrototypingTypeName { get { return ""; } }
 
-    /// <summary>
-    ///
-    /// </summary>
-    public Space1[] ObservationSpace { get { return new[] {Space1.ZeroOne}; } }
-
-    /// <summary>
-    ///
-    /// </summary>
-    public override void PreSetup() {
-      if (this._manager == null) {
-        this._manager = FindObjectOfType<AbstractNeodroidManager>();
-      }
-
-      if (this._camera == null) {
-        this._camera = this.GetComponent<Camera>();
-      }
-
-      var target_texture = this._camera.targetTexture;
-      if (target_texture) {
-        this.ObservationArray = new float[target_texture.width * target_texture.height * 4];
-      } else {
-        #if NEODROID_DEBUG
-        Debug.LogWarning("Texture not available!");
-        #endif
-        this._texture = new Texture2D(width : NeodroidConstants._Default_Width,
-                                      height : NeodroidConstants._Default_Height,
-                                      textureFormat : NeodroidConstants._Default_TextureFormat,
-                                      false);
-        this.ObservationArray = new float[this._texture.width * this._texture.height * 4];
-      }
+    public override System.Collections.Generic.IEnumerable<float> FloatEnumerable {
+      get { return null; } //this.ObservationArray; }
     }
 
     /// <summary>
-    ///
     /// </summary>
     protected virtual void OnPostRender() {
       #if NEODROID_DEBUG
@@ -84,7 +43,45 @@ namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
     }
 
     /// <summary>
-    ///
+    /// </summary>
+    [field : UnityEngine.HeaderAttribute("Observation", order = 103)]
+    public float[] ObservationArray { get; private set; }
+
+    /// <summary>
+    /// </summary>
+    public droid.Runtime.Structs.Space.Space1[] ObservationSpace {
+      get { return new[] {droid.Runtime.Structs.Space.Space1.ZeroOne}; }
+    }
+
+    /// <summary>
+    /// </summary>
+    public override void PreSetup() {
+      if (this._manager == null) {
+        this._manager = FindObjectOfType<droid.Runtime.Managers.AbstractNeodroidManager>();
+      }
+
+      if (this._camera == null) {
+        this._camera = this.GetComponent<UnityEngine.Camera>();
+      }
+
+      var target_texture = this._camera.targetTexture;
+      if (target_texture) {
+        this.ObservationArray = new float[target_texture.width * target_texture.height * 4];
+      } else {
+        #if NEODROID_DEBUG
+        UnityEngine.Debug.LogWarning("Texture not available!");
+        #endif
+        this._texture =
+            new UnityEngine.Texture2D(width : droid.Runtime.Utilities.NeodroidConstants._Default_Width,
+                                      height : droid.Runtime.Utilities.NeodroidConstants._Default_Height,
+                                      textureFormat : droid.Runtime.Utilities.NeodroidConstants
+                                                           ._Default_TextureFormat,
+                                      false);
+        this.ObservationArray = new float[this._texture.width * this._texture.height * 4];
+      }
+    }
+
+    /// <summary>
     /// </summary>
     protected virtual void UpdateArray() {
       if (!this._grab) {
@@ -94,27 +91,28 @@ namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
       this._grab = false;
 
       if (this._camera) {
-        var current_render_texture = RenderTexture.active;
-        RenderTexture.active = this._camera.targetTexture;
+        var current_render_texture = UnityEngine.RenderTexture.active;
+        UnityEngine.RenderTexture.active = this._camera.targetTexture;
 
         if (this._texture
             && this._camera.targetTexture.width == this._texture.width
             && this._camera.targetTexture.height == this._texture.height) {
-          this._texture.ReadPixels(source : new Rect(0,
-                                                     0,
-                                                     width : this._texture.width,
-                                                     height : this._texture.height),
-                                   destX : 0,
-                                   destY : 0);
+          this._texture.ReadPixels(source : new UnityEngine.Rect(0,
+                                                                 0,
+                                                                 width : this._texture.width,
+                                                                 height : this._texture.height),
+                                   0,
+                                   0);
           //this._texture.Apply();
         } else {
           #if NEODROID_DEBUG
-          Debug.LogWarning("Texture not available!");
+          UnityEngine.Debug.LogWarning("Texture not available!");
           #endif
-          this._texture = new Texture2D(width : this._camera.targetTexture.width,
-                                        height : this._camera.targetTexture.height,
-                                        textureFormat : NeodroidConstants._Default_TextureFormat,
-                                        false);
+          this._texture = new UnityEngine.Texture2D(width : this._camera.targetTexture.width,
+                                                    height : this._camera.targetTexture.height,
+                                                    textureFormat : droid.Runtime.Utilities.NeodroidConstants
+                                                        ._Default_TextureFormat,
+                                                    false);
           this.ObservationArray = new float[this._texture.width * this._texture.height * 4];
         }
 
@@ -122,7 +120,7 @@ namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
         //texCopy.LoadRawTextureData(_texture.GetRawTextureData());
         //texCopy.Apply();
         //var a = texCopy.GetRawTextureData<Color>();
-        var a = this._texture.GetRawTextureData<Color>();
+        var a = this._texture.GetRawTextureData<UnityEngine.Color>();
 
         #if NEODROID_DEBUG
         var min = a[0];
@@ -151,46 +149,37 @@ namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
 
           #if NEODROID_DEBUG
           if (this.Debugging) {
-            max[0] = Mathf.Max(a : b[0], b : max[0]);
-            min[0] = Mathf.Min(a : b[0], b : min[0]);
-            max[1] = Mathf.Max(a : b[1], b : max[1]);
-            min[1] = Mathf.Min(a : b[1], b : min[1]);
-            max[2] = Mathf.Max(a : b[2], b : max[2]);
-            min[2] = Mathf.Min(a : b[2], b : min[2]);
-            max[3] = Mathf.Max(a : b[3], b : max[3]);
-            min[3] = Mathf.Min(a : b[3], b : min[3]);
+            max[0] = UnityEngine.Mathf.Max(a : b[0], b : max[0]);
+            min[0] = UnityEngine.Mathf.Min(a : b[0], b : min[0]);
+            max[1] = UnityEngine.Mathf.Max(a : b[1], b : max[1]);
+            min[1] = UnityEngine.Mathf.Min(a : b[1], b : min[1]);
+            max[2] = UnityEngine.Mathf.Max(a : b[2], b : max[2]);
+            min[2] = UnityEngine.Mathf.Min(a : b[2], b : min[2]);
+            max[3] = UnityEngine.Mathf.Max(a : b[3], b : max[3]);
+            min[3] = UnityEngine.Mathf.Min(a : b[3], b : min[3]);
           }
           #endif
         }
 
         #if NEODROID_DEBUG
         if (this.Debugging) {
-          Debug.Log(message : $"len(a):{a.Length}, min:{min}, max:{max}");
+          UnityEngine.Debug.Log(message : $"len(a):{a.Length}, min:{min}, max:{max}");
         }
         #endif
 
-        RenderTexture.active = current_render_texture;
+        UnityEngine.RenderTexture.active = current_render_texture;
       } else {
-        Debug.LogWarning(message : $"No camera found on {this}");
+        UnityEngine.Debug.LogWarning(message : $"No camera found on {this}");
       }
     }
 
     /// <summary>
-    ///
-    /// </summary>
-    public override string PrototypingTypeName { get { return ""; } }
-
-    public override IEnumerable<float> FloatEnumerable {
-      get { return null; } //this.ObservationArray; }
-    }
-
-    /// <summary>
-    ///
     /// </summary>
     public override void UpdateObservation() {
       this._grab = true;
-      if (this._manager?.SimulatorConfiguration?.SimulationType != SimulationTypeEnum.Frame_dependent_) {
-        if (Application.isPlaying) {
+      if (this._manager?.SimulatorConfiguration?.SimulationType
+          != droid.Runtime.Enums.SimulationTypeEnum.Frame_dependent_) {
+        if (UnityEngine.Application.isPlaying) {
           this._camera.Render();
         }
 
@@ -199,13 +188,12 @@ namespace droid.Runtime.Prototyping.Sensors.Visual.Deprecated {
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <returns></returns>
     public override string ToString() {
       var rep = $"Float Array (Length: {this.ObservationArray.Length}), "
-                + $"Sample [{Mathf.Clamp01(value : this.ObservationArray[0])}.."
-                + $"{Mathf.Clamp01(value : this.ObservationArray[this.ObservationArray.Length - 1])}]";
+                + $"Sample [{UnityEngine.Mathf.Clamp01(value : this.ObservationArray[0])}.."
+                + $"{UnityEngine.Mathf.Clamp01(value : this.ObservationArray[this.ObservationArray.Length - 1])}]";
 
       return rep;
     }

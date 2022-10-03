@@ -1,7 +1,4 @@
-﻿using UnityEditor;
-using UnityEngine;
-
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 namespace droid.Runtime.Utilities.Drawing {
   public static partial class NeodroidUtilities {
     /// <summary>
@@ -12,35 +9,36 @@ namespace droid.Runtime.Utilities.Drawing {
     /// <param name="o_x"></param>
     /// <param name="o_y"></param>
     public static void DrawString(string text,
-                                  Vector3 world_pos,
-                                  Color? color = null,
+                                  UnityEngine.Vector3 world_pos,
+                                  UnityEngine.Color? color = null,
                                   float o_x = 0,
                                   float o_y = 0) {
-      Handles.BeginGUI();
+      UnityEditor.Handles.BeginGUI();
 
-      var restore_color = GUI.color;
+      var restore_color = UnityEngine.GUI.color;
 
       if (color.HasValue) {
-        GUI.color = color.Value;
+        UnityEngine.GUI.color = color.Value;
       }
 
-      var view = SceneView.currentDrawingSceneView;
+      var view = UnityEditor.SceneView.currentDrawingSceneView;
       var screen_pos = view.camera.WorldToScreenPoint(position : world_pos);
 
       if (screen_pos.y < 0
-          || screen_pos.y > Screen.height
+          || screen_pos.y > UnityEngine.Screen.height
           || screen_pos.x < 0
-          || screen_pos.x > Screen.width
+          || screen_pos.x > UnityEngine.Screen.width
           || screen_pos.z < 0) {
-        GUI.color = restore_color;
-        Handles.EndGUI();
+        UnityEngine.GUI.color = restore_color;
+        UnityEditor.Handles.EndGUI();
         return;
       }
 
-      Handles.Label(position : TransformByPixel(position : world_pos, x : o_x, y : o_y), text : text);
+      UnityEditor.Handles.Label(position : TransformByPixel(position : world_pos, x : o_x, y : o_y),
+                                text : text);
 
-      GUI.color = restore_color;
-      Handles.EndGUI();
+      UnityEngine.GUI.color = restore_color;
+      UnityEditor.Handles.EndGUI();
     }
 
     /// <summary>
@@ -49,8 +47,8 @@ namespace droid.Runtime.Utilities.Drawing {
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <returns></returns>
-    public static Vector3 TransformByPixel(Vector3 position, float x, float y) {
-      return TransformByPixel(position : position, translate_by : new Vector3(x : x, y : y));
+    public static UnityEngine.Vector3 TransformByPixel(UnityEngine.Vector3 position, float x, float y) {
+      return TransformByPixel(position : position, translate_by : new UnityEngine.Vector3(x : x, y : y));
     }
 
     /// <summary>
@@ -58,8 +56,9 @@ namespace droid.Runtime.Utilities.Drawing {
     /// <param name="position"></param>
     /// <param name="translate_by"></param>
     /// <returns></returns>
-    public static Vector3 TransformByPixel(Vector3 position, Vector3 translate_by) {
-      var cam = SceneView.currentDrawingSceneView.camera;
+    public static UnityEngine.Vector3 TransformByPixel(UnityEngine.Vector3 position,
+                                                       UnityEngine.Vector3 translate_by) {
+      var cam = UnityEditor.SceneView.currentDrawingSceneView.camera;
       return cam
                  ? cam.ScreenToWorldPoint(position : cam.WorldToScreenPoint(position : position)
                                                      + translate_by)

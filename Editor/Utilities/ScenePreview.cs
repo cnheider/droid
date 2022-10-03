@@ -1,11 +1,4 @@
-﻿using System.IO;
-using UnityEditor;
-using UnityEngine.SceneManagement;
-using Directory = UnityEngine.Windows.Directory;
-using File = UnityEngine.Windows.File;
-#if UNITY_EDITOR
-using System.Linq;
-using UnityEngine;
+﻿#if UNITY_EDITOR
 
 namespace droid.Editor.Utilities {
   /// <inheritdoc />
@@ -13,29 +6,29 @@ namespace droid.Editor.Utilities {
   ///   Scene preview.
   ///   https://diegogiacomelli.com.br/unity3d-scenepreview-inspector/
   /// </summary>
-  [CustomEditor(inspectedType : typeof(SceneAsset))]
-  [CanEditMultipleObjects]
+  [UnityEditor.CustomEditor(inspectedType : typeof(UnityEditor.SceneAsset))]
+  [UnityEditor.CanEditMultipleObjects]
   public class ScenePreview : UnityEditor.Editor {
     /// <summary>
     /// </summary>
-    [RuntimeInitializeOnLoadMethod]
+    [UnityEngine.RuntimeInitializeOnLoadMethodAttribute]
     public static void CaptureScreenShot() {
       if (NeodroidSettings.Current.NeodroidGeneratePreviewsProp) {
-        var preview_path = GetPreviewPath(scene_name : SceneManager.GetActiveScene().name);
-        Debug.Log(message : $"Saving scene preview at {preview_path}");
+        var preview_path =
+            GetPreviewPath(scene_name : UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        UnityEngine.Debug.Log(message : $"Saving scene preview at {preview_path}");
         TakeScreenshot(name : preview_path);
       }
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="name"></param>
     public static void TakeScreenshot(string name) {
-      var path = Path.GetDirectoryName(path : name);
-      Directory.CreateDirectory(path : path);
+      var path = System.IO.Path.GetDirectoryName(path : name);
+      UnityEngine.Windows.Directory.CreateDirectory(path : path);
       // Take the screenshot
-      ScreenCapture.CaptureScreenshot(filename : name); // TODO: VERY broken, unitys fault
+      UnityEngine.ScreenCapture.CaptureScreenshot(filename : name); // TODO: VERY broken, unitys fault
 
 /*
       //Wait for 4 frames
@@ -80,12 +73,17 @@ namespace droid.Editor.Utilities {
     public override void OnInspectorGUI() {
       if (NeodroidSettings.Current.NeodroidGeneratePreviewsProp) {
         //AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
-        var scene_names = this.targets.Select(t => ((SceneAsset)t).name).OrderBy(n => n).ToArray();
+        var scene_names =
+            System.Linq.Enumerable.ToArray(source :
+                                           System.Linq.Enumerable.OrderBy(source : System.Linq.Enumerable
+                                                 .Select(source : this.targets,
+                                                         t => ((UnityEditor.SceneAsset)t).name),
+                                             n => n));
 
         var previews_count = scene_names.Length;
-        var preview_width = Screen.width;
+        var preview_width = UnityEngine.Screen.width;
         var preview_height =
-            (Screen.height
+            (UnityEngine.Screen.height
              - NeodroidEditorConstants._Editor_Margin * 2
              - NeodroidEditorConstants._Preview_Margin * previews_count)
             / previews_count;
@@ -100,7 +98,6 @@ namespace droid.Editor.Utilities {
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="index"></param>
     /// <param name="scene_name"></param>
@@ -120,39 +117,41 @@ NeodroidEditorConstants._Preview_Margin), width, height),
                 preview
                );
 */
-        GUI.DrawTexture(position : new Rect(x : index,
-                                            y : NeodroidEditorConstants._Editor_Margin
-                                                + index * (height + NeodroidEditorConstants._Preview_Margin),
-                                            width : width,
-                                            height : height),
-                        image : preview,
-                        scaleMode : ScaleMode.ScaleToFit);
+        UnityEngine.GUI.DrawTexture(position : new UnityEngine.Rect(x : index,
+                                                                    y : NeodroidEditorConstants._Editor_Margin
+                                                                        + index
+                                                                        * (height
+                                                                              + NeodroidEditorConstants
+                                                                                  ._Preview_Margin),
+                                                                    width : width,
+                                                                    height : height),
+                                    image : preview,
+                                    scaleMode : UnityEngine.ScaleMode.ScaleToFit);
       } else {
-        EditorGUILayout.HelpBox(message :
-                                $"There is no image preview for scene {scene_name} at {preview_path}."
-                                + $" Please play the scene on editor and image preview will be captured automatically"
-                                + $" or create the missing path: {preview_path}.",
-                                type : MessageType.Info);
+        UnityEditor.EditorGUILayout.HelpBox(message :
+                                            $"There is no image preview for scene {scene_name} at {preview_path}. Please play the scene on editor and image preview will be captured automatically or create the missing path: {preview_path}.",
+                                            type : UnityEditor.MessageType.Info);
       }
     }
 
     static string GetPreviewPath(string scene_name) {
       //return $"{NeodroidEditorInfo.ScenePreviewsLocation}{scene_name}.png";
       return
-          $"{Application.dataPath}/{NeodroidSettings.Current.NeodroidPreviewsLocationProp}{scene_name}.png";
+          $"{UnityEngine.Application.dataPath}/{NeodroidSettings.Current.NeodroidPreviewsLocationProp}{scene_name}.png";
     }
 
     /// <summary>
     /// </summary>
     /// <param name="file_path"></param>
     /// <returns></returns>
-    public static Texture2D LoadPng(string file_path) {
-      Texture2D tex = null;
+    public static UnityEngine.Texture2D LoadPng(string file_path) {
+      UnityEngine.Texture2D tex = null;
 
-      if (File.Exists(path : file_path)) {
-        var file_data = File.ReadAllBytes(path : file_path);
-        tex = new Texture2D(2, 2);
-        tex.LoadImage(data : file_data); //..this will auto-resize the texture dimensions.
+      if (UnityEngine.Windows.File.Exists(path : file_path)) {
+        var file_data = UnityEngine.Windows.File.ReadAllBytes(path : file_path);
+        tex = new UnityEngine.Texture2D(2, 2);
+        UnityEngine.ImageConversion.LoadImage(tex : tex,
+                                              data : file_data); //..this will auto-resize the texture dimensions.
       }
 
       return tex;

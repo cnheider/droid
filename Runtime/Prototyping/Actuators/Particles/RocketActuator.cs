@@ -1,44 +1,28 @@
-﻿using System;
-using droid.Runtime.Enums;
-using droid.Runtime.Interfaces;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Actuators.Particles {
+﻿namespace droid.Runtime.Prototyping.Actuators.Particles {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : ActuatorComponentMenuPath._ComponentMenuPath
-                               + "Particles/Rocket"
-                               + ActuatorComponentMenuPath._Postfix)]
-  [RequireComponent(requiredComponent : typeof(ParticleSystem))]
-  [RequireComponent(requiredComponent : typeof(Rigidbody))]
+  [UnityEngine.AddComponentMenu(menuName : ActuatorComponentMenuPath._ComponentMenuPath
+                                           + "Particles/Rocket"
+                                           + ActuatorComponentMenuPath._Postfix)]
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.ParticleSystem))]
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.Rigidbody))]
   public class RocketActuator : Rigidbody1DofActuator {
     /// <summary>
     /// </summary>
-    [SerializeField]
+    [UnityEngine.SerializeField]
     bool _fired_this_step;
 
     /// <summary>
     /// </summary>
-    [SerializeField]
-    protected ParticleSystem _Particle_System;
+    [UnityEngine.SerializeField]
+    protected UnityEngine.ParticleSystem _Particle_System;
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     public override string PrototypingTypeName {
       get { return base.PrototypingTypeName + this._axisEnum_of_motion; }
-    }
-
-    /// <inheritdoc />
-    /// <summary>
-    /// </summary>
-    public override void Setup() {
-      this._Rigidbody = this.GetComponent<Rigidbody>();
-      this._Particle_System = this.GetComponent<ParticleSystem>();
-      var valid_input = this.MotionSpace;
-      valid_input.Min = 0;
-      this.MotionSpace = valid_input;
     }
 
     /// <summary>
@@ -58,67 +42,78 @@ namespace droid.Runtime.Prototyping.Actuators.Particles {
     /// <inheritdoc />
     /// <summary>
     /// </summary>
+    public override void Setup() {
+      this._Rigidbody = this.GetComponent<UnityEngine.Rigidbody>();
+      this._Particle_System = this.GetComponent<UnityEngine.ParticleSystem>();
+      var valid_input = this.MotionSpace;
+      valid_input.Min = 0;
+      this.MotionSpace = valid_input;
+    }
+
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
     /// <param name="motion"></param>
-    protected override void InnerApplyMotion(IMotion motion) {
+    protected override void InnerApplyMotion(droid.Runtime.Interfaces.IMotion motion) {
       if (motion.Strength < this.MotionSpace.Min || motion.Strength > this.MotionSpace.Max) {
-        Debug.Log(message :
-                  $"It does not accept input {motion.Strength}, outside allowed range {this.MotionSpace.Min} to {this.MotionSpace.Max}");
+        UnityEngine.Debug.Log(message :
+                              $"It does not accept input {motion.Strength}, outside allowed range {this.MotionSpace.Min} to {this.MotionSpace.Max}");
         return; // Do nothing
       }
 
       switch (this._axisEnum_of_motion) {
-        case AxisEnum.X_:
-          if (this._Relative_To == Space.World) {
-            this._Rigidbody.AddForce(force : Vector3.right * motion.Strength);
+        case droid.Runtime.Enums.AxisEnum.X_:
+          if (this._Relative_To == UnityEngine.Space.World) {
+            this._Rigidbody.AddForce(force : UnityEngine.Vector3.right * motion.Strength);
           } else {
-            this._Rigidbody.AddRelativeForce(force : Vector3.right * motion.Strength);
+            this._Rigidbody.AddRelativeForce(force : UnityEngine.Vector3.right * motion.Strength);
           }
 
           break;
-        case AxisEnum.Y_:
-          if (this._Relative_To == Space.World) {
-            this._Rigidbody.AddForce(force : Vector3.up * motion.Strength);
+        case droid.Runtime.Enums.AxisEnum.Y_:
+          if (this._Relative_To == UnityEngine.Space.World) {
+            this._Rigidbody.AddForce(force : UnityEngine.Vector3.up * motion.Strength);
           } else {
-            this._Rigidbody.AddRelativeForce(force : Vector3.up * motion.Strength);
+            this._Rigidbody.AddRelativeForce(force : UnityEngine.Vector3.up * motion.Strength);
           }
 
           break;
-        case AxisEnum.Z_:
-          if (this._Relative_To == Space.World) {
-            this._Rigidbody.AddForce(force : Vector3.forward * motion.Strength);
+        case droid.Runtime.Enums.AxisEnum.Z_:
+          if (this._Relative_To == UnityEngine.Space.World) {
+            this._Rigidbody.AddForce(force : UnityEngine.Vector3.forward * motion.Strength);
           } else {
-            this._Rigidbody.AddRelativeForce(force : Vector3.forward * motion.Strength);
+            this._Rigidbody.AddRelativeForce(force : UnityEngine.Vector3.forward * motion.Strength);
           }
 
           break;
-        case AxisEnum.Rot_x_:
-          if (this._Relative_To == Space.World) {
-            this._Rigidbody.AddTorque(torque : Vector3.right * motion.Strength);
+        case droid.Runtime.Enums.AxisEnum.Rot_x_:
+          if (this._Relative_To == UnityEngine.Space.World) {
+            this._Rigidbody.AddTorque(torque : UnityEngine.Vector3.right * motion.Strength);
           } else {
-            this._Rigidbody.AddRelativeTorque(torque : Vector3.right * motion.Strength);
+            this._Rigidbody.AddRelativeTorque(torque : UnityEngine.Vector3.right * motion.Strength);
           }
 
           break;
-        case AxisEnum.Rot_y_:
-          if (this._Relative_To == Space.World) {
-            this._Rigidbody.AddTorque(torque : Vector3.up * motion.Strength);
+        case droid.Runtime.Enums.AxisEnum.Rot_y_:
+          if (this._Relative_To == UnityEngine.Space.World) {
+            this._Rigidbody.AddTorque(torque : UnityEngine.Vector3.up * motion.Strength);
           } else {
-            this._Rigidbody.AddRelativeTorque(torque : Vector3.up * motion.Strength);
+            this._Rigidbody.AddRelativeTorque(torque : UnityEngine.Vector3.up * motion.Strength);
           }
 
           break;
-        case AxisEnum.Rot_z_:
-          if (this._Relative_To == Space.World) {
-            this._Rigidbody.AddTorque(torque : Vector3.forward * motion.Strength);
+        case droid.Runtime.Enums.AxisEnum.Rot_z_:
+          if (this._Relative_To == UnityEngine.Space.World) {
+            this._Rigidbody.AddTorque(torque : UnityEngine.Vector3.forward * motion.Strength);
           } else {
-            this._Rigidbody.AddRelativeTorque(torque : Vector3.forward * motion.Strength);
+            this._Rigidbody.AddRelativeTorque(torque : UnityEngine.Vector3.forward * motion.Strength);
           }
 
           break;
-        case AxisEnum.Dir_x_: break;
-        case AxisEnum.Dir_y_: break;
-        case AxisEnum.Dir_z_: break;
-        default: throw new ArgumentOutOfRangeException();
+        case droid.Runtime.Enums.AxisEnum.Dir_x_: break;
+        case droid.Runtime.Enums.AxisEnum.Dir_y_: break;
+        case droid.Runtime.Enums.AxisEnum.Dir_z_: break;
+        default: throw new System.ArgumentOutOfRangeException();
       }
 
       this._fired_this_step = true;

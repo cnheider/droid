@@ -1,14 +1,11 @@
-﻿using System;
-using UnityEngine;
-
-namespace droid.Editor.Utilities.ScriptableObjects {
+﻿namespace droid.Editor.Utilities.ScriptableObjects {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  public class ReadMe : ScriptableObject {
+  public class ReadMe : UnityEngine.ScriptableObject {
     /// <summary>
     /// </summary>
-    public Texture2D icon;
+    public UnityEngine.Texture2D icon;
 
     /// <summary>
     /// </summary>
@@ -24,7 +21,7 @@ namespace droid.Editor.Utilities.ScriptableObjects {
 
     /// <summary>
     /// </summary>
-    [Serializable]
+    [System.SerializableAttribute]
     public class Section {
       /// <summary>
       /// </summary>

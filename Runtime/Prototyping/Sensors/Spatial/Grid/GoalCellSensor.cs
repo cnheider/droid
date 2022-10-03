@@ -1,23 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Structs.Space;
-using droid.Runtime.Utilities.Drawing;
-using droid.Runtime.Utilities.Grid;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Sensors.Spatial.Grid {
-  [AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
-                               + "GoalCell"
-                               + SensorComponentMenuPath._Postfix)]
+﻿namespace droid.Runtime.Prototyping.Sensors.Spatial.Grid {
+  [UnityEngine.AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
+                                           + "GoalCell"
+                                           + SensorComponentMenuPath._Postfix)]
   public class GoalCellSensor : Sensor,
-                                IHasTriple {
-    [SerializeField] EmptyCell _current_goal;
-    [SerializeField] Vector3 _current_goal_position;
+                                droid.Runtime.Interfaces.IHasTriple {
+    [UnityEngine.SerializeField] droid.Runtime.Utilities.Grid.EmptyCell _current_goal;
+    [UnityEngine.SerializeField] UnityEngine.Vector3 _current_goal_position;
 
-    [SerializeField] bool _draw_names = true;
+    [UnityEngine.SerializeField] bool _draw_names = true;
 
-    [SerializeField] int _order_index;
+    [UnityEngine.SerializeField] int _order_index;
 
     /// <summary>
     /// </summary>
@@ -29,7 +21,7 @@ namespace droid.Runtime.Prototyping.Sensors.Spatial.Grid {
 
     /// <summary>
     /// </summary>
-    public EmptyCell CurrentGoal {
+    public droid.Runtime.Utilities.Grid.EmptyCell CurrentGoal {
       get {
         this.UpdateObservation();
         return this._current_goal;
@@ -37,10 +29,31 @@ namespace droid.Runtime.Prototyping.Sensors.Spatial.Grid {
       set { this._current_goal = value; }
     }
 
+    public override System.Collections.Generic.IEnumerable<float> FloatEnumerable {
+      get {
+        yield return this._current_goal_position.x;
+        yield return this._current_goal_position.y;
+        yield return this._current_goal_position.z;
+      }
+    }
+
+    #if UNITY_EDITOR
+    void OnDrawGizmosSelected() {
+      if (this.DrawNames) {
+        if (this._current_goal) {
+          droid.Runtime.Utilities.Drawing.NeodroidUtilities.DrawString(text : this._current_goal.name,
+                                                                       world_pos : this._current_goal
+                                                                           .transform.position,
+                                                                       color : UnityEngine.Color.green);
+        }
+      }
+    }
+    #endif
+
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public Vector3 ObservationValue {
+    public UnityEngine.Vector3 ObservationValue {
       get { return this._current_goal_position; }
       private set { this._current_goal_position = value; }
     }
@@ -48,15 +61,7 @@ namespace droid.Runtime.Prototyping.Sensors.Spatial.Grid {
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public Space3 TripleSpace { get; } = new Space3();
-
-    public override IEnumerable<float> FloatEnumerable {
-      get {
-        yield return this._current_goal_position.x;
-        yield return this._current_goal_position.y;
-        yield return this._current_goal_position.z;
-      }
-    }
+    public droid.Runtime.Structs.Space.Space3 TripleSpace { get; } = new droid.Runtime.Structs.Space.Space3();
 
     /// <summary>
     /// </summary>
@@ -65,17 +70,5 @@ namespace droid.Runtime.Prototyping.Sensors.Spatial.Grid {
         this._current_goal_position = this._current_goal.transform.position;
       }
     }
-
-    #if UNITY_EDITOR
-    void OnDrawGizmosSelected() {
-      if (this.DrawNames) {
-        if (this._current_goal) {
-          NeodroidUtilities.DrawString(text : this._current_goal.name,
-                                       world_pos : this._current_goal.transform.position,
-                                       color : Color.green);
-        }
-      }
-    }
-    #endif
   }
 }

@@ -1,14 +1,10 @@
-﻿using droid.Runtime.Enums;
-using droid.Runtime.GameObjects;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Configurables.Transforms {
-  /// <inheritdoc cref="PrototypingGameObject" />
+﻿namespace droid.Runtime.Prototyping.Configurables.Transforms {
+  /// <inheritdoc cref="GameObjects.PrototypingGameObject" />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
-                               + "Spatial"
-                               + ConfigurableComponentMenuPath._Postfix)]
+  [UnityEngine.AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
+                                           + "Spatial"
+                                           + ConfigurableComponentMenuPath._Postfix)]
   public abstract class SpatialConfigurable : Configurable {
     /// <summary>
     /// </summary>
@@ -18,11 +14,13 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
 
     /// <summary>
     /// </summary>
-    [Header("Configurable", order = 30)]
-    [SerializeField]
+    [UnityEngine.HeaderAttribute("Configurable", order = 30)]
+    [UnityEngine.SerializeField]
     bool _relative_to_existing_value = false;
 
-    [SerializeField] protected CoordinateSpaceEnum _coordinate_spaceEnum = CoordinateSpaceEnum.Environment_;
+    [UnityEngine.SerializeField]
+    protected droid.Runtime.Enums.CoordinateSpaceEnum _coordinate_spaceEnum =
+        droid.Runtime.Enums.CoordinateSpaceEnum.Environment_;
 
     #endregion
   }

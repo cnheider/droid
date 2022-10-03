@@ -1,123 +1,50 @@
 ﻿#if UNITY_EDITOR
-using droid.Runtime.GameObjects.StatusDisplayer.EventRecipients;
-using droid.Runtime.Managers;
-using droid.Runtime.Prototyping.ObjectiveFunctions;
-using UnityEngine.Events;
-using UnityEngine.UI;
-using UnityEditor.Events;
-using droid.Runtime.Environments;
-using UnityEngine;
-
 namespace droid.Runtime.GameObjects.StatusDisplayer {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [ExecuteInEditMode]
-  public class AutoSetupStatusDisplayer : MonoBehaviour {
-    [SerializeField] bool _clean_empty_no_target_events = true;
+  [UnityEngine.ExecuteInEditMode]
+  public class AutoSetupStatusDisplayer : UnityEngine.MonoBehaviour {
+    [UnityEngine.SerializeField] bool _clean_empty_no_target_events = true;
 
-    [SerializeField] NeodroidEnvironment _environment = null;
-    [SerializeField] TextUpdater _environment_frame = null;
-    [SerializeField] TextUpdater _environment_obs = null;
+    [UnityEngine.SerializeField] droid.Runtime.Environments.NeodroidEnvironment _environment = null;
 
-    [SerializeField] TextUpdater _environment_text = null;
-    [SerializeField] ObjectiveFunction _evaluation_function = null;
-    [SerializeField] AbstractNeodroidManager _manager = null;
-    [SerializeField] Button _reset_button = null;
-    [SerializeField] TextUpdater _signal = null;
-    [SerializeField] TextUpdater _episode_length = null;
-    [SerializeField] TextUpdater _status_text = null;
-    [SerializeField] ToggleUpdater _terminated = null;
-    [SerializeField] Toggle _testing_toggle = null;
-    [SerializeField] UnityEventCallState _unity_event_call_state = UnityEventCallState.RuntimeOnly;
+    [UnityEngine.SerializeField]
+    droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.TextUpdater _environment_frame = null;
 
-    #if NEODROID_DEBUG
-    bool Debugging { get { return this._debugging; } set { this._debugging = value; } }
-    [SerializeField] bool _debugging;
-    #endif
+    [UnityEngine.SerializeField]
+    droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.TextUpdater _environment_obs = null;
 
-    void TryRegister(DataPoller poller, UnityAction<DataPoller> f) {
-      if (poller) {
-        var count = poller.PollEvent.GetPersistentEventCount();
-        if (this._clean_empty_no_target_events && count > 0) {
-          //poller.PollEvent.RemoveAllListeners(); // Only non-persistant listeners.
-          for (var i = 0; i < count; i++) {
-            if (poller.PollEvent.GetPersistentTarget(index : i) == null
-                || poller.PollEvent.GetPersistentMethodName(index : i) == null) {
-              UnityEventTools.RemovePersistentListener(unityEvent : poller.PollEvent, index : i);
-            }
-          }
-        }
+    [UnityEngine.SerializeField]
+    droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.TextUpdater _environment_text = null;
 
-        count = poller.PollEvent.GetPersistentEventCount();
-        if (count == 0) {
-          UnityEventTools.AddObjectPersistentListener(unityEvent : poller.PollEvent,
-                                                      call : f,
-                                                      argument : poller);
-          poller.PollEvent.SetPersistentListenerState(0, state : this._unity_event_call_state);
-        } else if (count > 0 && poller.PollEvent.GetPersistentTarget(0) != poller) {
-          #if NEODROID_DEBUG
-          if (this.Debugging) {
-            Debug.Log(message : $"PollEvent on {poller} already has a listeners");
-          }
-          #endif
-        }
-      }
-    }
+    [UnityEngine.SerializeField]
+    droid.Runtime.Prototyping.ObjectiveFunctions.ObjectiveFunction _evaluation_function = null;
 
-    void TryRegisterVoid(UnityEventBase poller, UnityAction f) {
-      var count = poller.GetPersistentEventCount();
-      if (this._clean_empty_no_target_events && count > 0) {
-        //poller.PollEvent.RemoveAllListeners(); // Only non-persistant listeners.
-        for (var i = 0; i < count; i++) {
-          if (poller.GetPersistentTarget(index : i) == null
-              || poller.GetPersistentMethodName(index : i) == null) {
-            UnityEventTools.RemovePersistentListener(unityEvent : poller, index : i);
-          }
-        }
-      }
+    [UnityEngine.SerializeField] droid.Runtime.Managers.AbstractNeodroidManager _manager = null;
+    [UnityEngine.SerializeField] UnityEngine.UI.Button _reset_button = null;
 
-      count = poller.GetPersistentEventCount();
-      if (count == 0) {
-        UnityEventTools.AddVoidPersistentListener(unityEvent : poller, call : f);
-        poller.SetPersistentListenerState(0, state : this._unity_event_call_state);
-      } else if (count > 0) {
-        #if NEODROID_DEBUG
-        if (this.Debugging) {
-          Debug.Log(message : $"PollEvent on {poller} already has a listeners");
-        }
-        #endif
-      }
-    }
+    [UnityEngine.SerializeField]
+    droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.TextUpdater _signal = null;
 
-    void TryRegisterProperty(Toggle.ToggleEvent poller, UnityAction<bool> f) {
-      var count = poller.GetPersistentEventCount();
-      if (this._clean_empty_no_target_events && count > 0) {
-        //poller.PollEvent.RemoveAllListeners(); // Only non-persistent listeners.
-        for (var i = 0; i < count; i++) {
-          if (poller.GetPersistentTarget(index : i) == null
-              || poller.GetPersistentMethodName(index : i) == null) {
-            UnityEventTools.RemovePersistentListener(unityEvent : poller, index : i);
-          }
-        }
-      }
+    [UnityEngine.SerializeField]
+    droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.TextUpdater _episode_length = null;
 
-      count = poller.GetPersistentEventCount();
-      if (count == 0) {
-        UnityEventTools.AddPersistentListener(unityEvent : poller, call : f);
-        poller.SetPersistentListenerState(0, state : this._unity_event_call_state);
-      } else if (count > 0) {
-        #if NEODROID_DEBUG
-        if (this.Debugging) {
-          Debug.Log(message : $"PollEvent on {poller} already has a listeners");
-        }
-        #endif
-      }
-    }
+    [UnityEngine.SerializeField]
+    droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.TextUpdater _status_text = null;
+
+    [UnityEngine.SerializeField]
+    droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.ToggleUpdater _terminated = null;
+
+    [UnityEngine.SerializeField] UnityEngine.UI.Toggle _testing_toggle = null;
+
+    [UnityEngine.SerializeField]
+    UnityEngine.Events.UnityEventCallState _unity_event_call_state =
+        UnityEngine.Events.UnityEventCallState.RuntimeOnly;
 
     void Start() {
       if (!this._environment) {
-        this._environment = FindObjectOfType<NeodroidEnvironment>();
+        this._environment = FindObjectOfType<droid.Runtime.Environments.NeodroidEnvironment>();
       }
 
       var neodroid_environment = this._environment;
@@ -130,7 +57,8 @@ namespace droid.Runtime.GameObjects.StatusDisplayer {
       }
 
       if (!this._evaluation_function) {
-        this._evaluation_function = FindObjectOfType<ObjectiveFunction>();
+        this._evaluation_function =
+            FindObjectOfType<droid.Runtime.Prototyping.ObjectiveFunctions.ObjectiveFunction>();
       }
 
       var evaluation_function = this._evaluation_function;
@@ -140,7 +68,7 @@ namespace droid.Runtime.GameObjects.StatusDisplayer {
       }
 
       if (!this._manager) {
-        this._manager = FindObjectOfType<AbstractNeodroidManager>();
+        this._manager = FindObjectOfType<droid.Runtime.Managers.AbstractNeodroidManager>();
       }
 
       if (this._manager) {
@@ -158,6 +86,94 @@ namespace droid.Runtime.GameObjects.StatusDisplayer {
         this.TryRegisterVoid(poller : this._reset_button.onClick, f : this._manager.ResetAllEnvironments);
       }
     }
+
+    void TryRegister(droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.DataPoller poller,
+                     UnityEngine.Events.UnityAction<
+                         droid.Runtime.GameObjects.StatusDisplayer.EventRecipients.DataPoller> f) {
+      if (poller) {
+        var count = poller.PollEvent.GetPersistentEventCount();
+        if (this._clean_empty_no_target_events && count > 0) {
+          //poller.PollEvent.RemoveAllListeners(); // Only non-persistant listeners.
+          for (var i = 0; i < count; i++) {
+            if (poller.PollEvent.GetPersistentTarget(index : i) == null
+                || poller.PollEvent.GetPersistentMethodName(index : i) == null) {
+              UnityEditor.Events.UnityEventTools.RemovePersistentListener(unityEvent : poller.PollEvent,
+                index : i);
+            }
+          }
+        }
+
+        count = poller.PollEvent.GetPersistentEventCount();
+        if (count == 0) {
+          UnityEditor.Events.UnityEventTools.AddObjectPersistentListener(unityEvent : poller.PollEvent,
+                                                                           call : f,
+                                                                           argument : poller);
+          poller.PollEvent.SetPersistentListenerState(0, state : this._unity_event_call_state);
+        } else if (count > 0 && poller.PollEvent.GetPersistentTarget(0) != poller) {
+          #if NEODROID_DEBUG
+          if (this.Debugging) {
+            UnityEngine.Debug.Log(message : $"PollEvent on {poller} already has a listeners");
+          }
+          #endif
+        }
+      }
+    }
+
+    void TryRegisterVoid(UnityEngine.Events.UnityEventBase poller, UnityEngine.Events.UnityAction f) {
+      var count = poller.GetPersistentEventCount();
+      if (this._clean_empty_no_target_events && count > 0) {
+        //poller.PollEvent.RemoveAllListeners(); // Only non-persistant listeners.
+        for (var i = 0; i < count; i++) {
+          if (poller.GetPersistentTarget(index : i) == null
+              || poller.GetPersistentMethodName(index : i) == null) {
+            UnityEditor.Events.UnityEventTools.RemovePersistentListener(unityEvent : poller, index : i);
+          }
+        }
+      }
+
+      count = poller.GetPersistentEventCount();
+      if (count == 0) {
+        UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(unityEvent : poller, call : f);
+        poller.SetPersistentListenerState(0, state : this._unity_event_call_state);
+      } else if (count > 0) {
+        #if NEODROID_DEBUG
+        if (this.Debugging) {
+          UnityEngine.Debug.Log(message : $"PollEvent on {poller} already has a listeners");
+        }
+        #endif
+      }
+    }
+
+    void TryRegisterProperty(UnityEngine.UI.Toggle.ToggleEvent poller,
+                             UnityEngine.Events.UnityAction<bool> f) {
+      var count = poller.GetPersistentEventCount();
+      if (this._clean_empty_no_target_events && count > 0) {
+        //poller.PollEvent.RemoveAllListeners(); // Only non-persistent listeners.
+        for (var i = 0; i < count; i++) {
+          if (poller.GetPersistentTarget(index : i) == null
+              || poller.GetPersistentMethodName(index : i) == null) {
+            UnityEditor.Events.UnityEventTools.RemovePersistentListener(unityEvent : poller, index : i);
+          }
+        }
+      }
+
+      count = poller.GetPersistentEventCount();
+      if (count == 0) {
+        UnityEditor.Events.UnityEventTools.AddPersistentListener(unityEvent : poller, call : f);
+        poller.SetPersistentListenerState(0, state : this._unity_event_call_state);
+      } else if (count > 0) {
+        #if NEODROID_DEBUG
+        if (this.Debugging) {
+          UnityEngine.Debug.Log(message : $"PollEvent on {poller} already has a listeners");
+        }
+        #endif
+      }
+    }
+
+    #if NEODROID_DEBUG
+    bool Debugging { get { return this._debugging; } set { this._debugging = value; } }
+    [UnityEngine.SerializeField] bool _debugging;
+    #endif
   }
 }
 #endif

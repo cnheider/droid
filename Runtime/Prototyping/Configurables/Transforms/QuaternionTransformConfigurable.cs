@@ -1,20 +1,14 @@
-﻿using System;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Messaging.Messages;
-using droid.Runtime.Structs.Space;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Configurables.Transforms {
-  [AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
-                               + "QuaternionTransform"
-                               + ConfigurableComponentMenuPath._Postfix)]
+﻿namespace droid.Runtime.Prototyping.Configurables.Transforms {
+  [UnityEngine.AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
+                                           + "QuaternionTransform"
+                                           + ConfigurableComponentMenuPath._Postfix)]
   public class QuaternionTransformConfigurable : Configurable,
-                                                 IHasQuaternionTransform {
-    [Header("Specific", order = 102)]
-    [SerializeField]
-    Vector3 _position;
+                                                 droid.Runtime.Interfaces.IHasQuaternionTransform {
+    [UnityEngine.HeaderAttribute("Specific", order = 102)]
+    [UnityEngine.SerializeField]
+    UnityEngine.Vector3 _position;
 
-    [SerializeField] Quaternion _rotation;
+    [UnityEngine.SerializeField] UnityEngine.Quaternion _rotation;
 
     string _pos_x = "pos_x";
     string _pos_y = "pos_y";
@@ -25,22 +19,24 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
     string _rot_y = "rot_y";
     string _rot_z = "rot_z";
 
-    /// <inheritdoc />
-    /// <summary>
-    /// </summary>
-    public Quaternion Rotation { get { return this._rotation; } }
-
-    public Space3 PositionSpace { get; } //TODO: Implement
-    public Space4 RotationSpace { get; } //TODO: Implement
+    public droid.Runtime.Interfaces.ISamplable ConfigurableValueSpace { get; }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public Vector3 Position { get { return this._position; } }
+    public UnityEngine.Quaternion Rotation { get { return this._rotation; } }
+
+    public droid.Runtime.Structs.Space.Space3 PositionSpace { get; } //TODO: Implement
+    public droid.Runtime.Structs.Space.Space4 RotationSpace { get; } //TODO: Implement
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
+    public UnityEngine.Vector3 Position { get { return this._position; } }
+
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
     public override void PreSetup() {
       //TODO: use envs bound extent if available for space
 
@@ -57,12 +53,12 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    protected override void RegisterComponent() { throw new NotImplementedException(); }
+    protected override void RegisterComponent() { throw new System.NotImplementedException(); }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    protected override void UnRegisterComponent() { throw new NotImplementedException(); }
+    protected override void UnRegisterComponent() { throw new System.NotImplementedException(); }
 
     public override void PrototypingReset() {
       base.PrototypingReset();
@@ -73,20 +69,18 @@ namespace droid.Runtime.Prototyping.Configurables.Transforms {
 
     public override void UpdateCurrentConfiguration() { }
 
-    public ISamplable ConfigurableValueSpace { get; }
-
-    public override Configuration[] SampleConfigurations() {
+    public override droid.Runtime.Messaging.Messages.Configuration[] SampleConfigurations() {
       return new[] {
-                       new Configuration(configurable_name : this.Identifier,
-                                         configurable_value : this.ConfigurableValueSpace.Sample())
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this.Identifier,
+                         configurable_value : this.ConfigurableValueSpace.Sample())
                    };
     }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    ///  <param name="obj"></param>
-    public override void ApplyConfiguration(IConfigurableConfiguration obj) {
+    /// <summary>
+    /// </summary>
+    /// <param name="obj"></param>
+    public override void ApplyConfiguration(droid.Runtime.Interfaces.IConfigurableConfiguration obj) {
       //TODO: Denormalize configuration if space is marked as normalised
 
       if (obj.ConfigurableName == this._pos_x) {

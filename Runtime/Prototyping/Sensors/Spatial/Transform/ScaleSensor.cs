@@ -1,30 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Structs.Space;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Sensors.Spatial.Transform {
+﻿namespace droid.Runtime.Prototyping.Sensors.Spatial.Transform {
   /// <inheritdoc cref="Sensor" />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
-                               + "Scale"
-                               + SensorComponentMenuPath._Postfix)]
-  [ExecuteInEditMode]
-  [Serializable]
+  [UnityEngine.AddComponentMenu(menuName : SensorComponentMenuPath._ComponentMenuPath
+                                           + "Scale"
+                                           + SensorComponentMenuPath._Postfix)]
+  [UnityEngine.ExecuteInEditMode]
+  [System.SerializableAttribute]
   public class ScaleSensor : Sensor,
-                             IHasTriple {
-    [Header("Observation", order = 103)]
-    [SerializeField]
-    Vector3 _scale;
+                             droid.Runtime.Interfaces.IHasTriple {
+    [UnityEngine.HeaderAttribute("Observation", order = 103)]
+    [UnityEngine.SerializeField]
+    UnityEngine.Vector3 _scale;
 
-    [SerializeField] Space3 _scale_space = Space3.ZeroOne;
+    [UnityEngine.SerializeField]
+    droid.Runtime.Structs.Space.Space3 _scale_space = droid.Runtime.Structs.Space.Space3.ZeroOne;
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public Vector3 ObservationValue { //TODO: IMPLEMENT LOCAL SPACE
+    public override System.Collections.Generic.IEnumerable<float> FloatEnumerable {
+      get {
+        yield return this.ObservationValue.x;
+        yield return this.ObservationValue.y;
+        yield return this.ObservationValue.z;
+      }
+    }
+
+    /// <inheritdoc />
+    /// <summary>
+    /// </summary>
+    public UnityEngine.Vector3 ObservationValue { //TODO: IMPLEMENT LOCAL SPACE
       get { return this._scale; }
       set { this._scale = this._scale_space.Project(v : value); }
     }
@@ -32,23 +38,12 @@ namespace droid.Runtime.Prototyping.Sensors.Spatial.Transform {
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public Space3 TripleSpace { get { return this._scale_space; } }
+    public droid.Runtime.Structs.Space.Space3 TripleSpace { get { return this._scale_space; } }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
     public override void PreSetup() { }
-
-    /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
-    public override IEnumerable<float> FloatEnumerable {
-      get {
-        yield return this.ObservationValue.x;
-        yield return this.ObservationValue.y;
-        yield return this.ObservationValue.z;
-      }
-    }
 
     /// <inheritdoc />
     /// <summary>

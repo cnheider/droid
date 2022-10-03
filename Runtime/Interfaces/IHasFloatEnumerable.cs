@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace droid.Runtime.Interfaces {
+﻿namespace droid.Runtime.Interfaces {
   /// <summary>
   /// </summary>
   public interface IHasFloatEnumerable {
     /// <summary>
     /// </summary>
-    IEnumerable<float> FloatEnumerable { get; }
+    System.Collections.Generic.IEnumerable<float> FloatEnumerable { get; }
   }
 }

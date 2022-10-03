@@ -1,14 +1,11 @@
 ﻿#if UNITY_EDITOR
-using UnityEditor;
-using UnityEngine;
-
 namespace droid.Runtime.Shaders.Experimental.Skybox_Shaders.Editor {
-  public class RgbmCubedSkyboxInspector : MaterialEditor {
+  public class RgbmCubedSkyboxInspector : UnityEditor.MaterialEditor {
     public override void OnInspectorGUI() {
       base.OnInspectorGUI();
 
       if (this.isVisible) {
-        var material = this.target as Material;
+        var material = this.target as UnityEngine.Material;
 
         var use_linear = false;
         for (var index = 0; index < material.shaderKeywords.Length; index++) {
@@ -19,11 +16,11 @@ namespace droid.Runtime.Shaders.Experimental.Skybox_Shaders.Editor {
           }
         }
 
-        EditorGUI.BeginChangeCheck();
+        UnityEditor.EditorGUI.BeginChangeCheck();
 
-        use_linear = EditorGUILayout.Toggle("Linear Space Lighting", value : use_linear);
+        use_linear = UnityEditor.EditorGUILayout.Toggle("Linear Space Lighting", value : use_linear);
 
-        if (EditorGUI.EndChangeCheck()) {
+        if (UnityEditor.EditorGUI.EndChangeCheck()) {
           if (use_linear) {
             material.EnableKeyword("USE_LINEAR");
             material.DisableKeyword("USE_GAMMA");
@@ -32,7 +29,7 @@ namespace droid.Runtime.Shaders.Experimental.Skybox_Shaders.Editor {
             material.EnableKeyword("USE_GAMMA");
           }
 
-          EditorUtility.SetDirty(target : this.target);
+          UnityEditor.EditorUtility.SetDirty(target : this.target);
         }
       }
     }

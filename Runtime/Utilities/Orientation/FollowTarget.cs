@@ -1,18 +1,16 @@
-using UnityEngine;
-
 namespace droid.Runtime.Utilities.Orientation {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [ExecuteInEditMode]
-  public class FollowTarget : MonoBehaviour {
+  [UnityEngine.ExecuteInEditMode]
+  public class FollowTarget : UnityEngine.MonoBehaviour {
     /// <summary>
     /// </summary>
-    public Vector3 _Offset = new Vector3(0f, 7.5f, 0f);
+    public UnityEngine.Vector3 _Offset = new UnityEngine.Vector3(0f, 7.5f, 0f);
 
     /// <summary>
     /// </summary>
-    public Transform target;
+    public UnityEngine.Transform target;
 
     void LateUpdate() {
       if (this.target) {

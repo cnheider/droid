@@ -1,19 +1,17 @@
-﻿using System;
-using droid.Runtime.Structs;
-using UnityEngine;
-using UnityEngine.UI;
-
-namespace droid.Runtime.Prototyping.Displayers.Canvas {
+﻿namespace droid.Runtime.Prototyping.Displayers.Canvas {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [ExecuteInEditMode]
-  [AddComponentMenu(menuName : DisplayerComponentMenuPath._ComponentMenuPath
-                               + "Canvas/CanvasBar"
-                               + DisplayerComponentMenuPath._Postfix)]
+  [UnityEngine.ExecuteInEditMode]
+  [UnityEngine.AddComponentMenu(menuName : DisplayerComponentMenuPath._ComponentMenuPath
+                                           + "Canvas/CanvasBar"
+                                           + DisplayerComponentMenuPath._Postfix)]
   public class DistributionDisplayer : Displayer {
-    [SerializeField] Image[] _images;
-    [SerializeField] [Range(0.0f, 1.0f)] float _value;
+    [UnityEngine.SerializeField] UnityEngine.UI.Image[] _images;
+
+    [UnityEngine.SerializeField]
+    [UnityEngine.RangeAttribute(0.0f, 1.0f)]
+    float _value;
 
     /// <summary>
     /// </summary>
@@ -30,7 +28,7 @@ namespace droid.Runtime.Prototyping.Displayers.Canvas {
     /// </summary>
     public override void Setup() {
       if (this._images == null || this._images.Length == 0) {
-        this._images = this.GetComponentsInChildren<Image>();
+        this._images = this.GetComponentsInChildren<UnityEngine.UI.Image>();
       }
     }
 
@@ -40,7 +38,7 @@ namespace droid.Runtime.Prototyping.Displayers.Canvas {
     public void SetFillAmount(float amount) {
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        Debug.Log(message : $"Setting amount to {amount}");
+        UnityEngine.Debug.Log(message : $"Setting amount to {amount}");
       }
       #endif
 
@@ -57,7 +55,7 @@ namespace droid.Runtime.Prototyping.Displayers.Canvas {
     public override void Display(float value) {
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        Debug.Log(message : "Applying " + value + " To " + this.name);
+        UnityEngine.Debug.Log(message : "Applying " + value + " To " + this.name);
       }
       #endif
 
@@ -72,7 +70,7 @@ namespace droid.Runtime.Prototyping.Displayers.Canvas {
     public override void Display(double value) {
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        Debug.Log(message : "Applying " + value + " To " + this.name);
+        UnityEngine.Debug.Log(message : "Applying " + value + " To " + this.name);
       }
       #endif
 
@@ -84,43 +82,53 @@ namespace droid.Runtime.Prototyping.Displayers.Canvas {
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public override void Display(float[] values) { throw new NotImplementedException(); }
+    public override void Display(float[] values) { throw new System.NotImplementedException(); }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public override void Display(string value) { throw new NotImplementedException(); }
+    public override void Display(string value) { throw new System.NotImplementedException(); }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public override void Display(Vector3 value) { throw new NotImplementedException(); }
+    public override void Display(UnityEngine.Vector3 value) { throw new System.NotImplementedException(); }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public override void Display(Vector3[] value) { throw new NotImplementedException(); }
+    public override void Display(UnityEngine.Vector3[] value) { throw new System.NotImplementedException(); }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public override void Display(Points.ValuePoint points) { throw new NotImplementedException(); }
+    public override void Display(droid.Runtime.Structs.Points.ValuePoint points) {
+      throw new System.NotImplementedException();
+    }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public override void Display(Points.ValuePoint[] points) { throw new NotImplementedException(); }
+    public override void Display(droid.Runtime.Structs.Points.ValuePoint[] points) {
+      throw new System.NotImplementedException();
+    }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public override void Display(Points.StringPoint point) { throw new NotImplementedException(); }
+    public override void Display(droid.Runtime.Structs.Points.StringPoint point) {
+      throw new System.NotImplementedException();
+    }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public override void Display(Points.StringPoint[] points) { throw new NotImplementedException(); }
+    public override void Display(droid.Runtime.Structs.Points.StringPoint[] points) {
+      throw new System.NotImplementedException();
+    }
 
-    public override void PlotSeries(Points.ValuePoint[] points) { throw new NotImplementedException(); }
+    public override void PlotSeries(droid.Runtime.Structs.Points.ValuePoint[] points) {
+      throw new System.NotImplementedException();
+    }
   }
 }

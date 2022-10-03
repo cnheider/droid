@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-
-namespace droid.Runtime.Messaging.Messages {
+﻿namespace droid.Runtime.Messaging.Messages {
   /// <summary>
   /// </summary>
   public class Unobservables {
-    public Unobservables(ref IList<Rigidbody> rigidbodies, ref IList<Transform> transforms) {
+    public Unobservables(ref System.Collections.Generic.IList<UnityEngine.Rigidbody> rigidbodies,
+                         ref System.Collections.Generic.IList<UnityEngine.Transform> transforms) {
       if (rigidbodies != null) {
         this.Bodies = new Body[rigidbodies.Count];
         for (var i = 0; i < this.Bodies.Length; i++) {
@@ -18,25 +16,25 @@ namespace droid.Runtime.Messaging.Messages {
       }
 
       if (transforms != null) {
-        this.Poses = new Pose[transforms.Count];
+        this.Poses = new UnityEngine.Pose[transforms.Count];
         for (var i = 0; i < this.Poses.Length; i++) {
           /*if (transforms[i] != null) { //TODO: Proper way to construct unobservables in case somethings with destroyed but if this is the case then reinitialisation of a state wont work anyway and lets just crash.
             this.Poses[i] = new Pose(transforms[i].position, transforms[i].rotation);
           }*/
-          this.Poses[i] = new Pose(position : transforms[index : i].position,
-                                   rotation : transforms[index : i].rotation);
+          this.Poses[i] = new UnityEngine.Pose(position : transforms[index : i].position,
+                                               rotation : transforms[index : i].rotation);
         }
       }
     }
 
-    public Unobservables(ref Body[] bodies, ref Pose[] poses) {
+    public Unobservables(ref Body[] bodies, ref UnityEngine.Pose[] poses) {
       this.Bodies = bodies;
       this.Poses = poses;
     }
 
     public Unobservables() { }
 
-    public Unobservables(ref Rigidbody[] rigidbodies, ref Transform[] transforms) {
+    public Unobservables(ref UnityEngine.Rigidbody[] rigidbodies, ref UnityEngine.Transform[] transforms) {
       if (rigidbodies != null) {
         this.Bodies = new Body[rigidbodies.Length];
         for (var i = 0; i < this.Bodies.Length; i++) {
@@ -45,12 +43,13 @@ namespace droid.Runtime.Messaging.Messages {
       }
 
       if (transforms != null) {
-        this.Poses = new Pose[transforms.Length];
+        this.Poses = new UnityEngine.Pose[transforms.Length];
         for (var i = 0; i < this.Poses.Length; i++) {
           /*if (transforms[i] != null) { //TODO: Proper way to construct unobservables in case somethings with destroyed but if this is the case then reinitialisation of a state wont work anyway and lets just crash.
             this.Poses[i] = new Pose(transforms[i].position, transforms[i].rotation);
           }*/
-          this.Poses[i] = new Pose(position : transforms[i].position, rotation : transforms[i].rotation);
+          this.Poses[i] =
+              new UnityEngine.Pose(position : transforms[i].position, rotation : transforms[i].rotation);
         }
       }
     }
@@ -61,7 +60,7 @@ namespace droid.Runtime.Messaging.Messages {
 
     /// <summary>
     /// </summary>
-    public Pose[] Poses { get; } = { };
+    public UnityEngine.Pose[] Poses { get; } = { };
 
     /// <summary>
     /// </summary>

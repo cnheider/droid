@@ -1,56 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Managers;
-using droid.Runtime.Messaging.Messages;
-using droid.Runtime.ScriptableObjects;
-using UnityEngine;
+﻿
 
 namespace droid.Runtime.Utilities.InternalReactions {
+
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [ExecuteInEditMode]
+  [UnityEngine.ExecuteInEditMode]
   public class PlayerReactions : ScriptedReactions {
+    
     /// <summary>
     /// </summary>
-    [SerializeField]
+    [UnityEngine.SerializeField]
     bool _auto_reset = true;
 
     /// <summary>
     /// </summary>
-    [SerializeField]
-    PlayerMotions _player_motions = null;
+    [UnityEngine.SerializeField]
+    droid.Runtime.ScriptableObjects.PlayerMotions _player_motions = null;
 
-    [SerializeField] bool terminated;
+    [UnityEngine.SerializeField] bool terminated;
 
+    #if !INPUT_SYSTEM_EXISTS
     /// <summary>
     /// </summary>
     void Start() {
-      this._Manager = FindObjectOfType<AbstractNeodroidManager>();
-      if (Application.isPlaying) {
-        var reset_reaction = new ReactionParameters(reaction_type : ReactionTypeEnum.Reset_);
+      this._Manager = FindObjectOfType<droid.Runtime.Managers.AbstractNeodroidManager>();
+      if (UnityEngine.Application.isPlaying) {
+        var reset_reaction =
+            new droid.Runtime.Messaging.Messages.ReactionParameters(reaction_type : droid.Runtime.Messaging
+                                                                        .Messages.ReactionTypeEnum.Reset_);
         this._Manager.DelegateReactions(reactions : new[] {
-                                                              new Reaction(reaction_parameters :
-                                                                           reset_reaction,
-                                                                           "all")
+                                                              new droid.Runtime.Messaging.Messages.
+                                                                  Reaction(reaction_parameters :
+                                                                    reset_reaction,
+                                                                    "all")
                                                           });
       }
     }
 
     void Update() {
-      if (Application.isPlaying) {
+      if (UnityEngine.Application.isPlaying) {
         if (this._player_motions != null) {
-          var motions = new List<IMotion>();
+          var motions = new System.Collections.Generic.List<droid.Runtime.Interfaces.IMotion>();
           if (this._player_motions._Motions != null) {
             for (var index = 0; index < this._player_motions._Motions.Length; index++) {
               var player_motion = this._player_motions._Motions[index];
-              if (Input.GetKey(key : player_motion._Key)) {
+              if (UnityEngine.Input.GetKey(key : player_motion._Key)) {
                 #if NEODROID_DEBUG
                 if (this.Debugging) {
-                  Debug.Log(message :
-                            $"{player_motion._Actor} {player_motion._Actuator} {player_motion._Strength}");
+                  UnityEngine.Debug.Log(message :
+                                        $"{player_motion._Actor} {player_motion._Actuator} {player_motion._Strength}");
                 }
                 #endif
 
@@ -59,20 +58,26 @@ namespace droid.Runtime.Utilities.InternalReactions {
                   break;
                 }
 
-                var motion = new ActuatorMotion(actor_name : player_motion._Actor,
-                                                actuator_name : player_motion._Actuator,
-                                                strength : player_motion._Strength);
+                var motion =
+                    new droid.Runtime.Messaging.Messages.ActuatorMotion(actor_name : player_motion._Actor,
+                                                                        actuator_name : player_motion
+                                                                            ._Actuator,
+                                                                        strength : player_motion._Strength);
                 motions.Add(item : motion);
               }
             }
           }
 
           if (this.terminated && this._auto_reset) {
-            var reset_reaction_parameters = new ReactionParameters(reaction_type : ReactionTypeEnum.Reset_);
+            var reset_reaction_parameters =
+                new droid.Runtime.Messaging.Messages.ReactionParameters(reaction_type : droid.Runtime
+                                                                            .Messaging.Messages
+                                                                            .ReactionTypeEnum.Reset_);
             this._Manager.DelegateReactions(reactions : new[] {
-                                                                  new Reaction(reaction_parameters :
-                                                                               reset_reaction_parameters,
-                                                                               "all")
+                                                                  new droid.Runtime.Messaging.Messages.
+                                                                      Reaction(reaction_parameters :
+                                                                        reset_reaction_parameters,
+                                                                        "all")
                                                               });
             var any = false;
             var es = this._Manager.GatherSnapshots();
@@ -87,14 +92,19 @@ namespace droid.Runtime.Utilities.InternalReactions {
             this.terminated = any;
           } else if (motions.Count > 0) {
             var parameters =
-                new ReactionParameters(reaction_type : ReactionTypeEnum.Step_, true, episode_count : true);
-            var reaction = new Reaction(parameters : parameters,
-                                        motions : motions.ToArray(),
-                                        null,
-                                        null,
-                                        null,
-                                        "",
-                                        reaction_source : "PlayerReactions");
+                new droid.Runtime.Messaging.Messages.ReactionParameters(reaction_type : droid.Runtime
+                                                                            .Messaging.Messages
+                                                                            .ReactionTypeEnum.Step_,
+                                                                        true,
+                                                                        episode_count : true);
+            var reaction = new droid.Runtime.Messaging.Messages.Reaction(parameters : parameters,
+                                                                           motions : motions.ToArray(),
+                                                                           null,
+                                                                           null,
+                                                                           null,
+                                                                           "",
+                                                                           reaction_source :
+                                                                           "PlayerReactions");
             this._Manager.DelegateReactions(reactions : new[] {reaction});
             var any = false;
             var es = this._Manager.GatherSnapshots();
@@ -113,10 +123,12 @@ namespace droid.Runtime.Utilities.InternalReactions {
       } else {
         #if NEODROID_DEBUG
         if (this.Debugging) {
-          Debug.Log("No PlayerMotions ScriptableObject assigned");
+          UnityEngine.Debug.Log("No PlayerMotions ScriptableObject assigned");
         }
         #endif
       }
     }
+    #endif
   }
+  
 }

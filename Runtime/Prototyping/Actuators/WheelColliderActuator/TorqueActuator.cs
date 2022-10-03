@@ -1,35 +1,33 @@
-﻿using droid.Runtime.Interfaces;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Actuators.WheelColliderActuator {
+﻿namespace droid.Runtime.Prototyping.Actuators.WheelColliderActuator {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : ActuatorComponentMenuPath._ComponentMenuPath
-                               + "WheelCollider/Torque"
-                               + ActuatorComponentMenuPath._Postfix)]
-  [RequireComponent(requiredComponent : typeof(WheelCollider))]
+  [UnityEngine.AddComponentMenu(menuName : ActuatorComponentMenuPath._ComponentMenuPath
+                                           + "WheelCollider/Torque"
+                                           + ActuatorComponentMenuPath._Postfix)]
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.WheelCollider))]
   public class TorqueActuator : Actuator {
-    [SerializeField] WheelCollider _wheel_collider;
+    [UnityEngine.SerializeField] UnityEngine.WheelCollider _wheel_collider;
+
+    public override string[] InnerMotionNames { get { return new[] {"motorTorque"}; } }
+
+    void FixedUpdate() { ApplyLocalPositionToVisuals(col : this._wheel_collider); }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public override void Setup() { this._wheel_collider = this.GetComponent<WheelCollider>(); }
+    public override void Setup() { this._wheel_collider = this.GetComponent<UnityEngine.WheelCollider>(); }
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    protected override void InnerApplyMotion(IMotion motion) {
+    protected override void InnerApplyMotion(droid.Runtime.Interfaces.IMotion motion) {
       this._wheel_collider.motorTorque = motion.Strength;
     }
 
-    public override string[] InnerMotionNames => new[] {"motorTorque"};
-    void FixedUpdate() { ApplyLocalPositionToVisuals(col : this._wheel_collider); }
-
     /// <summary>
     /// </summary>
-    static void ApplyLocalPositionToVisuals(WheelCollider col) {
+    static void ApplyLocalPositionToVisuals(UnityEngine.WheelCollider col) {
       if (col.transform.childCount == 0) {
         return;
       }

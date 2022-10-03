@@ -1,21 +1,18 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-
-namespace droid.Runtime.GameObjects.StatusDisplayer.EventRecipients {
+﻿namespace droid.Runtime.GameObjects.StatusDisplayer.EventRecipients {
   /// <inheritdoc cref="DataPoller" />
   /// <summary>
   /// </summary>
-  [RequireComponent(requiredComponent : typeof(Text))]
-  [ExecuteInEditMode]
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.UI.Text))]
+  [UnityEngine.ExecuteInEditMode]
   public class TextUpdater : DataPoller {
     /// <summary>
     /// </summary>
-    [SerializeField]
-    Text _text;
+    [UnityEngine.SerializeField]
+    UnityEngine.UI.Text _text;
 
     /// <summary>
     /// </summary>
-    void Start() { this._text = this.GetComponent<Text>(); }
+    void Start() { this._text = this.GetComponent<UnityEngine.UI.Text>(); }
 
     /// <inheritdoc />
     /// <summary>

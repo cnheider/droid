@@ -1,14 +1,11 @@
-﻿using droid.Runtime.Structs.Space;
-using UnityEngine;
-
-namespace droid.Runtime.Interfaces {
+﻿namespace droid.Runtime.Interfaces {
   /// <summary>
   /// </summary>
   public interface IHasQuadArray {
     /// <summary>
     /// </summary>
-    Quaternion[] ObservationArray { get; }
+    UnityEngine.Quaternion[] ObservationArray { get; }
 
-    Space1[] ObservationSpace { get; }
+    droid.Runtime.Structs.Space.Space1[] ObservationSpace { get; }
   }
 }

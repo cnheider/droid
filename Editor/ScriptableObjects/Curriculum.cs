@@ -1,28 +1,23 @@
-﻿using droid.Editor.Windows;
-using UnityEngine;
-#if UNITY_EDITOR
-using droid.Runtime.ScriptableObjects.Deprecated;
-using UnityEditor;
-
+﻿#if UNITY_EDITOR
 namespace droid.Editor.ScriptableObjects {
   /// <summary>
-  /// 
   /// </summary>
   public static class CreateCurriculum {
     /// <summary>
-    /// 
     /// </summary>
-    [MenuItem(itemName : EditorScriptableObjectMenuPath._ScriptableObjectMenuPath + "Curriculum")]
+    [UnityEditor.MenuItem(itemName : EditorScriptableObjectMenuPath._ScriptableObjectMenuPath + "Curriculum")]
     public static void CreateCurriculumAsset() {
-      var asset = ScriptableObject.CreateInstance<Curriculum>();
+      var asset = UnityEngine.ScriptableObject
+                             .CreateInstance<droid.Runtime.ScriptableObjects.Deprecated.Curriculum>();
 
-      AssetDatabase.CreateAsset(asset : asset,
-                                path : EditorWindowMenuPath._NewAssetPath + "Assets/NewCurriculum.asset");
-      AssetDatabase.SaveAssets();
+      UnityEditor.AssetDatabase.CreateAsset(asset : asset,
+                                            path :
+                                            $"{droid.Editor.Windows.EditorWindowMenuPath._NewAssetPath}Assets/NewCurriculum.asset");
+      UnityEditor.AssetDatabase.SaveAssets();
 
-      EditorUtility.FocusProjectWindow();
+      UnityEditor.EditorUtility.FocusProjectWindow();
 
-      Selection.activeObject = asset;
+      UnityEditor.Selection.activeObject = asset;
     }
   }
 }

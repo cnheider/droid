@@ -1,93 +1,93 @@
-﻿using droid.Editor.Windows;
-using droid.Runtime.Prototyping.Actuators;
-using droid.Runtime.ScriptableObjects;
-using UnityEngine;
-#if UNITY_EDITOR
-using droid.Runtime.Prototyping.Actors;
-using UnityEditor;
-
+﻿#if UNITY_EDITOR
 namespace droid.Editor.ScriptableObjects {
   /// <summary>
-  /// 
   /// </summary>
   public static class CreatePlayerMotions {
     /// <summary>
-    ///
     /// </summary>
-    [MenuItem(itemName : EditorScriptableObjectMenuPath._ScriptableObjectMenuPath + "PlayerMotions")]
+    [UnityEditor.MenuItem(itemName : EditorScriptableObjectMenuPath._ScriptableObjectMenuPath
+                                     + "PlayerMotions")]
     public static void CreatePlayerMotionsAsset() {
-      var asset = ScriptableObject.CreateInstance<PlayerMotions>();
+      var asset = UnityEngine.ScriptableObject
+                             .CreateInstance<droid.Runtime.ScriptableObjects.PlayerMotions>();
 
-      AssetDatabase.CreateAsset(asset : asset,
-                                path : EditorWindowMenuPath._NewAssetPath + "NewPlayerMotions.asset");
-      AssetDatabase.SaveAssets();
+      UnityEditor.AssetDatabase.CreateAsset(asset : asset,
+                                            path :
+                                            $"{droid.Editor.Windows.EditorWindowMenuPath._NewAssetPath}NewPlayerMotions.asset");
+      UnityEditor.AssetDatabase.SaveAssets();
 
-      EditorUtility.FocusProjectWindow();
+      UnityEditor.EditorUtility.FocusProjectWindow();
 
-      Selection.activeObject = asset;
+      UnityEditor.Selection.activeObject = asset;
     }
 
+    #region Nested type: CreatePlayerMotionsWizard
+
     /// <summary>
-    ///
     /// </summary>
-    public class CreatePlayerMotionsWizard : ScriptableWizard {
+    public class CreatePlayerMotionsWizard : UnityEditor.ScriptableWizard {
       const float WINDOW_WIDTH = 260, WINDOW_HEIGHT = 500;
 
-      [MenuItem(itemName : EditorScriptableObjectMenuPath._ScriptableObjectMenuPath
-                           + "PlayerMotions (Wizard)")]
-      static void Init() {
-        var window = CreateWindow<CreatePlayerMotionsWizard>("Create Player Motions...");
-        window.Show();
-      }
+      /// <summary>
+      /// </summary>
+      [UnityEngine.HeaderAttribute("Actuators to generate motions for")]
+      public droid.Runtime.Prototyping.Actors.Actor[] actors;
 
       void Awake() {
         var icon =
-            AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath : NeodroidSettings
-                                                                 .Current.NeodroidImportLocationProp
-                                                                 + "Gizmos/Icons/table.png");
-        this.minSize = this.maxSize = new Vector2(x : WINDOW_WIDTH, y : WINDOW_HEIGHT);
-        this.titleContent = new GUIContent(text : this.titleContent.text, image : icon);
+            UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.Texture2D>(assetPath :
+              $"{NeodroidSettings.Current.NeodroidImportLocationProp}Gizmos/Icons/table.png");
+        this.minSize = this.maxSize = new UnityEngine.Vector2(x : WINDOW_WIDTH, y : WINDOW_HEIGHT);
+        this.titleContent = new UnityEngine.GUIContent(text : this.titleContent.text, image : icon);
       }
 
-      /// <summary>
-      ///
-      /// </summary>
-      [Header("Actuators to generate motions for")]
-      public Actor[] actors;
-
       void OnWizardCreate() {
-        var asset = CreateInstance<PlayerMotions>();
+        var asset = CreateInstance<droid.Runtime.ScriptableObjects.PlayerMotions>();
         var motionCount = 0;
 
         foreach (var actor in this.actors) {
           foreach (var actuator in actor.Actuators) {
-            motionCount += ((Actuator)actuator.Value).InnerMotionNames.Length;
+            motionCount += ((droid.Runtime.Prototyping.Actuators.Actuator)actuator.Value).InnerMotionNames
+                .Length;
           }
         }
 
-        asset._Motions = new PlayerMotion[motionCount];
+        asset._Motions = new droid.Runtime.ScriptableObjects.PlayerMotion[motionCount];
         var i = 0;
         foreach (var actor in this.actors) {
           foreach (var actuator in actor.Actuators) {
-            for (var j = 0; j < ((Actuator)actuator.Value).InnerMotionNames.Length; j++, i++) {
-              asset._Motions[i] = new PlayerMotion {
-                                                       _Actor = actor.Identifier,
-                                                       _Actuator =
-                                                           ((Actuator)actuator.Value).InnerMotionNames[j]
-                                                   };
+            for (var j = 0;
+                 j < ((droid.Runtime.Prototyping.Actuators.Actuator)actuator.Value).InnerMotionNames.Length;
+                 j++, i++) {
+              asset._Motions[i] = new droid.Runtime.ScriptableObjects.PlayerMotion {
+                                      _Actor = actor.Identifier,
+                                      _Actuator =
+                                          ((droid.Runtime.Prototyping.Actuators.Actuator)actuator.Value)
+                                          .InnerMotionNames[j]
+                                  };
             }
           }
         }
 
-        AssetDatabase.CreateAsset(asset : asset,
-                                  path : EditorWindowMenuPath._NewAssetPath + "NewPlayerMotions.asset");
-        AssetDatabase.SaveAssets();
+        UnityEditor.AssetDatabase.CreateAsset(asset : asset,
+                                              path :
+                                              $"{droid.Editor.Windows.EditorWindowMenuPath._NewAssetPath}NewPlayerMotions.asset");
+        UnityEditor.AssetDatabase.SaveAssets();
 
-        EditorUtility.FocusProjectWindow();
+        UnityEditor.EditorUtility.FocusProjectWindow();
 
-        Selection.activeObject = asset;
+        UnityEditor.Selection.activeObject = asset;
+      }
+
+      [UnityEditor.MenuItem(itemName : EditorScriptableObjectMenuPath._ScriptableObjectMenuPath
+                                       + "PlayerMotions (Wizard)")]
+      static void Init() {
+        var window = CreateWindow<CreatePlayerMotionsWizard>("Create Player Motions...");
+        window.Show();
       }
     }
+
+    #endregion
   }
 }
 #endif

@@ -1,31 +1,26 @@
-﻿using droid.Runtime.Environments.Prototyping;
-using droid.Runtime.GameObjects;
-using droid.Runtime.Interfaces;
-using droid.Runtime.Utilities;
-
-namespace droid.Runtime.Prototyping.EnvironmentListener {
-  /// <inheritdoc cref="PrototypingGameObject" />
+﻿namespace droid.Runtime.Prototyping.EnvironmentListener {
+  /// <inheritdoc cref="GameObjects.PrototypingGameObject" />
   /// <summary>
   /// </summary>
-  public abstract class EnvironmentListener : PrototypingGameObject,
-                                              IUnobservable {
+  public abstract class EnvironmentListener : droid.Runtime.GameObjects.PrototypingGameObject,
+                                              droid.Runtime.Interfaces.IUnobservable {
     /// <summary>
     /// </summary>
-    public AbstractPrototypingEnvironment _Parent_Environment;
+    public droid.Runtime.Environments.Prototyping.AbstractPrototypingEnvironment _Parent_Environment;
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
     public virtual void PreStep() { }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
     public virtual void Step() { }
 
     /// <inheritdoc />
-    ///  <summary>
-    ///  </summary>
+    /// <summary>
+    /// </summary>
     public virtual void PostStep() { }
 
     public virtual void PreTick() { }
@@ -36,7 +31,8 @@ namespace droid.Runtime.Prototyping.EnvironmentListener {
     /// </summary>
     protected override void RegisterComponent() {
       this._Parent_Environment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this._Parent_Environment, c : this);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities
+               .RegisterComponent(r : this._Parent_Environment, c : this);
 
       if (this._Parent_Environment != null) {
         this._Parent_Environment.PreTickEvent += this.PreTick;

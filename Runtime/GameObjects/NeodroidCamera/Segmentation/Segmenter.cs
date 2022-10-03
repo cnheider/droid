@@ -1,17 +1,12 @@
-using System;
-using System.Collections.Generic;
-using droid.Runtime.Interfaces;
-using UnityEngine;
-
 namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation {
-  /// <inheritdoc cref="MonoBehaviour" />
+  /// <inheritdoc cref="UnityEngine.MonoBehaviour" />
   /// <summary>
   /// </summary>
-  public abstract class Segmenter : MonoBehaviour,
-                                    IColorProvider {
+  public abstract class Segmenter : UnityEngine.MonoBehaviour,
+                                    droid.Runtime.Interfaces.IColorProvider {
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public abstract Dictionary<string, Color> ColorsDict { get; }
+    public abstract System.Collections.Generic.Dictionary<string, UnityEngine.Color> ColorsDict { get; }
   }
 }

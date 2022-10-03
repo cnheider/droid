@@ -1,23 +1,21 @@
-﻿using droid.Runtime.Interfaces;
-using droid.Runtime.Messaging.Messages;
-using droid.Runtime.Structs.Space.Sample;
-using droid.Runtime.Utilities;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Configurables.Experimental {
+﻿namespace droid.Runtime.Prototyping.Configurables.Experimental {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
-                               + "ExternalTexture"
-                               + ConfigurableComponentMenuPath._Postfix)]
+  [UnityEngine.AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
+                                           + "ExternalTexture"
+                                           + ConfigurableComponentMenuPath._Postfix)]
   public class ExternalTextureConfigurable : Configurable {
+    [UnityEngine.SerializeField] UnityEngine.Texture _texture = null;
+
     /// <summary>
     ///   Red
     /// </summary>
     string _texture_str;
 
-    [SerializeField] Texture _texture = null;
+    public droid.Runtime.Interfaces.ISamplable ConfigurableValueSpace {
+      get { return new droid.Runtime.Structs.Space.Sample.SampleSpace1(); }
+    }
 
     /// <inheritdoc />
     /// <summary>
@@ -29,19 +27,18 @@ namespace droid.Runtime.Prototyping.Configurables.Experimental {
     /// </summary>
     protected override void RegisterComponent() {
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._texture_str);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._texture_str);
     }
 
     /// <inheritdoc />
     /// <summary>
-    /// </summary>n
+    /// </summary>
+    /// n
     protected override void UnRegisterComponent() {
       this.ParentEnvironment?.UnRegister(t : this, identifier : this._texture_str);
     }
-
-    public ISamplable ConfigurableValueSpace { get { return new SampleSpace1(); } }
 
     /// <inheritdoc />
     /// <summary>
@@ -52,12 +49,13 @@ namespace droid.Runtime.Prototyping.Configurables.Experimental {
     /// <summary>
     /// </summary>
     /// <param name="configuration"></param>
-    public override void ApplyConfiguration(IConfigurableConfiguration configuration) {
+    public override void
+        ApplyConfiguration(droid.Runtime.Interfaces.IConfigurableConfiguration configuration) {
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        DebugPrinting.ApplyPrint(debugging : this.Debugging,
-                                 configuration : configuration,
-                                 identifier : this.Identifier);
+        droid.Runtime.Utilities.DebugPrinting.ApplyPrint(debugging : this.Debugging,
+                                                         configuration : configuration,
+                                                         identifier : this.Identifier);
       }
       #endif
 
@@ -72,10 +70,10 @@ namespace droid.Runtime.Prototyping.Configurables.Experimental {
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public override Configuration[] SampleConfigurations() {
+    public override droid.Runtime.Messaging.Messages.Configuration[] SampleConfigurations() {
       return new[] {
-                       new Configuration(configurable_name : this._texture_str,
-                                         configurable_value : this.ConfigurableValueSpace.Sample())
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._texture_str,
+                         configurable_value : this.ConfigurableValueSpace.Sample())
                    };
     }
   }

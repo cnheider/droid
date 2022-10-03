@@ -1,6 +1,4 @@
-﻿using droid.Runtime.Structs.Space;
-
-namespace droid.Runtime.Interfaces {
+﻿namespace droid.Runtime.Interfaces {
   /// <summary>
   /// </summary>
   public interface IHasSingle {
@@ -10,6 +8,6 @@ namespace droid.Runtime.Interfaces {
 
     /// <summary>
     /// </summary>
-    Space1 SingleSpace { get; }
+    droid.Runtime.Structs.Space.Space1 SingleSpace { get; }
   }
 }

@@ -1,27 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.RegularExpressions;
-using UnityEditor.PackageManager;
-using UnityEngine;
-using UnityEngine.Networking;
-#if UNITY_2019_1_OR_NEWER && UNITY_EDITOR && USE_GITHUB_EXTENSION
-using System.Linq;
-using UnityEngine.UIElements;
-
+﻿#if UNITY_2019_1_OR_NEWER && UNITY_EDITOR && USE_GITHUB_EXTENSION
 namespace droid.Editor.Utilities.Git {
+  using Enumerable = System.Linq.Enumerable;
+
   /// <summary>
-  ///
   /// </summary>
   public static class GithubExtension {
     const string _k_display_none = "display-none";
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="element"></param>
     /// <param name="value"></param>
-    public static void SetElementDisplay(VisualElement element, bool value) {
+    public static void SetElementDisplay(UnityEngine.UIElements.VisualElement element, bool value) {
       if (element == null) {
         return;
       }
@@ -31,21 +21,21 @@ namespace droid.Editor.Utilities.Git {
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="element"></param>
     /// <returns></returns>
-    public static bool IsElementDisplay(VisualElement element) {
+    public static bool IsElementDisplay(UnityEngine.UIElements.VisualElement element) {
       return !HasElementClass(element : element, class_name : _k_display_none);
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="element"></param>
     /// <param name="class_name"></param>
     /// <param name="value"></param>
-    public static void SetElementClass(VisualElement element, string class_name, bool value) {
+    public static void SetElementClass(UnityEngine.UIElements.VisualElement element,
+                                       string class_name,
+                                       bool value) {
       if (element == null) {
         return;
       }
@@ -58,12 +48,11 @@ namespace droid.Editor.Utilities.Git {
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="element"></param>
     /// <param name="class_name"></param>
     /// <returns></returns>
-    public static bool HasElementClass(VisualElement element, string class_name) {
+    public static bool HasElementClass(UnityEngine.UIElements.VisualElement element, string class_name) {
       if (element == null) {
         return false;
       }
@@ -72,28 +61,28 @@ namespace droid.Editor.Utilities.Git {
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="package_info"></param>
     /// <returns></returns>
-    public static string GetRepoUrl(PackageInfo package_info) {
+    public static string GetRepoUrl(UnityEditor.PackageManager.PackageInfo package_info) {
       return GetRepoUrl(package_id : package_info != null ? package_info.packageId : "");
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="package_id"></param>
     /// <returns></returns>
     public static string GetRepoUrl(string package_id) {
-      var m = Regex.Match(input : package_id, "^[^@]+@([^#]+)(#.+)?$");
+      var m = System.Text.RegularExpressions.Regex.Match(input : package_id, "^[^@]+@([^#]+)(#.+)?$");
       if (m.Success) {
         var repo_url = m.Groups[1].Value;
-        repo_url = Regex.Replace(input : repo_url, "(git:)?git@([^:]+):", "https://$2/");
+        repo_url = System.Text.RegularExpressions.Regex.Replace(input : repo_url,
+                                                                "(git:)?git@([^:]+):",
+                                                                "https://$2/");
         //repoUrl = repoUrl.Replace ("github.com:", "https://github.com/");
         repo_url = repo_url.Replace("ssh://", "https://");
         repo_url = repo_url.Replace("git@", "");
-        repo_url = Regex.Replace(input : repo_url, "\\.git$", "");
+        repo_url = System.Text.RegularExpressions.Regex.Replace(input : repo_url, "\\.git$", "");
 
         return repo_url;
       }
@@ -102,21 +91,20 @@ namespace droid.Editor.Utilities.Git {
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="package_info"></param>
     /// <returns></returns>
-    public static string GetRepoId(PackageInfo package_info) {
+    public static string GetRepoId(UnityEditor.PackageManager.PackageInfo package_info) {
       return GetRepoId(package_id : package_info != null ? package_info.packageId : "");
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="package_id"></param>
     /// <returns></returns>
     public static string GetRepoId(string package_id) {
-      var m = Regex.Match(input : GetRepoUrl(package_id : package_id), "/([^/]+/[^/]+)$");
+      var m = System.Text.RegularExpressions.Regex.Match(input : GetRepoUrl(package_id : package_id),
+                                                         "/([^/]+/[^/]+)$");
       if (m.Success) {
         return m.Groups[1].Value;
       }
@@ -125,7 +113,6 @@ namespace droid.Editor.Utilities.Git {
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="package_id"></param>
     /// <param name="method_path"></param>
@@ -133,34 +120,39 @@ namespace droid.Editor.Utilities.Git {
     public static string GetApiRequestUrl(string package_id, string method_path) {
       var repo_id = GetRepoId(package_id : package_id);
       if (package_id.Contains("github.com")) {
-        return "https://api.github.com/repos/" + repo_id + "/" + method_path;
+        return $"https://api.github.com/repos/{repo_id}/{method_path}";
       }
 
       return "";
     }
 
-    public static AsyncOperation RequestTags(string package_id, List<string> result) {
+    public static UnityEngine.AsyncOperation
+        RequestTags(string package_id, System.Collections.Generic.List<string> result) {
       return Request(url : GetApiRequestUrl(package_id : package_id, "tags"),
                      x => FillRefNamesFromResponse(res : x, result : result));
     }
 
-    public static AsyncOperation RequestBranches(string package_id, List<string> result) {
+    public static UnityEngine.AsyncOperation
+        RequestBranches(string package_id, System.Collections.Generic.List<string> result) {
       return Request(url : GetApiRequestUrl(package_id : package_id, "branches"),
                      x => FillRefNamesFromResponse(res : x, result : result));
     }
 
-    public static void FillRefNamesFromResponse(string res, List<string> result) {
+    public static void FillRefNamesFromResponse(string res, System.Collections.Generic.List<string> result) {
       result.Clear();
-      result.AddRange(collection : Regex.Matches(input : res, "\\s*\"name\": \"(.+)\",").Cast<Match>()
-                                        .Select(x => x.Groups[1].Value));
+      result.AddRange(collection :
+                      Enumerable.Select(source : Enumerable.Cast<System.Text.RegularExpressions.Match>(source : System.Text
+                                                                                                                      .RegularExpressions.Regex
+                                                                                                                      .Matches(input : res, "\\s*\"name\": \"(.+)\",")),
+                                        x => x.Groups[1].Value));
     }
 
-    public static string GetRevisionHash(PackageInfo package_info) {
+    public static string GetRevisionHash(UnityEditor.PackageManager.PackageInfo package_info) {
       return GetRevisionHash(resolved_path : package_info != null ? package_info.resolvedPath : "");
     }
 
     public static string GetRevisionHash(string resolved_path) {
-      var m = Regex.Match(input : resolved_path, "@([^@]+)$");
+      var m = System.Text.RegularExpressions.Regex.Match(input : resolved_path, "@([^@]+)$");
       if (m.Success) {
         return m.Groups[1].Value;
       }
@@ -168,7 +160,7 @@ namespace droid.Editor.Utilities.Git {
       return "";
     }
 
-    public static string GetFileUrl(PackageInfo package_info, string file_path) {
+    public static string GetFileUrl(UnityEditor.PackageManager.PackageInfo package_info, string file_path) {
       return package_info != null
                  ? GetFileUrl(package_id : package_info.packageId,
                               resolved_path : package_info.resolvedPath,
@@ -195,10 +187,10 @@ namespace droid.Editor.Utilities.Git {
         return "";
       }
 
-      var m = Regex.Match(input : package_id, "^([^#]+)(#.+)?$");
+      var m = System.Text.RegularExpressions.Regex.Match(input : package_id, "^([^#]+)(#.+)?$");
       if (m.Success) {
         var id = m.Groups[1].Value;
-        return string.IsNullOrEmpty(value : tag) ? id : id + "#" + tag;
+        return string.IsNullOrEmpty(value : tag) ? id : $"{id}#{tag}";
       }
 
       return "";
@@ -206,15 +198,15 @@ namespace droid.Editor.Utilities.Git {
 
     public static string GetRequestCache(string url) {
       var path = GetRequestCachePath(url : url);
-      return File.Exists(path : path)
-             && (DateTime.UtcNow - File.GetLastWriteTimeUtc(path : path)).TotalSeconds < 300
-                 ? File.ReadAllText(path : path)
+      return System.IO.File.Exists(path : path)
+             && (System.DateTime.UtcNow - System.IO.File.GetLastWriteTimeUtc(path : path)).TotalSeconds < 300
+                 ? System.IO.File.ReadAllText(path : path)
                  : null;
     }
 
-    public static string GetRequestCachePath(string url) { return "Temp/RequestCache_" + url.GetHashCode(); }
+    public static string GetRequestCachePath(string url) { return $"Temp/RequestCache_{url.GetHashCode()}"; }
 
-    public static AsyncOperation Request(string url, Action<string> on_success) {
+    public static UnityEngine.AsyncOperation Request(string url, System.Action<string> on_success) {
       if (string.IsNullOrEmpty(value : url)) {
         return null;
       }
@@ -225,17 +217,17 @@ namespace droid.Editor.Utilities.Git {
         return null;
       }
 
-      var www = UnityWebRequest.Get(uri : url);
+      var www = UnityEngine.Networking.UnityWebRequest.Get(uri : url);
       var op = www.SendWebRequest();
       op.completed += _ => {
                         if (www.isHttpError || www.isHttpError || !string.IsNullOrEmpty(value : www.error)) {
-                          Debug.LogError(message : www.error);
+                          UnityEngine.Debug.LogError(message : www.error);
                           www.Dispose();
                           return;
                         }
 
                         var path = GetRequestCachePath(url : url);
-                        File.WriteAllText(path : path, contents : www.downloadHandler.text);
+                        System.IO.File.WriteAllText(path : path, contents : www.downloadHandler.text);
                         on_success(obj : www.downloadHandler.text);
                         www.Dispose();
                       };

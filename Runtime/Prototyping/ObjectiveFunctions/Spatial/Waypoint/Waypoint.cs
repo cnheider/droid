@@ -1,12 +1,9 @@
-using System;
-using UnityEngine;
-
 namespace droid.Runtime.Prototyping.ObjectiveFunctions.Spatial.Waypoint {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  public class Waypoint : MonoBehaviour {
-    [SerializeField] float radius = 1.0f;
+  public class Waypoint : UnityEngine.MonoBehaviour {
+    [UnityEngine.SerializeField] float radius = 1.0f;
 
     public float Radius { get { return this.radius; } }
   }

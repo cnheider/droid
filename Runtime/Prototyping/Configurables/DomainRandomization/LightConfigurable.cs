@@ -1,54 +1,55 @@
-﻿using droid.Runtime.Interfaces;
-using droid.Runtime.Messaging.Messages;
-using droid.Runtime.Sampling;
-using droid.Runtime.Structs.Space;
-using droid.Runtime.Structs.Space.Sample;
-using droid.Runtime.Utilities;
-using UnityEngine;
-
-namespace droid.Runtime.Prototyping.Configurables.DomainRandomization {
+﻿namespace droid.Runtime.Prototyping.Configurables.DomainRandomization {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
-                               + "Light"
-                               + ConfigurableComponentMenuPath._Postfix)]
-  [RequireComponent(requiredComponent : typeof(Light))]
+  [UnityEngine.AddComponentMenu(menuName : ConfigurableComponentMenuPath._ComponentMenuPath
+                                           + "Light"
+                                           + ConfigurableComponentMenuPath._Postfix)]
+  [UnityEngine.RequireComponent(requiredComponent : typeof(UnityEngine.Light))]
   public class LightConfigurable : Configurable {
-    string _color_r;
-    string _color_g;
+    [UnityEngine.SerializeField]
+    droid.Runtime.Structs.Space.Sample.SampleSpace3 _color_space =
+        new droid.Runtime.Structs.Space.Sample.SampleSpace3 {
+                                                                _space =
+                                                                    new droid.Runtime.Structs.Space.Space3 {
+                                                                        DecimalGranularity = 2,
+                                                                        Min =
+                                                                            UnityEngine.Vector3.one * 0.7f,
+                                                                        Max = UnityEngine.Vector3.one * 1f
+                                                                    }
+                                                            };
+
+    [UnityEngine.SerializeField]
+    droid.Runtime.Structs.Space.Sample.SampleSpace3 _int_ind_sha_space =
+        new droid.Runtime.Structs.Space.Sample.SampleSpace3 {
+                                                                _space =
+                                                                    new droid.Runtime.Structs.Space.Space3 {
+                                                                        DecimalGranularity = 2,
+                                                                        Min =
+                                                                            UnityEngine.Vector3.one * 0.7f,
+                                                                        Max = UnityEngine.Vector3.one * 1f
+                                                                    },
+                                                                DistributionSampler =
+                                                                    new droid.Runtime.Sampling.
+                                                                    DistributionSampler(distribution_enum :
+                                                                      droid.Runtime.Sampling
+                                                                          .DistributionEnum.Linear_) {
+                                                                        DistributionParameter = -1
+                                                                    }
+                                                            };
+
     string _color_b;
-    string _shadow_strength;
-    string _intensity;
+    string _color_g;
+    string _color_r;
     string _indirect_multiplier;
+    string _intensity;
 
-    Light _light;
+    UnityEngine.Light _light;
+    string _shadow_strength;
 
-    [SerializeField]
-    SampleSpace3 _color_space = new SampleSpace3 {
-                                                     _space = new Space3 {
-                                                                             DecimalGranularity = 2,
-                                                                             Min = Vector3.one * 0.7f,
-                                                                             Max = Vector3.one * 1f
-                                                                         }
-                                                 };
-
-    [SerializeField]
-    SampleSpace3 _int_ind_sha_space = new SampleSpace3 {
-                                                           _space =
-                                                               new Space3 {
-                                                                              DecimalGranularity = 2,
-                                                                              Min = Vector3.one * 0.7f,
-                                                                              Max = Vector3.one * 1f,
-                                                                          },
-                                                           DistributionSampler =
-                                                               new DistributionSampler(distribution_enum :
-                                                                                       DistributionEnum
-                                                                                           .Linear_) {
-                                                                                                         DistributionParameter
-                                                                                                             = -1
-                                                                                                     }
-                                                       };
+    /// <summary>
+    /// </summary>
+    public droid.Runtime.Interfaces.ISamplable ConfigurableValueSpace { get { return this._color_space; } }
 
     /// <inheritdoc />
     /// <summary>
@@ -61,7 +62,7 @@ namespace droid.Runtime.Prototyping.Configurables.DomainRandomization {
       this._intensity = this.Identifier + "Intensity";
       this._indirect_multiplier = this.Identifier + "IndirectMultiplier";
 
-      this._light = this.GetComponent<Light>();
+      this._light = this.GetComponent<UnityEngine.Light>();
     }
 
     /// <inheritdoc />
@@ -69,29 +70,29 @@ namespace droid.Runtime.Prototyping.Configurables.DomainRandomization {
     /// </summary>
     protected override void RegisterComponent() {
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._shadow_strength);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._shadow_strength);
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._color_r);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._color_r);
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._color_b);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._color_b);
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._color_g);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._color_g);
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._intensity);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._intensity);
       this.ParentEnvironment =
-          NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
-                                                          c : (Configurable)this,
-                                                          identifier : this._indirect_multiplier);
+          droid.Runtime.Utilities.NeodroidRegistrationUtilities.RegisterComponent(r : this.ParentEnvironment,
+            c : (Configurable)this,
+            identifier : this._indirect_multiplier);
     }
 
     /// <inheritdoc />
@@ -111,24 +112,19 @@ namespace droid.Runtime.Prototyping.Configurables.DomainRandomization {
     }
 
     /// <summary>
-    ///
-    /// </summary>
-    public ISamplable ConfigurableValueSpace { get { return this._color_space; } }
-
-    /// <summary>
-    ///
     /// </summary>
     public override void UpdateCurrentConfiguration() { }
 
     /// <summary>
     /// </summary>
     /// <param name="configuration"></param>
-    public override void ApplyConfiguration(IConfigurableConfiguration configuration) {
+    public override void
+        ApplyConfiguration(droid.Runtime.Interfaces.IConfigurableConfiguration configuration) {
       #if NEODROID_DEBUG
       if (this.Debugging) {
-        DebugPrinting.ApplyPrint(debugging : this.Debugging,
-                                 configuration : configuration,
-                                 identifier : this.Identifier);
+        droid.Runtime.Utilities.DebugPrinting.ApplyPrint(debugging : this.Debugging,
+                                                         configuration : configuration,
+                                                         identifier : this.Identifier);
       }
       #endif
 
@@ -157,18 +153,25 @@ namespace droid.Runtime.Prototyping.Configurables.DomainRandomization {
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public override Configuration[] SampleConfigurations() {
+    public override droid.Runtime.Messaging.Messages.Configuration[] SampleConfigurations() {
       var o = this._int_ind_sha_space.Sample();
       var v = this._color_space.Sample();
 
       return new[] {
-                       new Configuration(configurable_name : this._color_r, configurable_value : v.x),
-                       new Configuration(configurable_name : this._color_g, configurable_value : v.y),
-                       new Configuration(configurable_name : this._color_b, configurable_value : v.z),
-                       new Configuration(configurable_name : this._intensity, configurable_value : o.x),
-                       new Configuration(configurable_name : this._indirect_multiplier,
-                                         configurable_value : o.y),
-                       new Configuration(configurable_name : this._shadow_strength, configurable_value : o.z)
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._color_r,
+                         configurable_value : v.x),
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._color_g,
+                         configurable_value : v.y),
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._color_b,
+                         configurable_value : v.z),
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name : this._intensity,
+                         configurable_value : o.x),
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name :
+                         this._indirect_multiplier,
+                         configurable_value : o.y),
+                       new droid.Runtime.Messaging.Messages.Configuration(configurable_name :
+                         this._shadow_strength,
+                         configurable_value : o.z)
                    };
     }
   }

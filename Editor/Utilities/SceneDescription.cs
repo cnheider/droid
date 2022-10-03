@@ -1,11 +1,4 @@
-﻿using System.IO;
-using droid.Runtime.Managers;
-using Newtonsoft.Json;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-#if UNITY_EDITOR
-using System.Linq;
-using UnityEditor;
+﻿#if UNITY_EDITOR
 
 namespace droid.Editor.Utilities {
   /// <inheritdoc />
@@ -13,35 +6,36 @@ namespace droid.Editor.Utilities {
   ///   Scene preview.
   ///   https://diegogiacomelli.com.br/unity3d-scenepreview-inspector/
   /// </summary>
-  [CustomEditor(inspectedType : typeof(SceneAsset))]
-  [CanEditMultipleObjects]
+  [UnityEditor.CustomEditor(inspectedType : typeof(UnityEditor.SceneAsset))]
+  [UnityEditor.CanEditMultipleObjects]
   public class SceneDescription : UnityEditor.Editor {
     /// <summary>
     /// </summary>
-    [RuntimeInitializeOnLoadMethod]
+    [UnityEngine.RuntimeInitializeOnLoadMethodAttribute]
     public static void CaptureDescription() {
       if (NeodroidSettings.Current.NeodroidGenerateDescriptionsProp) {
-        var preview_path = GetDescriptionPath(scene_name : SceneManager.GetActiveScene().name);
+        var preview_path =
+            GetDescriptionPath(scene_name : UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         #if NEODROID_DEBUG
-        Debug.Log(message : $"Saving scene preview at {preview_path}");
+        UnityEngine.Debug.Log(message : $"Saving scene preview at {preview_path}");
         #endif
         MakeDescription(name : preview_path);
       }
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="name"></param>
     public static void MakeDescription(string name) {
-      var serializer = new JsonSerializer {NullValueHandling = NullValueHandling.Ignore};
-      var simulation_manager = FindObjectOfType<AbstractNeodroidManager>();
+      var serializer =
+          new Newtonsoft.Json.JsonSerializer {NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore};
+      var simulation_manager = FindObjectOfType<droid.Runtime.Managers.AbstractNeodroidManager>();
 
-      var path = Path.GetDirectoryName(path : name);
-      Directory.CreateDirectory(path : path);
+      var path = System.IO.Path.GetDirectoryName(path : name);
+      System.IO.Directory.CreateDirectory(path : path);
 
-      using (var sw = new StreamWriter(path : name)) {
-        using (JsonWriter writer = new JsonTextWriter(textWriter : sw)) {
+      using (var sw = new System.IO.StreamWriter(path : name)) {
+        using (Newtonsoft.Json.JsonWriter writer = new Newtonsoft.Json.JsonTextWriter(textWriter : sw)) {
           serializer.Serialize(jsonWriter : writer, value : simulation_manager.ToString());
         }
       }
@@ -53,12 +47,17 @@ namespace droid.Editor.Utilities {
     public override void OnInspectorGUI() {
       if (NeodroidSettings.Current.NeodroidGeneratePreviewsProp) {
         //AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
-        var scene_names = this.targets.Select(t => ((SceneAsset)t).name).OrderBy(n => n).ToArray();
+        var scene_names =
+            System.Linq.Enumerable.ToArray(source :
+                                           System.Linq.Enumerable.OrderBy(source : System.Linq.Enumerable
+                                                 .Select(source : this.targets,
+                                                         t => ((UnityEditor.SceneAsset)t).name),
+                                             n => n));
 
         var previews_count = scene_names.Length;
-        var preview_width = Screen.width;
+        var preview_width = UnityEngine.Screen.width;
         var preview_height =
-            (Screen.height
+            (UnityEngine.Screen.height
              - NeodroidEditorConstants._Editor_Margin * 2
              - NeodroidEditorConstants._Preview_Margin * previews_count)
             / previews_count;
@@ -72,7 +71,12 @@ namespace droid.Editor.Utilities {
       }
 
       if (NeodroidSettings.Current.NeodroidGeneratePreviewsProp) {
-        var scene_names = this.targets.Select(t => ((SceneAsset)t).name).OrderBy(n => n).ToArray();
+        var scene_names =
+            System.Linq.Enumerable.ToArray(source :
+                                           System.Linq.Enumerable.OrderBy(source : System.Linq.Enumerable
+                                                 .Select(source : this.targets,
+                                                         t => ((UnityEditor.SceneAsset)t).name),
+                                             n => n));
 
         for (var i = 0; i < scene_names.Length; i++) {
           PrintDescription(index : i, scene_name : scene_names[i]);
@@ -85,18 +89,18 @@ namespace droid.Editor.Utilities {
       var preview = LoadDescription(file_path : preview_path);
 
       if (preview != null) {
-        EditorGUILayout.HelpBox(message : preview, type : MessageType.Info);
+        UnityEditor.EditorGUILayout.HelpBox(message : preview, type : UnityEditor.MessageType.Info);
       } else {
-        EditorGUILayout.HelpBox(message :
-                                $"There is no image preview for scene {scene_name} at {preview_path}. Please play the scene on editor and image preview will be captured automatically or create the missing path: {NeodroidSettings.Current.NeodroidPreviewsLocationProp}.",
-                                type : MessageType.Info);
+        UnityEditor.EditorGUILayout.HelpBox(message :
+                                            $"There is no image preview for scene {scene_name} at {preview_path}. Please play the scene on editor and image preview will be captured automatically or create the missing path: {NeodroidSettings.Current.NeodroidPreviewsLocationProp}.",
+                                            type : UnityEditor.MessageType.Info);
       }
     }
 
     static string GetDescriptionPath(string scene_name) {
       //return $"{NeodroidEditorInfo.ScenePreviewsLocation}{scene_name}.png";
       return
-          $"{Application.dataPath}/{NeodroidSettings.Current.NeodroidDescriptionLocationProp}{scene_name}.md";
+          $"{UnityEngine.Application.dataPath}/{NeodroidSettings.Current.NeodroidDescriptionLocationProp}{scene_name}.md";
     }
 
     /// <summary>
@@ -106,8 +110,8 @@ namespace droid.Editor.Utilities {
     public static string LoadDescription(string file_path) {
       var description = "The is no description available, press play to generate a description";
 
-      if (File.Exists(path : file_path)) {
-        using (var sr = new StreamReader(path : file_path)) {
+      if (System.IO.File.Exists(path : file_path)) {
+        using (var sr = new System.IO.StreamReader(path : file_path)) {
           description = sr.ReadToEnd();
         }
       }

@@ -1,63 +1,53 @@
-﻿using droid.Runtime.GameObjects.NeodroidCamera.Segmentation.Obsolete;
-using UnityEngine;
-#if UNITY_EDITOR
-using droid.Runtime.Structs;
-using UnityEditor;
-
+﻿#if UNITY_EDITOR
 namespace droid.Editor.Windows {
   /// <summary>
-  ///
   /// </summary>
-  public class SegmentationWindow : EditorWindow {
-    [SerializeField] ColorByInstance[] colorsByInstance;
+  public class SegmentationWindow : UnityEditor.EditorWindow {
+    [UnityEngine.SerializeField] droid.Runtime.Structs.ColorByInstance[] colorsByInstance;
 
-    [SerializeField] ColorByCategory[] _colorsByCategory;
-    Texture _icon;
+    [UnityEngine.SerializeField] droid.Runtime.Structs.ColorByCategory[] _colorsByCategory;
+    UnityEngine.Texture _icon;
 
-    Vector2 _scroll_position;
-
-    /// <summary>
-    ///
-    /// </summary>
-    [MenuItem(itemName : EditorWindowMenuPath._WindowMenuPath + "SegmentationWindow")]
-    [MenuItem(itemName : EditorWindowMenuPath._ToolMenuPath + "SegmentationWindow")]
-    public static void ShowWindow() {
-      GetWindow(t : typeof(SegmentationWindow)); //Show existing window instance. If one doesn't exist, make one.
-    }
+    UnityEngine.Vector2 _scroll_position;
 
     void OnEnable() {
       this._icon =
-          (Texture2D)AssetDatabase.LoadAssetAtPath(assetPath :
-                                                   NeodroidSettings.Current.NeodroidImportLocationProp
-                                                   + "Gizmos/Icons/color_wheel.png",
-                                                   type : typeof(Texture2D));
-      this.titleContent = new GUIContent("Neo:Seg", image : this._icon, "Window for segmentation");
+          (UnityEngine.Texture2D)UnityEditor.AssetDatabase.LoadAssetAtPath(assetPath :
+            $"{NeodroidSettings.Current.NeodroidImportLocationProp}Gizmos/Icons/color_wheel.png",
+            type : typeof(UnityEngine.Texture2D));
+      this.titleContent =
+          new UnityEngine.GUIContent("Neo:Seg", image : this._icon, "Window for segmentation");
     }
 
     void OnGUI() {
-      GUILayout.Label("Segmentation Colors", style : EditorStyles.boldLabel);
-      var serialised_object = new SerializedObject(obj : this);
-      this._scroll_position = EditorGUILayout.BeginScrollView(scrollPosition : this._scroll_position);
-      EditorGUILayout.BeginVertical("Box");
-      GUILayout.Label("By Tag");
-      var material_changers_by_tag = FindObjectsOfType<ChangeMaterialOnRenderByTag>();
+      UnityEngine.GUILayout.Label("Segmentation Colors", style : UnityEditor.EditorStyles.boldLabel);
+      var serialised_object = new UnityEditor.SerializedObject(obj : this);
+      this._scroll_position =
+          UnityEditor.EditorGUILayout.BeginScrollView(scrollPosition : this._scroll_position);
+      UnityEditor.EditorGUILayout.BeginVertical("Box");
+      UnityEngine.GUILayout.Label("By Tag");
+      var material_changers_by_tag =
+          FindObjectsOfType<droid.Runtime.GameObjects.NeodroidCamera.Segmentation.Obsolete.
+              ChangeMaterialOnRenderByTag>();
       foreach (var material_changer_by_tag in material_changers_by_tag) {
         this._colorsByCategory = material_changer_by_tag.ColorsByCategory;
         if (this._colorsByCategory != null) {
           var tag_colors_property = serialised_object.FindProperty("_segmentation_colors_by_tag");
-          EditorGUILayout.PropertyField(property : tag_colors_property,
-                                        label : new GUIContent(text : material_changer_by_tag.name),
-                                        true); // True means show children
+          UnityEditor.EditorGUILayout.PropertyField(property : tag_colors_property,
+                                                    label : new
+                                                        UnityEngine.GUIContent(text : material_changer_by_tag
+                                                            .name),
+                                                    true); // True means show children
           material_changer_by_tag._Replace_Untagged_Color =
-              EditorGUILayout.Toggle("  -  Replace untagged colors",
-                                     value : material_changer_by_tag._Replace_Untagged_Color);
+              UnityEditor.EditorGUILayout.Toggle("  -  Replace untagged colors",
+                                                 value : material_changer_by_tag._Replace_Untagged_Color);
           material_changer_by_tag._Untagged_Color =
-              EditorGUILayout.ColorField("  -  Untagged color",
-                                         value : material_changer_by_tag._Untagged_Color);
+              UnityEditor.EditorGUILayout.ColorField("  -  Untagged color",
+                                                     value : material_changer_by_tag._Untagged_Color);
         }
       }
 
-      EditorGUILayout.EndVertical();
+      UnityEditor.EditorGUILayout.EndVertical();
 
       /*var material_changer = FindObjectOfType<ChangeMaterialOnRenderByTag> ();
     if(material_changer){
@@ -65,22 +55,34 @@ namespace droid.Editor.Windows {
       SerializedProperty game_object_colors_property = serialised_object.FindProperty ("_segmentation_colors_by_game_object");
       EditorGUILayout.PropertyField(tag_colors_property, true); // True means show children
     }*/
-      EditorGUILayout.BeginVertical("Box");
-      GUILayout.Label("By Instance (Not changable, only for inspection) ");
-      var material_changers_by_instance = FindObjectsOfType<ChangeMaterialOnRenderByInstance>();
+      UnityEditor.EditorGUILayout.BeginVertical("Box");
+      UnityEngine.GUILayout.Label("By Instance (Not changable, only for inspection) ");
+      var material_changers_by_instance =
+          FindObjectsOfType<droid.Runtime.GameObjects.NeodroidCamera.Segmentation.Obsolete.
+              ChangeMaterialOnRenderByInstance>();
       foreach (var material_changer_by_instance in material_changers_by_instance) {
         this.colorsByInstance = material_changer_by_instance.InstanceColors;
         if (this.colorsByInstance != null) {
           var instance_colors_property = serialised_object.FindProperty("_segmentation_colors_by_instance");
-          EditorGUILayout.PropertyField(property : instance_colors_property,
-                                        label : new GUIContent(text : material_changer_by_instance.name),
-                                        true); // True means show children
+          UnityEditor.EditorGUILayout.PropertyField(property : instance_colors_property,
+                                                    label : new
+                                                        UnityEngine.GUIContent(text :
+                                                          material_changer_by_instance.name),
+                                                    true); // True means show children
         }
       }
 
-      EditorGUILayout.EndVertical();
-      EditorGUILayout.EndScrollView();
+      UnityEditor.EditorGUILayout.EndVertical();
+      UnityEditor.EditorGUILayout.EndScrollView();
       serialised_object.ApplyModifiedProperties(); // Remember to apply modified properties
+    }
+
+    /// <summary>
+    /// </summary>
+    [UnityEditor.MenuItem(itemName : EditorWindowMenuPath._WindowMenuPath + "SegmentationWindow")]
+    [UnityEditor.MenuItem(itemName : EditorWindowMenuPath._ToolMenuPath + "SegmentationWindow")]
+    public static void ShowWindow() {
+      GetWindow(t : typeof(SegmentationWindow)); //Show existing window instance. If one doesn't exist, make one.
     }
   }
 }

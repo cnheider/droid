@@ -1,27 +1,28 @@
-using UnityEngine;
-
 namespace droid.Runtime.GameObjects.Flipping {
   /// <summary>
-  ///
   /// </summary>
-  public class Flipper : MonoBehaviour {
-    [SerializeField] ComputeShader _shader;
-    [SerializeField] Texture2D _texture_2d;
+  public class Flipper : UnityEngine.MonoBehaviour {
+    [UnityEngine.SerializeField] UnityEngine.ComputeShader _shader;
+    [UnityEngine.SerializeField] UnityEngine.Texture2D _texture_2d;
 
-    void Start() { this._texture_2d = new Texture2D(256, 256); }
+    void Start() { this._texture_2d = new UnityEngine.Texture2D(256, 256); }
+
+    void OnRenderImage(UnityEngine.RenderTexture src, UnityEngine.RenderTexture dest) {
+      this.FlipImage(my_texture : src, result : this._texture_2d);
+
+      UnityEngine.Graphics.Blit(source : this._texture_2d, dest : dest);
+    }
 
     /// <summary>
-    ///
     /// </summary>
     /// <param name="my_texture"></param>
     /// <param name="result"></param>
-    public void FlipImage(Texture my_texture, Texture2D result) {
+    public void FlipImage(UnityEngine.Texture my_texture, UnityEngine.Texture2D result) {
       var kernel_handle = this._shader.FindKernel("Flip");
       var tex =
-          new RenderTexture(width : my_texture.width, height : my_texture.height, 24) {
-                                                                                          enableRandomWrite =
-                                                                                              true
-                                                                                      };
+          new UnityEngine.RenderTexture(width : my_texture.width, height : my_texture.height, 24) {
+              enableRandomWrite = true
+          };
       tex.Create();
 
       this._shader.SetTexture(kernelIndex : kernel_handle, "Result", texture : tex);
@@ -33,20 +34,14 @@ namespace droid.Runtime.GameObjects.Flipping {
                             threadGroupsY : my_texture.height / 8,
                             1);
 
-      RenderTexture.active = tex;
-      result.ReadPixels(source : new Rect(0,
-                                          0,
-                                          width : tex.width,
-                                          height : tex.height),
-                        destX : 0,
-                        destY : 0);
+      UnityEngine.RenderTexture.active = tex;
+      result.ReadPixels(source : new UnityEngine.Rect(0,
+                                                      0,
+                                                      width : tex.width,
+                                                      height : tex.height),
+                        0,
+                        0);
       result.Apply();
-    }
-
-    void OnRenderImage(RenderTexture src, RenderTexture dest) {
-      this.FlipImage(my_texture : src, result : this._texture_2d);
-
-      Graphics.Blit(source : this._texture_2d, dest : dest);
     }
   }
 }

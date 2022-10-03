@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEngine;
-using Conditional = System.Diagnostics.ConditionalAttribute;
-using Object = UnityEngine.Object;
+﻿using Conditional = System.Diagnostics.ConditionalAttribute;
 
 namespace droid.Editor.Utilities {
 /*
@@ -29,29 +24,34 @@ Important Notes:
     /// <summary>
     /// </summary>
     public static class Draw {
+      #region Nested type: DrawEditor
+
       #region Editor
 
       #if UNITY_EDITOR
       /// <summary>
       /// </summary>
-      [InitializeOnLoad]
+      [UnityEditor.InitializeOnLoadAttribute]
       public static class DrawEditor {
         static DrawEditor() {
           //	set a low execution order
-          var name = typeof(RuntimeDebugDraw.Internal.RuntimeDebugDraw).Name;
-          foreach (var mono_script in MonoImporter.GetAllRuntimeMonoScripts()) {
+          var name =
+              typeof(droid.Editor.Utilities.RuntimeDebugDraw.RuntimeDebugDraw.Internal.RuntimeDebugDraw).Name;
+          foreach (var mono_script in UnityEditor.MonoImporter.GetAllRuntimeMonoScripts()) {
             if (name != mono_script.name) {
               continue;
             }
 
-            if (MonoImporter.GetExecutionOrder(script : mono_script) != 9990) {
-              MonoImporter.SetExecutionOrder(script : mono_script, 9990);
+            if (UnityEditor.MonoImporter.GetExecutionOrder(script : mono_script) != 9990) {
+              UnityEditor.MonoImporter.SetExecutionOrder(script : mono_script, 9990);
               return;
             }
           }
         }
       }
       #endif
+
+      #endregion
 
       #endregion
 
@@ -70,13 +70,13 @@ Important Notes:
       /// <summary>
       ///   Default color for Draws.
       /// </summary>
-      public static Color _DrawDefaultColor = Color.white;
+      public static UnityEngine.Color _DrawDefaultColor = UnityEngine.Color.white;
 
       /// <summary>
       ///   Which camera to use for line drawing and texts coordinate calculation.
       /// </summary>
       /// <returns>Camera to debug draw on, returns null will mute debug drawing.</returns>
-      public static Camera GetDebugDrawCamera() { return Camera.main; }
+      public static UnityEngine.Camera GetDebugDrawCamera() { return UnityEngine.Camera.main; }
 
       const string _conditional_flag = "NEODROID_DEBUG";
 
@@ -89,7 +89,11 @@ Important Notes:
       /// <param name="duration">How long the line should be visible for.</param>
       /// <param name="depth_test">Should the line be obscured by objects closer to the camera?</param>
       [Conditional(conditionString : _conditional_flag)]
-      public static void DrawLine(Vector3 start, Vector3 end, Color color, float duration, bool depth_test) {
+      public static void DrawLine(UnityEngine.Vector3 start,
+                                  UnityEngine.Vector3 end,
+                                  UnityEngine.Color color,
+                                  float duration,
+                                  bool depth_test) {
         CheckAndBuildHiddenRtDrawObject();
         _rt_draw.RegisterLine(start : start,
                               end : end,
@@ -107,7 +111,11 @@ Important Notes:
       /// <param name="duration">How long the line will be visible for (in seconds).</param>
       /// <param name="depth_test">Should the line be obscured by other objects closer to the camera?</param>
       [Conditional(conditionString : _conditional_flag)]
-      public static void DrawRay(Vector3 start, Vector3 dir, Color color, float duration, bool depth_test) {
+      public static void DrawRay(UnityEngine.Vector3 start,
+                                 UnityEngine.Vector3 dir,
+                                 UnityEngine.Color color,
+                                 float duration,
+                                 bool depth_test) {
         CheckAndBuildHiddenRtDrawObject();
         _rt_draw.RegisterLine(start : start,
                               end : start + dir,
@@ -129,9 +137,9 @@ Important Notes:
       ///   visible.
       /// </param>
       [Conditional(conditionString : _conditional_flag)]
-      public static void DrawText(Vector3 pos,
+      public static void DrawText(UnityEngine.Vector3 pos,
                                   string text,
-                                  Color color,
+                                  UnityEngine.Color color,
                                   int size,
                                   float duration,
                                   bool pop_up = false) {
@@ -153,10 +161,10 @@ Important Notes:
       /// <param name="color">Color for the text.</param>
       /// <param name="size">Font size for the text.</param>
       [Conditional(conditionString : _conditional_flag)]
-      public static void AttachText(Transform transform,
-                                    Func<string> str_func,
-                                    Vector3 offset,
-                                    Color color,
+      public static void AttachText(UnityEngine.Transform transform,
+                                    System.Func<string> str_func,
+                                    UnityEngine.Vector3 offset,
+                                    UnityEngine.Color color,
                                     int size) {
         CheckAndBuildHiddenRtDrawObject();
         _rt_draw.RegisterAttachText(target : transform,
@@ -173,7 +181,7 @@ Important Notes:
       /// <summary>
       ///   Singleton RuntimeDebugDraw component that is needed to call Unity APIs.
       /// </summary>
-      static RuntimeDebugDraw.Internal.RuntimeDebugDraw _rt_draw;
+      static droid.Editor.Utilities.RuntimeDebugDraw.RuntimeDebugDraw.Internal.RuntimeDebugDraw _rt_draw;
 
       /// <summary>
       ///   Check and build
@@ -186,21 +194,25 @@ Important Notes:
         }
 
         //	try reuse existing one first
-        _rt_draw = Object.FindObjectOfType<RuntimeDebugDraw.Internal.RuntimeDebugDraw>();
+        _rt_draw = UnityEngine.Object
+                              .FindObjectOfType<droid.Editor.Utilities.RuntimeDebugDraw.RuntimeDebugDraw.
+                                  Internal.RuntimeDebugDraw>();
         if (_rt_draw != null) {
           return;
         }
 
         //	instantiate an hidden game_object w/ RuntimeDebugDraw attached.
         //	hardcode an GUID in the name so one won't accidentally get this by name.
-        var go = new GameObject(name : _hidden_go_name);
-        var child_go = new GameObject(name : _hidden_go_name);
+        var go = new UnityEngine.GameObject(name : _hidden_go_name);
+        var child_go = new UnityEngine.GameObject(name : _hidden_go_name);
         child_go.transform.parent = go.transform;
-        _rt_draw = child_go.AddComponent<RuntimeDebugDraw.Internal.RuntimeDebugDraw>();
+        _rt_draw = child_go
+            .AddComponent<droid.Editor.Utilities.RuntimeDebugDraw.RuntimeDebugDraw.Internal.RuntimeDebugDraw
+            >();
         //	hack to only hide outer go, so that RuntimeDebugDraw's OnGizmos will work properly.
-        go.hideFlags = HideFlags.HideAndDontSave;
-        if (Application.isPlaying) {
-          Object.DontDestroyOnLoad(target : go);
+        go.hideFlags = UnityEngine.HideFlags.HideAndDontSave;
+        if (UnityEngine.Application.isPlaying) {
+          UnityEngine.Object.DontDestroyOnLoad(target : go);
         }
       }
 
@@ -211,7 +223,7 @@ Important Notes:
       /// <inheritdoc />
       /// <summary>
       /// </summary>
-      class RuntimeDebugDraw : MonoBehaviour {
+      class RuntimeDebugDraw : UnityEngine.MonoBehaviour {
         #region Basics
 
         void CheckInitialized() {
@@ -221,11 +233,11 @@ Important Notes:
           if (this._draw_text_entries == null) {
             this._z_test_batch = new BatchedLineDraw(true);
             this._always_batch = new BatchedLineDraw(false);
-            this._line_entries = new List<DrawLineEntry>(16);
+            this._line_entries = new System.Collections.Generic.List<DrawLineEntry>(16);
 
-            this._text_style = new GUIStyle {alignment = TextAnchor.UpperLeft};
-            this._draw_text_entries = new List<DrawTextEntry>(16);
-            this._attach_text_entries = new List<AttachTextEntry>(16);
+            this._text_style = new UnityEngine.GUIStyle {alignment = UnityEngine.TextAnchor.UpperLeft};
+            this._draw_text_entries = new System.Collections.Generic.List<DrawTextEntry>(16);
+            this._attach_text_entries = new System.Collections.Generic.List<AttachTextEntry>(16);
           }
         }
 
@@ -260,50 +272,54 @@ Important Notes:
         /// <summary>
         /// </summary>
         class DrawLineEntry {
-          public Color _Color;
-          public Vector3 _End;
+          public UnityEngine.Color _Color;
+          public UnityEngine.Vector3 _End;
           public bool _NoZTest;
           public bool _Occupied;
-          public Vector3 _Start;
+          public UnityEngine.Vector3 _Start;
           public float _Timer;
         }
 
-        List<DrawLineEntry> _line_entries;
+        System.Collections.Generic.List<DrawLineEntry> _line_entries;
 
         //	helper class for batching
         /// <summary>
         /// </summary>
-        class BatchedLineDraw : IDisposable {
-          List<Color> _colors;
-          List<int> _indices;
-          public Material _Mat;
-          public Mesh _Mesh;
+        class BatchedLineDraw : System.IDisposable {
+          System.Collections.Generic.List<UnityEngine.Color> _colors;
+          System.Collections.Generic.List<int> _indices;
+          public UnityEngine.Material _Mat;
+          public UnityEngine.Mesh _Mesh;
 
-          List<Vector3> _vertices;
+          System.Collections.Generic.List<UnityEngine.Vector3> _vertices;
 
           public BatchedLineDraw(bool depth_test) {
-            this._Mesh = new Mesh();
+            this._Mesh = new UnityEngine.Mesh();
             this._Mesh.MarkDynamic();
 
             //	relying on a builtin shader, but it shouldn't change that much.
-            this._Mat = new Material(shader : Shader.Find("Hidden/Internal-Colored"));
+            this._Mat = new UnityEngine.Material(shader : UnityEngine.Shader.Find("Hidden/Internal-Colored"));
             this._Mat.SetInt(nameID : _z_test,
                              value : depth_test
                                          ? 4 // LEqual
                                          : 0 // Always
                             );
 
-            this._vertices = new List<Vector3>();
-            this._colors = new List<Color>();
-            this._indices = new List<int>();
+            this._vertices = new System.Collections.Generic.List<UnityEngine.Vector3>();
+            this._colors = new System.Collections.Generic.List<UnityEngine.Color>();
+            this._indices = new System.Collections.Generic.List<int>();
           }
+
+          #region IDisposable Members
 
           public void Dispose() {
             DestroyImmediate(obj : this._Mesh);
             DestroyImmediate(obj : this._Mat);
           }
 
-          public void AddLine(Vector3 from, Vector3 to, Color color) {
+          #endregion
+
+          public void AddLine(UnityEngine.Vector3 from, UnityEngine.Vector3 to, UnityEngine.Color color) {
             this._vertices.Add(item : from);
             this._vertices.Add(item : to);
             this._colors.Add(item : color);
@@ -324,7 +340,7 @@ Important Notes:
             this._Mesh.SetVertices(inVertices : this._vertices);
             this._Mesh.SetColors(inColors : this._colors);
             this._Mesh.SetIndices(indices : this._indices.ToArray(),
-                                  topology : MeshTopology.Lines,
+                                  topology : UnityEngine.MeshTopology.Lines,
                                   0); // cant get rid of this alloc for now
           }
         }
@@ -333,7 +349,11 @@ Important Notes:
         BatchedLineDraw _always_batch;
         bool _lines_need_rebuild;
 
-        public void RegisterLine(Vector3 start, Vector3 end, Color color, float timer, bool no_z_test) {
+        public void RegisterLine(UnityEngine.Vector3 start,
+                                 UnityEngine.Vector3 end,
+                                 UnityEngine.Color color,
+                                 float timer,
+                                 bool no_z_test) {
           this.CheckInitialized();
 
           DrawLineEntry entry = null;
@@ -369,9 +389,9 @@ Important Notes:
             }
 
             if (entry._NoZTest) {
-              this._always_batch.AddLine(@from : entry._Start, to : entry._End, color : entry._Color);
+              this._always_batch.AddLine(from : entry._Start, to : entry._End, color : entry._Color);
             } else {
-              this._z_test_batch.AddLine(@from : entry._Start, to : entry._End, color : entry._Color);
+              this._z_test_batch.AddLine(from : entry._Start, to : entry._End, color : entry._Color);
             }
           }
 
@@ -386,26 +406,26 @@ Important Notes:
           }
 
           //	draw on UI layer which should bypass most postFX setups
-          Graphics.DrawMesh(mesh : this._always_batch._Mesh,
-                            position : Vector3.zero,
-                            rotation : Quaternion.identity,
-                            material : this._always_batch._Mat,
-                            layer : Draw._DrawLineLayer,
-                            null,
-                            0,
-                            null,
-                            false,
-                            false);
-          Graphics.DrawMesh(mesh : this._z_test_batch._Mesh,
-                            position : Vector3.zero,
-                            rotation : Quaternion.identity,
-                            material : this._z_test_batch._Mat,
-                            layer : Draw._DrawLineLayer,
-                            null,
-                            0,
-                            null,
-                            false,
-                            false);
+          UnityEngine.Graphics.DrawMesh(mesh : this._always_batch._Mesh,
+                                        position : UnityEngine.Vector3.zero,
+                                        rotation : UnityEngine.Quaternion.identity,
+                                        material : this._always_batch._Mat,
+                                        layer : Draw._DrawLineLayer,
+                                        null,
+                                        0,
+                                        null,
+                                        false,
+                                        false);
+          UnityEngine.Graphics.DrawMesh(mesh : this._z_test_batch._Mesh,
+                                        position : UnityEngine.Vector3.zero,
+                                        rotation : UnityEngine.Quaternion.identity,
+                                        material : this._z_test_batch._Mat,
+                                        layer : Draw._DrawLineLayer,
+                                        null,
+                                        0,
+                                        null,
+                                        false,
+                                        false);
 
           //	update timer late so every added entry can be drawed for at least one frame
           foreach (var entry in this._line_entries) {
@@ -413,7 +433,7 @@ Important Notes:
               continue;
             }
 
-            entry._Timer -= Time.deltaTime;
+            entry._Timer -= UnityEngine.Time.deltaTime;
             if (entry._Timer < 0) {
               entry._Occupied = false;
               this._lines_need_rebuild = true;
@@ -425,7 +445,7 @@ Important Notes:
 
         #region Draw Text
 
-        [Flags]
+        [System.FlagsAttribute]
         public enum DrawFlag : byte {
           None_ = 0,
           Drawn_gizmo_ = 1 << 0,
@@ -434,9 +454,9 @@ Important Notes:
         }
 
         class DrawTextEntry {
-          public Vector3 _Anchor;
-          public Color _Color;
-          public GUIContent _Content;
+          public UnityEngine.Vector3 _Anchor;
+          public UnityEngine.Color _Color;
+          public UnityEngine.GUIContent _Content;
           public float _Duration;
 
           //	Text entries needs to be draw in both OnGUI/OnDrawGizmos, need flags for mark
@@ -447,34 +467,34 @@ Important Notes:
           public int _Size;
           public float _Timer;
 
-          public DrawTextEntry() { this._Content = new GUIContent(); }
+          public DrawTextEntry() { this._Content = new UnityEngine.GUIContent(); }
         }
 
         /// <summary>
         /// </summary>
         class AttachTextEntry {
-          public Color _Color;
-          public GUIContent _Content;
+          public UnityEngine.Color _Color;
+          public UnityEngine.GUIContent _Content;
 
           public DrawFlag _Flag = DrawFlag.None_;
           public bool _Occupied;
-          public Vector3 _Offset;
+          public UnityEngine.Vector3 _Offset;
           public int _Size;
-          public Func<string> _StrFunc;
+          public System.Func<string> _StrFunc;
 
-          public Transform _Transform;
+          public UnityEngine.Transform _Transform;
 
-          public AttachTextEntry() { this._Content = new GUIContent(); }
+          public AttachTextEntry() { this._Content = new UnityEngine.GUIContent(); }
         }
 
-        List<DrawTextEntry> _draw_text_entries;
-        List<AttachTextEntry> _attach_text_entries;
-        GUIStyle _text_style;
-        static readonly int _z_test = Shader.PropertyToID("_ZTest");
+        System.Collections.Generic.List<DrawTextEntry> _draw_text_entries;
+        System.Collections.Generic.List<AttachTextEntry> _attach_text_entries;
+        UnityEngine.GUIStyle _text_style;
+        static readonly int _z_test = UnityEngine.Shader.PropertyToID("_ZTest");
 
-        public void RegisterDrawText(Vector3 anchor,
+        public void RegisterDrawText(UnityEngine.Vector3 anchor,
                                      string text,
-                                     Color color,
+                                     UnityEngine.Color color,
                                      int size,
                                      float timer,
                                      bool pop_up) {
@@ -508,10 +528,10 @@ Important Notes:
           #endif
         }
 
-        public void RegisterAttachText(Transform target,
-                                       Func<string> str_func,
-                                       Vector3 offset,
-                                       Color color,
+        public void RegisterAttachText(UnityEngine.Transform target,
+                                       System.Func<string> str_func,
+                                       UnityEngine.Vector3 offset,
+                                       UnityEngine.Color color,
                                        int size) {
           this.CheckInitialized();
 
@@ -550,7 +570,7 @@ Important Notes:
               continue;
             }
 
-            entry._Timer -= Time.deltaTime;
+            entry._Timer -= UnityEngine.Time.deltaTime;
             if (entry._Flag == DrawFlag.Drawn_all_) {
               if (entry._Timer < 0) {
                 entry._Occupied = false;
@@ -607,10 +627,10 @@ Important Notes:
           }
         }
 
-        void GuiDrawTextEntry(Camera n_camera, DrawTextEntry entry) {
+        void GuiDrawTextEntry(UnityEngine.Camera n_camera, DrawTextEntry entry) {
           var world_pos = entry._Anchor;
           var screen_pos = n_camera.WorldToScreenPoint(position : world_pos);
-          screen_pos.y = Screen.height - screen_pos.y;
+          screen_pos.y = UnityEngine.Screen.height - screen_pos.y;
 
           if (entry._PopUp) {
             var ratio = entry._Timer / entry._Duration;
@@ -619,40 +639,40 @@ Important Notes:
 
           this._text_style.normal.textColor = entry._Color;
           this._text_style.fontSize = entry._Size;
-          var rect = new Rect(position : screen_pos,
-                              size : this._text_style.CalcSize(content : entry._Content));
-          GUI.Label(position : rect, content : entry._Content, style : this._text_style);
+          var rect = new UnityEngine.Rect(position : screen_pos,
+                                          size : this._text_style.CalcSize(content : entry._Content));
+          UnityEngine.GUI.Label(position : rect, content : entry._Content, style : this._text_style);
         }
 
-        void GuiAttachTextEntry(Camera n_camera, AttachTextEntry entry) {
+        void GuiAttachTextEntry(UnityEngine.Camera n_camera, AttachTextEntry entry) {
           if (entry._Transform == null) {
             return;
           }
 
           var world_pos = entry._Transform.position + entry._Offset;
           var screen_pos = n_camera.WorldToScreenPoint(position : world_pos);
-          screen_pos.y = Screen.height - screen_pos.y;
+          screen_pos.y = UnityEngine.Screen.height - screen_pos.y;
 
           this._text_style.normal.textColor = entry._Color;
           this._text_style.fontSize = entry._Size;
-          var rect = new Rect(position : screen_pos,
-                              size : this._text_style.CalcSize(content : entry._Content));
-          GUI.Label(position : rect, content : entry._Content, style : this._text_style);
+          var rect = new UnityEngine.Rect(position : screen_pos,
+                                          size : this._text_style.CalcSize(content : entry._Content));
+          UnityEngine.GUI.Label(position : rect, content : entry._Content, style : this._text_style);
         }
 
         #if UNITY_EDITOR
         void DrawTextOnDrawGizmos() {
-          if (!(Camera.current == Draw.GetDebugDrawCamera()
-                || Camera.current == SceneView.lastActiveSceneView.camera)) {
+          if (!(UnityEngine.Camera.current == Draw.GetDebugDrawCamera()
+                || UnityEngine.Camera.current == UnityEditor.SceneView.lastActiveSceneView.camera)) {
             return;
           }
 
-          var n_camera = Camera.current;
+          var n_camera = UnityEngine.Camera.current;
           if (n_camera == null) {
             return;
           }
 
-          Handles.BeginGUI();
+          UnityEditor.Handles.BeginGUI();
           foreach (var entry in this._draw_text_entries) {
             if (!entry._Occupied) {
               continue;
@@ -671,7 +691,7 @@ Important Notes:
             entry._Flag |= DrawFlag.Drawn_gizmo_;
           }
 
-          Handles.EndGUI();
+          UnityEditor.Handles.EndGUI();
         }
         #endif
 

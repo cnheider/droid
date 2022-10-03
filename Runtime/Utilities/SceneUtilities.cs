@@ -1,30 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using Object = UnityEngine.Object;
-
-namespace droid.Runtime.Utilities {
+﻿namespace droid.Runtime.Utilities {
   /// <summary>
   /// </summary>
-  public static partial class NeodroidSceneUtilities {
+  public static class NeodroidSceneUtilities {
     /// <summary>
-    /// Find UnityEngine.Object assignables from Generic Type T, this allows for FindObjectOfType with interfaces.
+    ///   Find UnityEngine.Object assignables from Generic Type T, this allows for FindObjectOfType with interfaces.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    /// <exception cref="ArgumentException"></exception>
+    /// <exception cref="System.ArgumentException"></exception>
     public static T[] FindObjectsOfType<T>() {
       if (FindAllObjectsOfTypeInScene<T>() is T[] obj) {
         return obj;
       }
 
-      throw new ArgumentException(message :
-                                  $"Found no UnityEngine.Object assignables from type {typeof(T).Name}");
+      throw new System.ArgumentException(message :
+                                         $"Found no UnityEngine.Object assignables from type {typeof(T).Name}");
     }
 
     /// <summary>
-    ///
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
@@ -34,9 +27,9 @@ namespace droid.Runtime.Utilities {
     /// </summary>
     /// <param name="layer"></param>
     /// <returns></returns>
-    public static GameObject[] FindAllGameObjectsExceptLayer(int layer) {
-      var goa = Object.FindObjectsOfType<GameObject>();
-      var game_objects = new List<GameObject>();
+    public static UnityEngine.GameObject[] FindAllGameObjectsExceptLayer(int layer) {
+      var goa = UnityEngine.Object.FindObjectsOfType<UnityEngine.GameObject>();
+      var game_objects = new System.Collections.Generic.List<UnityEngine.GameObject>();
       foreach (var go in goa) {
         if (go.layer != layer) {
           game_objects.Add(item : go);
@@ -52,14 +45,15 @@ namespace droid.Runtime.Utilities {
     /// <param name="layer"></param>
     /// <param name="child"></param>
     /// <returns></returns>
-    public static T RecursiveFirstSelfSiblingParentGetComponent<T>(Transform child) where T : Component {
+    public static T RecursiveFirstSelfSiblingParentGetComponent<T>(UnityEngine.Transform child)
+        where T : UnityEngine.Component {
       var a = child.GetComponent<T>();
       if (a != null) {
         return a;
       }
 
       if (child.parent) {
-        foreach (Transform go in child.parent) {
+        foreach (UnityEngine.Transform go in child.parent) {
           a = go.GetComponent<T>();
           if (a != null) {
             return a;
@@ -82,9 +76,11 @@ namespace droid.Runtime.Utilities {
     /// <param name="parent"></param>
     /// <param name="layer"></param>
     /// <returns></returns>
-    public static GameObject[] RecursiveChildGameObjectsExceptLayer(Transform parent, int layer) {
-      var game_objects = new List<GameObject>();
-      foreach (Transform go in parent) {
+    public static UnityEngine.GameObject[] RecursiveChildGameObjectsExceptLayer(
+        UnityEngine.Transform parent,
+        int layer) {
+      var game_objects = new System.Collections.Generic.List<UnityEngine.GameObject>();
+      foreach (UnityEngine.Transform go in parent) {
         if (go) {
           if (go.gameObject.layer != layer) {
             game_objects.Add(item : go.gameObject);
@@ -103,9 +99,9 @@ namespace droid.Runtime.Utilities {
     /// This is an alternative to Resources.FindObjectsOfTypeAll (returns project assets, including prefabs), and GameObject.FindObjectsOfTypeAll (deprecated).
     public static T[] FindAllObjectsOfTypeInScene<T>() {
       //(Scene scene) {
-      var results = new List<T>();
-      for (var i = 0; i < SceneManager.sceneCount; i++) {
-        var s = SceneManager.GetSceneAt(index : i); // maybe EditorSceneManager
+      var results = new System.Collections.Generic.List<T>();
+      for (var i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; i++) {
+        var s = UnityEngine.SceneManagement.SceneManager.GetSceneAt(index : i); // maybe EditorSceneManager
         if (!s.isLoaded) {
           continue;
         }

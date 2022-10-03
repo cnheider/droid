@@ -1,39 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using droid.Runtime.Structs;
-using UnityEngine;
-using Random = UnityEngine.Random;
-
-namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation.Obsolete {
+﻿namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation.Obsolete {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [ExecuteInEditMode]
+  [UnityEngine.ExecuteInEditMode]
   public class ChangeMaterialOnRenderByInstance : ObsoleteSegmenter {
-    /// <summary>
-    /// </summary>
-    Renderer[] _all_renders;
+    [UnityEngine.SerializeField] droid.Runtime.Structs.ColorByInstance[] instanceColorArray;
 
     /// <summary>
     /// </summary>
-    MaterialPropertyBlock _block;
+    UnityEngine.Renderer[] _all_renders;
 
     /// <summary>
     /// </summary>
-    LinkedList<Color>[] _original_colors;
-
-    [SerializeField] ColorByInstance[] instanceColorArray;
+    UnityEngine.MaterialPropertyBlock _block;
 
     /// <summary>
     /// </summary>
-    public Dictionary<GameObject, Color> ColorsDictGameObject { get; } = new Dictionary<GameObject, Color>();
+    System.Collections.Generic.LinkedList<UnityEngine.Color>[] _original_colors;
+
+    /// <summary>
+    /// </summary>
+    public System.Collections.Generic.Dictionary<UnityEngine.GameObject, UnityEngine.Color>
+        ColorsDictGameObject { get; } =
+      new System.Collections.Generic.Dictionary<UnityEngine.GameObject, UnityEngine.Color>();
 
     /// <inheritdoc />
     /// <summary>
     /// </summary>
-    public override Dictionary<string, Color> ColorsDict {
+    public override System.Collections.Generic.Dictionary<string, UnityEngine.Color> ColorsDict {
       get {
-        var colors = new Dictionary<string, Color>();
+        var colors = new System.Collections.Generic.Dictionary<string, UnityEngine.Color>();
         foreach (var key_val in this.ColorsDictGameObject) {
           colors.Add(key : key_val.Key.GetInstanceID().ToString(), value : key_val.Value);
         }
@@ -44,13 +40,18 @@ namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation.Obsolete {
 
     /// <summary>
     /// </summary>
-    public ColorByInstance[] InstanceColors {
+    public droid.Runtime.Structs.ColorByInstance[] InstanceColors {
       get {
         if (this.ColorsDictGameObject != null) {
-          this.instanceColorArray = new ColorByInstance[this.ColorsDictGameObject.Keys.Count];
+          this.instanceColorArray =
+              new droid.Runtime.Structs.ColorByInstance[this.ColorsDictGameObject.Keys.Count];
           var i = 0;
           foreach (var key in this.ColorsDictGameObject.Keys) {
-            var seg = new ColorByInstance {_Game_Object = key, _Color = this.ColorsDictGameObject[key : key]};
+            var seg = new droid.Runtime.Structs.ColorByInstance {
+                                                                    _Game_Object = key,
+                                                                    _Color =
+                                                                        this.ColorsDictGameObject[key : key]
+                                                                };
             this.instanceColorArray[i] = seg;
             i++;
           }
@@ -68,24 +69,24 @@ namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation.Obsolete {
       }
     }
 
+    /// <summary>
+    /// </summary>
+    void Awake() {
+      this._all_renders = FindObjectsOfType<UnityEngine.Renderer>();
+      this._block = new UnityEngine.MaterialPropertyBlock();
+      this.Setup();
+    }
+
     // Use this for initialization
     /// <summary>
     /// </summary>
     void Start() { this.Setup(); }
 
-    /// <summary>
-    /// </summary>
-    void Awake() {
-      this._all_renders = FindObjectsOfType<Renderer>();
-      this._block = new MaterialPropertyBlock();
-      this.Setup();
-    }
-
     // Update is called once per frame
     /// <summary>
     /// </summary>
     void Update() {
-      var renderers = FindObjectsOfType<Renderer>();
+      var renderers = FindObjectsOfType<UnityEngine.Renderer>();
       if (this.ColorsDictGameObject == null) {
         this.Setup();
       } else if (this.ColorsDictGameObject.Keys.Count != renderers.Length) {
@@ -96,7 +97,7 @@ namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation.Obsolete {
 
     void CheckBlock() {
       if (this._block == null) {
-        this._block = new MaterialPropertyBlock();
+        this._block = new UnityEngine.MaterialPropertyBlock();
       }
     }
 
@@ -109,7 +110,7 @@ namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation.Obsolete {
       for (var index = 0; index < this._all_renders.Length; index++) {
         var rend = this._all_renders[index];
         if (rend) {
-          this.ColorsDictGameObject.Add(key : rend.gameObject, value : Random.ColorHSV());
+          this.ColorsDictGameObject.Add(key : rend.gameObject, value : UnityEngine.Random.ColorHSV());
         }
       }
     }
@@ -118,10 +119,11 @@ namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation.Obsolete {
     /// </summary>
     protected override void Change() {
       this.CheckBlock();
-      this._original_colors = new LinkedList<Color>[this._all_renders.Length];
+      this._original_colors =
+          new System.Collections.Generic.LinkedList<UnityEngine.Color>[this._all_renders.Length];
 
       for (var i = 0; i < this._original_colors.Length; i++) {
-        this._original_colors[i] = new LinkedList<Color>();
+        this._original_colors[i] = new System.Collections.Generic.LinkedList<UnityEngine.Color>();
       }
 
       for (var i = 0; i < this._all_renders.Length; i++) {

@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using droid.Runtime.GameObjects.NeodroidCamera.Synthesis;
-using droid.Runtime.Structs;
-using UnityEngine;
-
-namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation {
+﻿namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation {
   /// <summary>
-  ///
   /// </summary>
   enum SegmentationMode {
     Tag_,
@@ -16,24 +9,16 @@ namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [ExecuteInEditMode]
+  [UnityEngine.ExecuteInEditMode]
   public class CategorySegmenter : Segmenter {
-    /// <summary>
-    /// </summary>
-    Renderer[] _all_renders = null;
+    [UnityEngine.SerializeField] UnityEngine.Shader segmentation_shader = null;
+    [UnityEngine.SerializeField] UnityEngine.Camera _camera = null;
 
-    /// <summary>
-    /// </summary>
-    MaterialPropertyBlock _block = null;
+    [UnityEngine.SerializeField] protected droid.Runtime.Structs.ColorByCategory[] _colors_by_category = null;
 
-    [SerializeField] Shader segmentation_shader = null;
-    [SerializeField] Camera _camera = null;
+    [UnityEngine.SerializeField] SegmentationMode _segmentation_mode = SegmentationMode.Tag_;
 
-    [SerializeField] protected ColorByCategory[] _colors_by_category = null;
-
-    [SerializeField] SegmentationMode _segmentation_mode = SegmentationMode.Tag_;
-
-    [SerializeField] ScriptableObjects.Segmentation _segmentation_preset = null;
+    [UnityEngine.SerializeField] droid.Runtime.ScriptableObjects.Segmentation _segmentation_preset = null;
 
     /// <summary>
     /// </summary>
@@ -41,24 +26,37 @@ namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation {
 
     /// <summary>
     /// </summary>
-    public Color _Untagged_Color = new Color(0.0f,
-                                             0.0f,
-                                             0.0f,
-                                             0.0f);
+    public UnityEngine.Color _Untagged_Color = new UnityEngine.Color(0.0f,
+                                                                     0.0f,
+                                                                     0.0f,
+                                                                     0.0f);
 
     /// <summary>
     /// </summary>
-    public ColorByCategory[] ColorsByCategory { get { return this._colors_by_category; } }
+    UnityEngine.Renderer[] _all_renders = null;
 
     /// <summary>
     /// </summary>
-    public Dictionary<string, Color> ColorsDictGameObject { get; set; } = new Dictionary<string, Color>();
+    UnityEngine.MaterialPropertyBlock _block = null;
+
+    droid.Runtime.GameObjects.NeodroidCamera.Synthesis.SynthesisUtilities.CapturePass[] _capture_passes;
 
     /// <summary>
     /// </summary>
-    public override Dictionary<string, Color> ColorsDict {
+    public droid.Runtime.Structs.ColorByCategory[] ColorsByCategory {
+      get { return this._colors_by_category; }
+    }
+
+    /// <summary>
+    /// </summary>
+    public System.Collections.Generic.Dictionary<string, UnityEngine.Color> ColorsDictGameObject { get; set; }
+      = new System.Collections.Generic.Dictionary<string, UnityEngine.Color>();
+
+    /// <summary>
+    /// </summary>
+    public override System.Collections.Generic.Dictionary<string, UnityEngine.Color> ColorsDict {
       get {
-        var colors = new Dictionary<string, Color>();
+        var colors = new System.Collections.Generic.Dictionary<string, UnityEngine.Color>();
         foreach (var key_val in this.ColorsDictGameObject) {
           colors.Add(key : key_val.Key, value : key_val.Value);
         }
@@ -69,21 +67,19 @@ namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation {
 
     /// <summary>
     /// </summary>
+    void Awake() { this.Setup(); }
+
+    /// <summary>
+    /// </summary>
     void Start() {
       //this.Setup();
     }
 
-    /// <summary>
-    /// </summary>
-    void Awake() { this.Setup(); }
-
     void CheckBlock() {
       if (this._block == null) {
-        this._block = new MaterialPropertyBlock();
+        this._block = new UnityEngine.MaterialPropertyBlock();
       }
     }
-
-    SynthesisUtilities.CapturePass[] _capture_passes;
 
     /// <summary>
     /// </summary>
@@ -109,48 +105,47 @@ namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation {
         }
       }
 
-      this._all_renders = FindObjectsOfType<Renderer>();
+      this._all_renders = FindObjectsOfType<UnityEngine.Renderer>();
       if (!this._camera) {
-        this._camera = this.GetComponent<Camera>();
+        this._camera = this.GetComponent<UnityEngine.Camera>();
       }
 
       if (this.ColorsDictGameObject == null) {
-        this.ColorsDictGameObject = new Dictionary<string, Color>();
+        this.ColorsDictGameObject = new System.Collections.Generic.Dictionary<string, UnityEngine.Color>();
       }
 
       switch (this._segmentation_mode) {
         case SegmentationMode.Tag_:
           this._capture_passes = new[] {
-                                           new SynthesisUtilities.CapturePass {
-                                                                                  _Name = "_tag_id",
-                                                                                  _ReplacementMode =
-                                                                                      SynthesisUtilities
-                                                                                          .ReplacementModes
-                                                                                          .Tag_id_,
-                                                                                  _SupportsAntialiasing =
-                                                                                      false
-                                                                              }
+                                           new droid.Runtime.GameObjects.NeodroidCamera.Synthesis.
+                                           SynthesisUtilities.CapturePass {
+                                               _Name = "_tag_id",
+                                               _ReplacementMode =
+                                                   droid.Runtime.GameObjects.NeodroidCamera.Synthesis
+                                                        .SynthesisUtilities.ReplacementModes.Tag_id_,
+                                               _SupportsAntialiasing = false
+                                           }
                                        };
           break;
         case SegmentationMode.Layer_:
           this._capture_passes = new[] {
-                                           new SynthesisUtilities.CapturePass {
-                                                                                  _Name = "_layer_id",
-                                                                                  _ReplacementMode =
-                                                                                      SynthesisUtilities
-                                                                                          .ReplacementModes
-                                                                                          .Layer_id_,
-                                                                                  _SupportsAntialiasing =
-                                                                                      false
-                                                                              }
+                                           new droid.Runtime.GameObjects.NeodroidCamera.Synthesis.
+                                           SynthesisUtilities.CapturePass {
+                                               _Name = "_layer_id",
+                                               _ReplacementMode =
+                                                   droid.Runtime.GameObjects.NeodroidCamera.Synthesis
+                                                        .SynthesisUtilities.ReplacementModes.Layer_id_,
+                                               _SupportsAntialiasing = false
+                                           }
                                        };
           break;
-        default: throw new ArgumentOutOfRangeException();
+        default: throw new System.ArgumentOutOfRangeException();
       }
 
-      SynthesisUtilities.SetupCapturePassesReplacementShader(camera : this._camera,
-                                                             replacement_shader : this.segmentation_shader,
-                                                             capture_passes : ref this._capture_passes);
+      droid.Runtime.GameObjects.NeodroidCamera.Synthesis.SynthesisUtilities
+           .SetupCapturePassesReplacementShader(camera : this._camera,
+                                                replacement_shader : this.segmentation_shader,
+                                                capture_passes : ref this._capture_passes);
 
       this.CheckBlock();
       for (var index = 0; index < this._all_renders.Length; index++) {
@@ -158,19 +153,21 @@ namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation {
         a_renderer.GetPropertyBlock(properties : this._block);
         string category_name;
         var category_int = 0;
-        Color color;
+        UnityEngine.Color color;
         string shader_data_name;
         switch (this._segmentation_mode) {
           case SegmentationMode.Tag_:
             category_name = a_renderer.tag;
-            shader_data_name = SynthesisUtilities._Shader_Tag_Color_Name;
+            shader_data_name = droid.Runtime.GameObjects.NeodroidCamera.Synthesis.SynthesisUtilities
+                                    ._Shader_Tag_Color_Name;
             break;
           case SegmentationMode.Layer_:
             category_int = a_renderer.gameObject.layer;
-            category_name = LayerMask.LayerToName(layer : category_int);
-            shader_data_name = SynthesisUtilities._Shader_Layer_Color_Name;
+            category_name = UnityEngine.LayerMask.LayerToName(layer : category_int);
+            shader_data_name = droid.Runtime.GameObjects.NeodroidCamera.Synthesis.SynthesisUtilities
+                                    ._Shader_Layer_Color_Name;
             break;
-          default: throw new ArgumentOutOfRangeException();
+          default: throw new System.ArgumentOutOfRangeException();
         }
 
         if (!this.ColorsDictGameObject.ContainsKey(key : category_name)) {
@@ -178,15 +175,18 @@ namespace droid.Runtime.GameObjects.NeodroidCamera.Segmentation {
             switch (this._segmentation_mode) {
               case SegmentationMode.Tag_:
                 category_int = category_name.GetHashCode();
-                color = ColorEncoding.EncodeTagHashCodeAsColor(hash : category_int);
+                color = droid.Runtime.GameObjects.NeodroidCamera.Synthesis.ColorEncoding
+                             .EncodeTagHashCodeAsColor(hash : category_int);
                 //color = ColorEncoding.EncodeIdAsColor(category_int);
                 break;
               case SegmentationMode.Layer_:
-                color = ColorEncoding.EncodeLayerAsColor(layer : category_int);
+                color =
+                    droid.Runtime.GameObjects.NeodroidCamera.Synthesis.ColorEncoding
+                         .EncodeLayerAsColor(layer : category_int);
                 break;
               default:
                 //color = ColorEncoding.EncodeIdAsColor(category_int);
-                throw new ArgumentOutOfRangeException();
+                throw new System.ArgumentOutOfRangeException();
             }
           } else {
             color = this._Untagged_Color;

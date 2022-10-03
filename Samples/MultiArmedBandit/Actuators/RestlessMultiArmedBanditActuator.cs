@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections;
-using droid.Runtime.Prototyping.Actuators;
-using UnityEngine;
-using Random = UnityEngine.Random;
-
-namespace droid.Samples.MultiArmedBandit.Actuators {
+﻿namespace droid.Samples.MultiArmedBandit.Actuators {
   /// <inheritdoc />
   /// <summary>
   /// </summary>
-  [AddComponentMenu(menuName : ActuatorComponentMenuPath._ComponentMenuPath
-                               + "RestlessMultiArmedBandit"
-                               + ActuatorComponentMenuPath._Postfix)]
+  [UnityEngine.AddComponentMenu(menuName :
+                                 droid.Runtime.Prototyping.Actuators.ActuatorComponentMenuPath
+                                      ._ComponentMenuPath
+                                 + "RestlessMultiArmedBandit"
+                                 + droid.Runtime.Prototyping.Actuators.ActuatorComponentMenuPath._Postfix)]
   public class RestlessMultiArmedBanditActuator : MultiArmedBanditActuator {
     /// <inheritdoc />
     /// <summary>
@@ -27,8 +23,8 @@ namespace droid.Samples.MultiArmedBandit.Actuators {
 
     protected void ReAssignValues() {
       for (var index = 0; index < this._Win_Likelihoods.Length; index++) {
-        this._Win_Likelihoods[index] = Random.Range(0.1f, 0.9f);
-        this._Win_Amounts[index] = Random.Range(0.1f, 0.9f);
+        this._Win_Likelihoods[index] = UnityEngine.Random.Range(0.1f, 0.9f);
+        this._Win_Amounts[index] = UnityEngine.Random.Range(0.1f, 0.9f);
       }
 
       if (this._Win_Likelihoods == null || this._Win_Likelihoods.Length == 0) {
@@ -46,9 +42,9 @@ namespace droid.Samples.MultiArmedBandit.Actuators {
       }
     }
 
-    IEnumerator ExecuteAfterTime(float time) {
+    System.Collections.IEnumerator ExecuteAfterTime(float time) {
       while (true) {
-        yield return new WaitForSeconds(seconds : time);
+        yield return new UnityEngine.WaitForSeconds(seconds : time);
 
         this.ReAssignValues();
       }
